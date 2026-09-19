@@ -1,0 +1,28 @@
+timezone = "Europe/Berlin"
+shortlist_min = 15
+shortlist_max = 30
+
+[[competitions]]
+id = "DE1"
+name = "Bundesliga"
+country_code = "DE"
+
+[[competitions]]
+id = "GB1"
+name = "Premier League"
+country_code = "GB"
+
+[[competitions]]
+id = "IT1"
+name = "Serie A"
+country_code = "IT"
+
+[[competitions]]
+id = "ES1"
+name = "La Liga"
+country_code = "ES"
+
+[[competitions]]
+id = "FR1"
+name = "Ligue 1"
+country_code = "FR"
