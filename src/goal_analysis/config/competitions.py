@@ -10,6 +10,7 @@ class CompetitionConfig:
     id: str
     name: str
     country_code: str
+    api_football_id: int
 
 
 @dataclass(frozen=True, slots=True)
@@ -33,6 +34,7 @@ def load_competition_catalog(path: Path) -> CompetitionCatalog:
             id=item["id"],
             name=item["name"],
             country_code=item["country_code"],
+            api_football_id=int(item["api_football_id"]),
         )
         for item in raw.get("competitions", [])
     )

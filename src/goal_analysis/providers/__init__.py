@@ -1,5 +1,13 @@
 """External provider contracts."""
 
 from .base import FixtureProvider, OddsProvider, ProviderError
+from .api_football import ApiFootballClient, ApiFootballFixtureProvider, ApiUsage
 
-__all__ = ["FixtureProvider", "OddsProvider", "ProviderError"]
+__all__ = [
+    "ApiFootballClient",
+    "ApiFootballFixtureProvider",
+    "ApiUsage",
+    "FixtureProvider",
+    "OddsProvider",
+    "ProviderError",
+]

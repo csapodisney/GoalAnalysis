@@ -1,0 +1,25 @@
+{
+  "get": "fixtures",
+  "parameters": {
+    "date": "2026-09-20",
+    "league": "78",
+    "season": "2026",
+    "timezone": "Europe/Berlin"
+  },
+  "errors": [],
+  "results": 1,
+  "response": [
+    {
+      "fixture": {
+        "id": 123456,
+        "date": "2026-09-20T15:30:00+02:00",
+        "status": {"short": "NS"}
+      },
+      "league": {"id": 78, "name": "Bundesliga", "country": "Germany"},
+      "teams": {
+        "home": {"id": 1, "name": "Home FC"},
+        "away": {"id": 2, "name": "Away FC"}
+      }
+    }
+  ]
+}
