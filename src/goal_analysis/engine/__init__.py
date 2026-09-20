@@ -1,5 +1,19 @@
 """Deterministic post-analysis decision gates."""
 
+from .approval_gates import (
+    CalibrationArtifact,
+    CalibrationGateResult,
+    CalibrationMetric,
+    EvidenceGateResult,
+    ExecutionBranch,
+    LineupCheck,
+    LineupSensitivity,
+    LineupStatus,
+    TeamNewsSnapshot,
+    evaluate_calibration,
+    evaluate_lineup,
+    evaluate_team_news,
+)
 from .run_control import (
     CandidateDecision,
     CandidateState,
@@ -19,21 +33,33 @@ from .run_control import (
 from .ticket_gate import TicketGateError, TicketGatePolicy, evaluate_ticket
 
 __all__ = [
+    "CalibrationArtifact",
+    "CalibrationGateResult",
+    "CalibrationMetric",
     "CandidateDecision",
     "CandidateState",
+    "EvidenceGateResult",
     "EvidenceStatus",
+    "ExecutionBranch",
     "ExecutionStatus",
     "FinalStatus",
     "FootballStatus",
+    "LineupCheck",
+    "LineupSensitivity",
+    "LineupStatus",
     "PriceMode",
     "PriceStatus",
     "RunGateResult",
     "RunInput",
     "RunMode",
     "RunStatus",
+    "TeamNewsSnapshot",
     "TicketGateError",
     "TicketGatePolicy",
     "decide_candidate",
+    "evaluate_calibration",
+    "evaluate_lineup",
     "evaluate_run_gate",
+    "evaluate_team_news",
     "evaluate_ticket",
 ]

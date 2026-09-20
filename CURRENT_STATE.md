@@ -23,7 +23,9 @@ Last updated: 2026-09-20
 - Arthur Pentagram 2.0 source import and compatibility gate: COMPLETE
 - Typed PREMATCH / FINALIZE / AUDIT run control: COMPLETE
 - Deterministic candidate-status precedence: COMPLETE
-- Local tests after Phase 15: 81 passed
+- Model-calibration approval gate: COMPLETE
+- Team-news and official-lineup freshness gates: COMPLETE
+- Local tests after Phase 16: 91 passed
 - API key authentication: CONFIRMED
 - API-Football Free current-season access: BLOCKED BY PLAN
 
@@ -33,7 +35,7 @@ Build the token-efficient data layer in shadow mode without changing Arthur's ex
 
 ## Active work
 
-Phase 15 complete: typed run modes, fail-closed run gates and deterministic candidate states.
+Phase 16 complete: calibrated-model, team-news and official-lineup approval gates.
 
 ## Decisions
 
@@ -45,8 +47,8 @@ Phase 15 complete: typed run modes, fail-closed run gates and deterministic cand
 
 ## Next actions
 
-1. Add the missing model-calibration, team-news and line-up gates before prompt activation.
-2. Connect run control to the end-to-end shadow coordinator and persisted manifests.
+1. Connect run control and approval gates to the end-to-end shadow coordinator and manifests.
+2. Add master-prompt activation through a token-efficient staged adapter.
 3. Configure the live model, odds key, and explicit cross-provider event map.
 4. Upgrade API-Football only when the first current-season shadow run is ready.
 5. Run and evaluate the complete pipeline in shadow mode before any cutover decision.
