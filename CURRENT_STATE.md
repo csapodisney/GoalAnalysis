@@ -20,7 +20,10 @@ Last updated: 2026-09-20
 - Settlement, hash-chain performance log and token telemetry: COMPLETE
 - Live The Odds API adapter with explicit event mapping: COMPLETE
 - One-command end-to-end shadow bundle: COMPLETE
-- Local tests after Phase 13: 66 passed
+- Arthur Pentagram 2.0 source import and compatibility gate: COMPLETE
+- Typed PREMATCH / FINALIZE / AUDIT run control: COMPLETE
+- Deterministic candidate-status precedence: COMPLETE
+- Local tests after Phase 15: 81 passed
 - API key authentication: CONFIRMED
 - API-Football Free current-season access: BLOCKED BY PLAN
 
@@ -30,7 +33,7 @@ Build the token-efficient data layer in shadow mode without changing Arthur's ex
 
 ## Active work
 
-Phase 13 complete: live post-ranking odds adapter and auditable end-to-end shadow command.
+Phase 15 complete: typed run modes, fail-closed run gates and deterministic candidate states.
 
 ## Decisions
 
@@ -42,10 +45,11 @@ Phase 13 complete: live post-ranking odds adapter and auditable end-to-end shado
 
 ## Next actions
 
-1. Import the exact legacy Arthur prompt as a new immutable prompt version when supplied.
-2. Configure the live model, odds key, and explicit cross-provider event map.
-3. Upgrade API-Football only when the first current-season shadow run is ready.
-4. Run and evaluate the complete pipeline in shadow mode before any cutover decision.
+1. Add the missing model-calibration, team-news and line-up gates before prompt activation.
+2. Connect run control to the end-to-end shadow coordinator and persisted manifests.
+3. Configure the live model, odds key, and explicit cross-provider event map.
+4. Upgrade API-Football only when the first current-season shadow run is ready.
+5. Run and evaluate the complete pipeline in shadow mode before any cutover decision.
 
 ## Important rule
 
