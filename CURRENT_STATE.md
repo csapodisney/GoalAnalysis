@@ -16,7 +16,8 @@ Last updated: 2026-09-20
 - Compact Arthur fact packet and evidence hashes: COMPLETE
 - Kerekasztal orchestration contract and shadow replay: COMPLETE
 - Versioned prompt registry and OpenAI Responses runner: COMPLETE
-- Local tests after Phase 10: 44 passed
+- Post-ranking odds channel and deterministic ticket gate: COMPLETE
+- Local tests after Phase 11: 52 passed
 - API key authentication: CONFIRMED
 - API-Football Free current-season access: BLOCKED BY PLAN
 
@@ -26,7 +27,7 @@ Build the token-efficient data layer in shadow mode without changing Arthur's ex
 
 ## Active work
 
-Phase 10 complete: configurable structured-output model runner with token metadata.
+Phase 11 complete: frozen-order price attachment and same-bookmaker ticket validation.
 
 ## Decisions
 
@@ -38,11 +39,11 @@ Phase 10 complete: configurable structured-output model runner with token metada
 
 ## Next actions
 
-1. Import the exact legacy Arthur prompt as a new immutable prompt version when supplied.
-2. Attach prices only after the frozen football ranking and completed Kerekasztal run.
-3. Add the preserved deterministic ticket gate.
-4. Add settlement and performance telemetry; token counts are already captured per role call.
-5. Upgrade API-Football only for the first real current-season shadow run.
+1. Add settlement, performance and consolidated token-usage telemetry.
+2. Add a live odds-provider adapter behind the validated provider-neutral contract.
+3. Import the exact legacy Arthur prompt as a new immutable prompt version when supplied.
+4. Run the complete pipeline with fixtures and prices in shadow mode.
+5. Upgrade API-Football only when that first current-season shadow run is ready.
 
 ## Important rule
 

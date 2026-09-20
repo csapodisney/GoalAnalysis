@@ -52,6 +52,8 @@ class RoleOpinion:
     thesis: str
     evidence_sha256: str
     structural_veto: bool = False
+    market_key: str | None = None
+    selection_key: str | None = None
     run_metadata: Mapping[str, Any] | None = None
 
     def to_dict(self) -> dict[str, Any]:
@@ -63,6 +65,8 @@ class RoleOpinion:
             "thesis": self.thesis,
             "evidence_sha256": self.evidence_sha256,
             "structural_veto": self.structural_veto,
+            "market_key": self.market_key,
+            "selection_key": self.selection_key,
         }
         if self.run_metadata is not None:
             result["run_metadata"] = dict(self.run_metadata)
@@ -204,15 +208,23 @@ def _parse_opinion(
     structural_veto = bool(response.get("structural_veto", False))
     if verdict is Verdict.VETO:
         structural_veto = True
+    market_key = response.get("market_key")
+    selection_key = response.get("selection_key")
+    if market_key is not None and not isinstance(market_key, str):
+        raise KerekasztalError(f"invalid market_key for {role.value}")
+    if selection_key is not None and not isinstance(selection_key, str):
+        raise KerekasztalError(f"invalid selection_key for {role.value}")
     return RoleOpinion(
-        role,
-        fixture["fixture_id"],
-        verdict,
-        confidence,
-        thesis,
-        fixture["evidence_sha256"],
-        structural_veto,
-        response.get("_meta"),
+        role=role,
+        fixture_id=fixture["fixture_id"],
+        verdict=verdict,
+        confidence=confidence,
+        thesis=thesis,
+        evidence_sha256=fixture["evidence_sha256"],
+        structural_veto=structural_veto,
+        market_key=market_key,
+        selection_key=selection_key,
+        run_metadata=response.get("_meta"),
     )
 
 

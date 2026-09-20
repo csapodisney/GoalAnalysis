@@ -15,9 +15,7 @@ from .kerekasztal import KerekasztalError, Role
 Transport = Callable[[str, Mapping[str, str], bytes], Mapping[str, Any]]
 
 
-def _default_transport(
-    url: str, headers: Mapping[str, str], body: bytes
-) -> Mapping[str, Any]:
+def _default_transport(url: str, headers: Mapping[str, str], body: bytes) -> Mapping[str, Any]:
     request = urllib.request.Request(url, data=body, headers=dict(headers), method="POST")
     try:
         with urllib.request.urlopen(request, timeout=90) as response:
@@ -142,6 +140,8 @@ def _response_schema() -> dict[str, Any]:
             "thesis": {"type": "string", "minLength": 1},
             "evidence_sha256": {"type": "string", "minLength": 64, "maxLength": 64},
             "structural_veto": {"type": "boolean"},
+            "market_key": {"type": ["string", "null"]},
+            "selection_key": {"type": ["string", "null"]},
         },
         "required": [
             "role",
@@ -151,5 +151,7 @@ def _response_schema() -> dict[str, Any]:
             "thesis",
             "evidence_sha256",
             "structural_veto",
+            "market_key",
+            "selection_key",
         ],
     }

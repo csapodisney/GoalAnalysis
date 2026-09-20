@@ -25,6 +25,8 @@ def opinion():
         "thesis": "Evidence supports further review.",
         "evidence_sha256": "a" * 64,
         "structural_veto": False,
+        "market_key": "totals_2_5",
+        "selection_key": "over",
     }
 
 
@@ -64,7 +66,10 @@ def test_runner_extracts_nested_output_text(tmp_path) -> None:
         return {
             "id": "resp_2",
             "output": [
-                {"type": "message", "content": [{"type": "output_text", "text": json.dumps(opinion())}]}
+                {
+                    "type": "message",
+                    "content": [{"type": "output_text", "text": json.dumps(opinion())}],
+                }
             ],
         }
 
