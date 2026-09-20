@@ -11,20 +11,26 @@ from datetime import date, datetime
 from typing import Any
 
 from goal_analysis.normalization.models import Competition, Fixture, FixtureStatus, Team
+from goal_analysis.storage.snapshots import SnapshotStore
 
 from .base import ProviderError
 
-Transport = Callable[[str, Mapping[str, str]], tuple[dict[str, Any], Mapping[str, str]]]
+TransportResult = (
+    tuple[dict[str, Any], Mapping[str, str]]
+    | tuple[dict[str, Any], Mapping[str, str], bytes]
+)
+Transport = Callable[[str, Mapping[str, str]], TransportResult]
 
 
 def _default_transport(
     url: str, headers: Mapping[str, str]
-) -> tuple[dict[str, Any], Mapping[str, str]]:
+) -> tuple[dict[str, Any], Mapping[str, str], bytes]:
     request = urllib.request.Request(url, headers=dict(headers))
     try:
         with urllib.request.urlopen(request, timeout=30) as response:
-            payload = json.loads(response.read().decode("utf-8"))
-            return payload, dict(response.headers.items())
+            raw_body = response.read()
+            payload = json.loads(raw_body.decode("utf-8"))
+            return payload, dict(response.headers.items()), raw_body
     except urllib.error.HTTPError as error:
         body = error.read().decode("utf-8", errors="replace")
         raise ProviderError(f"API-Football HTTP {error.code}: {body[:300]}") from error
@@ -45,9 +51,11 @@ class ApiFootballClient:
         self,
         api_key: str | None = None,
         transport: Transport | None = None,
+        snapshot_store: SnapshotStore | None = None,
     ) -> None:
         self._api_key = api_key or os.environ.get("API_FOOTBALL_KEY")
         self._transport = transport or _default_transport
+        self._snapshot_store = snapshot_store
         self.last_usage = ApiUsage()
 
     def request(self, endpoint: str, params: Mapping[str, str | int]) -> dict[str, Any]:
@@ -55,7 +63,20 @@ class ApiFootballClient:
             raise ProviderError("API_FOOTBALL_KEY is not configured")
         query = urllib.parse.urlencode(params)
         url = f"{self.BASE_URL}/{endpoint.lstrip('/')}?{query}"
-        payload, headers = self._transport(url, {"x-apisports-key": self._api_key})
+        transport_result = self._transport(url, {"x-apisports-key": self._api_key})
+        if len(transport_result) == 2:
+            payload, headers = transport_result
+            raw_body = json.dumps(payload, separators=(",", ":")).encode("utf-8")
+        else:
+            payload, headers, raw_body = transport_result
+        if self._snapshot_store is not None:
+            self._snapshot_store.save(
+                provider="api_football",
+                resource_type=endpoint.strip("/").replace("/", "_") or "root",
+                content=raw_body,
+                media_type=headers.get("content-type", "application/json"),
+                source_url=url,
+            )
         self.last_usage = ApiUsage(
             remaining_day=_optional_int(headers.get("x-ratelimit-requests-remaining")),
             limit_day=_optional_int(headers.get("x-ratelimit-requests-limit")),

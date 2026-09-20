@@ -11,7 +11,7 @@ Last updated: 2026-09-20
 - SQLite, TTL cache and immutable snapshots: COMPLETE
 - Deterministic fixture screening: COMPLETE
 - API-Football fixture adapter: COMPLETE
-- Local tests before Phase 5: 17 passed
+- Local tests before Phase 6: 21 passed
 - API key authentication: CONFIRMED
 - API-Football Free current-season access: BLOCKED BY PLAN
 
@@ -21,7 +21,7 @@ Build the token-efficient data layer in shadow mode without changing Arthur's ex
 
 ## Active work
 
-Phase 5: cached daily fixture collection for the five top leagues.
+Phase 6: raw response snapshots and cached deterministic daily screening output.
 
 ## Decisions
 
@@ -33,10 +33,10 @@ Phase 5: cached daily fixture collection for the five top leagues.
 
 ## Next actions
 
-1. Validate Phase 5 with a fake provider and local cache.
-2. Add raw-response snapshot integration.
-3. Feed the cached fixture universe into deterministic screening.
-4. Add compact fact-packet generation.
+1. Validate exact raw-response snapshots.
+2. Validate accepted/rejected JSON output without odds.
+3. Add deterministic feature calculation and ranking.
+4. Add compact Arthur fact-packet generation.
 5. Upgrade API-Football only for the first real current-season shadow run.
 
 ## Important rule
