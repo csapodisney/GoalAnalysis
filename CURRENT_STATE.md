@@ -39,6 +39,8 @@ Last updated: 2026-09-20
 - Phase 22 expanded 18-competition league/cup/UEFA universe: IMPLEMENTED
 - Local tests after Phase 22: 209 passed; Ruff passed on the changed test file
 - Phase 22.1 explicit-empty odds credential isolation: FIXED after Windows test exposed environment leakage
+- Phase 23 local control panel, encrypted Windows secrets, desktop shortcut and 07:30 scheduler: IMPLEMENTED
+- Local tests after Phase 23: 212 passed; Ruff passed on changed Python files
 - API-Football Pro current-season fixture access: VERIFIED by the user's first live run
 - The Odds API key/configuration: PRESENT; live odds response still pending because the first run had no unstarted fixtures
 - Phase 18 recovery package: cumulative Phase 14–18 files, including the master-prompt verifier and its dependencies; local installation must still be verified on the user's PC
@@ -55,13 +57,16 @@ evidence-ranked daily 2×2×3 research branch in shadow mode.
 
 ## Active work
 
-Phase 22: the independent live coordinator connects cached history,
+Phase 23: the independent live coordinator connects cached history,
 current football fixtures, fresh prices, deterministic provider matching,
 historical evidence and DAILY_223 construction. Each run produces JSON and
 Markdown reports. Betano is preferred when returned by the configured EU feed;
 otherwise one complete alternative bookmaker is selected by evidence strength.
 The default universe now covers 18 supported domestic league, cup and UEFA
 competitions rather than one Bundesliga date.
+The localhost dashboard can start runs, render the latest ticket and history,
+and copy a compact Astra review packet. A Windows desktop shortcut and a daily
+07:30 scheduled run are available through the installer.
 Context/news review and actual account-level availability remain pending. The
 separate daily ChatGPT task does not run Python on the PC.
 
@@ -80,12 +85,14 @@ separate daily ChatGPT task does not run Python on the PC.
 - Region/currency are user-configured context; feed quotes do not prove bookmaker account availability or executable combined odds.
 - Betano preference is nonblocking; all three final legs must still come from one bookmaker, and odds differences do not affect evidence scores.
 - Phase 22 includes every requested national cup that has an explicit The Odds API sport key; Dutch and Portuguese cups await an additional verified odds source.
+- Local API credentials are stored with Windows user-scoped DPAPI encryption; dashboard responses expose presence flags only.
+- The local scheduled pipeline prepares the deterministic ticket; full automatic Astra/news review is a later integration step.
 - Secrets remain in environment variables and never enter Git.
 - Windows installs the `tzdata` package for Europe/Berlin support.
 
 ## Next actions
 
-1. Install the expanded competition configuration and run it in the morning while fixtures are still pending.
+1. Install the Phase 23 control panel and verify tomorrow morning's scheduled DAILY_223 run.
 2. Add sourced team news, cup/UEFA context, player load and independent refresh/outcome logging for DAILY_223.
 3. Activate the versioned master through a token-efficient staged adapter; migrate the legacy live CLI to the controlled coordinator.
 4. Configure and test live model/odds credentials and explicit cross-provider event mapping without exposing secrets.

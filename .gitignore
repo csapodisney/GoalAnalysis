@@ -9,6 +9,8 @@ venv/
 !.env.example
 data/raw/
 data/cache/
+data/secrets/
+reports/daily223/
 *.db
 *.sqlite
 *.sqlite3
