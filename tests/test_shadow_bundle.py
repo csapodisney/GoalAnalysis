@@ -1,10 +1,28 @@
 import json
 from collections.abc import Mapping
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from typing import Any
 
 from goal_analysis.agents import Role
-from goal_analysis.jobs import complete_shadow_run, write_shadow_bundle
+from goal_analysis.engine import (
+    CalibrationArtifact,
+    CalibrationMetric,
+    ExecutionBranch,
+    LineupCheck,
+    LineupSensitivity,
+    LineupStatus,
+    PriceMode,
+    RunInput,
+    RunMode,
+    TeamNewsSnapshot,
+)
+from goal_analysis.jobs import (
+    FixtureApprovalContext,
+    ShadowControlContext,
+    complete_controlled_shadow_run,
+    complete_shadow_run,
+    write_shadow_bundle,
+)
 from goal_analysis.normalization.models import OddsQuote
 
 NOW = datetime(2026, 9, 20, 10, 0, tzinfo=UTC)
@@ -38,8 +56,10 @@ def screening() -> dict[str, Any]:
 class Runner:
     def __init__(self, select: bool = True) -> None:
         self.select = select
+        self.calls = 0
 
     def run(self, role: Role, payload: Mapping[str, Any]) -> Mapping[str, Any]:
+        self.calls += 1
         selected = role is not Role.ARTHUR or self.select
         return {
             "role": role.value,
@@ -87,3 +107,88 @@ def test_no_selection_skips_live_odds() -> None:
 
     assert odds.calls == []
     assert bundle["artifacts"]["ticket_gate"]["ticket_ready"] is False
+
+
+def control(fixtures=True, calibration=True) -> ShadowControlContext:
+    run_input = RunInput(
+        RunMode.PREMATCH,
+        date(2026, 9, 20),
+        "Europe/Berlin",
+        NOW,
+        ("DE1",),
+        ("totals_2_5",),
+        "book-a",
+        "DE",
+        "EUR",
+        PriceMode.EXECUTABLE,
+        model_artifact_id="artifact-v1",
+        calibration_period="2025/2026",
+    )
+    model = CalibrationArtifact(
+        "artifact-v1",
+        "goals-model",
+        "1.0",
+        "output-1",
+        "2025/2026",
+        500,
+        True,
+        True,
+        {CalibrationMetric.BRIER_SCORE: 0.19},
+    ) if calibration else None
+    news = TeamNewsSnapshot(NOW, ("official-news",), True, True, True, True, True)
+    lineup = LineupCheck(
+        LineupSensitivity.HIGH,
+        LineupStatus.CONFIRMED,
+        ExecutionBranch.WAIT_XI,
+        NOW,
+        primary_source_id="official-lineup",
+    )
+    contexts = {"fixture-1": FixtureApprovalContext(news, lineup)} if fixtures else {}
+    return ShadowControlContext(run_input, model, contexts)
+
+
+def test_controlled_shadow_persists_gates_and_allows_only_ready_fixture() -> None:
+    runner = Runner()
+    odds = RecordingOdds()
+    bundle = complete_controlled_shadow_run(screening(), runner, odds, NOW, control())
+
+    assert runner.calls == 7
+    assert odds.calls == [(["fixture-1"], ["totals_2_5"])]
+    assert bundle["schema_version"] == 2
+    assert bundle["approval_blocked"] is False
+    assert bundle["artifacts"]["run_control"]["fixture_gates"]["fixture-1"][
+        "approval_allowed"
+    ] is True
+    assert bundle["real_wager_placed"] is False
+
+
+def test_global_model_gate_stops_llm_and_odds_calls() -> None:
+    runner = Runner()
+    odds = RecordingOdds()
+    bundle = complete_controlled_shadow_run(
+        screening(), runner, odds, NOW, control(calibration=False)
+    )
+
+    assert runner.calls == 0
+    assert odds.calls == []
+    assert bundle["approval_blocked"] is True
+    assert bundle["run_status"] == "MODEL_INPUT_REQUIRED"
+    assert bundle["gate_issue_codes"] == ["MODEL_ARTIFACT_REQUIRED"]
+    assert set(bundle["artifacts"]) == {"screening", "run_control"}
+
+
+def test_missing_fixture_context_runs_analysis_but_blocks_price_request() -> None:
+    runner = Runner()
+    odds = RecordingOdds()
+    bundle = complete_controlled_shadow_run(
+        screening(), runner, odds, NOW, control(fixtures=False)
+    )
+
+    assert runner.calls == 7
+    assert odds.calls == []
+    assert bundle["approval_blocked"] is True
+    assert bundle["gate_issue_codes"] == ["FIXTURE_APPROVAL_CONTEXT_REQUIRED"]
+    final = bundle["artifacts"]["kerekasztal"]["fixtures"][0]["final"]
+    assert final["arthur_selected"] is True
+    assert final["selected"] is False
+    assert final["approval_gate_blocked"] is True

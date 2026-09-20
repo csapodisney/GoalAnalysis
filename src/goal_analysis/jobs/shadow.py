@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from collections.abc import Mapping
+from copy import deepcopy
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -23,11 +24,19 @@ def complete_shadow_run(
     odds_provider: OddsProvider,
     observed_at: datetime,
     gate_policy: TicketGatePolicy | None = None,
+    eligible_fixture_ids: set[str] | None = None,
 ) -> dict[str, Any]:
     """Join the post-screening stages without permitting side effects or real wagers."""
 
     fact_packet = build_fact_packet(screening)
     kerekasztal = KerekasztalOrchestrator(role_runner).run(fact_packet)
+    if eligible_fixture_ids is not None:
+        kerekasztal = deepcopy(kerekasztal)
+        for item in kerekasztal["fixtures"]:
+            item["final"]["arthur_selected"] = item["final"]["selected"]
+            if item["fixture_id"] not in eligible_fixture_ids:
+                item["final"]["selected"] = False
+                item["final"]["approval_gate_blocked"] = True
     selected = [item for item in kerekasztal["fixtures"] if item["final"]["selected"]]
     fixture_ids = [item["fixture_id"] for item in selected]
     market_keys = sorted(

@@ -25,7 +25,9 @@ Last updated: 2026-09-20
 - Deterministic candidate-status precedence: COMPLETE
 - Model-calibration approval gate: COMPLETE
 - Team-news and official-lineup freshness gates: COMPLETE
-- Local tests after Phase 16: 91 passed
+- Controlled end-to-end shadow gate integration: COMPLETE
+- Gate results and reason codes in shadow manifests: COMPLETE
+- Local tests after Phase 17: 94 passed
 - API key authentication: CONFIRMED
 - API-Football Free current-season access: BLOCKED BY PLAN
 
@@ -35,7 +37,7 @@ Build the token-efficient data layer in shadow mode without changing Arthur's ex
 
 ## Active work
 
-Phase 16 complete: calibrated-model, team-news and official-lineup approval gates.
+Phase 17 complete: run control and approval gates connected to the end-to-end shadow coordinator.
 
 ## Decisions
 
@@ -47,8 +49,8 @@ Phase 16 complete: calibrated-model, team-news and official-lineup approval gate
 
 ## Next actions
 
-1. Connect run control and approval gates to the end-to-end shadow coordinator and manifests.
-2. Add master-prompt activation through a token-efficient staged adapter.
+1. Add master-prompt activation through a token-efficient staged adapter.
+2. Migrate the live command to a versioned approval-context input file.
 3. Configure the live model, odds key, and explicit cross-provider event map.
 4. Upgrade API-Football only when the first current-season shadow run is ready.
 5. Run and evaluate the complete pipeline in shadow mode before any cutover decision.
