@@ -15,7 +15,8 @@ Last updated: 2026-09-20
 - Deterministic goal features and odds-free ranking: COMPLETE
 - Compact Arthur fact packet and evidence hashes: COMPLETE
 - Kerekasztal orchestration contract and shadow replay: COMPLETE
-- Local tests after Phase 9: 40 passed
+- Versioned prompt registry and OpenAI Responses runner: COMPLETE
+- Local tests after Phase 10: 44 passed
 - API key authentication: CONFIRMED
 - API-Football Free current-season access: BLOCKED BY PLAN
 
@@ -25,7 +26,7 @@ Build the token-efficient data layer in shadow mode without changing Arthur's ex
 
 ## Active work
 
-Phase 9 complete: isolated specialist reviews, mandatory Dániel audit and Arthur synthesis.
+Phase 10 complete: configurable structured-output model runner with token metadata.
 
 ## Decisions
 
@@ -37,10 +38,10 @@ Phase 9 complete: isolated specialist reviews, mandatory Dániel audit and Arthu
 
 ## Next actions
 
-1. Add a configurable model runner for the versioned existing prompts.
+1. Import the exact legacy Arthur prompt as a new immutable prompt version when supplied.
 2. Attach prices only after the frozen football ranking and completed Kerekasztal run.
 3. Add the preserved deterministic ticket gate.
-4. Add settlement, performance and token-usage telemetry.
+4. Add settlement and performance telemetry; token counts are already captured per role call.
 5. Upgrade API-Football only for the first real current-season shadow run.
 
 ## Important rule

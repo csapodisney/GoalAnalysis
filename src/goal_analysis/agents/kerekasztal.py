@@ -52,9 +52,10 @@ class RoleOpinion:
     thesis: str
     evidence_sha256: str
     structural_veto: bool = False
+    run_metadata: Mapping[str, Any] | None = None
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        result = {
             "role": self.role.value,
             "fixture_id": self.fixture_id,
             "verdict": self.verdict.value,
@@ -63,6 +64,9 @@ class RoleOpinion:
             "evidence_sha256": self.evidence_sha256,
             "structural_veto": self.structural_veto,
         }
+        if self.run_metadata is not None:
+            result["run_metadata"] = dict(self.run_metadata)
+        return result
 
 
 ROLE_FIELDS: dict[Role, tuple[str, ...]] = {
@@ -208,6 +212,7 @@ def _parse_opinion(
         thesis,
         fixture["evidence_sha256"],
         structural_veto,
+        response.get("_meta"),
     )
 
 

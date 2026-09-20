@@ -14,11 +14,15 @@ from .kerekasztal import (
     RoleRunner,
     Verdict,
 )
+from .openai_runner import OpenAIResponsesRoleRunner, PromptRegistry, PromptTemplate
 
 __all__ = [
     "FactPacketError",
     "KerekasztalError",
     "KerekasztalOrchestrator",
+    "OpenAIResponsesRoleRunner",
+    "PromptRegistry",
+    "PromptTemplate",
     "Role",
     "RoleOpinion",
     "RoleRunner",
