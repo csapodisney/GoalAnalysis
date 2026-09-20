@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Mapping
 from dataclasses import dataclass
 from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
+from goal_analysis.features import GoalFeatureEngine, GoalFeatureSet, RankingBreakdown
 from goal_analysis.screening import ScreeningPolicy, ScreeningResult, screen_fixtures
 
 from .daily import DailyCollectionResult, DailyFixtureCollector
@@ -17,14 +19,22 @@ class DailyPipelineResult:
     generated_at: datetime
     collection: DailyCollectionResult
     screening: ScreeningResult
+    feature_sets: Mapping[str, GoalFeatureSet]
+    ranking_breakdowns: Mapping[str, RankingBreakdown]
 
 
 class DailyScreeningPipeline:
     """Connect cached fixture collection to deterministic, odds-free screening."""
 
-    def __init__(self, collector: DailyFixtureCollector, policy: ScreeningPolicy) -> None:
+    def __init__(
+        self,
+        collector: DailyFixtureCollector,
+        policy: ScreeningPolicy,
+        feature_engine: GoalFeatureEngine | None = None,
+    ) -> None:
         self.collector = collector
         self.policy = policy
+        self.feature_engine = feature_engine
 
     def run(self, now: datetime, force_refresh: bool = False) -> DailyPipelineResult:
         collection = self.collector.collect(
@@ -33,8 +43,26 @@ class DailyScreeningPipeline:
             now,
             force_refresh=force_refresh,
         )
-        screening = screen_fixtures(collection.fixtures, self.policy, now)
-        return DailyPipelineResult(self.policy.target_date, now, collection, screening)
+        feature_sets: dict[str, GoalFeatureSet] = {}
+        ranking_breakdowns: dict[str, RankingBreakdown] = {}
+
+        def score(fixture) -> float:
+            if self.feature_engine is None:
+                return 0.0
+            features, ranking = self.feature_engine.evaluate(fixture)
+            feature_sets[fixture.id] = features
+            ranking_breakdowns[fixture.id] = ranking
+            return ranking.score
+
+        screening = screen_fixtures(collection.fixtures, self.policy, now, score)
+        return DailyPipelineResult(
+            self.policy.target_date,
+            now,
+            collection,
+            screening,
+            feature_sets,
+            ranking_breakdowns,
+        )
 
 
 def write_pipeline_json(path: Path, result: DailyPipelineResult) -> None:
@@ -71,6 +99,21 @@ def pipeline_to_dict(result: DailyPipelineResult) -> dict[str, Any]:
                 "kickoff": item.fixture.kickoff.isoformat(),
                 "status": item.fixture.status.value,
                 "screening_score": item.score,
+                "feature_version": (
+                    GoalFeatureEngine.RANKING_VERSION
+                    if item.fixture.id in result.feature_sets
+                    else None
+                ),
+                "features": (
+                    result.feature_sets[item.fixture.id].to_dict()
+                    if item.fixture.id in result.feature_sets
+                    else None
+                ),
+                "ranking": (
+                    result.ranking_breakdowns[item.fixture.id].to_dict()
+                    if item.fixture.id in result.ranking_breakdowns
+                    else None
+                ),
             }
             for item in result.screening.accepted
         ],

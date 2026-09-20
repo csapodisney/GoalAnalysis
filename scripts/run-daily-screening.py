@@ -5,6 +5,7 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 
 from goal_analysis.config import Settings, load_competition_catalog
+from goal_analysis.features import GoalFeatureEngine, load_history_csv
 from goal_analysis.jobs import DailyFixtureCollector, DailyScreeningPipeline, write_pipeline_json
 from goal_analysis.providers import ApiFootballClient, ApiFootballFixtureProvider, ProviderError
 from goal_analysis.screening import ScreeningPolicy
@@ -16,6 +17,11 @@ def main() -> int:
     parser.add_argument("--date", default=date.today().isoformat())
     parser.add_argument("--force-refresh", action="store_true")
     parser.add_argument("--output", default=None)
+    parser.add_argument(
+        "--history-csv",
+        default=None,
+        help="Provider-neutral settled match history used for deterministic ranking",
+    )
     args = parser.parse_args()
 
     target_date = date.fromisoformat(args.date)
@@ -34,7 +40,12 @@ def main() -> int:
         allowed_competition_ids=catalog.allowed_ids,
         shortlist_max=catalog.shortlist_max,
     )
-    pipeline = DailyScreeningPipeline(collector, policy)
+    feature_engine = (
+        GoalFeatureEngine(load_history_csv(Path(args.history_csv)))
+        if args.history_csv
+        else None
+    )
+    pipeline = DailyScreeningPipeline(collector, policy, feature_engine)
 
     try:
         result = pipeline.run(datetime.now(timezone.utc), args.force_refresh)

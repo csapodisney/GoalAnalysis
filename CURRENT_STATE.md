@@ -11,7 +11,9 @@ Last updated: 2026-09-20
 - SQLite, TTL cache and immutable snapshots: COMPLETE
 - Deterministic fixture screening: COMPLETE
 - API-Football fixture adapter: COMPLETE
-- Local tests before Phase 6: 21 passed
+- Raw-response snapshots and cached daily screening: COMPLETE
+- Deterministic goal features and odds-free ranking: COMPLETE
+- Local tests after Phase 7: 28 passed
 - API key authentication: CONFIRMED
 - API-Football Free current-season access: BLOCKED BY PLAN
 
@@ -21,7 +23,7 @@ Build the token-efficient data layer in shadow mode without changing Arthur's ex
 
 ## Active work
 
-Phase 6: raw response snapshots and cached deterministic daily screening output.
+Phase 7 complete: provider-neutral historical goal features and explainable shortlist ranking.
 
 ## Decisions
 
@@ -33,10 +35,10 @@ Phase 6: raw response snapshots and cached deterministic daily screening output.
 
 ## Next actions
 
-1. Validate exact raw-response snapshots.
-2. Validate accepted/rejected JSON output without odds.
-3. Add deterministic feature calculation and ranking.
-4. Add compact Arthur fact-packet generation.
+1. Add compact Arthur fact-packet generation from the ranked JSON.
+2. Add evidence hashes and source dates to each fact packet.
+3. Connect the existing Kerekasztal roles without changing their responsibilities.
+4. Freeze football ranking before the separate odds adapter runs.
 5. Upgrade API-Football only for the first real current-season shadow run.
 
 ## Important rule
