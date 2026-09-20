@@ -58,6 +58,8 @@ class FeaturePolicy:
 @dataclass(frozen=True, slots=True)
 class GoalFeatureSet:
     fixture_id: str
+    evidence_from: str | None
+    evidence_to: str | None
     home_sample: int
     away_sample: int
     home_goals_for: float | None
@@ -142,6 +144,8 @@ class GoalFeatureEngine:
 
         return GoalFeatureSet(
             fixture_id=fixture.id,
+            evidence_from=min(item.kickoff for item in combined).isoformat() if combined else None,
+            evidence_to=max(item.kickoff for item in combined).isoformat() if combined else None,
             home_sample=len(home),
             away_sample=len(away),
             home_goals_for=home_for,

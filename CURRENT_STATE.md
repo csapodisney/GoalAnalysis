@@ -13,7 +13,8 @@ Last updated: 2026-09-20
 - API-Football fixture adapter: COMPLETE
 - Raw-response snapshots and cached daily screening: COMPLETE
 - Deterministic goal features and odds-free ranking: COMPLETE
-- Local tests after Phase 7: 28 passed
+- Compact Arthur fact packet and evidence hashes: COMPLETE
+- Local tests after Phase 8: 34 passed
 - API key authentication: CONFIRMED
 - API-Football Free current-season access: BLOCKED BY PLAN
 
@@ -23,7 +24,7 @@ Build the token-efficient data layer in shadow mode without changing Arthur's ex
 
 ## Active work
 
-Phase 7 complete: provider-neutral historical goal features and explainable shortlist ranking.
+Phase 8 complete: compact, frozen and auditable Arthur fact packets.
 
 ## Decisions
 
@@ -35,10 +36,10 @@ Phase 7 complete: provider-neutral historical goal features and explainable shor
 
 ## Next actions
 
-1. Add compact Arthur fact-packet generation from the ranked JSON.
-2. Add evidence hashes and source dates to each fact packet.
-3. Connect the existing Kerekasztal roles without changing their responsibilities.
-4. Freeze football ranking before the separate odds adapter runs.
+1. Connect the existing Kerekasztal roles without changing their responsibilities.
+2. Preserve Dániel's mandatory adversarial review and Arthur's final authority.
+3. Attach prices only after the frozen football ranking.
+4. Add settlement, performance and token-usage telemetry.
 5. Upgrade API-Football only for the first real current-season shadow run.
 
 ## Important rule

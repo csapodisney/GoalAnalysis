@@ -42,6 +42,8 @@ def test_features_use_long_home_and_away_profiles() -> None:
 
     assert features.home_sample == 5
     assert features.away_sample == 5
+    assert features.evidence_from == (KICKOFF - timedelta(days=5)).isoformat()
+    assert features.evidence_to == (KICKOFF - timedelta(days=1)).isoformat()
     assert features.average_total_goals == 3.0
     assert features.over_2_5_rate == 1.0
     assert features.btts_rate == 1.0
