@@ -68,7 +68,9 @@ class TheOddsApiProvider:
         transport: Transport | None = None,
         snapshot_store: SnapshotStore | None = None,
     ) -> None:
-        self.api_key = api_key or os.environ.get("THE_ODDS_API_KEY")
+        self.api_key = (
+            api_key if api_key is not None else os.environ.get("THE_ODDS_API_KEY")
+        )
         self.region = region
         self.transport = transport or _default_transport
         self.snapshot_store = snapshot_store

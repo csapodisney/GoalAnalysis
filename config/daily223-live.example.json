@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "odds_region": "eu",
+  "preferred_bookmakers": ["betano"],
+  "account_region": "DE",
+  "currency": "EUR",
+  "max_football_calls": 60,
+  "max_odds_credits": 40,
+  "extra_markets": [],
+  "leagues": [
+    {"competition_id": "EN1", "api_football_id": 39, "season": 2026, "history_seasons": [2025, 2026], "odds_sport_key": "soccer_epl", "competition_type": "LEAGUE"},
+    {"competition_id": "EN2", "api_football_id": 40, "season": 2026, "history_seasons": [2025, 2026], "odds_sport_key": "soccer_efl_champ", "competition_type": "LEAGUE"},
+    {"competition_id": "EN_FA_CUP", "api_football_id": 45, "season": 2026, "history_seasons": [2025, 2026], "odds_sport_key": "soccer_fa_cup", "competition_type": "CUP"},
+    {"competition_id": "EN_EFL_CUP", "api_football_id": 48, "season": 2026, "history_seasons": [2025, 2026], "odds_sport_key": "soccer_england_efl_cup", "competition_type": "CUP"},
+    {"competition_id": "DE1", "api_football_id": 78, "season": 2026, "history_seasons": [2025, 2026], "odds_sport_key": "soccer_germany_bundesliga", "competition_type": "LEAGUE"},
+    {"competition_id": "DE2", "api_football_id": 79, "season": 2026, "history_seasons": [2025, 2026], "odds_sport_key": "soccer_germany_bundesliga2", "competition_type": "LEAGUE"},
+    {"competition_id": "DE_DFB_POKAL", "api_football_id": 81, "season": 2026, "history_seasons": [2025, 2026], "odds_sport_key": "soccer_germany_dfb_pokal", "competition_type": "CUP"},
+    {"competition_id": "ES1", "api_football_id": 140, "season": 2026, "history_seasons": [2025, 2026], "odds_sport_key": "soccer_spain_la_liga", "competition_type": "LEAGUE"},
+    {"competition_id": "ES_COPA_DEL_REY", "api_football_id": 143, "season": 2026, "history_seasons": [2025, 2026], "odds_sport_key": "soccer_spain_copa_del_rey", "competition_type": "CUP"},
+    {"competition_id": "IT1", "api_football_id": 135, "season": 2026, "history_seasons": [2025, 2026], "odds_sport_key": "soccer_italy_serie_a", "competition_type": "LEAGUE"},
+    {"competition_id": "IT_COPPA_ITALIA", "api_football_id": 137, "season": 2026, "history_seasons": [2025, 2026], "odds_sport_key": "soccer_italy_coppa_italia", "competition_type": "CUP"},
+    {"competition_id": "FR1", "api_football_id": 61, "season": 2026, "history_seasons": [2025, 2026], "odds_sport_key": "soccer_france_ligue_one", "competition_type": "LEAGUE"},
+    {"competition_id": "FR_COUPE_DE_FRANCE", "api_football_id": 66, "season": 2026, "history_seasons": [2025, 2026], "odds_sport_key": "soccer_france_coupe_de_france", "competition_type": "CUP"},
+    {"competition_id": "NL1", "api_football_id": 88, "season": 2026, "history_seasons": [2025, 2026], "odds_sport_key": "soccer_netherlands_eredivisie", "competition_type": "LEAGUE"},
+    {"competition_id": "PT1", "api_football_id": 94, "season": 2026, "history_seasons": [2025, 2026], "odds_sport_key": "soccer_portugal_primeira_liga", "competition_type": "LEAGUE"},
+    {"competition_id": "UEFA_CL", "api_football_id": 2, "season": 2026, "history_seasons": [2025, 2026], "odds_sport_key": "soccer_uefa_champs_league", "competition_type": "UEFA"},
+    {"competition_id": "UEFA_EL", "api_football_id": 3, "season": 2026, "history_seasons": [2025, 2026], "odds_sport_key": "soccer_uefa_europa_league", "competition_type": "UEFA"},
+    {"competition_id": "UEFA_ECL", "api_football_id": 848, "season": 2026, "history_seasons": [2025, 2026], "odds_sport_key": "soccer_uefa_europa_conference_league", "competition_type": "UEFA"}
+  ],
+  "team_aliases": {}
+}

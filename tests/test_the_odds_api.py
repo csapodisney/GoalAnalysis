@@ -98,7 +98,8 @@ def test_missing_event_mapping_fails_closed() -> None:
         provider.get_quotes(["unknown"], ["totals_2_5"], NOW)
 
 
-def test_missing_key_and_unsupported_market_fail_closed() -> None:
+def test_missing_key_and_unsupported_market_fail_closed(monkeypatch) -> None:
+    monkeypatch.setenv("THE_ODDS_API_KEY", "real-environment-key-must-not-be-used")
     ref = OddsEventRef("fixture-1", "soccer_germany_bundesliga", "event-1")
     with pytest.raises(ProviderError, match="not configured"):
         TheOddsApiProvider([ref], api_key="").get_quotes(["fixture-1"], ["totals_2_5"], NOW)

@@ -14,12 +14,14 @@ from .kerekasztal import (
     RoleRunner,
     Verdict,
 )
+from .master_prompt import MasterPromptArtifact, load_master_prompt
 from .openai_runner import OpenAIResponsesRoleRunner, PromptRegistry, PromptTemplate
 
 __all__ = [
     "FactPacketError",
     "KerekasztalError",
     "KerekasztalOrchestrator",
+    "MasterPromptArtifact",
     "OpenAIResponsesRoleRunner",
     "PromptRegistry",
     "PromptTemplate",
@@ -29,5 +31,6 @@ __all__ = [
     "Verdict",
     "build_fact_packet",
     "canonical_sha256",
+    "load_master_prompt",
     "write_fact_packet",
 ]
