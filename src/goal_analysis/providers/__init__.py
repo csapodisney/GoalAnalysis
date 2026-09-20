@@ -3,6 +3,7 @@
 from .api_football import ApiFootballClient, ApiFootballFixtureProvider, ApiUsage
 from .base import FixtureProvider, OddsProvider, ProviderError
 from .odds_csv import CsvOddsProvider
+from .the_odds_api import OddsApiUsage, OddsEventRef, TheOddsApiProvider
 
 __all__ = [
     "ApiFootballClient",
@@ -10,6 +11,9 @@ __all__ = [
     "ApiUsage",
     "CsvOddsProvider",
     "FixtureProvider",
+    "OddsApiUsage",
+    "OddsEventRef",
     "OddsProvider",
     "ProviderError",
+    "TheOddsApiProvider",
 ]

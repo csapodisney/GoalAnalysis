@@ -18,7 +18,9 @@ Last updated: 2026-09-20
 - Versioned prompt registry and OpenAI Responses runner: COMPLETE
 - Post-ranking odds channel and deterministic ticket gate: COMPLETE
 - Settlement, hash-chain performance log and token telemetry: COMPLETE
-- Local tests after Phase 12: 61 passed
+- Live The Odds API adapter with explicit event mapping: COMPLETE
+- One-command end-to-end shadow bundle: COMPLETE
+- Local tests after Phase 13: 66 passed
 - API key authentication: CONFIRMED
 - API-Football Free current-season access: BLOCKED BY PLAN
 
@@ -28,7 +30,7 @@ Build the token-efficient data layer in shadow mode without changing Arthur's ex
 
 ## Active work
 
-Phase 12 complete: immutable shadow settlement, performance and token accounting.
+Phase 13 complete: live post-ranking odds adapter and auditable end-to-end shadow command.
 
 ## Decisions
 
@@ -40,11 +42,10 @@ Phase 12 complete: immutable shadow settlement, performance and token accounting
 
 ## Next actions
 
-1. Add a live odds-provider adapter behind the validated provider-neutral contract.
-2. Import the exact legacy Arthur prompt as a new immutable prompt version when supplied.
-3. Add one end-to-end command joining every completed stage.
-4. Run the complete pipeline with fixtures and prices in shadow mode.
-5. Upgrade API-Football only when that first current-season shadow run is ready.
+1. Import the exact legacy Arthur prompt as a new immutable prompt version when supplied.
+2. Configure the live model, odds key, and explicit cross-provider event map.
+3. Upgrade API-Football only when the first current-season shadow run is ready.
+4. Run and evaluate the complete pipeline in shadow mode before any cutover decision.
 
 ## Important rule
 
