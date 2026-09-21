@@ -11,6 +11,12 @@ data/raw/
 data/cache/
 data/secrets/
 reports/daily223/
+reports/arthur/
+data/arthur/
+logs/*.log
+config/arthur-settings.json
+config/daily223-live.json
 *.db
 *.sqlite
 *.sqlite3
+backups/

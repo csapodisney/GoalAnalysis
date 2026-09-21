@@ -21,3 +21,4 @@ Always read and update CURRENT_STATE.md before and after major work.
 
 ## Secrets
 Never commit API keys, broker credentials, tokens, passwords or .env files containing secrets.
+

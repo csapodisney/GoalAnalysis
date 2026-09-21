@@ -1,0 +1,26 @@
+{
+  "schema_version": 3,
+  "strictness": 35,
+  "target_ticket_count": 2,
+  "max_ticket_count": 5,
+  "stake_eur": 5.0,
+  "target_min_odds": 10.0,
+  "target_max_odds": 40.0,
+  "enabled_profiles": [
+    "daily223",
+    "kronikas",
+    "ritmusor",
+    "parharcmester",
+    "orszem",
+    "merlin",
+    "h1_over05"
+  ],
+  "openai": {
+    "backend": "codex_chatgpt",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "medium",
+    "web_search": true,
+    "max_output_tokens": 8000,
+    "max_candidates": 30
+  }
+}

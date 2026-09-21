@@ -101,3 +101,4 @@ football / odds / weather providers
 ## Profile versioning
 
 Pentagram v1 remains historical. The later mixed top-league profile—Bundesliga, Premier League, Serie A, La Liga and Ligue 1; up to six legs; approximately 20x only when genuinely available—must be added as a separate versioned profile.
+

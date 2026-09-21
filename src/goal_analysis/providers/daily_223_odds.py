@@ -143,3 +143,15 @@ class Daily223OddsFeed:
             self.halted = True
             raise ProviderError("provider odds cost exceeded the reserved amount; no further calls")
         return payload
+
+
+class UnavailableOddsFeed:
+    """An explicit missing credential; fixture collection remains usable."""
+
+    def __init__(self, region, max_credits):
+        self.region, self.max_credits = region, max_credits
+        self.calls = self.reserved_credits = 0
+        self.usage = []
+
+    def reserve_check(self, cost):
+        raise ProviderError("THE_ODDS_API_KEY nincs beállítva; szorzó nélküli előzetes készülhet.")

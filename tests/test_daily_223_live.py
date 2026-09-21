@@ -216,6 +216,95 @@ def test_pipeline_constructs_realistic_independent_bundle_without_llm(tmp_path):
     assert all("apiKey" not in url and "odds-secret" not in url for url in urls)
 
 
+def test_target_date_accepts_next_week_but_refuses_past_and_distant_requests(tmp_path):
+    env = setup(tmp_path)
+    cfg, football, odds, cache, _, state, _ = env
+    tomorrow = NOW.date() + timedelta(days=1)
+    for row in state["daily"]:
+        row["fixture"]["date"] = (NOW + timedelta(days=1, hours=6)).isoformat()
+    for event in state["events"]:
+        event["commence_time"] = (NOW + timedelta(days=1, hours=6)).isoformat()
+    report = run_daily223_live(cfg, football, odds, cache, target_date=tomorrow, clock=lambda: NOW)[
+        "artifacts"
+    ]["report"]
+    assert report["date"] == tomorrow.isoformat()
+    assert report["construction_status"] == "COMPLETE"
+    for days in (-1, 8):
+        bad_env = setup(tmp_path / str(days))
+        cfg, football, odds, cache, calls, *_ = bad_env
+        report = run_daily223_live(
+            cfg,
+            football,
+            odds,
+            cache,
+            target_date=NOW.date() + timedelta(days=days),
+            clock=lambda: NOW,
+        )["artifacts"]["report"]
+        assert report["construction_status"] == "DATA_BLOCKED"
+        assert report["blocked_stage"] == "configuration"
+        assert calls == {"football": [], "odds": []}
+
+
+def test_assembler_retains_lower_price_markets_and_busy_bookmaker():
+    football, odds = [], []
+    for i in range(50):
+        fixture = deepcopy(fixtures()[0])
+        fixture.update(
+            fixture_id=f"api_football:{10000 + i}",
+            api_football_fixture_id=str(10000 + i),
+            home_team=f"Home {i}",
+            away_team=f"Away {i}",
+        )
+        event = deepcopy(events()[0])
+        event.update(
+            id=f"event-{i}", home_team=fixture["home_team"], away_team=fixture["away_team"]
+        )
+        outcomes = event["bookmakers"][0]["markets"][0]["outcomes"]
+        outcomes[0]["name"], outcomes[1]["name"] = fixture["home_team"], fixture["away_team"]
+        football.append(fixture)
+        odds.append(event)
+    report = assemble_daily223_candidates(football, odds, config(), NOW.date(), NOW, NOW)
+    assert len(report["candidates"]) == 250
+    assert any(row["decimal_price"] < 1.96 for row in report["candidates"])
+    assert not any(
+        row["status"] == "BOOKMAKER_CANDIDATE_CAPACITY_EXCEEDED" for row in report["data_issues"]
+    )
+
+
+def test_optional_markets_use_available_partial_budget_instead_of_skipping_all(tmp_path):
+    cfg = config()
+    cfg.update(extra_markets=["btts_h1"], max_odds_credits=4)
+    report = execute(setup(tmp_path, cfg))["artifacts"]["report"]
+    assert report["construction_status"] == "COMPLETE"
+    assert report["usage"]["odds_calls"] == 3  # bulk + two of three optional event queries
+    assert "btts_h1" in report["market_coverage"]
+    partial = next(
+        item
+        for item in report["data_issues"]
+        if item["status"] == "OPTIONAL_MARKETS_PARTIAL_COVERAGE"
+    )
+    assert partial["retrieved_event_markets"] == 2 and partial["requested_event_markets"] == 3
+
+
+def test_portfolio_collector_skips_legacy_repeated_enrichment(tmp_path, monkeypatch):
+    def no_legacy_builder(*args, **kwargs):
+        raise AssertionError("portfolio collection must not construct legacy per-book tickets")
+
+    monkeypatch.setattr(
+        "goal_analysis.jobs.daily_223_live._build_for_one_bookmaker", no_legacy_builder
+    )
+    cfg, football, odds, cache, *_ = setup(tmp_path)
+    bundle = run_daily223_live(
+        cfg, football, odds, cache, clock=lambda: NOW, construct_legacy=False
+    )
+    artifacts = bundle["artifacts"]
+    assert artifacts["report"]["construction_status"] == "COLLECTION_COMPLETE"
+    assert artifacts["report"]["follow_up"] == []
+    assert artifacts["candidate_input"]["candidates"]
+    assert artifacts["history"]["records"]
+    assert artifacts["report"]["usage"]["football_calls"] == 2
+
+
 def test_betano_prefix_is_preferred_when_it_can_build_the_whole_ticket(tmp_path):
     cfg = config()
     cfg["preferred_bookmakers"] = ["betano"]
@@ -291,9 +380,7 @@ def test_expanded_template_covers_supported_leagues_cups_and_uefa():
     )
     assert len(example["leagues"]) == 18
     assert {
-        item["competition_id"]
-        for item in example["leagues"]
-        if item["competition_type"] == "CUP"
+        item["competition_id"] for item in example["leagues"] if item["competition_type"] == "CUP"
     } == {
         "EN_FA_CUP",
         "EN_EFL_CUP",
@@ -303,9 +390,7 @@ def test_expanded_template_covers_supported_leagues_cups_and_uefa():
         "FR_COUPE_DE_FRANCE",
     }
     assert {
-        item["competition_id"]
-        for item in example["leagues"]
-        if item["competition_type"] == "UEFA"
+        item["competition_id"] for item in example["leagues"] if item["competition_type"] == "UEFA"
     } == {"UEFA_CL", "UEFA_EL", "UEFA_ECL"}
     assert example["max_football_calls"] >= 3 * len(example["leagues"])
     assert example["max_odds_credits"] >= 2 * len(example["leagues"])

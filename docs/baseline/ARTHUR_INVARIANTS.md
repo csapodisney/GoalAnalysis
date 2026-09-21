@@ -45,3 +45,4 @@ This is a new profile, not a rewrite of Pentagram v1:
 - maximum six matches
 - mixed evidence-supported markets
 - approximately 20x only when genuinely available at one bookmaker
+

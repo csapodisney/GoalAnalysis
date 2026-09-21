@@ -7,7 +7,6 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from datetime import date, datetime
 from decimal import Decimal
-from itertools import combinations
 from math import isfinite
 from typing import Any
 from zoneinfo import ZoneInfo
@@ -55,10 +54,6 @@ def build_daily_223(
     _aware(observed_at)
     if type(target_date) is not date:
         raise ValueError("target_date must be a date")
-    if len(candidates) > 200:
-        raise ValueError(
-            "Daily223 accepts at most 200 pre-analysed candidates; none were truncated"
-        )
     if any(not isinstance(item, Mapping) for item in candidates):
         raise ValueError("each candidate must be an object")
     identifiers = [_text(item, "candidate_id") for item in candidates]
@@ -76,10 +71,11 @@ def build_daily_223(
         except (ValueError, KeyError, TypeError, OverflowError) as error:
             rejected.append({"candidate_id": candidate["candidate_id"], "reason": str(error)})
     eligible.sort(key=lambda item: item["candidate_id"])
-    selected = _choose(eligible, Decimal(0))
+    search_candidates, pruning = diversified_daily223_pool(eligible, policy.tolerance)
+    selected = _choose(search_candidates, Decimal(0))
     band = "STRICT"
     if selected is None and policy.tolerance:
-        selected = _choose(eligible, Decimal(str(policy.tolerance)))
+        selected = _choose(search_candidates, Decimal(str(policy.tolerance)))
         band = "NEAR_TARGET"
     legs = [] if selected is None else selected
     product = _product(legs) if legs else None
@@ -99,6 +95,8 @@ def build_daily_223(
         "independent_of_other_tickets": True,
         "input_candidate_count": len(candidates),
         "eligible_candidate_count": len(eligible),
+        "search_candidate_count": len(search_candidates),
+        "search_diagnostics": pruning,
         "weights": dict(WEIGHTS),
         "tolerance": policy.tolerance,
         "odds_band": band if legs else None,
@@ -127,11 +125,78 @@ def build_daily_223(
     return result
 
 
+def diversified_daily223_pool(
+    eligible: Sequence[dict[str, Any]], tolerance: float = 0.02, maximum: int = 120
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Bound combination search without dropping an entire busy bookmaker.
+
+    Prices define slot eligibility, never the evidence ranking. Round-robin
+    across market/period/price-role buckets protects specialist coverage; the
+    first round takes different fixtures before further products of one match.
+    This is a documented heuristic search pool, not a global-optimality claim.
+    """
+    grouped = defaultdict(list)
+    floor = float(Decimal(2) * (1 - Decimal(str(tolerance))))
+    for item in eligible:
+        if item["decimal_price"] >= floor:
+            grouped[(item["bookmaker"], item["region"], item["currency"])].append(item)
+    result, diagnostics = [], []
+    for group, items in sorted(grouped.items()):
+        if len(items) <= maximum:
+            result.extend(items)
+            continue
+        buckets = defaultdict(list)
+        for item in sorted(items, key=lambda row: (-row["support_score"], row["candidate_id"])):
+            price = Decimal(str(item["decimal_price"]))
+            role = "three" if price >= 3 else "two" if price >= 2 else "near"
+            buckets[(item["period"], item["market_key"], item["selection_key"], role)].append(item)
+        selected, seen_ids, seen_fixtures = [], set(), set()
+        for unique_fixtures in (True, False):
+            while len(selected) < maximum:
+                added = False
+                for key in sorted(buckets):
+                    choice = next(
+                        (
+                            item
+                            for item in buckets[key]
+                            if item["candidate_id"] not in seen_ids
+                            and (not unique_fixtures or item["fixture_id"] not in seen_fixtures)
+                        ),
+                        None,
+                    )
+                    if choice is not None:
+                        selected.append(choice)
+                        seen_ids.add(choice["candidate_id"])
+                        seen_fixtures.add(choice["fixture_id"])
+                        added = True
+                    if len(selected) == maximum:
+                        break
+                if not added:
+                    break
+        result.extend(selected)
+        diagnostics.append(
+            {
+                "status": "EVIDENCE_DIVERSIFIED_SEARCH_POOL",
+                "bookmaker": group[0],
+                "region": group[1],
+                "currency": group[2],
+                "eligible_price_role_candidates": len(items),
+                "searched_candidates": len(selected),
+                "deferred_candidates": len(items) - len(selected),
+                "method": "MARKET_PERIOD_PRICE_ROLE_ROUND_ROBIN_WITH_FIXTURE_DIVERSITY",
+            }
+        )
+    return sorted(result, key=lambda item: item["candidate_id"]), diagnostics
+
+
 def _prepare(
     candidate: Mapping[str, Any],
     target_date: date,
     now: datetime,
     policy: Daily223Policy,
+    *,
+    require_history: bool = True,
+    allow_stale_quotes: bool = False,
 ) -> dict[str, Any]:
     names = (
         "candidate_id",
@@ -167,10 +232,10 @@ def _prepare(
         raise ValueError("INVALID_DECIMAL_PRICE")
     quoted_at = _timestamp(candidate["quoted_at"])
     age = (now - quoted_at).total_seconds()
-    if not 0 <= age <= policy.quote_max_age_seconds:
+    if age < 0 or (age > policy.quote_max_age_seconds and not allow_stale_quotes):
         raise ValueError("QUOTE_STALE_OR_FROM_FUTURE")
     components, evidence = _score_evidence(candidate["evidence"], now, policy)
-    if not components["historical"] or not components["venue_form"]:
+    if require_history and (not components["historical"] or not components["venue_form"]):
         raise ValueError("HISTORICAL_AND_VENUE_SUPPORT_REQUIRED")
     item.update(
         kickoff=kickoff.isoformat(),
@@ -242,23 +307,55 @@ def _choose(candidates: list[dict[str, Any]], tolerance: Decimal) -> list[dict[s
     best = None
     best_key = None
     floors = [value * (1 - tolerance) for value in FLOORS]
+    minimum_product = Decimal(12) * (1 - tolerance)
+    prices = {item["candidate_id"]: Decimal(str(item["decimal_price"])) for item in candidates}
     for group in grouped.values():
-        for triple in combinations(group, 3):
-            if len({leg["fixture_id"] for leg in triple}) != 3:
-                continue
-            # Sorted prices make the slot test independent of the input order.
-            ordered = sorted(triple, key=lambda item: (item["decimal_price"], item["candidate_id"]))
-            if any(
-                Decimal(str(leg["decimal_price"])) < floor
-                for leg, floor in zip(ordered, floors, strict=True)
-            ):
-                continue
-            if _product(ordered) < Decimal(12) * (1 - tolerance):
-                continue
-            scores = [item["support_score"] for item in ordered]
-            key = (-min(scores), -sum(scores), tuple(item["candidate_id"] for item in ordered))
-            if best_key is None or key < best_key:
-                best_key, best = key, ordered
+        ranked = sorted(group, key=lambda item: (-item["support_score"], item["candidate_id"]))
+        for i, first in enumerate(ranked[:-2]):
+            if best_key is not None and first["support_score"] < -best_key[0]:
+                break
+            for j in range(i + 1, len(ranked) - 1):
+                second = ranked[j]
+                if best_key is not None and second["support_score"] < -best_key[0]:
+                    break
+                if first["fixture_id"] == second["fixture_id"]:
+                    continue
+                for third in ranked[j + 1 :]:
+                    if best_key is not None and third["support_score"] < -best_key[0]:
+                        break
+                    scores = (
+                        first["support_score"],
+                        second["support_score"],
+                        third["support_score"],
+                    )
+                    if (
+                        best_key is not None
+                        and scores[2] == -best_key[0]
+                        and sum(scores) < -best_key[1]
+                    ):
+                        break
+                    if third["fixture_id"] in {first["fixture_id"], second["fixture_id"]}:
+                        continue
+                    quote_prices = sorted(
+                        prices[item["candidate_id"]] for item in (first, second, third)
+                    )
+                    if any(
+                        price < floor for price, floor in zip(quote_prices, floors, strict=True)
+                    ):
+                        continue
+                    if quote_prices[0] * quote_prices[1] * quote_prices[2] < minimum_product:
+                        continue
+                    ordered = sorted(
+                        (first, second, third),
+                        key=lambda item: (item["decimal_price"], item["candidate_id"]),
+                    )
+                    key = (
+                        -scores[2],
+                        -sum(scores),
+                        tuple(item["candidate_id"] for item in ordered),
+                    )
+                    if best_key is None or key < best_key:
+                        best_key, best = key, ordered
     return best
 
 

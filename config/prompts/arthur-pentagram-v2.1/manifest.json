@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "prompt_version": "arthur-pentagram-v2.1",
+  "source_filename": "Arthur_Pentagram_Master_Prompt_v2.1.md",
+  "master_file": "master.md",
+  "sha256": "40a4c6812cbf42375055f8ab5a6a1f1b8ca256d0d974aba1f92ab3bc7ffe594d",
+  "size_bytes": 70862,
+  "activation_status": "versioned_not_activated_in_live_pipeline",
+  "parent_version": "arthur-pentagram-v2",
+  "parent_sha256": "f29de06a751fc1283343083771d2877ef512e0b73be28c3de6891d641ae72fe8",
+  "required_anchors": [
+    "# ARTHUR PENTAGRAM 2.1",
+    "PREMATCH | FINALIZE | AUDIT",
+    "## 6. A Pentagram öt szakági elemzője",
+    "## 16. DAILY_223 — önálló napi 2×2×3 szelvény",
+    "legalább 1,96 / 1,96 / 2,94 ÉS legalább 11,76 összszorzó",
+    "betting_approved: false",
+    "real_wager_placed: false"
+  ]
+}

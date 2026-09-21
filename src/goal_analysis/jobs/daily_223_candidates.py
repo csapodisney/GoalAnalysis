@@ -163,8 +163,11 @@ def assemble_daily223_candidates(
     target_date: date,
     now: datetime,
     fixtures_observed_at: datetime,
+    *,
+    allow_stale_quotes: bool = False,
 ) -> dict:
-    if not 0 <= (now - fixtures_observed_at).total_seconds() <= 300:
+    fixture_age = (now - fixtures_observed_at).total_seconds()
+    if fixture_age < 0 or (fixture_age > 300 and not allow_stale_quotes):
         raise ProviderError("daily fixture snapshot is stale or from the future")
     matched, issues = match_daily_events(fixtures, events, config["team_aliases"], target_date, now)
     candidates = []
@@ -188,9 +191,7 @@ def assemble_daily223_candidates(
             if not isinstance(bookmaker, dict):
                 raise TypeError("bookmaker must be an object")
             bookmaker_key = bookmaker.get("key")
-            if not isinstance(bookmaker_key, str) or not re.fullmatch(
-                r"[a-z0-9_]+", bookmaker_key
-            ):
+            if not isinstance(bookmaker_key, str) or not re.fullmatch(r"[a-z0-9_]+", bookmaker_key):
                 raise ValueError("invalid bookmaker key")
             markets = bookmaker.get("markets", [])
             if not isinstance(markets, list):
@@ -214,7 +215,8 @@ def assemble_daily223_candidates(
                     continue
                 try:
                     stamp = aware_time(market.get("last_update") or bookmaker["last_update"])
-                    if not 0 <= (now - stamp).total_seconds() <= 300:
+                    quote_age = (now - stamp).total_seconds()
+                    if quote_age < 0 or (quote_age > 300 and not allow_stale_quotes):
                         raise ValueError("STALE_OR_FUTURE_QUOTE")
                     outcomes = market["outcomes"]
                     if not isinstance(outcomes, list):
@@ -228,11 +230,14 @@ def assemble_daily223_candidates(
                         }:
                             raise ValueError("THREE_WAY_RESULT_REQUIRED")
                     parsed = [
-                        _candidate(
-                            fixture, event, key, outcome, stamp, bookmaker_key, config
-                        )
+                        _candidate(fixture, event, key, outcome, stamp, bookmaker_key, config)
                         for outcome in outcomes
                     ]
+                    if fixture_age > 300:
+                        for item in parsed:
+                            item["fixture_snapshot_stale"] = True
+                    if len({item["candidate_id"] for item in parsed}) != len(parsed):
+                        raise ValueError("DUPLICATE_CURRENT_PRODUCT")
                     candidates.extend(parsed)
                     usable_markets.add(key)
                 except (TypeError, ValueError, KeyError, OverflowError) as error:
@@ -250,22 +255,10 @@ def assemble_daily223_candidates(
         if count > 1:
             issues.append({"candidate_id": identifier, "status": "DUPLICATE_CURRENT_PRODUCT"})
     filtered = sum(item["decimal_price"] < 1.96 for item in candidates)
-    candidates = [
-        item
-        for item in candidates
-        if counts[item["candidate_id"]] == 1 and item["decimal_price"] >= 1.96
-    ]
-    bookmaker_counts = Counter(item["bookmaker"] for item in candidates)
-    oversized = {key for key, count in bookmaker_counts.items() if count > 200}
-    for key in sorted(oversized):
-        issues.append(
-            {
-                "bookmaker": key,
-                "status": "BOOKMAKER_CANDIDATE_CAPACITY_EXCEEDED",
-                "candidate_count": bookmaker_counts[key],
-            }
-        )
-    candidates = [item for item in candidates if item["bookmaker"] not in oversized]
+    # This is the shared price universe. A DAILY_223 leg floor must not remove
+    # lower-priced specialist markets (for example first-half over 0.5).
+    # Capacity is handled after evidence enrichment, inside the constructors.
+    candidates = [item for item in candidates if counts[item["candidate_id"]] == 1]
     available_bookmakers = sorted({item["bookmaker"] for item in candidates})
     return {
         "schema_version": 1,
@@ -275,6 +268,7 @@ def assemble_daily223_candidates(
         "matching": mapping,
         "data_issues": issues,
         "below_price_floor_count": filtered,
+        "below_price_floor_retained_for_specialists": True,
         "market_coverage": sorted(usable_markets),
         "requested_market_coverage": sorted(allowed_markets),
         "available_bookmakers": available_bookmakers,

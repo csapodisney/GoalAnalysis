@@ -72,6 +72,17 @@ def test_exact_three_distinct_legs_with_strict_twelve_price():
     assert len(report["report_sha256"]) == 64
 
 
+def test_busy_bookmaker_keeps_evidence_diversified_candidates_instead_of_disappearing():
+    rows = [candidate(f"fixture-{i:03d}", 2, strength=0.4) for i in range(205)]
+    rows.extend(candidate(f"strong-{i}", price, strength=0.9) for i, price in enumerate((2, 2, 3)))
+    report = build_daily_223(rows, DAY, NOW)
+    assert report["construction_status"] == "COMPLETE"
+    assert report["eligible_candidate_count"] == 208
+    assert report["search_candidate_count"] == 120
+    assert {leg["candidate_id"] for leg in report["legs"]} == {"strong-0", "strong-1", "strong-2"}
+    assert report["search_diagnostics"][0]["deferred_candidates"] == 88
+
+
 def test_deterministic_with_input_reordering():
     for sequence in permutations(pool()):
         assert build_daily_223(sequence, DAY, NOW) == build_daily_223(pool(), DAY, NOW)
