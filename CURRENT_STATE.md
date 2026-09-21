@@ -93,11 +93,14 @@ Never copy API keys into chat, logs, reports or repository files.
 
 ## Delivery
 
-The GitHub connector rejected the release tree upload with HTTP 403 (resource
-not accessible by integration). The v3 branch has not been published remotely.
-Delivery is the cumulative Arthur-v3.3-veto.zip package, excluding credentials, local
-configuration, data, reports and the ledger. After installation, the user can
-commit and push from the existing authorized Windows Git checkout.
+The cumulative Arthur v3.5 source is published on GitHub branch
+`build/arthur-dashboard-v3`. The first published release commit is
+`fad7453a3057482d4d0f4459ffd6e0c7a0c89418`. All 188 tracked files were verified
+against the local committed source by the Git tree hash. The existing main and
+build/token-efficient-pipeline branches were preserved.
+
+The tested Windows installer remains Arthur-v3.5-frissites.ps1. Local settings,
+credentials, reports and SQLite databases are excluded from source publication.
 
 ## Latest decision: use the existing ChatGPT/Codex allowance
 
@@ -258,22 +261,12 @@ web coverage and native Windows installation remain local verification items.
 Delivery: cumulative Arthur-v3.5-frissites.ps1 with verified file payload, backup
 and rollback. Preserves keys, login, local settings, database and reports.
 
-GitHub publication attempt for v3.5: automatic approval review rejected creation
-of a public repository tree containing CURRENT_STATE.md because the document
-includes private implementation/operational context and explicit authorization
-for public disclosure was not established by that review. No remote tree, commit
-or branch was published. Do not bypass this rejection. Local committed changes
-and the updater remain available; public publication requires user confirmation.
+## Verified GitHub publication
 
-The user explicitly approved public publication of the corrected code and project
-documentation after the disclosure warning. The v3.5 upload is authorized; secrets,
-local configuration, reports and SQLite data remain excluded. Publication status
-will be recorded after the GitHub branch update is verified.
-
-Authorized retry result: GitHub returned HTTP 403, Resource not accessible by
-integration, for create-tree. The user disclosure approval is now present; the
-remaining blocker is the connector's service-side write permission. No remote
-branch or commit was created. GitHub CLI is unavailable in this environment.
-The connected GitHub installation is 158596297 for csapodisney, with selected
-repository access. Its owner must review installation/reconnection permissions;
-no further approval of public source publication is needed in this session.
+After the user explicitly approved public code/documentation disclosure and
+updated the GitHub installation, repository writes succeeded. The cumulative
+release was committed as fad7453a3057482d4d0f4459ffd6e0c7a0c89418 and branch
+build/arthur-dashboard-v3 was created and read back successfully. Its complete
+source tree, 1983569336a5a0f81ac1f14a1db765f03b984cf7, exactly matched the
+local committed tree (188 tracked files). This follow-up updates only the
+publication record. No code, settings, credentials or local runtime data changed.
