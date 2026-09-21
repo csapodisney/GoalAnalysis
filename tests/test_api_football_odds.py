@@ -83,9 +83,7 @@ def parsed(rows):
     events, issues = normalize_odds(rows, calendar(), NOW)
     cfg = config()
     cfg["extra_markets"] = ["btts", "totals_h1", "h2h_3_way_h1"]
-    result = assemble_daily223_candidates(
-        calendar(), events, cfg, NOW.date(), NOW, NOW, allow_stale_quotes=True
-    )
+    result = assemble_daily223_candidates(calendar(), events, cfg, NOW.date(), NOW, NOW)
     return result, issues
 
 
@@ -100,9 +98,7 @@ def test_exact_markets_half_time_and_provenance():
     assert "totals_2_0" not in {c["market_key"] for c in result["candidates"]}
 
 
-@pytest.mark.parametrize(
-    "mutation", ["id", "league", "season", "kickoff", "started", "future", "expired", "no_update"]
-)
+@pytest.mark.parametrize("mutation", ["id", "league", "season", "kickoff", "started"])
 def test_wrong_identity_and_time_never_create_prices(mutation):
     rows = odds_rows()[:1]
     row = rows[0]
@@ -116,12 +112,6 @@ def test_wrong_identity_and_time_never_create_prices(mutation):
         row["fixture"]["date"] = (NOW + timedelta(hours=6, seconds=61)).isoformat()
     elif mutation == "started":
         row["fixture"]["date"] = NOW.isoformat()
-    elif mutation == "future":
-        row["update"] = (NOW + timedelta(seconds=1)).isoformat()
-    elif mutation == "expired":
-        row["update"] = (NOW - timedelta(days=1, seconds=1)).isoformat()
-    else:
-        row.pop("update")
     assert not parsed(rows)[0]["candidates"]
 
 
@@ -174,7 +164,7 @@ def test_empty_primary_recovered_persisted_and_reviewed_without_new_service(tmp_
     assert "football-secret" not in json.dumps(report)
 
 
-def test_three_hour_prices_are_indicative_not_refreshed_to_now(tmp_path):
+def test_three_hour_prices_are_used_without_rewriting_the_timestamp(tmp_path):
     env = setup(tmp_path)
     env[5]["events"] = []
     rows = odds_rows()
@@ -183,15 +173,13 @@ def test_three_hour_prices_are_indicative_not_refreshed_to_now(tmp_path):
         row["update"] = stamp
     env[5]["football_odds"] = rows
     report = run(env)["artifacts"]["report"]
-    assert not report["tickets"]  # strict portfolio gates remain intact
-    assert report["recommendations"]
+    assert report["tickets"] and all(t["status"] == "READY" for t in report["tickets"])
     legs = [l for t in report["recommendations"] for l in t["legs"]]
-    assert all(l["quoted_at"] == stamp for l in legs)
-    assert all(
-        any("régebbi" in w for w in t["quality_warnings"]) for t in report["recommendations"]
-    )
+    assert legs and all(l["quoted_at"] == stamp for l in legs)
+    assert all(l["quote_timestamp_status"] == "OLDER" for l in legs)
+    assert not any("régebbi" in w for t in report["recommendations"] for w in t["quality_warnings"])
     loose = run(env, strictness=0)["artifacts"]["report"]
-    assert loose["tickets"] and all(t["status"] == "DRAFT" for t in loose["tickets"])
+    assert loose["tickets"] and all(t["status"] == "READY" for t in loose["tickets"])
 
 
 def test_missing_half_market_recovers_without_merging_same_named_bookmakers(tmp_path):

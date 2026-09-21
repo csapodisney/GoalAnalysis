@@ -116,7 +116,7 @@ def test_review_must_cover_every_selected_leg_before_ready():
     )
 
 
-def test_strictness_keeps_old_quotes_as_explicit_drafts_only_in_permissive_mode():
+def test_strictness_controls_background_evidence_but_not_quote_age():
     rows = [candidate(str(i), 2.5 if i < 2 else 3.0, strength=0.4) for i in range(3)]
     for row in rows:
         row["evidence"] = row["evidence"][:2]
@@ -128,21 +128,12 @@ def test_strictness_keeps_old_quotes_as_explicit_drafts_only_in_permissive_mode(
     )
     rows[0]["quoted_at"] = (NOW - timedelta(seconds=301)).isoformat()
     loose = build_portfolio(source(rows), {"strictness": 0})
-    assert any(item["status"] == "ACCEPTED_WITH_WARNINGS" for item in loose["diagnostics"])
-    affected = [
-        ticket
-        for ticket in loose["tickets"]
-        if any(leg["candidate_id"] == "0" for leg in ticket["legs"])
-    ]
-    assert affected and all(
-        t["status"] == "DRAFT" and t["requires_refresh"] and t["quality_warnings"] for t in affected
-    )
+    assert any(leg["candidate_id"] == "0" for t in loose["tickets"] for leg in t["legs"])
+    assert all(not t["requires_refresh"] for t in loose["tickets"])
     rows[0]["quoted_at"] = (NOW + timedelta(seconds=1)).isoformat()
     future = build_portfolio(source(rows), {"strictness": 0})
-    assert any(item["status"] == "QUOTE_STALE_OR_FROM_FUTURE" for item in future["diagnostics"])
-    assert not any(
-        leg["candidate_id"] == "0" for ticket in future["tickets"] for leg in ticket["legs"]
-    )
+    assert any(leg["candidate_id"] == "0" for t in future["tickets"] for leg in t["legs"])
+    assert not any(item["status"] == "QUOTE_STALE_OR_FROM_FUTURE" for item in future["diagnostics"])
 
 
 def test_never_combines_different_bookmakers_regions_or_duplicate_fixtures():

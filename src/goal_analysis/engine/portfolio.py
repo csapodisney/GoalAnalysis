@@ -58,18 +58,12 @@ def prepare_portfolio_candidate(candidate, target, now, policy, settings):
         now,
         policy,
         require_history=not loose,
-        allow_stale_quotes=loose,
     )
     warnings = []
     if any(key in item["missing_support"] for key in ("historical", "venue_form")):
         warnings.append(
             "Hiányos vagy gyenge történeti / hazai-vendég formaadat. Az elérhető szorzó alapján is bekerülhetett; nincs teljes statisztikai alátámasztás."
         )
-    if (now - _timestamp(item["quoted_at"])).total_seconds() > policy.quote_max_age_seconds:
-        warnings.append(
-            "A szolgáltató szorzója öt percnél régebbi. Tájékoztató ár; megjátszás előtt ellenőrizd az irodánál."
-        )
-        item["requires_refresh"] = True
     if candidate.get("fixture_snapshot_stale"):
         warnings.append(
             "A mérkőzésállapot utolsó lekérése öt percnél régebbi; a kezdést és az elérhetőséget ellenőrizd."

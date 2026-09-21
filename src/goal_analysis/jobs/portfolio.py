@@ -17,6 +17,7 @@ from goal_analysis.config.daily_223_live import validate_live_config
 from goal_analysis.config.portfolio import validate_settings
 from goal_analysis.features.daily_223_history import enrich_daily223_input
 from goal_analysis.jobs.daily_223_live import run_daily223_live
+from goal_analysis.quote_metadata import quote_metadata
 
 BERLIN = ZoneInfo("Europe/Berlin")
 
@@ -240,7 +241,7 @@ def run_portfolio(
         elif not packets:
             review["message"] = "Nincs elemzésre alkalmas jelölt; nem történt OpenAI-hívás."
         report = build_portfolio(enriched, settings, astra_review=review)
-        # A long API review must not silently preserve a now-started leg or stale quote.
+        # Review latency can change event eligibility, never price eligibility.
         finished = clock()
         from goal_analysis.providers.api_football_history import aware_time
 
@@ -255,16 +256,10 @@ def run_portfolio(
                     }
                 )
                 continue
-            expired = any(
-                (finished - aware_time(leg["quoted_at"])).total_seconds() > 300
-                for leg in ticket["legs"]
-            )
-            if expired:
-                ticket["status"] = "DRAFT"
-                ticket.setdefault("risk_notes", []).append(
-                    "Az elemzés alatt az ár elévült; frissítés szükséges."
+            for leg in ticket["legs"]:
+                leg.update(
+                    quote_metadata(leg.get("quote_timestamp_raw", leg.get("quoted_at")), finished)
                 )
-                ticket["requires_refresh"] = True
             delivered.append(ticket)
         report["tickets"] = delivered
         report["preview_tickets"] = build_previews(unpriced, settings, delivered, finished, review)

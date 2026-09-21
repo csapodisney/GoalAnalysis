@@ -1,6 +1,6 @@
 # Goal Analysis — current state
 
-Updated: 2026-09-21. Release: Arthur portfolio v3.6 (existing-subscription odds recovery).
+Updated: 2026-09-21. Release: Arthur portfolio v3.6.1 (timestamp-independent API prices).
 
 ## Source and objective
 
@@ -28,12 +28,13 @@ promised outcome. The application does not place bets.
   by invented fixtures, odds, results or motivation claims.
 - Betano is preferred when available; a complete alternative bookmaker is valid.
 - Dates from today through seven days ahead can be researched. Earlier dates
-  show archived records only. Match kickoff and quote freshness are rechecked
-  after Astra review.
+  show archived records only. Match kickoff is rechecked after Astra review; provider quote timestamps are
+  informational only and never exclude prices.
 - At strictness 0–33, soft evidence gaps do not veto construction. Lower-odds
   and single-selection fallback drafts may be published with visible warnings.
-  Old provider prices remain indicative, with unchanged timestamps and refresh
-  warnings. Invalid dates, missing/invalid prices and started events remain out.
+  All found API prices are used at every strictness, including old, future or
+  absent quote timestamps. Timestamp information never changes readiness or
+  confidence. Invalid event dates, invalid prices and started events remain out.
 
 ## Implemented in v3
 
@@ -303,3 +304,33 @@ here, so actual day/bookmaker coverage remains a local-run check.
 Delivery: cumulative Arthur-v3.6-frissites.ps1 and the existing
 build/arthur-dashboard-v3 branch. The updater verifies file hashes and preserves
 local keys, settings, login, data and reports. No new subscription was created.
+
+
+## v3.6.1 — use found API prices regardless of timestamp
+
+The user explicitly superseded quote freshness restrictions. All valid matched
+API prices now enter collection, arithmetic, ticket construction, Astra packets,
+recommendations and SQLite storage at every strictness. Old, future, malformed
+or missing quote timestamps are metadata only: no rejection, refresh requirement,
+confidence penalty or readiness downgrade. Original source values are preserved;
+missing or invalid timestamps remain null, never manufactured as the current time.
+
+Removed the independent quote gates in API-Football normalization, shared odds
+assembly, DAILY_223 preparation, post-Astra delivery and dashboard refresh. Updated
+Astra's versioned runtime prompt and hash so quote age is not an analytical veto.
+The dashboard displays a neutral per-price timestamp note. Existing historical
+reports remain immutable; a new analysis uses the corrected rules. Provider
+fallback, source attribution, event/market matching and budget caps still apply.
+
+Delivery: Arthur-v3.6.1-frissites.ps1, with backup/rollback and preservation of
+local keys, login, settings, reports and SQLite. No new subscription or model
+request was added. See docs/RELEASE_V3_6_1.md for validation and update instructions.
+
+Fully priced profile recommendations also calculate/display their combined price
+when they are not selected portfolio tickets. Missing prices still remain null;
+source attribution and the theoretical-product label remain explicit.
+
+Validation: 453 Python tests pass, one native-Windows DPAPI test skipped on Linux.
+Changed Python files pass Ruff; JavaScript syntax and Git whitespace checks pass.
+Chromium desktop/mobile checks against real HTTP/SQLite confirm visible API odds
+with old/future/missing timestamp notes, unchanged READY status, export and layout.

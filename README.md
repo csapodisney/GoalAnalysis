@@ -1,3 +1,7 @@
+> Arthur v3.6.1: all found API prices are used independently of timestamp and
+> strictness. Old or missing times are informational only.
+> [Release and update details](docs/RELEASE_V3_6_1.md).
+
 > Arthur v3.6: API-Football odds recovery with existing credentials and budgets,
 > per-fixture coverage and original quote timestamps.
 > [Release and update details](docs/RELEASE_V3_6.md).
@@ -63,13 +67,14 @@ The local dashboard uses only bundled assets, with no CDN dependency.
 
 Arthur v3.3: set the data-veto slider to **0–30** to keep real priced selections
 when history or context is missing. Tickets show prominent warnings and remain
-drafts when evidence or quote freshness is insufficient. If the target odds
+drafts when supporting evidence is insufficient. Quote timestamps never veto
+a price or downgrade a ticket. If the target odds
 cannot be reached, an explicitly labeled fallback or single selection can be
 shown. DAILY_223 keeps its own 2/2/3 definition.
 
 Updating an existing working installation requires only replacing the program
 files and restarting `scripts/start-arthur.ps1`; no new login or key setup is
-required for this update. Then rerun the selected date with the lower veto.
+required for this update. Then rerun the selected date. Quote timestamp handling works at every veto level.
 
 ## Development and manual commands
 

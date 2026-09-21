@@ -1,6 +1,6 @@
 """Fill portfolio price gaps without buying another feed or using model tokens."""
 
-from collections import defaultdict
+from collections import Counter, defaultdict
 from zoneinfo import ZoneInfo
 
 from goal_analysis.jobs.daily_223_candidates import assemble_daily223_candidates
@@ -59,7 +59,7 @@ def recover_odds(
             target_date,
             clock(),
             fixtures_observed_at,
-            allow_stale_quotes=True,
+            allow_stale_fixture_snapshot=True,
         )
         # The join to the calendar was validated by provider IDs before using
         # the common market parser. It is not a fuzzy cross-provider name match.
@@ -90,8 +90,15 @@ def recover_odds(
                     "provider": provider,
                     "candidate_count": len(scoped),
                     "bookmakers": sorted({c["bookmaker_name"] for c in scoped}),
-                    "oldest_quote_at": min(c["quoted_at"] for c in scoped),
-                    "newest_quote_at": max(c["quoted_at"] for c in scoped),
+                    "oldest_quote_at": min(
+                        (c["quoted_at"] for c in scoped if c.get("quoted_at")), default=None
+                    ),
+                    "newest_quote_at": max(
+                        (c["quoted_at"] for c in scoped if c.get("quoted_at")), default=None
+                    ),
+                    "timestamp_status_counts": dict(
+                        Counter(c["quote_timestamp_status"] for c in scoped)
+                    ),
                 }
             )
         coverage.append(

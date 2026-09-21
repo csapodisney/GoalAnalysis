@@ -459,16 +459,15 @@ def test_only_confirmed_not_started_football_fixtures_are_pending(status):
     assert len(match_daily_events(football, events(), {}, NOW.date(), NOW)[0]) == 2
 
 
-def test_feed_and_fixture_freshness_boundaries():
+def test_quote_age_is_informational_but_fixture_snapshot_is_checked():
     data = events()
     data[0]["bookmakers"][0]["last_update"] = (NOW - timedelta(seconds=300)).isoformat()
     candidate_input = assemble_daily223_candidates(fixtures(), data, config(), NOW.date(), NOW, NOW)
     assert any(item["api_football_fixture_id"] == "9000" for item in candidate_input["candidates"])
     data[0]["bookmakers"][0]["last_update"] = (NOW - timedelta(seconds=301)).isoformat()
     candidate_input = assemble_daily223_candidates(fixtures(), data, config(), NOW.date(), NOW, NOW)
-    assert not any(
-        item["api_football_fixture_id"] == "9000" for item in candidate_input["candidates"]
-    )
+    retained = [c for c in candidate_input["candidates"] if c["api_football_fixture_id"] == "9000"]
+    assert retained and all(c["quote_timestamp_status"] == "OLDER" for c in retained)
     with pytest.raises(ProviderError, match="stale"):
         assemble_daily223_candidates(
             fixtures(), events(), config(), NOW.date(), NOW, NOW - timedelta(seconds=301)

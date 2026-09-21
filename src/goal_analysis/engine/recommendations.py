@@ -4,7 +4,8 @@ from copy import deepcopy
 from datetime import datetime
 
 from goal_analysis.agents import canonical_sha256
-from goal_analysis.engine.portfolio import PROFILES, _matches_profile
+from goal_analysis.engine.portfolio import PROFILES, _matches_profile, _product
+from goal_analysis.quote_metadata import quote_metadata
 
 VERSION = "arthur-daily-recommendations-v1"
 TOPICS = ("weather", "coach", "lineup", "absences", "workload", "motivation")
@@ -27,6 +28,8 @@ def build_recommendations(enriched, unpriced, settings, now, report, review=None
         if datetime.fromisoformat(raw["kickoff"]) <= now:
             continue
         c = deepcopy(raw)
+        if c.get("decimal_price") is not None:
+            c.update(quote_metadata(c.get("quote_timestamp_raw", c.get("quoted_at")), now))
         c["historical_context"] = analyses.get(c["candidate_id"], c.get("historical_context", {}))
         c.setdefault(
             "support_score",
@@ -103,17 +106,10 @@ def build_recommendations(enriched, unpriced, settings, now, report, review=None
             )
             continue
         odds_pending = any(l.get("decimal_price") is None for l in legs)
+        bookmakers = {l.get("bookmaker") for l in legs if l.get("bookmaker")}
         if odds_pending:
             warnings.append(
                 "Szorzó hiányzik; az ajánlat eredménye követhető, pénzügyi hozama még nem számítható."
-            )
-        if any(
-            l.get("quoted_at")
-            and (now - datetime.fromisoformat(l["quoted_at"])).total_seconds() > 300
-            for l in legs
-        ):
-            warnings.append(
-                "A feltüntetett szorzó öt percnél régebbi; az aktuális árat ellenőrizd az irodánál."
             )
         if any(l["missing_support"] for l in legs):
             warnings.append("Hiányos történeti / formaadat; gyenge bizonyítottságú ajánlat.")
@@ -168,8 +164,13 @@ def build_recommendations(enriched, unpriced, settings, now, report, review=None
                 "confidence": confidence,
                 "confidence_kind": "EVIDENCE_STRENGTH_NOT_CALIBRATED_PROBABILITY",
                 "probability": None,
-                "combined_price": (base or {}).get("combined_price"),
-                "bookmaker": (base or {}).get("bookmaker"),
+                "combined_price": None if odds_pending else float(_product(legs)),
+                "combined_price_kind": "THEORETICAL_PRODUCT_NOT_BOOKMAKER_COMBO_QUOTE",
+                "bookmaker": next(iter(bookmakers))
+                if len(bookmakers) == 1
+                else "Több iroda"
+                if bookmakers
+                else None,
                 "stake_eur": None,
                 "portfolio_ticket_id": (selected_ticket or {}).get("ticket_id"),
                 "selected_for_portfolio": selected_ticket is not None,
@@ -183,7 +184,8 @@ def build_recommendations(enriched, unpriced, settings, now, report, review=None
                     ],
                 ),
                 "risk_notes": [
-                    "A profilok alternatívák; azonos meccsek miatt együtt is veszíthetnek, és ellenkező kimeneteleket is javasolhatnak."
+                    "A profilok alternatívák; azonos meccsek miatt együtt is veszíthetnek, és ellenkező kimeneteleket is javasolhatnak.",
+                    "Az összszorzó a feltüntetett árak elméleti szorzata; az egyes választások árforrása a részletekben látható.",
                 ],
             }
         )

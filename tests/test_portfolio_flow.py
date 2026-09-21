@@ -93,7 +93,7 @@ def test_history_failure_still_reviews_all_profile_recommendations(tmp_path):
 
 
 @pytest.mark.parametrize("elapsed,expected", [(timedelta(minutes=6), 2), (timedelta(hours=7), 0)])
-def test_review_cannot_publish_started_matches_or_call_expired_quotes_ready(
+def test_review_latency_keeps_prices_but_removes_started_matches(
     tmp_path, elapsed, expected
 ):
     cfg, football, odds, cache, _calls, _state, _db = environment(tmp_path)
@@ -103,7 +103,7 @@ def test_review_cannot_publish_started_matches_or_call_expired_quotes_ready(
         cfg, {}, football, odds, cache, NOW.date(), reviewer, clock=lambda: clock[0]
     )["artifacts"]["report"]
     assert len(report["tickets"]) == expected
-    assert all(t["status"] == "DRAFT" and t["requires_refresh"] for t in report["tickets"])
+    assert all(t["status"] == "READY" and not t["requires_refresh"] for t in report["tickets"])
 
 
 def test_process_lock_prevents_overlapping_scheduler_and_dashboard(tmp_path):

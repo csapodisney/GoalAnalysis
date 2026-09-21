@@ -361,7 +361,7 @@ def run_daily223_live(
                 target_date,
                 observed,
                 fixture_time,
-                allow_stale_quotes=allow_incomplete,
+                allow_stale_fixture_snapshot=allow_incomplete,
             )
         except (ProviderError, ValueError, TypeError, KeyError, OverflowError):
             if construct_legacy:
@@ -373,7 +373,7 @@ def run_daily223_live(
                 target_date,
                 observed,
                 fixture_time,
-                allow_stale_quotes=True,
+                allow_stale_fixture_snapshot=True,
             )
             base_issues.append(
                 {

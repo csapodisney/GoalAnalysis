@@ -18,6 +18,7 @@ from zoneinfo import ZoneInfo
 from goal_analysis.agents.codex_review import codex_installed
 from goal_analysis.config.portfolio import load_settings, save_settings, validate_settings
 from goal_analysis.jobs.portfolio import safe_error, validate_target_day
+from goal_analysis.quote_metadata import quote_metadata
 from goal_analysis.storage.portfolio_ledger import PortfolioLedger
 
 
@@ -61,16 +62,10 @@ class ArthurState:
         now = datetime.now(UTC)
         for ticket in tickets:
             ticket["from_previous_run"] = bool(runs and ticket.get("run_id") != runs[0]["run_id"])
-            if not ticket.get("played"):
-                ages = [
-                    (now - datetime.fromisoformat(leg["quoted_at"])).total_seconds()
-                    for leg in ticket["legs"]
-                    if leg.get("quoted_at")
-                ]
-                ticket["quote_stale"] = bool(ages and max(ages) > 300)
-                if ticket["quote_stale"]:
-                    ticket["requires_refresh"] = True
-                    ticket["status"] = "DRAFT"
+            for leg in ticket["legs"]:
+                leg.update(
+                    quote_metadata(leg.get("quote_timestamp_raw", leg.get("quoted_at")), now)
+                )
         with self.lock:
             runtime = dict(self.runtime)
         if runtime["running"]:

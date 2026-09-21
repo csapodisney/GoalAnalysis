@@ -25,7 +25,7 @@ def main():
             continue
         files[name] = (root / name).read_bytes()
     manifest = {
-        "release": "3.6",
+        "release": "3.6.1",
         "files": {name: hashlib.sha256(data).hexdigest() for name, data in sorted(files.items())},
     }
     archive = io.BytesIO()

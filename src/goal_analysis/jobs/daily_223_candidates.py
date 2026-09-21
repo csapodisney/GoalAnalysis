@@ -13,6 +13,7 @@ from goal_analysis.agents import canonical_sha256
 from goal_analysis.config.daily_223_live import EXTRA_MARKETS, normalized_name
 from goal_analysis.providers.api_football_history import aware_time, positive_id
 from goal_analysis.providers.base import ProviderError
+from goal_analysis.quote_metadata import quote_metadata
 
 
 def normalize_daily_fixtures(payload: dict, league: dict, target_date: date) -> list[dict]:
@@ -164,10 +165,10 @@ def assemble_daily223_candidates(
     now: datetime,
     fixtures_observed_at: datetime,
     *,
-    allow_stale_quotes: bool = False,
+    allow_stale_fixture_snapshot: bool = False,
 ) -> dict:
     fixture_age = (now - fixtures_observed_at).total_seconds()
-    if fixture_age < 0 or (fixture_age > 300 and not allow_stale_quotes):
+    if fixture_age < 0 or (fixture_age > 300 and not allow_stale_fixture_snapshot):
         raise ProviderError("daily fixture snapshot is stale or from the future")
     matched, issues = match_daily_events(fixtures, events, config["team_aliases"], target_date, now)
     candidates = []
@@ -214,10 +215,9 @@ def assemble_daily223_candidates(
                     )
                     continue
                 try:
-                    stamp = aware_time(market.get("last_update") or bookmaker["last_update"])
-                    quote_age = (now - stamp).total_seconds()
-                    if quote_age < 0 or (quote_age > 300 and not allow_stale_quotes):
-                        raise ValueError("STALE_OR_FUTURE_QUOTE")
+                    timing = quote_metadata(
+                        market.get("last_update") or bookmaker.get("last_update"), now
+                    )
                     outcomes = market["outcomes"]
                     if not isinstance(outcomes, list):
                         raise TypeError("outcomes must be a list")
@@ -230,7 +230,7 @@ def assemble_daily223_candidates(
                         }:
                             raise ValueError("THREE_WAY_RESULT_REQUIRED")
                     parsed = [
-                        _candidate(fixture, event, key, outcome, stamp, bookmaker_key, config)
+                        _candidate(fixture, event, key, outcome, timing, bookmaker_key, config)
                         for outcome in outcomes
                     ]
                     if fixture_age > 300:
@@ -294,7 +294,7 @@ def _candidate(
     event: dict,
     api_market: str,
     outcome: dict,
-    stamp: datetime,
+    timing: dict,
     bookmaker_key: str,
     config: dict,
 ) -> dict:
@@ -352,7 +352,7 @@ def _candidate(
         "region": config["account_region"],
         "currency": config["currency"],
         "decimal_price": float(price),
-        "quoted_at": stamp.isoformat(),
+        **timing,
         "quote_source_id": f"https://api.the-odds-api.com/v4/sports/{event['sport_key']}/events/{event['id']}/odds",
         "quote_available": True,
         "evidence": [],

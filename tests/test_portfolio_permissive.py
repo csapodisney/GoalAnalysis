@@ -55,7 +55,6 @@ def test_available_market_outside_specialist_profiles_gets_explicit_fallback():
         {"decimal_price": float("nan")},
         {"quote_available": False},
         {"kickoff": (NOW - timedelta(minutes=1)).isoformat()},
-        {"quoted_at": (NOW + timedelta(seconds=1)).isoformat()},
         {"event_status": "CANCELLED"},
     ],
 )
@@ -92,7 +91,7 @@ def test_full_flow_keeps_quotes_and_tickets_when_history_fails_today_or_saturday
     assert len(report["tickets"]) == 2 and report["funnel"]["fixtures"] == 3
     assert len(reviewer.calls) == 1 and reviewer.calls[0][0]
     assert all(
-        ticket["status"] == "DRAFT" and ticket["requires_refresh"] and ticket["quality_warnings"]
+        ticket["status"] == "DRAFT" and not ticket["requires_refresh"] and ticket["quality_warnings"]
         for ticket in report["tickets"]
     )
     assert all(ticket["date"] == target.isoformat() for ticket in report["tickets"])

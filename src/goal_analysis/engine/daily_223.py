@@ -12,6 +12,7 @@ from typing import Any
 from zoneinfo import ZoneInfo
 
 from goal_analysis.agents import canonical_sha256
+from goal_analysis.quote_metadata import quote_metadata
 
 WEIGHTS = {
     "historical": 30,
@@ -196,7 +197,6 @@ def _prepare(
     policy: Daily223Policy,
     *,
     require_history: bool = True,
-    allow_stale_quotes: bool = False,
 ) -> dict[str, Any]:
     names = (
         "candidate_id",
@@ -233,16 +233,18 @@ def _prepare(
     price = _number(candidate["decimal_price"], "decimal_price", 1)
     if price <= 1:
         raise ValueError("INVALID_DECIMAL_PRICE")
-    quoted_at = _timestamp(candidate["quoted_at"])
-    age = (now - quoted_at).total_seconds()
-    if age < 0 or (age > policy.quote_max_age_seconds and not allow_stale_quotes):
-        raise ValueError("QUOTE_STALE_OR_FROM_FUTURE")
+    item.update(
+        quote_metadata(
+            candidate.get("quote_timestamp_raw", candidate.get("quoted_at")),
+            now,
+            policy.quote_max_age_seconds,
+        )
+    )
     components, evidence = _score_evidence(candidate["evidence"], now, policy)
     if require_history and (not components["historical"] or not components["venue_form"]):
         raise ValueError("HISTORICAL_AND_VENUE_SUPPORT_REQUIRED")
     item.update(
         kickoff=kickoff.isoformat(),
-        quoted_at=quoted_at.isoformat(),
         decimal_price=price,
         score_components=components,
         support_score=round(sum(components.values()), 6),

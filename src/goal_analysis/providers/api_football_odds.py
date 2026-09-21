@@ -86,10 +86,9 @@ def normalize_odds(rows, fixtures, now):
                 or fixture["provider_status"] != "NS"
             ):
                 raise ValueError("identity mismatch")
-            stamp = aware_time(row["update"])
-            age = (now - stamp).total_seconds()
-            if age < 0 or age > 24 * 3600:
-                raise ValueError("future or expired quote")
+            # Preserve provider metadata; only the fixture/market/price decides
+            # eligibility. Even an absent or invalid update cannot erase odds.
+            stamp = row.get("update")
             books = row["bookmakers"]
             if not isinstance(books, list):
                 raise TypeError("invalid bookmaker list")
@@ -131,7 +130,7 @@ def normalize_odds(rows, fixtures, now):
                     markets.append(
                         {
                             "key": market,
-                            "last_update": stamp.isoformat(),
+                            "last_update": stamp,
                             "outcomes": _outcomes(bet, market, fixture),
                             "quote_provider": "api_football",
                             "provider_market_id": bet_id,
@@ -150,7 +149,7 @@ def normalize_odds(rows, fixtures, now):
                 {
                     "key": f"{slug}_api_football_{book_id}",
                     "title": title,
-                    "last_update": stamp.isoformat(),
+                    "last_update": stamp,
                     "markets": markets,
                 }
             )
