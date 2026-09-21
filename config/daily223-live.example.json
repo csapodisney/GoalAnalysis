@@ -6,6 +6,7 @@
   "currency": "EUR",
   "max_football_calls": 60,
   "max_odds_credits": 40,
+  "api_football_odds_max_calls": 12,
   "extra_markets": [],
   "leagues": [
     {"competition_id": "EN1", "api_football_id": 39, "season": 2026, "history_seasons": [2025, 2026], "odds_sport_key": "soccer_epl", "competition_type": "LEAGUE"},

@@ -99,14 +99,15 @@ def main(argv=None) -> int:
         config = validate_live_config(json.loads(args.config.read_text("utf-8-sig")))
         if args.check_config:
             missing = [
-                name
-                for name in ("API_FOOTBALL_KEY", "THE_ODDS_API_KEY")
-                if not os.environ.get(name, "").strip()
+                name for name in ("API_FOOTBALL_KEY",) if not os.environ.get(name, "").strip()
             ]
             print(
                 f"Config valid: {len(config['leagues'])} competitions; backend=codex_chatgpt; model={settings['openai']['model']}; tickets={settings['target_ticket_count']}; maximum=5; stake=EUR5"
             )
             print("Missing environment variables: " + (", ".join(missing) or "none"))
+            print(
+                "The Odds API is optional; API-Football odds reuse the existing football key and quota."
+            )
             print(
                 "OpenAI API keys are not used. No network request was made. Use --check-openai to verify ChatGPT/Codex access."
             )

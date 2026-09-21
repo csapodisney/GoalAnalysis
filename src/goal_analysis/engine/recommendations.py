@@ -107,6 +107,14 @@ def build_recommendations(enriched, unpriced, settings, now, report, review=None
             warnings.append(
                 "Szorzó hiányzik; az ajánlat eredménye követhető, pénzügyi hozama még nem számítható."
             )
+        if any(
+            l.get("quoted_at")
+            and (now - datetime.fromisoformat(l["quoted_at"])).total_seconds() > 300
+            for l in legs
+        ):
+            warnings.append(
+                "A feltüntetett szorzó öt percnél régebbi; az aktuális árat ellenőrizd az irodánál."
+            )
         if any(l["missing_support"] for l in legs):
             warnings.append("Hiányos történeti / formaadat; gyenge bizonyítottságú ajánlat.")
         if profile == "daily223" and not base:

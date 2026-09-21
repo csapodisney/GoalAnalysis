@@ -308,9 +308,18 @@ def run_portfolio(
     ]
     report["calendar"] = artifacts.get("calendar", {})
     report["odds_queries"] = [
-        {"sport_key": sport, "date": target_date.isoformat(), "returned_events": len(events)}
+        {
+            "provider": "the_odds_api",
+            "sport_key": sport,
+            "date": target_date.isoformat(),
+            "returned_events": len(events),
+        }
         for sport, events in artifacts.get("odds_bulk", {}).items()
     ]
+    recovery = artifacts.get("odds_recovery", {})
+    report["odds_queries"].extend(recovery.get("queries", []))
+    report["odds_coverage"] = recovery.get("coverage", [])
+    report["odds_recovered_candidates"] = recovery.get("recovered_candidates", 0)
     report["preview"] = target_date > started.astimezone(BERLIN).date()
     report["finished_at"] = clock().isoformat()
     report["data_issues"] = legacy.get("data_issues", [])

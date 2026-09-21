@@ -142,6 +142,10 @@ class Daily223OddsFeed:
         if usage["last_cost"] is not None and usage["last_cost"] > cost:
             self.halted = True
             raise ProviderError("provider odds cost exceeded the reserved amount; no further calls")
+        if usage["last_cost"] is not None:
+            # Empty responses can cost zero. Release only provider-confirmed
+            # unused credits; failures and absent headers remain conservative.
+            self.reserved_credits -= cost - usage["last_cost"]
         return payload
 
 

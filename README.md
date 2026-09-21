@@ -1,3 +1,7 @@
+> Arthur v3.6: API-Football odds recovery with existing credentials and budgets,
+> per-fixture coverage and original quote timestamps.
+> [Release and update details](docs/RELEASE_V3_6.md).
+
 > Arthur v3.5: automatic Astra research, all enabled daily profile recommendations,
 > and persistent results for priced and unpriced selections. See
 > [release and update details](docs/RELEASE_V3_5.md).

@@ -179,10 +179,23 @@ def run_daily223_live(
                 for f in fixtures
                 if f["provider_status"] == "NS"
             )
+            available = config["max_football_calls"] - budget.calls
+            if budget.last_usage.remaining_day is not None:
+                available = min(available, budget.last_usage.remaining_day)
+            # Protect a modest share of the EXISTING football budget for odds.
+            reserve = (
+                min(
+                    config["api_football_odds_max_calls"],
+                    available,
+                    max(1, config["max_football_calls"] // 4),
+                )
+                if fixtures
+                else 0
+            )
             artifacts["history"] = (
                 ApiFootballHistoryCollector(budget, cache, clock=clock).collect(
                     sorted(pairs),
-                    max_calls=config["max_football_calls"] - budget.calls,
+                    max_calls=max(0, available - reserve),
                     allow_partial=True,
                 )
                 if pairs
@@ -267,7 +280,7 @@ def run_daily223_live(
                         "sport_key": league["odds_sport_key"],
                         "status": "EMPTY_ODDS_RESPONSE",
                         "returned_events": 0,
-                        "message": "Az Odds API üres kínálatot adott erre a napra és ligára. A mérkőzések szorzó nélkül is megmaradnak.",
+                        "message": "Az Odds API erre a napra és ligára nem adott szorzókat. A további források eredménye külön látható.",
                     }
                 )
         stage = "extra_markets"
@@ -340,15 +353,51 @@ def run_daily223_live(
         observed = clock()
         if observed < started:
             raise ValueError("clock moved backwards during live run")
-        candidate_input = assemble_daily223_candidates(
-            fixtures,
-            events,
-            config,
-            target_date,
-            observed,
-            fixture_time,
-            allow_stale_quotes=allow_incomplete,
-        )
+        try:
+            candidate_input = assemble_daily223_candidates(
+                fixtures,
+                events,
+                config,
+                target_date,
+                observed,
+                fixture_time,
+                allow_stale_quotes=allow_incomplete,
+            )
+        except (ProviderError, ValueError, TypeError, KeyError, OverflowError):
+            if construct_legacy:
+                raise
+            candidate_input = assemble_daily223_candidates(
+                fixtures,
+                [],
+                config,
+                target_date,
+                observed,
+                fixture_time,
+                allow_stale_quotes=True,
+            )
+            base_issues.append(
+                {
+                    "status": "INVALID_PRIMARY_ODDS_RESPONSE",
+                    "message": "Az Odds API válasza nem feldolgozható; az API-Football pótlása folytatódott.",
+                }
+            )
+        for item in candidate_input["data_issues"]:
+            item.setdefault("provider", "the_odds_api")
+        if not construct_legacy:
+            from .odds_recovery import recover_odds
+
+            stage = "odds_recovery"
+            artifacts["odds_recovery"] = recover_odds(
+                candidate_input,
+                fixtures,
+                config,
+                budget,
+                cache,
+                target_date,
+                clock,
+                fixture_time,
+            )
+            stage = "construction"
         candidate_input["data_issues"].extend(
             [
                 *artifacts["history"].get("data_issues", []),
@@ -416,6 +465,7 @@ def run_daily223_live(
         report = blocked_report(target_date, clock(), stage, reason)
     report["usage"] = {
         "football_calls": budget.calls if budget else 0,
+        "football_odds_calls": artifacts.get("odds_recovery", {}).get("api_football_calls", 0),
         "odds_calls": odds_feed.calls,
         "odds_credits_reserved": odds_feed.reserved_credits,
         "odds_provider_usage": odds_feed.usage,

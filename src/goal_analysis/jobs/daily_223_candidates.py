@@ -236,6 +236,13 @@ def assemble_daily223_candidates(
                     if fixture_age > 300:
                         for item in parsed:
                             item["fixture_snapshot_stale"] = True
+                    for item in parsed:
+                        item["quote_provider"] = market.get("quote_provider", "the_odds_api")
+                        item["bookmaker_name"] = bookmaker.get("title", bookmaker_key)
+                        if market.get("quote_source_id"):
+                            item["quote_source_id"] = market["quote_source_id"]
+                        if market.get("provider_market_id"):
+                            item["provider_market_id"] = market["provider_market_id"]
                     if len({item["candidate_id"] for item in parsed}) != len(parsed):
                         raise ValueError("DUPLICATE_CURRENT_PRODUCT")
                     candidates.extend(parsed)

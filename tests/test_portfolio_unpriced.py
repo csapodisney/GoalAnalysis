@@ -64,7 +64,11 @@ def test_five_fixture_preview_survives_empty_odds_or_missing_key(tmp_path, missi
     if not missing_key:
         assert report["odds_queries"][0]["returned_events"] == 0
         assert report["usage"]["odds_provider_usage"][0]["last_cost"] == 0
-    queries = [parse_qs(urlparse(url).query) for url in calls["football"] if "date=" in url]
+    queries = [
+        parse_qs(urlparse(url).query)
+        for url in calls["football"]
+        if "date=" in url and urlparse(url).path == "/fixtures"
+    ]
     assert len(queries) == 1 and "league" not in queries[0] and "season" not in queries[0]
     ledger = PortfolioLedger(tmp_path / "ledger.sqlite3", now=lambda: NOW)
     ledger.save_run(report)

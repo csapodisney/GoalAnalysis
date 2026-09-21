@@ -216,6 +216,9 @@ def _prepare(
         "sensitivity_note",
     )
     item = {name: _text(candidate, name) for name in names}
+    for name in ("quote_provider", "bookmaker_name", "provider_market_id"):
+        if name in candidate:
+            item[name] = candidate[name]
     if item["competition_type"] not in {"LEAGUE", "CUP", "UEFA", "OTHER"}:
         raise ValueError("INVALID_COMPETITION_TYPE")
     kickoff = _timestamp(candidate["kickoff"])

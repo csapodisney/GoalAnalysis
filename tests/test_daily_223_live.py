@@ -128,12 +128,15 @@ def setup(tmp_path, cfg=None):
         "extra_failure": False,
         "extra_conflict": False,
         "history_failure": False,
+        "football_odds": [],
     }
 
     def football_transport(url, headers):
         calls["football"].append(url)
         query = parse_qs(urlparse(url).query)
-        if "date" in query:
+        if urlparse(url).path == "/odds":
+            payload = response(state["football_odds"])
+        elif "date" in query:
             payload = response(state["daily"])
         else:
             payload = response(history_rows())

@@ -14,7 +14,7 @@ if (-not (Test-Path -LiteralPath (Join-Path $ProjectRoot "pyproject.toml") -Path
 }
 $ProjectRoot = [IO.Path]::GetFullPath($ProjectRoot).TrimEnd('\', '/')
 $TempRoot = Join-Path ([IO.Path]::GetTempPath()) ("arthur-update-" + [guid]::NewGuid().ToString("N"))
-$BackupRoot = Join-Path $ProjectRoot ("backups\arthur-v3.5-" + (Get-Date -Format "yyyyMMdd-HHmmss") + "-" + [guid]::NewGuid().ToString("N").Substring(0, 6))
+$BackupRoot = Join-Path $ProjectRoot ("backups\arthur-v3.6-" + (Get-Date -Format "yyyyMMdd-HHmmss") + "-" + [guid]::NewGuid().ToString("N").Substring(0, 6))
 $Changed = New-Object System.Collections.Generic.List[object]
 $RunLock = $null
 try {
@@ -62,7 +62,7 @@ try {
         }
     }
     Copy-Item -LiteralPath (Join-Path $Unpacked "release-manifest.json") -Destination (Join-Path $BackupRoot "installed-manifest.json")
-    Write-Host "Arthur v3.5 installed. Files verified: $($Files.Count). Backup: $BackupRoot"
+    Write-Host "Arthur v3.6 installed. Files verified: $($Files.Count). Backup: $BackupRoot"
     Write-Host "Start a NEW analysis: all enabled profiles, automatic Astra review, and persistent results. Existing data and login are preserved."
 } catch {
     $Failure = $_

@@ -1,6 +1,6 @@
 # Goal Analysis — current state
 
-Updated: 2026-09-21. Release: Arthur portfolio v3.5 (daily recommendations, resilient Astra, outcome history).
+Updated: 2026-09-21. Release: Arthur portfolio v3.6 (existing-subscription odds recovery).
 
 ## Source and objective
 
@@ -270,3 +270,36 @@ build/arthur-dashboard-v3 was created and read back successfully. Its complete
 source tree, 1983569336a5a0f81ac1f14a1db765f03b984cf7, exactly matched the
 local committed tree (188 tracked files). This follow-up updates only the
 publication record. No code, settings, credentials or local runtime data changed.
+
+
+## v3.6 — existing-subscription odds recovery
+
+The user approved API-Football odds integration with no new subscription.
+Recovery is now enabled by default with the existing key. The new optional
+api_football_odds_max_calls cap defaults to 12 and stays within the existing
+football budget and provider quota. History reserves a bounded share for odds;
+local caching and round-robin pagination avoid redundant calls.
+
+Recovery covers exact pre-match products and validates fixture ID, league,
+season, kickoff, decimal price and provider update time. Cross-provider bookmaker
+identities are never guessed from equal names. Stale indicative quotes remain
+visible in recommendations with warnings; the existing ready-ticket and actual
+price confirmation gates are preserved. The Odds API's confirmed unused credits
+are released. No additional LLM calls, account setup or paid feed was added.
+
+Reports/dashboard disclose query results, source, original time, recovered prices
+and remaining product gaps. Provider provenance survives ticket/SQLite storage.
+The existing actual-price wager dialog and Astra web/context branch remain.
+The newly attached v3.3.1 files were older reference material; current v3.5 code
+was the implementation baseline. See docs/RELEASE_V3_6.md.
+
+Validation: 424 Python tests pass; one native-Windows DPAPI test is skipped on
+Linux. Changed Python files pass Ruff, JavaScript syntax and Git whitespace checks
+pass. Chromium checks against the real local HTTP server/SQLite pass for source
+and gap disclosure, export, optional Odds API credential labels and mobile layout.
+Synthetic provider responses verify new behavior; no live sports keys are present
+here, so actual day/bookmaker coverage remains a local-run check.
+
+Delivery: cumulative Arthur-v3.6-frissites.ps1 and the existing
+build/arthur-dashboard-v3 branch. The updater verifies file hashes and preserves
+local keys, settings, login, data and reports. No new subscription was created.

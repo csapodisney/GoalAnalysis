@@ -77,9 +77,10 @@ class ApiFootballClient:
                 media_type=headers.get("content-type", "application/json"),
                 source_url=url,
             )
+        normalized_headers = {key.lower(): str(value) for key, value in headers.items()}
         self.last_usage = ApiUsage(
-            remaining_day=_optional_int(headers.get("x-ratelimit-requests-remaining")),
-            limit_day=_optional_int(headers.get("x-ratelimit-requests-limit")),
+            remaining_day=_optional_int(normalized_headers.get("x-ratelimit-requests-remaining")),
+            limit_day=_optional_int(normalized_headers.get("x-ratelimit-requests-limit")),
         )
         errors = payload.get("errors")
         if errors:
@@ -146,7 +147,7 @@ def _parse_fixture(item: Mapping[str, Any], competition_id: str, provider: str) 
         ),
         home_team=Team(id=str(teams["home"]["id"]), name=str(teams["home"]["name"])),
         away_team=Team(id=str(teams["away"]["id"]), name=str(teams["away"]["name"])),
-        kickoff=datetime.fromisoformat(str(fixture_data["date"]).replace("Z", "+00:00")),
+        kickoff=datetime.fromisoformat(str(fixture_data["date"])),
         status=_status(status_code),
         provider_ids={"api_football": str(fixture_data["id"])},
     )
