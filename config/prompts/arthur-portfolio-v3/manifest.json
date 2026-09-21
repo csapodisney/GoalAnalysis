@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "prompt_version": "arthur-portfolio-v3",
+  "source_filename": "Arthur_Portfolio_Master_Prompt_v3.md",
+  "master_file": "master.md",
+  "sha256": "13c8f9b491b037b5767bb2a062086e805bae5c114a96215356bec7c77366cd4c",
+  "size_bytes": 6053,
+  "activation_status": "active_in_portfolio_pipeline",
+  "parent_version": "arthur-pentagram-v2.1",
+  "parent_sha256": "40a4c6812cbf42375055f8ab5a6a1f1b8ca256d0d974aba1f92ab3bc7ffe594d",
+  "required_anchors": [
+    "# ARTHUR PORTFOLIO 3",
+    "INCLUDING DAILY_223",
+    "OPENAI_API_KEY",
+    "gpt-6-astra",
+    "real_wager_placed: false",
+    "1.96 / 1.96 / 2.94 AND at least 11.76"
+  ],
+  "runtime_prompts": {
+    "research.txt": "753292235b70a78b3f9c2a077c8d7a2d658a55aa2a5e74ba65e454a3fdd9aa1b",
+    "review.txt": "99a7396e4e2020b48315e6b5462c7dc3bf55cdaeef68d19476e5f5ae4d69931a"
+  }
+}
