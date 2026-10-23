@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 import urllib.parse
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -31,10 +31,26 @@ class BudgetFootballClient:
     def last_usage(self):
         return self.client.last_usage
 
+    @property
+    def provider(self):
+        return getattr(self.client, 'provider', 'api_football')
+
+    @property
+    def root(self):
+        return self.client.root
+
+    @property
+    def last_response(self):
+        return self.client.last_response
+
+    @property
+    def last_raw_response(self):
+        return self.client.last_raw_response
+
     def request(self, endpoint, params):
         if self.calls >= self.maximum:
             raise ProviderError("football API call budget exhausted")
-        if self.last_usage.remaining_day == 0:
+        if getattr(self.last_usage, 'remaining_day', None) == 0:
             raise ProviderError("football API daily quota exhausted")
         self.calls += 1
         return self.client.request(endpoint, params)
@@ -124,6 +140,11 @@ def run_daily223_live(
     cache,
     target_date: date | None = None,
     clock=lambda: datetime.now(UTC),
+    *,
+    construct_legacy: bool = True,
+    allow_incomplete: bool = False,
+    selected_competition_ids: list[int] | None = None,
+    calendar_scope=None,
 ) -> dict:
     started = clock()
     aware_time(started.isoformat())
@@ -133,60 +154,191 @@ def run_daily223_live(
     budget = None
     try:
         config = validate_live_config(config)
-        if target_date != today:
+        if not today <= target_date <= today + timedelta(days=7):
             raise ValueError(
-                "live runs require today's Berlin date; use replay for historical inputs"
+                "live runs require today through the next 7 Berlin dates; "
+                "past dates are recorded results or historical replay only"
             )
         if (
             odds_feed.region != config["odds_region"]
             or odds_feed.max_credits != config["max_odds_credits"]
         ):
             raise ValueError("odds feed configuration mismatch")
-        if config["max_football_calls"] < len(config["leagues"]):
+        if construct_legacy and config["max_football_calls"] < len(config["leagues"]):
             raise ProviderError("football call budget cannot cover the configured fixture queries")
-        odds_feed.reserve_check(2 * len(config["leagues"]))
+        # Check only the minimum bulk request. A quiet day must not require
+        # enough credits for every configured league before fixtures are known.
+        if construct_legacy:
+            odds_feed.reserve_check(2)
         artifacts["config"] = config
         budget = BudgetFootballClient(football_client, config["max_football_calls"])
-        stage = "history"
-        pairs = [
-            (league["api_football_id"], season)
-            for league in config["leagues"]
-            for season in league["history_seasons"]
-        ]
-        artifacts["history"] = ApiFootballHistoryCollector(budget, cache, clock=clock).collect(
-            pairs, max_calls=config["max_football_calls"] - len(config["leagues"])
-        )
-        stage = "fixtures"
-        fixtures, fixture_time = [], clock()
-        for league in config["leagues"]:
-            payload = budget.request(
-                "fixtures",
-                {
-                    "date": target_date.isoformat(),
-                    "league": league["api_football_id"],
-                    "season": league["season"],
-                    "timezone": "Europe/Berlin",
-                },
+        stats_primary = getattr(football_client, 'provider', None) == 'the_stats_api'
+        if stats_primary:
+            from .the_stats_live import collect_live
+
+            stage = 'fixtures_and_history'
+            artifacts.update(collect_live(config, budget, target_date, clock,
+                selected_competition_ids=selected_competition_ids, construct_legacy=construct_legacy))
+            fixtures = artifacts['fixtures']['records']
+            fixture_time = aware_time(artifacts['fixtures']['observed_at'])
+            fixture_issues = []
+        elif not construct_legacy:
+            from .portfolio_calendar import (
+                calendar_payload,
+                collect_calendar,
+                empty_history,
+                selected_leagues,
             )
-            fixtures.extend(normalize_daily_fixtures(payload, league, target_date))
+
+            stage = "fixtures"
+            fixture_time = clock()
+            calendar_response = calendar_payload(budget, target_date)
+            if selected_competition_ids is not None:
+                config["leagues"] = selected_leagues(
+                    calendar_response, target_date, config["leagues"], selected_competition_ids
+                )
+            elif calendar_scope is not None:
+                # Arthur's prospective fixture scope only. The standalone DAILY
+                # path and every DAILY construction rule remain unchanged.
+                config["leagues"] = calendar_scope(
+                    calendar_response, target_date, config["leagues"], clock()
+                )
+            fixtures, fixture_issues, calendar = collect_calendar(
+                budget, config["leagues"], target_date, calendar_response
+            )
+            artifacts["calendar"] = calendar
+            artifacts["fixtures"] = {"observed_at": fixture_time.isoformat(), "records": fixtures}
+            stage = "history"
+            active = {
+                int(f["api_football_league_id"]) for f in fixtures if f["provider_status"] == "NS"
+            }
+            pairs = {
+                (league["api_football_id"], season)
+                for league in config["leagues"]
+                if league["api_football_id"] in active
+                for season in league["history_seasons"]
+            }
+            pairs.update(
+                (int(f["api_football_league_id"]), f["season"])
+                for f in fixtures
+                if f["provider_status"] == "NS"
+            )
+            available = config["max_football_calls"] - budget.calls
+            if budget.last_usage.remaining_day is not None:
+                available = min(available, budget.last_usage.remaining_day)
+            # Protect a modest share of the EXISTING football budget for odds.
+            reserve = (
+                min(
+                    config["api_football_odds_max_calls"],
+                    available,
+                    max(1, config["max_football_calls"] // 4),
+                )
+                if fixtures
+                else 0
+            )
+            artifacts["history"] = (
+                ApiFootballHistoryCollector(budget, cache, clock=clock).collect(
+                    sorted(pairs),
+                    max_calls=max(0, available - reserve),
+                    allow_partial=True,
+                )
+                if pairs
+                else empty_history(clock())
+            )
+        else:
+            stage = "history"
+            pairs = [
+                (league["api_football_id"], season)
+                for league in config["leagues"]
+                for season in league["history_seasons"]
+            ]
+            artifacts["history"] = ApiFootballHistoryCollector(budget, cache, clock=clock).collect(
+                pairs,
+                max_calls=config["max_football_calls"] - len(config["leagues"]),
+                allow_partial=not construct_legacy,
+            )
+            stage = "fixtures"
+            fixtures, fixture_time, fixture_issues = [], clock(), []
+            for league in config["leagues"]:
+                try:
+                    payload = budget.request(
+                        "fixtures",
+                        {
+                            "date": target_date.isoformat(),
+                            "league": league["api_football_id"],
+                            "season": league["season"],
+                            "timezone": "Europe/Berlin",
+                        },
+                    )
+                    fixtures.extend(normalize_daily_fixtures(payload, league, target_date))
+                except (ProviderError, ValueError, TypeError, KeyError):
+                    if construct_legacy:
+                        raise
+                    fixture_issues.append(
+                        {
+                            "league_id": league["api_football_id"],
+                            "status": "LEAGUE_FIXTURES_UNAVAILABLE",
+                            "message": "Egy liga mérkőzésadatai hiányoznak; a többi liga feldolgozása folytatódott.",
+                        }
+                    )
         artifacts["fixtures"] = {"observed_at": fixture_time.isoformat(), "records": fixtures}
         stage = "odds"
-        events = []
+        if hasattr(odds_feed, 'bind_fixtures'):
+            odds_feed.bind_fixtures(fixtures)
+        events, base_issues = [], []
         artifacts["odds_bulk"] = {}
         for league in config["leagues"]:
+            if league["odds_sport_key"].startswith("soccer_arthur_") and getattr(odds_feed, 'provider', None) != 'the_stats_api':
+                # The Odds API has no verified key for this newly selected competition.
+                # API-Football fixture-level recovery still runs below.
+                continue
             # Skip a league with no pending fixture in the current daily universe.
             if not any(
                 item["sport_key"] == league["odds_sport_key"]
                 and item["provider_status"] == "NS"
-                and aware_time(item["kickoff"]) > clock()
+                and aware_time(item["kickoff"]) > clock() + (timedelta(minutes=15) if stats_primary else timedelta(0))
                 for item in fixtures
             ):
                 continue
-            payload = odds_feed.bulk(league["odds_sport_key"], target_date)
+            try:
+                odds_feed.reserve_check(2)
+            except ProviderError as error:
+                base_issues.append(
+                    {
+                        "sport_key": league["odds_sport_key"],
+                        "status": "BASE_MARKETS_BUDGET_UNAVAILABLE",
+                        "reason": str(error),
+                    }
+                )
+                continue
+            try:
+                payload = odds_feed.bulk(league["odds_sport_key"], target_date)
+            except ProviderError as error:
+                base_issues.append(
+                    {
+                        "sport_key": league["odds_sport_key"],
+                        "status": "BASE_MARKETS_UNAVAILABLE",
+                        "reason": str(error),
+                    }
+                )
+                continue
             artifacts["odds_bulk"][league["odds_sport_key"]] = payload
             events.extend(payload)
+            if not payload:
+                base_issues.append(
+                    {
+                        "sport_key": league["odds_sport_key"],
+                        "status": "EMPTY_ODDS_RESPONSE",
+                        "returned_events": 0,
+                        "message": "Az Odds API erre a napra és ligára nem adott szorzókat. A további források eredménye külön látható.",
+                    }
+                )
         stage = "extra_markets"
-        extras = config["extra_markets"]
+        # Cover BTTS before experimental half-time markets when credits are tight.
+        extras = sorted(
+            config["extra_markets"],
+            key=lambda market: (market != "btts", market != "totals_h1", market),
+        )
         extra_issues = []
         if extras:
             pairs, _ = match_daily_events(
@@ -195,29 +347,53 @@ def run_daily223_live(
             replacements = {}
             conflicted = set()
             artifacts["odds_extra"] = {}
-            try:
-                odds_feed.reserve_check(len(pairs) * len(extras))
-            except ProviderError:
+            pairs.sort(key=lambda pair: (aware_time(pair[0]["kickoff"]), pair[0]["fixture_id"]))
+            completed_extra = 0
+            for market in extras:
+                for _, event in pairs:
+                    if event["id"] in conflicted:
+                        continue
+                    try:
+                        odds_feed.reserve_check(1)
+                    except ProviderError:
+                        extra_issues.append(
+                            {
+                                "event_id": event["id"],
+                                "market": market,
+                                "status": "OPTIONAL_MARKETS_BUDGET_UNAVAILABLE",
+                            }
+                        )
+                        continue
+                    try:
+                        extra = odds_feed.extra(event["sport_key"], event["id"], [market])
+                    except ProviderError:
+                        extra_issues.append(
+                            {
+                                "event_id": event["id"],
+                                "market": market,
+                                "status": "OPTIONAL_MARKETS_UNAVAILABLE",
+                            }
+                        )
+                        continue
+                    artifacts["odds_extra"].setdefault(event["id"], {})[market] = extra
+                    try:
+                        replacements[event["id"]] = merge_extra_event(
+                            replacements.get(event["id"], event), extra
+                        )
+                        completed_extra += 1
+                    except (ProviderError, KeyError, ValueError, TypeError):
+                        conflicted.add(event["id"])
+                        extra_issues.append(
+                            {"event_id": event["id"], "status": "CONFLICTING_EVENT_IDENTITY"}
+                        )
+            if completed_extra < len(pairs) * len(extras):
                 extra_issues.append(
-                    {"status": "OPTIONAL_MARKETS_BUDGET_UNAVAILABLE", "requested": extras}
+                    {
+                        "status": "OPTIONAL_MARKETS_PARTIAL_COVERAGE",
+                        "requested_event_markets": len(pairs) * len(extras),
+                        "retrieved_event_markets": completed_extra,
+                    }
                 )
-                pairs = []
-            for _, event in pairs:
-                try:
-                    extra = odds_feed.extra(event["sport_key"], event["id"], extras)
-                except ProviderError:
-                    extra_issues.append(
-                        {"event_id": event["id"], "status": "OPTIONAL_MARKETS_UNAVAILABLE"}
-                    )
-                    continue
-                artifacts["odds_extra"][event["id"]] = extra
-                try:
-                    replacements[event["id"]] = merge_extra_event(event, extra)
-                except (ProviderError, KeyError, ValueError, TypeError):
-                    conflicted.add(event["id"])
-                    extra_issues.append(
-                        {"event_id": event["id"], "status": "CONFLICTING_EVENT_IDENTITY"}
-                    )
             events = [
                 replacements.get(event.get("id"), event) if isinstance(event, dict) else event
                 for event in events
@@ -227,14 +403,88 @@ def run_daily223_live(
         observed = clock()
         if observed < started:
             raise ValueError("clock moved backwards during live run")
-        candidate_input = assemble_daily223_candidates(
-            fixtures, events, config, target_date, observed, fixture_time
+        try:
+            candidate_input = assemble_daily223_candidates(
+                fixtures,
+                events,
+                config,
+                target_date,
+                observed,
+                fixture_time,
+                allow_stale_fixture_snapshot=allow_incomplete,
+            )
+        except (ProviderError, ValueError, TypeError, KeyError, OverflowError):
+            if construct_legacy:
+                raise
+            candidate_input = assemble_daily223_candidates(
+                fixtures,
+                [],
+                config,
+                target_date,
+                observed,
+                fixture_time,
+                allow_stale_fixture_snapshot=True,
+            )
+            base_issues.append(
+                {
+                    "status": "INVALID_PRIMARY_ODDS_RESPONSE",
+                    "message": "Az elsődleges szorzóválasz nem feldolgozható.",
+                }
+            )
+        for item in candidate_input["data_issues"]:
+            item.setdefault("provider", getattr(odds_feed, 'provider', 'the_odds_api'))
+        if not construct_legacy and not stats_primary:
+            from .odds_recovery import recover_odds
+
+            stage = "odds_recovery"
+            artifacts["odds_recovery"] = recover_odds(
+                candidate_input,
+                fixtures,
+                config,
+                budget,
+                cache,
+                target_date,
+                clock,
+                fixture_time,
+            )
+            stage = "construction"
+        elif stats_primary:
+            artifacts['odds_recovery'] = {'api_football_calls': 0, 'status': 'THE_STATS_PRIMARY',
+                'reason': 'Native TheStats prices; receipt timestamps remain separate from unknown provider quote times.'}
+        candidate_input["data_issues"].extend(
+            [
+                *artifacts["history"].get("data_issues", []),
+                *fixture_issues,
+                *base_issues,
+                *extra_issues,
+            ]
         )
-        candidate_input["data_issues"].extend(extra_issues)
         artifacts["candidate_input"] = candidate_input
-        report, bookmaker_selection = _build_for_one_bookmaker(
-            candidate_input, artifacts["history"]
-        )
+        if construct_legacy:
+            report, bookmaker_selection = _build_for_one_bookmaker(
+                candidate_input, artifacts["history"]
+            )
+            from goal_analysis.providers.the_stats_odds import attach_provenance
+
+            attach_provenance(report, candidate_input['candidates'])
+        else:
+            # The portfolio coordinator enriches this shared universe once and
+            # constructs all profiles. Do not repeat that work for every book.
+            report = build_daily_223([], target_date, observed)
+            report.update(
+                construction_status="COLLECTION_COMPLETE",
+                selection_status="NOT_RUN",
+                input_candidate_count=len(candidate_input["candidates"]),
+                follow_up=[],
+                collection_status="COLLECTION_COMPLETE",
+            )
+            bookmaker_selection = {
+                "selected": None,
+                "preferred": False,
+                "method": "DEFERRED_TO_PORTFOLIO",
+                "evaluated": [],
+                "preferred_bookmakers": candidate_input["preferred_bookmakers"],
+            }
         report["bookmaker_selection"] = bookmaker_selection
         report["matching"] = candidate_input["matching"]
         report["data_issues"] = candidate_input["data_issues"]
@@ -271,11 +521,24 @@ def run_daily223_live(
         report = blocked_report(target_date, clock(), stage, reason)
     report["usage"] = {
         "football_calls": budget.calls if budget else 0,
+        "football_odds_calls": artifacts.get("odds_recovery", {}).get("api_football_calls", 0),
         "odds_calls": odds_feed.calls,
         "odds_credits_reserved": odds_feed.reserved_credits,
         "odds_provider_usage": odds_feed.usage,
         "llm_calls": 0,
     }
+    if getattr(odds_feed, 'halt_reason', None) == 'ODDS_AUTH_REQUIRED':
+        artifacts['odds_access'] = {'status': 'AUTH_REQUIRED', 'provider': 'the_odds_api',
+                                   'llm_review_permitted_without_prices': False}
+    if getattr(football_client, 'provider', None) == 'the_stats_api':
+        report['usage']['sports_provider'] = 'the_stats_api'
+        report['usage']['api_football_calls'] = 0
+        report['usage']['the_stats_api_calls'] = budget.calls if budget else 0
+    if getattr(odds_feed, 'provider', None) == 'the_stats_api':
+        report['usage']['odds_provider'] = 'the_stats_api'
+        report['usage']['odds_api_calls'] = 0
+        report['usage']['odds_budget_unit'] = 'THE_STATS_HTTP_REQUESTS'
+        artifacts['odds_issues'] = odds_feed.issues
     del report["report_sha256"]
     report["report_sha256"] = canonical_sha256(report)
     artifacts["report"] = report

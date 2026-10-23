@@ -113,6 +113,7 @@ class ApiFootballHistoryCollector:
         league_seasons: Sequence[tuple[int, int]],
         max_calls: int = 8,
         force_refresh: bool = False,
+        allow_partial: bool = False,
     ) -> dict:
         if type(max_calls) is not int or max_calls < 0:
             raise ValueError("max_calls must be a nonnegative integer")
@@ -133,35 +134,52 @@ class ApiFootballHistoryCollector:
                 cached = None
             prepared.append((league, season, key, cached))
         required = sum(cached is None for _, _, _, cached in prepared)
-        if required > max_calls:
+        if required > max_calls and not allow_partial:
             raise ProviderError(f"history requires {required} API calls; budget is {max_calls}")
         records: dict[str, dict] = {}
-        sources, calls = [], 0
+        sources, calls, issues = [], 0, []
         for league, season, key, cached in prepared:
             from_cache = cached is not None
             if cached is None:
-                if self.client.last_usage.remaining_day == 0:
-                    raise ProviderError("API-Football daily quota exhausted")
-                payload = self.client.request(
-                    "fixtures",
-                    {
-                        "league": int(league),
-                        "season": season,
-                        "status": "FT-AET-PEN",
-                        "timezone": "UTC",
-                    },
-                )
-                calls += 1
-                fetched = self.clock()
-                aware_time(fetched.isoformat())
-                if fetched < started:
-                    raise ProviderError("clock moved backwards during collection")
-                cached = {
-                    "fetched_at": fetched.isoformat(),
-                    "payload_sha256": canonical_sha256(payload),
-                    "records": normalize_history(payload, league, season, fetched.isoformat()),
-                }
-                self.cache.set(self.NAMESPACE, key, cached, self.ttl, fetched)
+                try:
+                    if calls >= max_calls:
+                        raise ProviderError(
+                            "history call budget exhausted; fixtures budget preserved"
+                        )
+                    if self.client.last_usage.remaining_day == 0:
+                        raise ProviderError("API-Football daily quota exhausted")
+                    calls += 1
+                    payload = self.client.request(
+                        "fixtures",
+                        {
+                            "league": int(league),
+                            "season": season,
+                            "status": "FT-AET-PEN",
+                            "timezone": "UTC",
+                        },
+                    )
+                    fetched = self.clock()
+                    aware_time(fetched.isoformat())
+                    if fetched < started:
+                        raise ProviderError("clock moved backwards during collection")
+                    cached = {
+                        "fetched_at": fetched.isoformat(),
+                        "payload_sha256": canonical_sha256(payload),
+                        "records": normalize_history(payload, league, season, fetched.isoformat()),
+                    }
+                    self.cache.set(self.NAMESPACE, key, cached, self.ttl, fetched)
+                except (ProviderError, ValueError, TypeError, KeyError, OSError):
+                    if not allow_partial:
+                        raise
+                    issues.append(
+                        {
+                            "league_id": league,
+                            "season": season,
+                            "status": "HISTORY_UNAVAILABLE",
+                            "message": "Ehhez a ligához / szezonhoz nem érkezett használható történeti adat. A többi adat gyűjtése folytatódott.",
+                        }
+                    )
+                    continue
             sources.append(
                 {
                     "league_id": league,
@@ -189,11 +207,13 @@ class ApiFootballHistoryCollector:
             "provider": "api_football",
             "collected_at": completed.isoformat(),
             "api_calls": calls,
-            "cache_hits": len(prepared) - calls,
+            "cache_hits": sum(source["from_cache"] for source in sources),
             "sources": sources,
             "records": sorted(
                 records.values(), key=lambda item: (item["kickoff"], item["fixture_id"])
             ),
         }
+        if issues:
+            result["data_issues"] = issues
         result["snapshot_sha256"] = canonical_sha256(result)
         return result

@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="fr-fr" dir="ltr">
+
+<head>
+	<!-- Google Tag Manager -->
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','GTM-N7PB4KW');</script>
+	<!-- End Google Tag Manager -->
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Site officiel de la Decathlon Arena Stade Pierre Mauroy – Découvrez nos événements sportifs (football, rugby, basket, tennis, …), concerts et spectacles ainsi que nos événements d’entreprises et solutions de relations publiques">
+	<title>FAQ - Decathlon Arena Stade Pierre Mauroy</title>
+	<link href="/images/favicon.ico?v=2" rel="shortcut icon" type="image/x-icon">
+	<link href="/favicon.ico" rel="icon" type="image/vnd.microsoft.icon">
+
+	    <link href="/media/system/css/joomla-fontawesome.min.css?ccc18e" rel="lazy-stylesheet"><noscript><link href="/media/system/css/joomla-fontawesome.min.css?ccc18e" rel="stylesheet"></noscript>
+	<link href="/media/templates/site/cassiopeia/css/template.min.css?ccc18e" rel="stylesheet">
+	<link href="/media/templates/site/cassiopeia/css/global/colors_standard.min.css?ccc18e" rel="stylesheet">
+	<link href="/media/mod_newsletter/css/mod-newsletter.css?ccc18e" rel="stylesheet">
+	<link href="/media/mod_organisateur/css/mod-organisateur.css?ccc18e" rel="stylesheet">
+	<link href="/media/templates/site/cassiopeia/css/vendor/joomla-custom-elements/joomla-alert.min.css?0.4.1" rel="stylesheet">
+	<style>:root {
+		--hue: 214;
+		--template-bg-light: #f0f4fb;
+		--template-text-dark: #495057;
+		--template-text-light: #ffffff;
+		--template-link-color: var(--link-color);
+		--template-special-color: #001B4C;
+		
+	}</style>
+
+    <script src="/media/vendor/metismenujs/js/metismenujs.min.js?1.4.0" defer></script>
+	<script src="/media/vendor/jquery/js/jquery.min.js?3.7.1"></script>
+	<script src="/templates/decathlon_arena_stade_pierre_mauroy/js/custom.js?ccc18e" defer></script>
+	<script src="/media/templates/site/cassiopeia/js/mod_menu/menu-metismenu.min.js?ccc18e" defer></script>
+	<script type="application/json" class="joomla-script-options new">{"bootstrap.tabs":{".menu-configurations a":{}},"bootstrap.alert":["#newsletter-alert","#organisateur-alert"],"joomla.jtext":{"ERROR":"Erreur","MESSAGE":"Message","NOTICE":"Annonce","WARNING":"Alerte","SUCCESS":"Succès","JCLOSE":"Fermer","JOK":"OK","JOPEN":"Ouvrir"},"system.paths":{"root":"","rootFull":"http:\/\/www.stade-pierre-mauroy.com\/","base":"","baseFull":"http:\/\/www.stade-pierre-mauroy.com\/"},"csrf.token":"4aae0f870c3b23016e2e0e11bfce120c"}</script>
+	<script src="/media/system/js/core.min.js?a3d8f8"></script>
+	<script src="/media/vendor/webcomponentsjs/js/webcomponents-bundle.min.js?2.8.0" nomodule defer></script>
+	<script src="/media/templates/site/cassiopeia/js/template.min.js?ccc18e" type="module"></script>
+	<script src="/media/vendor/bootstrap/js/tab.min.js?5.3.8" type="module"></script>
+	<script src="/media/vendor/bootstrap/js/collapse.min.js?5.3.8" type="module"></script>
+	<script src="/media/vendor/bootstrap/js/alert.min.js?5.3.8" type="module"></script>
+	<script src="/media/vendor/bootstrap/js/button.min.js?5.3.8" type="module"></script>
+	<script src="/media/vendor/bootstrap/js/carousel.min.js?5.3.8" type="module"></script>
+	<script src="/media/vendor/bootstrap/js/dropdown.min.js?5.3.8" type="module"></script>
+	<script src="/media/vendor/bootstrap/js/modal.min.js?5.3.8" type="module"></script>
+	<script src="/media/vendor/bootstrap/js/offcanvas.min.js?5.3.8" type="module"></script>
+	<script src="/media/vendor/bootstrap/js/popover.min.js?5.3.8" type="module"></script>
+	<script src="/media/vendor/bootstrap/js/scrollspy.min.js?5.3.8" type="module"></script>
+	<script src="/media/vendor/bootstrap/js/toast.min.js?5.3.8" type="module"></script>
+	<script src="/media/system/js/joomla-hidden-mail.min.js?80d9c7" type="module"></script>
+	<script src="/media/system/js/messages.min.js?9a4811" type="module"></script>
+	<script src="/media/mod_newsletter/js/newsletter.js?1.0.0" type="module"></script>
+	<script src="/media/mod_organisateur/js/organisateur.js?1.0.0" type="module"></script>
+	<script src="/plugins/system/cleantalkantispam/js/ct-functions.js?1792706589"></script>
+	<script src="https://fd.cleantalk.org/ct-bot-detector-wrapper.js"></script>
+	<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"http://www.stade-pierre-mauroy.com/#/schema/Organization/base","name":"Decathlon Arena Stade Pierre Mauroy","url":"http://www.stade-pierre-mauroy.com/"},{"@type":"WebSite","@id":"http://www.stade-pierre-mauroy.com/#/schema/WebSite/base","url":"http://www.stade-pierre-mauroy.com/","name":"Decathlon Arena Stade Pierre Mauroy","publisher":{"@id":"http://www.stade-pierre-mauroy.com/#/schema/Organization/base"}},{"@type":"WebPage","@id":"http://www.stade-pierre-mauroy.com/#/schema/WebPage/base","url":"http://www.stade-pierre-mauroy.com/infos-pratiques/faq","name":"FAQ - Decathlon Arena Stade Pierre Mauroy","description":"Site officiel de la Decathlon Arena Stade Pierre Mauroy – Découvrez nos événements sportifs (football, rugby, basket, tennis, …), concerts et spectacles ainsi que nos événements d’entreprises et solutions de relations publiques","isPartOf":{"@id":"http://www.stade-pierre-mauroy.com/#/schema/WebSite/base"},"about":{"@id":"http://www.stade-pierre-mauroy.com/#/schema/Organization/base"},"inLanguage":"fr-FR"},{"@type":"Article","@id":"http://www.stade-pierre-mauroy.com/#/schema/com_content/article/346","name":"FAQ","headline":"FAQ","inLanguage":"fr-FR","isPartOf":{"@id":"http://www.stade-pierre-mauroy.com/#/schema/WebPage/base"}}]}</script>
+	<script>
+				const ctPublicData = {
+					typeOfCookie: "simple_cookies"
+				}
+			</script>
+	<script>var ct_setcookie = 1;</script>
+	<script>ctSetCookie("ct_checkjs", "1161373437", "0");</script>
+
+    <link rel="stylesheet" href="/templates/decathlon_arena_stade_pierre_mauroy/css/styles.css?1.1.4" type="text/css" />
+	<meta name="google-site-verification" content="fhmgn7rvcR7sSjxNI2P8Sdj7mpVlOOKNyF4Z8F0HqWk" />
+</head>
+
+<body class="site com_content wrapper-fluid view-article no-layout no-task itemid-129">
+	<!-- Google Tag Manager (noscript) -->
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N7PB4KW"
+	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	<!-- End Google Tag Manager (noscript) -->
+	<!-- Liens d'évitement RGAA -->
+	<nav role="navigation" aria-label="Accès rapide" class="skip-links">
+		<a href="#content" class="skip-link">Aller au contenu principal</a>
+	</nav>
+	<header role="banner" class="header container-header full-width">
+
+        
+        
+        
+                    <div class="grid-child container-nav">
+                					<img src="/templates/decathlon_arena_stade_pierre_mauroy/images/header-mobil-border-left.png" class="mobil-border-left" alt="">
+                    <div class="moduletable header-logo">
+        
+<div id="mod-custom111" class="mod-custom custom">
+    <div class="logo-header"><a href="/" title="Site officiel de la Decathlon Arena Stade Pierre Mauroy"> <img src="/templates/decathlon_arena_stade_pierre_mauroy/images/daspm-logo-blanc-header.png" alt="Decathlon Arena Stade Pierre Mauroy" /> </a></div></div>
+</div>
+<nav role="navigation" class="navbar navbar-expand-lg" aria-label="Menu principal">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbar1" aria-controls="navbar1" aria-expanded="false">
+        <span class="icon-menu" aria-hidden="true"></span>
+        <span class="visually-hidden">Permuter la navigation</span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar1">
+        <div class="top-menu-mobile">
+            <div>
+                <a href="/">
+                    <i class="fa-solid fa-house" aria-hidden="true"></i>
+                    <span class="visually-hidden">Accueil</span>
+                </a>
+            </div>
+            <div class="menu-close">
+                <button class="close" data-bs-toggle="collapse" data-bs-target="#navbar1">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                    <span class="visually-hidden">Fermer le menu</span>
+                </button>
+            </div>
+        </div>
+        <div id="newsletter-module-133" class="newsletter-module-container">
+
+                    <div class="modal fade" id="newsletter-modal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="newsletter-modal-title">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p class="modal-title w-100" id="newsletter-modal-title">
+                            Inscription à la newsletter                        </p>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer la fenêtre d'inscription à la newsletter"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="spinner-newsletter" class="spinner-border text-primary position-absolute top-50 start-50" role="status" style="display: none;">
+                            <span class="visually-hidden">Traitement en cours...</span>
+                        </div>
+                        <div id="err-newsletter" class="fw-bold">Les champs signalés par un <span style="color: rgb(215, 62, 49);">*</span> sont obligatoires.</div>
+                        
+                        <form name="newsletter" id="newsletter-form">
+    <div class="control-group">
+            <div class="control-label"><label id="jform_nom-lbl" for="jform_nom" class="required">
+    Nom<span class="star">&#160;*</span></label>
+</div>
+        <div class="controls">
+        
+
+    
+    <input
+        type="text"
+        name="jform[nom]"
+        id="jform_nom"
+        value=""
+                class="form-control required"       placeholder="Votre nom"   required       >
+
+    
+
+            </div>
+</div>
+    <div class="control-group">
+            <div class="control-label"><label id="jform_prenom-lbl" for="jform_prenom" class="required">
+    Prénom<span class="star">&#160;*</span></label>
+</div>
+        <div class="controls">
+        
+
+    
+    <input
+        type="text"
+        name="jform[prenom]"
+        id="jform_prenom"
+        value=""
+                class="form-control required"       placeholder="Votre prénom"   required       >
+
+    
+
+            </div>
+</div>
+    <div class="control-group">
+            <div class="control-label"><label id="jform_email-lbl" for="jform_email" class="required">
+    Email <small class="form-text text-muted">(exemple : nom&#64;domaine.fr)</small><span class="star">&#160;*</span></label>
+</div>
+        <div class="controls">
+        
+
+    
+    <input
+        type="text"
+        name="jform[email]"
+        id="jform_email"
+        value=""
+                class="form-control required"       placeholder="Votre email"   required       >
+
+    
+
+            </div>
+</div>
+    <fieldset id="jform_type">
+    <legend class="visually-hidden">
+        Vous êtes    </legend>
+    <div class="btn-group w-100 radio">
+                                                                    <input class="btn-check" type="radio" id="jform_type0" name="jform[type]" value="0" checked="checked">
+                <label for="jform_type0" class="btn btn-sm btn-outline-primary">
+                    Un particulier                </label>
+                                                                                <input class="btn-check" type="radio" id="jform_type1" name="jform[type]" value="1" >
+                <label for="jform_type1" class="btn btn-sm btn-outline-primary">
+                    Un professionnel                </label>
+                        </div>
+</fieldset>
+    <div id="newsletter-optin" class="control-group">
+        <div class="control-label text-start">
+            <span class="form-label">Consentement <span class="star" aria-hidden="true" style="color: rgb(215, 62, 49);">*</span></span>
+        </div>
+        <div class="controls d-flex align-items-start gap-2 text-start">
+            <div class="form-check form-check-inline">
+    <input
+        type="checkbox"
+        name="jform[optin]"
+        id="jform_optin"
+        class="form-check-input required"
+        value="1"
+         required    >
+</div>
+            <label for="jform_optin" class="form-check-label mb-0">
+                J’accepte le traitement des <a href="/donnees-personnelles" target="_blank" rel="noopener noreferrer" title="données recueillies (nouvelle fenêtre)">données recueillies</a> pour m'inscrire.            </label>
+        </div>
+    </div>
+    <input type="hidden" name="task" value="subscribe" />
+</form>                        
+                        <div class="confirmation" style="display:none;">
+                            Vous allez recevoir un email afin de confirmer votre inscription.
+                        </div>
+                        <div class="err_inscription" style="display:none;">
+                            Une erreur est apparue lors de l'enregistrement de votre inscription. Veuillez réessayer.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <ul class="row w-100 list-unstyled m-0 p-0">
+                            <li class="col">
+                                <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">
+                                    Fermer <span class="visually-hidden">la fenêtre d'inscription à la newsletter</span>
+                                </button>
+                            </li>
+                            <li class="col colSave">
+                                <button type="button" class="btn btn-primary w-100" id="save-newsletter-modal">
+                                    M'inscrire<span class="visually-hidden"> à la newsletter</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="social-flag-header">
+        <div class="social-header">
+            <ul class="social-list">
+                <li><a href="https://www.tiktok.com/@decathlonarena_spm" target="_blank" rel="noopener" title="TikTok (nouvelle fenêtre)"> <img class="social-icon" src="/templates/decathlon_arena_stade_pierre_mauroy/images/tiktok.png" alt="TikTok"> </a> </li>
+                <li><a href="https://www.linkedin.com/company/decathlon-arena-stade-pierre-mauroy/mycompany/?viewAsMember=true" target="_blank" rel="noopener" title="LinkedIn (nouvelle fenêtre)"> <img class="social-icon" src="/templates/decathlon_arena_stade_pierre_mauroy/images/linkedin.png" alt="LinkedIn"> </a> </li>
+                <li><a href="https://twitter.com/StadePM" target="_blank" rel="noopener" title="X (nouvelle fenêtre)"> <img class="social-icon" src="/templates/decathlon_arena_stade_pierre_mauroy/images/x.png" alt="X"> </a> </li>
+                <li><a href="https://www.facebook.com/DecathlonArenaStadePierreMauroy" target="_blank" rel="noopener" title="Facebook (nouvelle fenêtre)"> <img class="social-icon" src="/templates/decathlon_arena_stade_pierre_mauroy/images/facebook.png" alt="Facebook"> </a> </li>
+                <li><a href="https://www.instagram.com/stade_pm" target="_blank" rel="noopener" title="Instagram (nouvelle fenêtre)"> <img class="social-icon" src="/templates/decathlon_arena_stade_pierre_mauroy/images/instagram.png" alt="Instagram"> </a> </li>
+                <li><a href="https://www.youtube.com/@decathlonarenastadepm" target="_blank" rel="noopener" title="YouTube (nouvelle fenêtre)"> <img class="social-icon" src="/templates/decathlon_arena_stade_pierre_mauroy/images/youtube.png" alt="YouTube"> </a> </li>
+            </ul>
+        </div>
+        <div class="flag-header">
+            <a href="https://www.stade-pierre-mauroy.co.uk/" rel="noopener" hreflang="en">
+                <img class="flag-icon" src="/templates/decathlon_arena_stade_pierre_mauroy/images/flag-english.png" alt="">
+                <span class="visually-hidden" lang="en">English version</span>
+            </a>
+        </div>
+    </div>
+    <div class="btn-news-letter">
+        <button type="button" class="btn news-letter-header" data-bs-toggle="modal" data-bs-target="#newsletter-modal">
+            <span class="chevron-right">Recevoir notre newsletter</span>
+        </button>
+    </div>
+</div>        <ul class="mod-menu mod-menu_dropdown-metismenu metismenu mod-list " id="main-menu">
+<li class="metismenu-item item-111 level-1 deeper parent"><a href="/programmation" >PROGRAMMATION</a><button class="mm-collapsed mm-toggler mm-toggler-link" aria-haspopup="true" aria-expanded="false" aria-label="PROGRAMMATION"></button><ul class="mm-collapse"><li class="metismenu-item item-187 level-2 deeper parent"><a href="/programmation/concert" >CONCERT</a><button class="mm-collapsed mm-toggler mm-toggler-link" aria-haspopup="true" aria-expanded="false" aria-label="CONCERT"></button><ul class="mm-collapse"><li class="metismenu-item item-282 level-3"><a href="/programmation/concert/soprano" >SOPRANO</a></li><li class="metismenu-item item-280 level-3"><a href="/programmation/concert/angele" >ANGÈLE</a></li></ul></li><li class="metismenu-item item-188 level-2 deeper parent"><a href="/programmation/sport" >SPORT</a><button class="mm-collapsed mm-toggler mm-toggler-link" aria-haspopup="true" aria-expanded="false" aria-label="SPORT"></button><ul class="mm-collapse"><li class="metismenu-item item-208 level-3"><a href="/programmation/sport/losc" >LOSC SAISON 2026-2027</a></li></ul></li></ul></li><li class="metismenu-item item-105 level-1 deeper parent"><a href="/entreprises/hospitalites/#" >ENTREPRISES</a><button class="mm-collapsed mm-toggler mm-toggler-link" aria-haspopup="true" aria-expanded="false" aria-label="ENTREPRISES"></button><ul class="mm-collapse"><li class="metismenu-item item-104 level-2"><a href="/entreprises/hospitalites" >HOSPITALITÉS</a></li><li class="metismenu-item item-112 level-2 deeper parent"><a href="/entreprises/evenements-entreprise/nos-espaces" title="ÉVÉNEMENTS D'ENTREPRISES">ÉVÉNEMENTS D'ENTREPRISE</a><button class="mm-collapsed mm-toggler mm-toggler-link" aria-haspopup="true" aria-expanded="false" aria-label="ÉVÉNEMENTS D'ENTREPRISE"></button><ul class="mm-collapse"><li class="metismenu-item item-220 level-3"><a href="/entreprises/evenements-entreprise/nos-espaces" >NOS ESPACES</a></li><li class="metismenu-item item-221 level-3"><a href="/entreprises/evenements-entreprise/nos-formules" >NOS FORMULES</a></li><li class="metismenu-item item-118 level-3"><a href="/entreprises/evenements-entreprise/sur-mesure" class="sous-menu">SUR-MESURE</a></li><li class="metismenu-item item-119 level-3"><a href="/entreprises/evenements-entreprise/visitez-les-espaces" class="sous-menu">VISITEZ LES ESPACES</a></li></ul></li><li class="metismenu-item item-120 level-2"><a href="/entreprises/groupes-et-cse" >GROUPES et CSE</a></li></ul></li><li class="metismenu-item item-106 level-1 active deeper parent"><a href="/infos-pratiques/acces/#" >INFOS PRATIQUES</a><button class="mm-collapsed mm-toggler mm-toggler-link" aria-haspopup="true" aria-expanded="false" aria-label="INFOS PRATIQUES"></button><ul class="mm-collapse"><li class="metismenu-item item-121 level-2"><a href="/infos-pratiques/acces" >ACCÈS</a></li><li class="metismenu-item item-122 level-2"><a href="/infos-pratiques/parking" >PARKING</a></li><li class="metismenu-item item-123 level-2"><a href="/infos-pratiques/billetterie" >BILLETTERIE</a></li><li class="metismenu-item item-124 level-2"><a href="/infos-pratiques/acces-psh-et-pmr" >ACCÈS PSH ET PMR</a></li><li class="metismenu-item item-125 level-2"><a href="/infos-pratiques/ou-est-votre-place" >OÙ EST VOTRE PLACE ?</a></li><li class="metismenu-item item-126 level-2"><a href="/infos-pratiques/hebergement" >HÉBERGEMENT</a></li><li class="metismenu-item item-127 level-2"><a href="/infos-pratiques/restauration" >RESTAURATION</a></li><li class="metismenu-item item-128 level-2"><a href="/infos-pratiques/objets-trouves" >OBJETS TROUVÉS</a></li><li class="metismenu-item item-129 level-2 current active"><a href="/infos-pratiques/faq" aria-current="page">FAQ</a></li></ul></li><li class="metismenu-item item-107 level-1 deeper parent"><a href="/activites/escape-game/#" >ACTIVITES</a><button class="mm-collapsed mm-toggler mm-toggler-link" aria-haspopup="true" aria-expanded="false" aria-label="ACTIVITES"></button><ul class="mm-collapse"><li class="metismenu-item item-246 level-2"><a href="/activites/escape-game" >ESCAPE GAME</a></li><li class="metismenu-item item-216 level-2"><a href="/activites/visites-individuelles" >VISITES GRAND PUBLIC</a></li><li class="metismenu-item item-130 level-2"><a href="/activites/visites-en-groupe" >VISITES DE GROUPES</a></li></ul></li><li class="metismenu-item item-108 level-1 deeper parent"><a href="/presentation/le-stade/#" >PRÉSENTATION</a><button class="mm-collapsed mm-toggler mm-toggler-link" aria-haspopup="true" aria-expanded="false" aria-label="PRÉSENTATION"></button><ul class="mm-collapse"><li class="metismenu-item item-131 level-2"><a href="/presentation/le-stade" >LE STADE</a></li><li class="metismenu-item item-132 level-2"><a href="/presentation/un-stade-engage" >UN STADE ENGAGÉ</a></li><li class="metismenu-item item-133 level-2"><a href="/presentation/live-replay" >LIVE &amp; REPLAY</a></li><li class="metismenu-item item-134 level-2"><a href="/presentation/club-resident-losc" >CLUB RESIDENT - LOSC</a></li><li class="metismenu-item item-135 level-2"><a href="/presentation/partenaire-institutionnel-mel" >PARTENAIRE INSTITUTIONNEL - MEL</a></li><li class="metismenu-item item-136 level-2"><a href="/presentation/fournisseur-officiel-coca-cola" >FOURNISSEUR OFFICIEL - COCA-COLA</a></li><li class="metismenu-item item-137 level-2"><a href="/presentation/le-credit-mutuel-nord-europe" >LE CRÉDIT MUTUEL NORD EUROPE</a></li></ul></li><li class="metismenu-item item-113 level-1 deeper parent"><a href="/actualites" >ACTUALITÉS</a><button class="mm-collapsed mm-toggler mm-toggler-link" aria-haspopup="true" aria-expanded="false" aria-label="ACTUALITÉS"></button><ul class="mm-collapse"><li class="metismenu-item item-114 level-2"><a href="/actualites/sport" >SPORT</a></li><li class="metismenu-item item-115 level-2"><a href="/actualites/concert" >CONCERT</a></li><li class="metismenu-item item-116 level-2"><a href="/actualites/le-stade" >LE STADE</a></li><li class="metismenu-item item-117 level-2"><a href="/actualites/entreprises" >ENTREPRISES</a></li></ul></li><li class="metismenu-item item-109 level-1"><a href="/contact" >CONTACT</a></li></ul>
+    </div>
+</nav><div id="newsletter-module-130" class="newsletter-module-container">
+
+        <div class="social-flag-header">
+        <div class="social-header">
+            <ul class="social-list">
+                <li><a href="https://www.tiktok.com/@decathlonarena_spm" target="_blank" rel="noopener" title="TikTok (nouvelle fenêtre)"> <img class="social-icon" src="/templates/decathlon_arena_stade_pierre_mauroy/images/tiktok.png" alt="TikTok"> </a> </li>
+                <li><a href="https://www.linkedin.com/company/decathlon-arena-stade-pierre-mauroy/mycompany/?viewAsMember=true" target="_blank" rel="noopener" title="LinkedIn (nouvelle fenêtre)"> <img class="social-icon" src="/templates/decathlon_arena_stade_pierre_mauroy/images/linkedin.png" alt="LinkedIn"> </a> </li>
+                <li><a href="https://twitter.com/StadePM" target="_blank" rel="noopener" title="X (nouvelle fenêtre)"> <img class="social-icon" src="/templates/decathlon_arena_stade_pierre_mauroy/images/x.png" alt="X"> </a> </li>
+                <li><a href="https://www.facebook.com/DecathlonArenaStadePierreMauroy" target="_blank" rel="noopener" title="Facebook (nouvelle fenêtre)"> <img class="social-icon" src="/templates/decathlon_arena_stade_pierre_mauroy/images/facebook.png" alt="Facebook"> </a> </li>
+                <li><a href="https://www.instagram.com/stade_pm" target="_blank" rel="noopener" title="Instagram (nouvelle fenêtre)"> <img class="social-icon" src="/templates/decathlon_arena_stade_pierre_mauroy/images/instagram.png" alt="Instagram"> </a> </li>
+                <li><a href="https://www.youtube.com/@decathlonarenastadepm" target="_blank" rel="noopener" title="YouTube (nouvelle fenêtre)"> <img class="social-icon" src="/templates/decathlon_arena_stade_pierre_mauroy/images/youtube.png" alt="YouTube"> </a> </li>
+            </ul>
+        </div>
+        <div class="flag-header">
+            <a href="https://www.stade-pierre-mauroy.co.uk/" rel="noopener" hreflang="en">
+                <img class="flag-icon" src="/templates/decathlon_arena_stade_pierre_mauroy/images/flag-english.png" alt="">
+                <span class="visually-hidden" lang="en">English version</span>
+            </a>
+        </div>
+    </div>
+    <div class="btn-news-letter">
+        <button type="button" class="btn news-letter-header" data-bs-toggle="modal" data-bs-target="#newsletter-modal">
+            <span class="chevron-right">Recevoir notre newsletter</span>
+        </button>
+    </div>
+</div>
+					<img src="/templates/decathlon_arena_stade_pierre_mauroy/images/header-mobil-border-right.png" class="mobil-border-right" alt="">
+                                            </div>
+            </header>
+
+    <main id="content" role="main" tabindex="-1" class="site-grid">
+        
+        
+        
+        
+        <div class="grid-child container-component space-content">
+            
+            
+                        <div id="system-message-container" aria-live="polite"></div>
+
+            <div class="main-component">
+                <div class="entete-fond-titre">
+	<img class="base-fond" alt="" src="data:image/gif;base64,R0lGODlhZwheAYABAAAAADZDuiH5BAEKAAEALAAAAABnCF4BAAL+jI+py+0Po5y02ouz3rz7D4biSJbmiabqyrbuC8fyTNf2jef6zvf+DwwKh8Si8YhMKpfMpvMJjUqn1Kr1is1qt9yu9wsOi8fksvmMTqvX7Lb7DY/L5/S6/Y7P6/f8vv8PGCg4SFhoeIiYqLjI2Oj4CBkpOUlZaXmJmam5ydnp+QkaKjpKWmp6ipqqusra6voKGys7S1tre4ubq7vL2+v7CxwsPExcbHyMnKy8zNzs/AwdLT1NXW19jZ2tvc3d7f0NHi4+Tl5ufo6err7O3u7+Dh8vP09fb3+Pn6+/z9/v/w8woMCBBAsaPIgwocKFDBs6fAgxosSJFCtavIgxo8b+jRw7evwIMqTIkSRLmjyJMqXKlSxbunwJM6bMmTRr2ryJM6fOnTx7+vwJNKjQoUSLGj2KNKnSpUybOn0KNarUqVSrWr2KNavWrVy7ev0KNqzYsWTLmj2LNq3atWzbun0LN67cuXTr2r2LN6/evXz7+v0LOLDgwYQLGz6MOLHixYwbO34MObLkyZQrW76MObPmzZw7e/4MOrTo0aRLmz6NOrXq1axbu34NO7bs2bRr276NO7fu3bx7+/4NPLjw4cSLGz+OPLny5cybO38OPbr06dSrW7+OPbv27dy7e/8OPrz48eTLmz+PPr369ezbu38PP778+fTr27+PP7/+/fz++/v/D2CAAg5IYIEGHohgggouyGCDDj4IYYQSTkhhhRZeiGGGGm7IYYcefghiiCKOSGKJJp6IYooqrshiiy6+CGOMMs5IY4023ohjjjruyGOPPv4IZJBCDklkkUYeiWSSSi7JZJNOPglllFJOSWWVVl6JZZZabslll15+CWaYYo5JZplmnolmmmquyWabbr4JZ5xyzklnnXbeiWeeeu7JZ59+/glooIIOSmihhh6KaKKKLspoo44+Cmmkkk5KaaWWXopppppuymmnnn4Kaqiijkpqqaaeimqqqq7KaquuvgprrLLOSmuttt6Ka6667sprr77+Cmywwg5LbLHGHov+bLLKLstss84+C2200k5LbbXWXottttpuy2233n4Lbrjijktuueaei2666q7LbrvuvgtvvPLOS2+99t6Lb7767stvv/7+C3DAAg9McMEGH4xwwgovzHDDDj8MccQST0xxxRZfjHHGGm/McccefwxyyCKPTHLJJp+Mcsoqr8xyyy6/DHPMMs9Mc80234xzzjrvzHPPPv8MdNBCD0100UYfjXTSSi/NdNNOPw111FJPTXXVVl+NddZab811115/DXbYYo9Ndtlmn4122mqvzXbbbr8Nd9xyz0133XbfjXfeeu/Nd99+/w144IIPTnjhhh+OeOKKL854444/Dnnkkk/+Tnnlll+Oeeaab855555/Dnrooo9Oeummn4566qqvznrrrr8Oe+yyz0577bbfjnvuuu/Oe+++/w588MIPT3zxxh+PfPLKL898884/D3300k9PffXWX4999tpvz3333n8Pfvjij09++eafj3766q/Pfvvuvw9//PLPT3/99t+Pf/76789///7/D8AACnCABCygAQ+IwAQqcIEMbKADHwjBCEpwghSsoAUviMEManCDHOygBz8IwhCKcIQkLKEJT4jCFKpwhSxsoQtfCMMYynCGNKyhDW+IwxzqcIc87KEPfwjEIApxiEQsohGPiMQkKnGJTGyiE58IxShKcYpUrKKpFa+IxSxqcYtc7KIXvwjGMIpxjGQsoxnPiMY0qnGNbGyjG98IxzjKcY50rKMd74jHPOpxj3zsox//CMhACnKQhCykIQ+JyEQqcpGMbKQjHwnJSEpykpSspCUviclManKTnOykJz8JylCKcpSkLKUpT4nKVKpylaxspStfCctYynKWtKylLW+Jy1zqcpe87KUvfwnMYApzmMQspjGPicxkKnOZzGymM39VAAA7" />
+	<div class="page-titre grid-container">
+		<h1> FAQ </h1>
+		<div class="box x1"></div>
+		<div class="box x2"></div>
+		<div class="box x3"></div>
+		<div class="box x4"></div>
+		<div class="box x5"></div>
+		<div class="box x6"></div>
+	</div>
+	<div class="fond-page-titre"></div>
+</div>
+<div class="page-content page-titre-content actu-body">
+	<div class="actu-content"> <div id="faq">
+<h2>Accès et Stationnement</h2>
+<div id="stationnement" class="accordion">
+<div class="accordion-item">
+<h3 id="headingOne" class="accordion-header"><button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#stationnement1" aria-expanded="true" aria-controls="stationnement1"> Où se situe le Stade et comment m'y rendre ? </button></h3>
+<div id="stationnement1" class="accordion-collapse collapse show" role="region" aria-labelledby="headingOne" data-bs-parent="#stationnement">
+<div class="accordion-body">
+<p>La Decathlon Arena - Stade Pierre-Mauroy se trouve au 261, Boulevard de Tournai - 59650 Villeneuve d’Ascq.</p>
+<p><a href="https://maps.google.fr/maps?q=Stade+Pierre+MAUROY,+Boulevard+de+Tournai,+Villeneuve-d%27Ascq" target="_blank" rel="noopener">Voir le plan</a></p>
+<p>Retrouvez toutes les informations sur la page <a href="/infos-pratiques/acces">Accès</a></p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h3 id="headingTwo" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#stationnement2" aria-expanded="false" aria-controls="stationnement2"> Où me garer pour venir au Stade ? </button></h3>
+<div id="stationnement2" class="accordion-collapse collapse" role="region" aria-labelledby="headingTwo" data-bs-parent="#stationnement">
+<div class="accordion-body">
+<p>Retrouvez toutes les informations sur la page <a href="/infos-pratiques/parking">Parking</a></p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h3 id="headingThree" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#stationnement3" aria-expanded="false" aria-controls="stationnement3"> Comment repérer la porte par laquelle je dois entrer ? </button></h3>
+<div id="stationnement3" class="accordion-collapse collapse" role="region" aria-labelledby="headingThree" data-bs-parent="#stationnement">
+<div class="accordion-body">
+<p>Le Stade dispose de 14 portes d'entrée nommées de la lettre A à la lettre N, l’indication de votre porte d’accès est présente sur votre billet.</p>
+<p><a href="https://maps.google.fr/maps?q=Stade+Pierre+MAUROY,+Boulevard+de+Tournai,+Villeneuve-d%27Ascq" target="_blank" rel="noopener">Voir le plan</a></p>
+</div>
+</div>
+</div>
+</div>
+<h2>Informations Billetterie</h2>
+<div id="info-billeterie" class="accordion">
+<div class="accordion-item">
+<h3 id="info-billeterie-headingOne" class="accordion-header"><button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#info-billeterie1" aria-expanded="true" aria-controls="info-billeterie1"> Comment acheter un billet ? </button></h3>
+<div id="info-billeterie1" class="accordion-collapse collapse show" role="region" aria-labelledby="info-billeterie-headingOne" data-bs-parent="#info-billeterie">
+<div class="accordion-body">
+<p>L’achat de billet se fait via la page <a href="/programmation" title="Toutes les infos sur la page programmation">programmation</a> du site et la fiche de l’événement concerné.</p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h3 id="info-billeterie-headingTwo" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#info-billeterie2" aria-expanded="false" aria-controls="info-billeterie2"> Comment régler ma réservation ? </button></h3>
+<div id="info-billeterie2" class="accordion-collapse collapse" role="region" aria-labelledby="info-billeterie-headingTwo" data-bs-parent="#info-billeterie">
+<div class="accordion-body">
+<p>Sont acceptés les règlements par carte American Express, carte bancaire Visa ou Mastercard, e-carte bleue, chèque bancaire, chèque-vacances ANCV ou maxichèque ou encore par carte cadeau Ticketnet. Attention : en fonction de votre choix de mode de retrait, certains modes de paiement peuvent ne pas vous être proposés. Ainsi, pour le retrait magasin, seul le paiement par American Express, Visa ou Mastercard sera disponible. De même, si le délai entre votre commande et la date de votre manifestation est inférieur à 14 jours, le paiement par chèque ou chèque-vacances ANCV ne pourra pas être accepté.</p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h3 id="info-billeterie-headingThree" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#info-billeterie3" aria-expanded="false" aria-controls="info-billeterie3"> Comment réserver un parking ? </button></h3>
+<div id="info-billeterie3" class="accordion-collapse collapse" role="region" aria-labelledby="info-billeterie-headingThree" data-bs-parent="#info-billeterie">
+<div class="accordion-body">
+<p>L’achat de place de parking s’effectue directement depuis la fiche de l’événement concerné. Il est conseillé d’acheter son parking en amont de l’événement pour préparer au mieux sa venue.</p>
+<p>L’achat de place se fait également à votre arrivée au parking le jour de l’événement, sous réserve de disponibilité et par carte bancaire uniquement. Retrouvez toutes les informations sur la page Parking.</p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h3 id="info-billeterie-headingFour" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#info-billeterie4" aria-expanded="false" aria-controls="info-billeterie4"> Comment imprimer mes billets commandés sous forme d’e-billet ? </button></h3>
+<div id="info-billeterie4" class="accordion-collapse collapse" role="region" aria-labelledby="info-billeterie-headingFour" data-bs-parent="#info-billeterie">
+<div class="accordion-body">
+<p>Après le paiement de votre commande, il vous est proposé d’imprimer vos e-tickets au format Pdf (Adobe Acrobat Reader). Vous pouvez aussi sauvegarder les e-tickets sur votre ordinateur et l'imprimer au moment opportun ou si vous vous apercevez qu’il est illisible.</p>
+<p>De plus, vos e-tickets vous sont envoyés en pièces jointes de votre e-mail de confirmation de commande et seront également disponibles à l’impression à tout moment via votre compte « Suivi de commande ».</p>
+<p>Vous devez être muni de votre e-billet lors de votre venue au Stade, ce dernier ne pourra pas être imprimé sur place.</p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h3 id="info-billeterie-headingFive" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#info-billeterie5" aria-expanded="false" aria-controls="info-billeterie5"> J'ai perdu mon titre d'accès, que dois-je faire ? </button></h3>
+<div id="info-billeterie5" class="accordion-collapse collapse" role="region" aria-labelledby="info-billeterie-headingFive" data-bs-parent="#info-billeterie">
+<div class="accordion-body">
+<p>En cas de perte ou de vol de vos billets, il n’est pas toujours possible de générer des duplicatas. En effet, les billets achetés sont soumis à la législation française sur la billetterie et aux règlements des événements et des lieux de spectacles. Dans ce cadre, les duplicatas de billets non numérotés ou de manifestations sportives sont interdits.</p>
+<p>Dans les autres cas, l’édition de duplicatas est soumise au règlement du lieu et à l’autorisation de l’organisateur de la manifestation.</p>
+<p>Pour les demandes de duplicatas en cas de perte ou de vol, veuillez contacter le service billetterie, 2 à 3 semaines avant l'événement, au 0892 390 100 0.34€/min</p>
+<p>Afin de soumettre votre demande à l’organisateur, nous aurons besoin à minima des pièces justificatives suivantes :</p>
+<ul>
+<li>En cas de perte : déclaration de perte sur l’honneur et copie de votre pièce d’identité,</li>
+<li>En cas de vol : copie du dépôt de plainte et de votre pièce d’identité</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h3 id="info-billeterie-headingSix" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#info-billeterie6" aria-expanded="false" aria-controls="info-billeterie6"> A partir de quel âge un enfant paye sa place au Stade ? </button></h3>
+<div id="info-billeterie6" class="accordion-collapse collapse" role="region" aria-labelledby="info-billeterie-headingSix" data-bs-parent="#info-billeterie">
+<div class="accordion-body">
+<p>La loi ALLIOT MARIE de 1993 impose, pour des raisons de sécurité et d’assurance, que toute personne accédant au Stade doit être munie d’un billet, quel que soit son âge.</p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h3 id="info-billeterie-headingSeven" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#info-billeterie7" aria-expanded="false" aria-controls="info-billeterie7"> Je suis une personne à mobilité réduite, comment acheter une place adaptée ? </button></h3>
+<div id="info-billeterie7" class="accordion-collapse collapse" role="region" aria-labelledby="info-billeterie-headingSeven" data-bs-parent="#info-billeterie">
+<div class="accordion-body">
+<p>Retrouvez toutes les informations concernant l’accessibilité au stade pour les personnes à mobilité réduite ainsi que les procédures d’achat de place sur la page Accès PMR</p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h3 id="info-billeterie-headingEight" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#info-billeterie8" aria-expanded="false" aria-controls="info-billeterie8"> J’ai une question concernant l’abonnement LOSC (prêt, résiliation, échelonnement de paiement, perte, changement de nom, …) </button></h3>
+<div id="info-billeterie8" class="accordion-collapse collapse" role="region" aria-labelledby="info-billeterie-headingEight" data-bs-parent="#info-billeterie">
+<div class="accordion-body">
+<p>Retrouvez toutes les informations sur <a href="https://www.losc.fr" target="_blank" rel="noopener" title="losc.fr">www.losc.fr</a></p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h3 id="info-billeterie-headingNine" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#info-billeterie9" aria-expanded="false" aria-controls="info-billeterie9"> Je désire connaitre des informations sur le prochain match du LOSC (date, heure et tarif) ? </button></h3>
+<div id="info-billeterie9" class="accordion-collapse collapse" role="region" aria-labelledby="info-billeterie-headingNine" data-bs-parent="#info-billeterie">
+<div class="accordion-body">
+<p>Retrouvez toutes les informations sur <a href="https://www.losc.fr" target="_blank" rel="noopener" title="losc.fr">www.losc.fr</a></p>
+</div>
+</div>
+</div>
+</div>
+<h2>Informations Générales</h2>
+<div id="info-generales" class="accordion">
+<div class="accordion-item">
+<h3 id="info-generales-headingOne" class="accordion-header"><button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#info-generales1" aria-expanded="true" aria-controls="info-generales1"> Quels objets sont interdits dans le Stade ? </button></h3>
+<div id="info-generales1" class="accordion-collapse collapse show" role="region" aria-labelledby="info-generales-headingOne" data-bs-parent="#info-generales">
+<div class="accordion-body">
+<p>En complément des articles L. 332-3 et suivants du code du sport, il est interdit dans l'enceinte du stade, lors d’une manifestation autre que sportive :</p>
+<ul>
+<li>d’introduire par force ou par fraude des boissons alcooliques au sens de l’article L. 3321-1 du code de la santé publique</li>
+<li>d’introduire, de porter ou d’exhiber des insignes, signes ou symboles rappelant une idéologie raciste ou xénophobe</li>
+<li>d’introduire, de détenir ou de faire usage des fusées ou artifices de toute nature</li>
+<li>d’introduire sans motif légitime, de détenir ou de faire usage de tout objet susceptible de constituer une arme (improvisée ou préparée) au sens de l’article 132-75 du code pénal, tels que les armes à feu et leurs répliques ; les armes blanches, tout objet à bord tranchant, tout objet contondant (sauf les cannes munies d’un embout détenues par des personnes âgées ou invalides) ; les objets pointus ou piquants ; les bouteilles (sauf les bouteilles plastiques de moins de 50 cl débouchées), verres, canettes ; les chaussures de sécurité ou présentant une armature métallique extérieure ; etc.</li>
+<li>d’introduire de la nourriture dans le stade</li>
+</ul>
+<p>Il est d’autre part interdit dans l’enceinte du stade :</p>
+<ul>
+<li>d’introduire, de détenir ou de faire usage des substances toxiques, explosibles, inflammables, corrosives, radioactives, réagissant avec l’eau, volatiles, détonantes, déflagrantes</li>
+<li>d’introduire des animaux sauf les chiens accompagnant les personnes titulaires de la carte d’invalidité</li>
+<li>d’introduire, de détenir ou de faire usage de trépieds pour caméras et appareils photo</li>
+<li>d’introduire, de détenir ou de faire usage de matériels et de moyens d’amplification sonore tels que les haut parleurs, sauf autorisation spéciale accordée par l’organisateur</li>
+<li>d’introduire des balles ou ballons et d’y jouer.</li>
+</ul>
+<p class="text-center"><img src="/images/pages/objets-interdit.jpg" alt="objets interdits" class="img-fluid" title="objets interdits" /></p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h3 id="info-generales-headingTwo" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#info-generales2" aria-expanded="false" aria-controls="info-generales2"> Peut-on amener un appareil photo ou un caméscope dans le stade à l’occasion d’un événement ? </button></h3>
+<div id="info-generales2" class="accordion-collapse collapse" role="region" aria-labelledby="info-generales-headingTwo" data-bs-parent="#info-generales">
+<div class="accordion-body">
+<p>Seuls les appareils photos type compact sont autorisés dans le Stade. Les appareils photos professionnels (avec objectif) et les caméras sont interdits et seront à déposer en consigne à votre arrivée.</p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h3 id="info-generales-headingThree" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#info-generales3" aria-expanded="false" aria-controls="info-generales3"> Un enfant s'est égaré dans le stade, où l'amener ? </button></h3>
+<div id="info-generales3" class="accordion-collapse collapse" role="region" aria-labelledby="info-generales-headingThree" data-bs-parent="#info-generales">
+<div class="accordion-body">
+<p>Tout enfant égaré est conduit à l’Infirmerie Centrale par les agents de sûreté. Le cas échéant, et en tout état de cause après la fermeture du Stade, l’enfant égaré est confié au Commissariat de Police de Villeneuve d’Ascq/Lille.</p>
+<p>Il est déconseillé aux parents d’amener leurs enfants de moins de cinq ans au stade, à l’exception des spectacles pour enfants.</p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h3 id="info-generales-headingFour" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#info-generales4" aria-expanded="false" aria-controls="info-generales4"> J'ai perdu un objet dans le stade, comment le récupérer ? </button></h3>
+<div id="info-generales4" class="accordion-collapse collapse" role="region" aria-labelledby="info-generales-headingFour" data-bs-parent="#info-generales">
+<div class="accordion-body">
+<p>Les objets trouvés (en dehors des matchs du LOSC Lille) doivent être remis à un membre du personnel de l'Exploitant pour être déposés au local consigne prévu à cet effet. Ils y sont tenus à la disposition de leurs propriétaires durant un mois avant destruction ou don à des associations. Pour récupérer vos objets, merci d'envoyer une demande à <joomla-hidden-mail  is-link="1" is-email="1" first="Y29udGFjdA==" last="c3RhZGUtcG0uY29t" text="Y29udGFjdEBzdGFkZS1wbS5jb20=" base="" >Cette adresse e-mail est protégée contre les robots spammeurs. Vous devez activer le JavaScript pour la visualiser.</joomla-hidden-mail></p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h3 id="info-generales-headingFive" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#info-generales5" aria-expanded="false" aria-controls="info-generales5"> Où se situent les consignes et comment récupérer les affaires déposées ? </button></h3>
+<div id="info-generales5" class="accordion-collapse collapse" role="region" aria-labelledby="info-generales-headingFive" data-bs-parent="#info-generales">
+<div class="accordion-body">
+<p>Téléchargez le plan des consignes</p>
+<p>Quatre consignes sont à la disposition du public sur le parvis du stade pour leur permettre de déposer, pendant la durée de la manifestation, les objets et effets qui les encombrent ou ceux dont l’introduction n’est pas autorisée dans l’enceinte du stade, à l’exception des objets prohibés sur la voie publique (armes, stupéfiants…) et des animaux. Les préposés au service des consignes reçoivent des dépôts dans la limite de la capacité des consignes et peuvent refuser tout objet dangereux (explosif, comburant, inflammable, nocif, irritant, toxique, corrosif, sensibilisant, cancérogène, mutagène).</p>
+<ul>
+<li>Est obligatoire le dépôt en consigne des objets volumineux (notamment ceux supérieurs à 20 dm³ ou 20 litres), des sacs (autres que les sacs à main, besaces, pochettes, sacoches, serviettes), des parapluies non rétractables et des casques de motocyclistes est obligatoire. Les voitures d’enfants, planches à roulettes, patins à roulettes, bicyclettes doivent être déposées en consigne.</li>
+<li>Les consignes peuvent être payantes. Le tarif appliqué dans les consignes est alors affiché.<br />Les consignes sont ouvertes trois heures avant et jusqu’à une heure après le début de la manifestation.</li>
+<li>Des tickets de contremarque numérotés sont remis aux déposants. Les déposants ne pourront retirer leurs objets qu’en échange de ce ticket. Les consignes sont fermées hors évènement : les effets et objets non retirés lors de la fermeture du stade seront centralisés et enregistrés à la consigne n°4 (sud) puis transmis après un délai de 10 semaines au service des objets trouvés de la Mairie de Villeneuve d’Ascq (infos : 03 20 43 50 50).</li>
+<li>Une requête de retrait d’objets perdus pourra être formulée auprès de l’accueil d’ELISA, accessible aux horaires de bureau.</li>
+<li>Lors des matches du LOSC, pour récupérer les objets déposés en consigne et non retirés le soir de l’événement, il est nécessaire de se rapprocher du club.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h3 id="info-generales-headingSix" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#info-generales6" aria-expanded="false" aria-controls="info-generales6"> Mon image peut-elle être utilisée par l'Exploitant ou l'Organisateur lorsque je viens au Stade ? </button></h3>
+<div id="info-generales6" class="accordion-collapse collapse" role="region" aria-labelledby="info-generales-headingSix" data-bs-parent="#info-generales">
+<div class="accordion-body">
+<p>Toute personne assistant à une manifestation au stade consent et accorde gratuitement à l’Exploitant et à l’Organisateur le droit d’utiliser son image, sa voix et sa représentation, sur tout support en relation avec la manifestation et/ou la promotion du stade, telles que les photographies, les retransmissions en direct sur écrans géants, les retransmissions télévisées en direct ou en différé, les émissions et/ou enregistrements vidéos ou sonores, pour le monde entier et pour la durée légale de protection des droits d’auteur.</p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h3 id="info-generales-headingSeven" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#info-generales7" aria-expanded="false" aria-controls="info-generales7"> Je souhaite utiliser l'image du stade, que savoir à ce sujet ? </button></h3>
+<div id="info-generales7" class="accordion-collapse collapse" role="region" aria-labelledby="info-generales-headingSeven" data-bs-parent="#info-generales">
+<div class="accordion-body">
+<p>L’utilisation de la référence, d’images, photos et vidéos du stade est soumise à des conditions dans le respect de droits de propriété intellectuelle. Les prises de vues et/ou de sons et les enregistrements visuels et/ou sonores ne sont pas autorisés dans l’enceinte du stade sauf autorisation expresse de l’Exploitant et/ou de l’Organisateur.<br />Pour toute demande, veuillez-vous reporter à la page contact</p>
+</div>
+</div>
+</div>
+</div>
+<h2>Visites</h2>
+<div id="visites" class="accordion">
+<div class="accordion-item">
+<h3 id="visitesOne" class="accordion-header"><button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#visites1" aria-expanded="true" aria-controls="visites1"> Je souhaite visiter le stade, comment procéder ? </button></h3>
+<div id="visites1" class="accordion-collapse collapse show" role="region" aria-labelledby="visitesOne" data-bs-parent="#visites">
+<div class="accordion-body">
+<p>Le stade peut se visiter en groupe ou en individuel. Retrouvez les informations sur les pages respectives :</p>
+<ul>
+<li><a href="/visites/visites-en-groupe" title="Visite de groupes">Visite de groupes</a></li>
+<li><a href="/visites/visites-individuelles" title="Visite individuelle">Visite individuelle</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<h2>Merchandising et Restauration</h2>
+<div id="merchandising" class="accordion">
+<div class="accordion-item">
+<h3 id="merchandisingOne" class="accordion-header"><button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#merchandising1" aria-expanded="true" aria-controls="merchandising1"> Comment fonctionne la boutique officielle située au stade ? </button></h3>
+<div id="merchandising1" class="accordion-collapse collapse show" role="region" aria-labelledby="merchandisingOne" data-bs-parent="#merchandising">
+<div class="accordion-body">
+<p>La boutique présente au stade est la boutique officielle du LOSC. Celle-ci est ouverte du mardi au jeudi de 10h20 à 12h20 et de 13h20 à 19h et le vendredi et samedi de 10h20 à 19h.</p>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h3 id="merchandisingTwo" class="accordion-header"><button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#merchandising2" aria-expanded="false" aria-controls="merchandising2"> Où consommer dans le stade et comment payer ? </button></h3>
+<div id="merchandising2" class="accordion-collapse collapse" role="region" aria-labelledby="merchandisingTwo" data-bs-parent="#merchandising">
+<div class="accordion-body">
+<p>Une quarantaine de buvettes sont réparties sur les trois niveaux du stade. Un large choix de boissons, sandwichs, plats chauds, snacking sucrées et salées vous y sont proposés.</p>
+<p>Les modes de paiements acceptés sont la monnaie et les cartes bancaires. Un distributeur automatique est à votre disposition sur le parvis du stade à proximité de la billetterie 1.</p>
+</div>
+</div>
+</div>
+</div>
+</div> </div>
+</div>
+            </div>
+			            
+        </div>
+
+        
+        
+            </main>
+
+    		<footer role="contentinfo" class="container-footer footer full-width">
+            <div class="grid-child">
+                
+<div id="mod-custom114" class="mod-custom custom">
+    <nav class="menu-footer" aria-label="Navigation du pied de page">
+<div class="footer-left">
+<div class="logo-footer"><a href="/" title="Site officiel de la Decathlon Arena Stade Pierre Mauroy"> <img src="/templates/decathlon_arena_stade_pierre_mauroy/images/daspm-logo-blanc-footer.png" alt="Decathlon Arena Stade Pierre Mauroy" /> </a></div>
+<p class="txt-rs-footer">Suivez nous sur les réseaux sociaux</p>
+<div class="social-footer">
+<ul class="social-list">
+<li><a href="https://www.tiktok.com/@decathlonarena_spm" target="_blank" rel="noopener" title="TikTok (nouvelle fenêtre)"> <img src="/templates/decathlon_arena_stade_pierre_mauroy/images/tiktok.png" alt="TikTok" class="social-icon" /> </a></li>
+<li><a href="https://www.linkedin.com/company/decathlon-arena-stade-pierre-mauroy/mycompany/?viewAsMember=true" target="_blank" rel="noopener" title="LinkedIn (nouvelle fenêtre)"> <img src="/templates/decathlon_arena_stade_pierre_mauroy/images/linkedin.png" alt="LinkedIn" class="social-icon" /> </a></li>
+<li><a href="https://twitter.com/StadePM" target="_blank" rel="noopener" title="X (nouvelle fenêtre)"> <img src="/templates/decathlon_arena_stade_pierre_mauroy/images/x.png" alt="X" class="social-icon" /> </a></li>
+<li><a href="https://www.facebook.com/DecathlonArenaStadePierreMauroy" target="_blank" rel="noopener" title="Facebook (nouvelle fenêtre)"> <img src="/templates/decathlon_arena_stade_pierre_mauroy/images/facebook.png" alt="Facebook" class="social-icon" /> </a></li>
+<li><a href="https://www.instagram.com/stade_pm" target="_blank" rel="noopener" title="Instagram (nouvelle fenêtre)"> <img src="/templates/decathlon_arena_stade_pierre_mauroy/images/instagram.png" alt="Instagram" class="social-icon" /> </a></li>
+<li><a href="https://www.youtube.com/@decathlonarenastadepm" target="_blank" rel="noopener" title="YouTube (nouvelle fenêtre)"> <img src="/templates/decathlon_arena_stade_pierre_mauroy/images/youtube.png" alt="YouTube" class="social-icon" /> </a></li>
+</ul>
+</div>
+<div id="organisateur-module">
+    <div class="modal fade" id="organisateur-modal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="organisateur-modal-title">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-title w-100" id="organisateur-modal-title">
+                        Demande d'accès organisateur                    </p>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer la fenêtre de demande d'accès organisateur"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="spinner" class="spinner-border text-primary position-absolute top-50 start-50" role="status" style="display: none;">
+                        <span class="visually-hidden">Traitement en cours...</span>
+                    </div>
+                    <div id="info-orga">
+                        A réception de votre demande, nous vous transmettrons un lien et mot de passe vous permettant d’accéder aux informations relatives à l’accueil des grands événements : les différentes configurations de la Decathlon Arena – Stade Pierre-Mauroy, les informations techniques et références.                    </div>
+					<div id="err" class="pt-2 fw-bold">Les champs signalés par un <span style="color: rgb(215, 62, 49);">*</span> sont obligatoires.</div>
+                    <form name="organisateur" id="organisateur-form">
+    <div class="control-group">
+            <div class="control-label"><label id="jform_nom_orga-lbl" for="jform_nom_orga" class="required">
+    Nom<span class="star">&#160;*</span></label>
+</div>
+        <div class="controls">
+        
+
+    
+    <input
+        type="text"
+        name="jform[nom_orga]"
+        id="jform_nom_orga"
+        value=""
+                class="form-control required"       placeholder="Votre nom"   required       >
+
+    
+
+            </div>
+</div>
+    <div class="control-group">
+            <div class="control-label"><label id="jform_prenom_orga-lbl" for="jform_prenom_orga" class="required">
+    Prénom<span class="star">&#160;*</span></label>
+</div>
+        <div class="controls">
+        
+
+    
+    <input
+        type="text"
+        name="jform[prenom_orga]"
+        id="jform_prenom_orga"
+        value=""
+                class="form-control required"       placeholder="Votre prénom"   required       >
+
+    
+
+            </div>
+</div>
+    <div class="control-group">
+            <div class="control-label"><label id="jform_structure_orga-lbl" for="jform_structure_orga" class="required">
+    Organisation / Structure<span class="star">&#160;*</span></label>
+</div>
+        <div class="controls">
+        
+
+    
+    <input
+        type="text"
+        name="jform[structure_orga]"
+        id="jform_structure_orga"
+        value=""
+                class="form-control required"       placeholder="Organisation ou structure"   required       >
+
+    
+
+            </div>
+</div>
+    <div class="control-group">
+            <div class="control-label"><label id="jform_email_orga-lbl" for="jform_email_orga" class="required">
+    E-mail professionnel <small class="form-text text-muted">(exemple : nom&#64;domaine.fr)</small><span class="star">&#160;*</span></label>
+</div>
+        <div class="controls">
+        
+
+    
+    <input
+        type="text"
+        name="jform[email_orga]"
+        id="jform_email_orga"
+        value=""
+                class="form-control required"       placeholder="E-mail professionnel"   required       >
+
+    
+
+            </div>
+</div>
+    <div class="control-group">
+            <div class="control-label"><label id="jform_tel_orga-lbl" for="jform_tel_orga">
+    Téléphone <small class="form-text text-muted">(exemple : +33 6 12 34 56 78)</small></label>
+</div>
+        <div class="controls">
+        
+
+    
+    <input
+        type="text"
+        name="jform[tel_orga]"
+        id="jform_tel_orga"
+        value=""
+                class="form-control"       placeholder="Au format internationnal"          >
+
+    
+
+            </div>
+</div>
+    <div id="organisateur-optin" class="control-group">
+        <div class="control-label text-start">
+            <span class="form-label">Consentement <span class="star" aria-hidden="true" style="color: rgb(215, 62, 49);">*</span></span>
+        </div>
+        <div class="controls d-flex align-items-start gap-2 text-start">
+            <div class="form-check form-check-inline">
+    <input
+        type="checkbox"
+        name="jform[optin_orga]"
+        id="jform_optin_orga"
+        class="form-check-input required"
+        value="1"
+         required    >
+</div>
+            <label for="jform_optin_orga" class="form-check-label mb-0">
+                J’accepte le traitement des <a href="/donnees-personnelles" target="_blank" rel="noopener noreferrer" title="données recueillies (nouvelle fenêtre)">données recueillies</a> pour traiter ma demande.            </label>
+        </div>
+    </div>
+    <input type="hidden" name="task" value="subscribe" />
+</form>                    <div class="confirmation" style="display:none;">
+                        Merci ! Votre demande a bien été envoyée.<br />Vérifiez votre boîte de réception d'ici quelques minutes.                    </div>
+                    <div class="err_inscription" style="display:none;">
+                        Une erreur est apparue lors de l'enregistrement de votre demande. Veuillez réessayer.                    </div>
+                </div>
+                <div class="modal-footer">
+				<ul class="row w-100 list-unstyled m-0 p-0">
+                    <li class="col">
+                        <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">
+                            Fermer <span class="visually-hidden">la fenêtre de demande d'accès organisateur</span>
+                        </button>
+                    </li>
+                    <li class="col colSave">
+                        <button type="button" class="btn btn-primary w-100" id="save-organisateur-modal">Envoyer</button>
+                    </li>
+				</ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-organisateur">
+        <button type="button" class="btn organisateur-footer" data-bs-toggle="modal" data-bs-target="#organisateur-modal">
+            <span class="chevron-right">Accès organisateur</span>
+        </button>
+    </div>
+</div></div>
+<div class="footer-right">
+<h2>S’OUVRIR AUX ÉMOTIONS</h2>
+<div class="menu-footer">
+<div class="menu-footer-left">
+<h3>À propos</h3>
+<ul>
+<li><a href="/programmation">Programmation</a></li>
+<li><a href="/entreprises/evenements-entreprise/nos-espaces">Offres entreprises</a></li>
+<li><a href="/activites/visites-individuelles">Visites</a></li>
+<li><a href="/infos-pratiques/acces">Infos pratiques</a></li>
+<li><a href="/presentation/le-stade">Decathlon Arena</a></li>
+<li><a href="/plan-du-site">Plan du site</a></li>
+</ul>
+</div>
+<div class="menu-footer-right">
+<h3>Support</h3>
+<ul>
+<li><a href="/infos-pratiques/faq">FAQ</a></li>
+<li><a href="/mentions-legales">Mentions légales</a></li>
+<li><a href="/donnees-personnelles">Données personnelles</a></li>
+<li><a href="/conditions-generales-de-vente">Conditions générales de vente</a></li>
+<li><a href="/reglement-interieur">Règlement intérieur</a></li>
+<li><a href="/accessibilite">Accessibilité</a></li>
+<li><a href="/contact">Contact</a></li>
+</ul>
+</div>
+</div>
+</div>
+</nav>
+<div class="footer-bottom"><hr />
+<p>© 2025, Decathlon Arena, Stade Pierre Mauroy</p>
+</div></div>
+
+            </div>
+        </footer>
+    
+      <a href="#top" id="back-top" class="back-to-top-link">
+        <span class="icon-arrow-up icon-fw" aria-hidden="true"></span>
+        <span class="visually-hidden">Haut de page</span>
+    </a>
+
+    
+</body>
+
+</html>

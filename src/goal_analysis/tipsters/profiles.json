@@ -1,0 +1,1723 @@
+{
+  "catalog_version": "arthur-tipster-personas-v7-odds-band-10-50",
+  "profiles": [
+    {
+      "catalog_version": "arthur-tipster-personas-v7-odds-band-10-50",
+      "fictional": true,
+      "max_legs": 5,
+      "method_kind": "SHARED_EVIDENCE_PERSONA",
+      "min_legs": 3,
+      "model_weights": {
+        "gauss": 0.4,
+        "kepler": 0.3,
+        "laplace": 0.3
+      },
+      "name": "Bástya Bence",
+      "personality": "Megfontolt kombináló: szűk modellkonszenzusú 1X2 tippekből 10–16-os szelvényt épít.",
+      "preferences": [
+        "1X2-modellkonszenzus",
+        "3–5 külön meccs",
+        "10–16-os összszorzó"
+      ],
+      "preferred_combined_price": 12.649110640673518,
+      "preferred_legs": 4,
+      "profile_id": "tipster_bastya_bence",
+      "reference_odds_band": {
+        "max": 16,
+        "min": 10
+      },
+      "risk": "MEDIUM",
+      "selection_mode": "PROFILE_ACCUMULATOR",
+      "selection_policy": {
+        "allowed_market_keys": [
+          "home",
+          "draw",
+          "away"
+        ],
+        "competition_diversity": 0.0,
+        "edge_weight": 3.0,
+        "history_weight": 1.0,
+        "market_bonus": {},
+        "market_diversity": 0.0,
+        "market_weight": 0.0,
+        "max_model_spread": 0.08,
+        "min_edge": 0.03,
+        "min_market_disagreement": null,
+        "min_models": 2,
+        "min_probability": 0.48,
+        "preferred_price": 2.0,
+        "price_penalty": 0.3,
+        "probability_weight": 7.0,
+        "required_models": [],
+        "spread_penalty": 2.0,
+        "venue_weight": 1.0
+      },
+      "source_style": {
+        "family": "CONSENSUS",
+        "implementation": "LOCAL_ADAPTATION_NO_DOWNLOADED_RUNTIME_CODE",
+        "source_audit_date": "2026-10-16",
+        "sources": [
+          {
+            "commit": "a4f1239a2bc8d0550408a5f8ee1cebb2f1815138",
+            "license": "MIT",
+            "name": "The Open Model",
+            "url": "https://github.com/Hicruben/theopenmodel",
+            "use": "Rating plus goal-model consensus and pre-kickoff snapshot discipline."
+          },
+          {
+            "commit": "6a51173454cba172f2e7b2d8374c1770f257b86a",
+            "license": "MIT",
+            "name": "penaltyblog",
+            "url": "https://github.com/martineastwood/penaltyblog",
+            "use": "Poisson, Dixon–Coles, bivariate Poisson and Pi-rating model families."
+          }
+        ],
+        "style_id": "consensus_accumulator",
+        "summary": "Profilra szabott meccsszám és összszorzó; minden lábon külön modellkonszenzus.",
+        "title": "Modellkonszenzus-kombináció",
+        "version": "arthur-open-source-style-map-v2-accumulators"
+      },
+      "tagline": "Négy egyező modelljelből építek.",
+      "target_odds_band": {
+        "max": 16,
+        "min": 10
+      },
+      "target_odds_minimum_enforced": true
+    },
+    {
+      "catalog_version": "arthur-tipster-personas-v7-odds-band-10-50",
+      "fictional": true,
+      "max_legs": 6,
+      "method_kind": "SHARED_EVIDENCE_PERSONA",
+      "min_legs": 4,
+      "model_weights": {
+        "gauss": 0.55,
+        "kepler": 0.0,
+        "laplace": 0.45
+      },
+      "name": "Gólvadász Lili",
+      "personality": "Támadófoci-specialista: GAUSS és LAPLACE által támogatott Over 2,5 tippeket fűz.",
+      "preferences": [
+        "Kizárólag Over 2,5",
+        "4–6 külön meccs",
+        "10–22-es összszorzó"
+      ],
+      "preferred_combined_price": 14.832396974191326,
+      "preferred_legs": 5,
+      "profile_id": "tipster_golvadasz_lili",
+      "reference_odds_band": {
+        "max": 22,
+        "min": 10
+      },
+      "risk": "MEDIUM",
+      "selection_mode": "PROFILE_ACCUMULATOR",
+      "selection_policy": {
+        "allowed_market_keys": [
+          "over25"
+        ],
+        "competition_diversity": 0.0,
+        "edge_weight": 4.0,
+        "history_weight": 1.0,
+        "market_bonus": {
+          "over25": 4.0
+        },
+        "market_diversity": 0.0,
+        "market_weight": 0.0,
+        "max_model_spread": 1.0,
+        "min_edge": 0.02,
+        "min_market_disagreement": null,
+        "min_models": 1,
+        "min_probability": 0.52,
+        "preferred_price": 2.0,
+        "price_penalty": 0.3,
+        "probability_weight": 4.0,
+        "required_models": [
+          "gauss",
+          "laplace"
+        ],
+        "spread_penalty": 2.0,
+        "venue_weight": 1.0
+      },
+      "source_style": {
+        "family": "GOAL_GRID",
+        "implementation": "LOCAL_ADAPTATION_NO_DOWNLOADED_RUNTIME_CODE",
+        "source_audit_date": "2026-10-16",
+        "sources": [
+          {
+            "commit": "6a51173454cba172f2e7b2d8374c1770f257b86a",
+            "license": "MIT",
+            "name": "penaltyblog",
+            "url": "https://github.com/martineastwood/penaltyblog",
+            "use": "Poisson, Dixon–Coles, bivariate Poisson and Pi-rating model families."
+          },
+          {
+            "commit": "d147452283f50da35ad51983c4a2c9cfc96e5fbd",
+            "license": "MIT",
+            "name": "odds-calibration",
+            "url": "https://github.com/vladapl21/odds-calibration",
+            "use": "De-vigged market comparison, minimum-edge gates and chronological validation."
+          }
+        ],
+        "style_id": "goal_accumulator",
+        "summary": "A profil saját gólpiacaiból, két modell alátámasztásával épített kombináció.",
+        "title": "Gólpiaci kombináció",
+        "version": "arthur-open-source-style-map-v2-accumulators"
+      },
+      "tagline": "Önálló Over 2,5 kombináció.",
+      "target_odds_band": {
+        "max": 22,
+        "min": 10
+      },
+      "target_odds_minimum_enforced": true
+    },
+    {
+      "catalog_version": "arthur-tipster-personas-v7-odds-band-10-50",
+      "fictional": true,
+      "max_legs": 5,
+      "method_kind": "SHARED_EVIDENCE_PERSONA",
+      "min_legs": 3,
+      "model_weights": {
+        "gauss": 0.15,
+        "kepler": 0.7,
+        "laplace": 0.15
+      },
+      "name": "Hazai Márk",
+      "personality": "Hazaioldal-specialista: Pi-ratinggel és helyszíni formával igazolt hazai győzelmek.",
+      "preferences": [
+        "Hazai győzelem",
+        "3–5 külön meccs",
+        "10–24-es összszorzó"
+      ],
+      "preferred_combined_price": 15.491933384829668,
+      "preferred_legs": 4,
+      "profile_id": "tipster_hazai_mark",
+      "reference_odds_band": {
+        "max": 24,
+        "min": 10
+      },
+      "risk": "MEDIUM",
+      "selection_mode": "PROFILE_ACCUMULATOR",
+      "selection_policy": {
+        "allowed_market_keys": [
+          "home"
+        ],
+        "competition_diversity": 0.0,
+        "edge_weight": 2.0,
+        "history_weight": 1.0,
+        "market_bonus": {
+          "home": 3.0
+        },
+        "market_diversity": 0.0,
+        "market_weight": 0.0,
+        "max_model_spread": 1.0,
+        "min_edge": 0.03,
+        "min_market_disagreement": null,
+        "min_models": 1,
+        "min_probability": 0.45,
+        "preferred_price": 2.0,
+        "price_penalty": 0.3,
+        "probability_weight": 4.0,
+        "required_models": [
+          "kepler"
+        ],
+        "spread_penalty": 2.0,
+        "venue_weight": 3.0
+      },
+      "source_style": {
+        "family": "RATING_FORM",
+        "implementation": "LOCAL_ADAPTATION_NO_DOWNLOADED_RUNTIME_CODE",
+        "source_audit_date": "2026-10-16",
+        "sources": [
+          {
+            "commit": "6a51173454cba172f2e7b2d8374c1770f257b86a",
+            "license": "MIT",
+            "name": "penaltyblog",
+            "url": "https://github.com/martineastwood/penaltyblog",
+            "use": "Poisson, Dixon–Coles, bivariate Poisson and Pi-rating model families."
+          },
+          {
+            "commit": "661b85abf1d2cff2fd01d732d8529d2a67ec4664",
+            "license": "MIT",
+            "name": "footAI",
+            "url": "https://github.com/pmatorras/footAI",
+            "use": "Rating and recent-form perspectives kept separate from goal-model signals."
+          },
+          {
+            "commit": "d147452283f50da35ad51983c4a2c9cfc96e5fbd",
+            "license": "MIT",
+            "name": "odds-calibration",
+            "url": "https://github.com/vladapl21/odds-calibration",
+            "use": "De-vigged market comparison, minimum-edge gates and chronological validation."
+          }
+        ],
+        "style_id": "rating_accumulator",
+        "summary": "Pi-rating és pozitív modellérték a profil saját hazai vagy vendég piacán.",
+        "title": "Ratingalapú kombináció",
+        "version": "arthur-open-source-style-map-v2-accumulators"
+      },
+      "tagline": "Hazai pályákból épül a kombináció.",
+      "target_odds_band": {
+        "max": 24,
+        "min": 10
+      },
+      "target_odds_minimum_enforced": true
+    },
+    {
+      "catalog_version": "arthur-tipster-personas-v7-odds-band-10-50",
+      "fictional": true,
+      "max_legs": 5,
+      "method_kind": "SHARED_EVIDENCE_PERSONA",
+      "min_legs": 3,
+      "model_weights": {
+        "gauss": 0.15,
+        "kepler": 0.7,
+        "laplace": 0.15
+      },
+      "name": "Vándor Zóra",
+      "personality": "Utazó értékvadász: kizárólag pozitív modellértékű vendéggyőzelmeket kapcsol össze.",
+      "preferences": [
+        "Vendéggyőzelem",
+        "3–5 külön meccs",
+        "12–35-ös összszorzó"
+      ],
+      "preferred_combined_price": 20.493901531919196,
+      "preferred_legs": 3,
+      "profile_id": "tipster_vandor_zora",
+      "reference_odds_band": {
+        "max": 35,
+        "min": 12
+      },
+      "risk": "HIGHER",
+      "selection_mode": "PROFILE_ACCUMULATOR",
+      "selection_policy": {
+        "allowed_market_keys": [
+          "away"
+        ],
+        "competition_diversity": 0.0,
+        "edge_weight": 2.0,
+        "history_weight": 1.0,
+        "market_bonus": {
+          "away": 3.0
+        },
+        "market_diversity": 0.0,
+        "market_weight": 0.0,
+        "max_model_spread": 1.0,
+        "min_edge": 0.05,
+        "min_market_disagreement": null,
+        "min_models": 1,
+        "min_probability": 0.28,
+        "preferred_price": 2.7,
+        "price_penalty": 0.3,
+        "probability_weight": 4.0,
+        "required_models": [
+          "kepler"
+        ],
+        "spread_penalty": 2.0,
+        "venue_weight": 1.0
+      },
+      "source_style": {
+        "family": "RATING_FORM",
+        "implementation": "LOCAL_ADAPTATION_NO_DOWNLOADED_RUNTIME_CODE",
+        "source_audit_date": "2026-10-16",
+        "sources": [
+          {
+            "commit": "6a51173454cba172f2e7b2d8374c1770f257b86a",
+            "license": "MIT",
+            "name": "penaltyblog",
+            "url": "https://github.com/martineastwood/penaltyblog",
+            "use": "Poisson, Dixon–Coles, bivariate Poisson and Pi-rating model families."
+          },
+          {
+            "commit": "661b85abf1d2cff2fd01d732d8529d2a67ec4664",
+            "license": "MIT",
+            "name": "footAI",
+            "url": "https://github.com/pmatorras/footAI",
+            "use": "Rating and recent-form perspectives kept separate from goal-model signals."
+          },
+          {
+            "commit": "d147452283f50da35ad51983c4a2c9cfc96e5fbd",
+            "license": "MIT",
+            "name": "odds-calibration",
+            "url": "https://github.com/vladapl21/odds-calibration",
+            "use": "De-vigged market comparison, minimum-edge gates and chronological validation."
+          }
+        ],
+        "style_id": "rating_accumulator",
+        "summary": "Pi-rating és pozitív modellérték a profil saját hazai vagy vendég piacán.",
+        "title": "Ratingalapú kombináció",
+        "version": "arthur-open-source-style-map-v2-accumulators"
+      },
+      "tagline": "Vendégértékekből merész kombináció.",
+      "target_odds_band": {
+        "max": 35,
+        "min": 12
+      },
+      "target_odds_minimum_enforced": true
+    },
+    {
+      "catalog_version": "arthur-tipster-personas-v7-odds-band-10-50",
+      "fictional": true,
+      "max_legs": 4,
+      "method_kind": "SHARED_EVIDENCE_PERSONA",
+      "min_legs": 3,
+      "model_weights": {
+        "gauss": 0.5,
+        "kepler": 0.0,
+        "laplace": 0.5
+      },
+      "name": "Remi Doma",
+      "personality": "Három-négy döntetlent fűz, minden lábnál igazolt ármozgással és forrásolt Astra-indoklással.",
+      "preferences": [
+        "Csak döntetlen",
+        "24–48 órás áremelkedés lábanként",
+        "18–50-es összszorzó"
+      ],
+      "preferred_combined_price": 30.0,
+      "preferred_legs": 3,
+      "profile_id": "tipster_remi_doma",
+      "reference_odds_band": {
+        "max": 50,
+        "min": 18
+      },
+      "risk": "HIGHER",
+      "selection_mode": "PROFILE_ACCUMULATOR",
+      "selection_policy": {
+        "allowed_market_keys": [
+          "draw"
+        ],
+        "competition_diversity": 0.0,
+        "contrarian_min_expected_return": 1.15,
+        "contrarian_min_rise": 0.1,
+        "contrarian_value": true,
+        "edge_weight": 2.0,
+        "history_weight": 1.0,
+        "market_bonus": {
+          "draw": 4.0
+        },
+        "market_diversity": 0.0,
+        "market_weight": 0.0,
+        "max_model_spread": 1.0,
+        "min_edge": 0.15,
+        "min_market_disagreement": null,
+        "min_models": 1,
+        "min_probability": 0.2,
+        "preferred_price": 2.0,
+        "price_penalty": 0.3,
+        "probability_weight": 4.0,
+        "required_models": [
+          "gauss",
+          "laplace"
+        ],
+        "spread_penalty": 2.0,
+        "venue_weight": 1.0
+      },
+      "source_style": {
+        "family": "CONTRARIAN_VALUE",
+        "implementation": "LOCAL_ADAPTATION_NO_DOWNLOADED_RUNTIME_CODE",
+        "source_audit_date": "2026-10-16",
+        "sources": [
+          {
+            "commit": "d147452283f50da35ad51983c4a2c9cfc96e5fbd",
+            "license": "MIT",
+            "name": "odds-calibration",
+            "url": "https://github.com/vladapl21/odds-calibration",
+            "use": "De-vigged market comparison, minimum-edge gates and chronological validation."
+          },
+          {
+            "commit": "6a51173454cba172f2e7b2d8374c1770f257b86a",
+            "license": "MIT",
+            "name": "penaltyblog",
+            "url": "https://github.com/martineastwood/penaltyblog",
+            "use": "Poisson, Dixon–Coles, bivariate Poisson and Pi-rating model families."
+          }
+        ],
+        "style_id": "contrarian_accumulator",
+        "summary": "Minden lábnál igazolt áremelkedés, modellérték és forrásolt felülvizsgálat.",
+        "title": "Ellenáramú kombináció",
+        "version": "arthur-open-source-style-map-v2-accumulators"
+      },
+      "tagline": "Döntetlenek igazolt ellenáramban.",
+      "target_odds_band": {
+        "max": 50,
+        "min": 18
+      },
+      "target_odds_minimum_enforced": true
+    },
+    {
+      "catalog_version": "arthur-tipster-personas-v7-odds-band-10-50",
+      "fictional": true,
+      "max_legs": 5,
+      "method_kind": "SHARED_EVIDENCE_PERSONA",
+      "min_legs": 3,
+      "model_weights": {
+        "gauss": 0.55,
+        "kepler": 0.0,
+        "laplace": 0.45
+      },
+      "name": "Csendes Mira",
+      "personality": "Under 2,5 és BTTS No tippekből álló kombináció, két gólmodell alátámasztásával.",
+      "preferences": [
+        "Under 2,5 / BTTS No",
+        "3–5 külön meccs",
+        "10–18-as összszorzó"
+      ],
+      "preferred_combined_price": 13.416407864998739,
+      "preferred_legs": 4,
+      "profile_id": "tipster_csendes_mira",
+      "reference_odds_band": {
+        "max": 18,
+        "min": 10
+      },
+      "risk": "MEDIUM",
+      "selection_mode": "PROFILE_ACCUMULATOR",
+      "selection_policy": {
+        "allowed_market_keys": [
+          "btts_no",
+          "under25"
+        ],
+        "competition_diversity": 0.0,
+        "edge_weight": 2.0,
+        "history_weight": 1.0,
+        "market_bonus": {
+          "btts_no": 1.5,
+          "under25": 3.0
+        },
+        "market_diversity": 0.0,
+        "market_weight": 0.0,
+        "max_model_spread": 1.0,
+        "min_edge": 0.03,
+        "min_market_disagreement": null,
+        "min_models": 1,
+        "min_probability": 0.38,
+        "preferred_price": 2.0,
+        "price_penalty": 0.3,
+        "probability_weight": 4.0,
+        "required_models": [
+          "gauss",
+          "laplace"
+        ],
+        "spread_penalty": 2.0,
+        "venue_weight": 1.0
+      },
+      "source_style": {
+        "family": "GOAL_GRID",
+        "implementation": "LOCAL_ADAPTATION_NO_DOWNLOADED_RUNTIME_CODE",
+        "source_audit_date": "2026-10-16",
+        "sources": [
+          {
+            "commit": "6a51173454cba172f2e7b2d8374c1770f257b86a",
+            "license": "MIT",
+            "name": "penaltyblog",
+            "url": "https://github.com/martineastwood/penaltyblog",
+            "use": "Poisson, Dixon–Coles, bivariate Poisson and Pi-rating model families."
+          },
+          {
+            "commit": "d147452283f50da35ad51983c4a2c9cfc96e5fbd",
+            "license": "MIT",
+            "name": "odds-calibration",
+            "url": "https://github.com/vladapl21/odds-calibration",
+            "use": "De-vigged market comparison, minimum-edge gates and chronological validation."
+          }
+        ],
+        "style_id": "goal_accumulator",
+        "summary": "A profil saját gólpiacaiból, két modell alátámasztásával épített kombináció.",
+        "title": "Gólpiaci kombináció",
+        "version": "arthur-open-source-style-map-v2-accumulators"
+      },
+      "tagline": "Kevésgólos meccsekből építek.",
+      "target_odds_band": {
+        "max": 18,
+        "min": 10
+      },
+      "target_odds_minimum_enforced": true
+    },
+    {
+      "catalog_version": "arthur-tipster-personas-v7-odds-band-10-50",
+      "fictional": true,
+      "max_legs": 6,
+      "method_kind": "SHARED_EVIDENCE_PERSONA",
+      "min_legs": 4,
+      "model_weights": {
+        "gauss": 0.6,
+        "kepler": 0.0,
+        "laplace": 0.4
+      },
+      "name": "Dupla Áron",
+      "personality": "A dupla a két gólszerző csapatot jelenti: kizárólag BTTS Yes tippek kombinációja.",
+      "preferences": [
+        "Csak BTTS Yes",
+        "4–6 külön meccs",
+        "10–24-es összszorzó"
+      ],
+      "preferred_combined_price": 15.491933384829668,
+      "preferred_legs": 5,
+      "profile_id": "tipster_dupla_aron",
+      "reference_odds_band": {
+        "max": 24,
+        "min": 10
+      },
+      "risk": "MEDIUM",
+      "selection_mode": "PROFILE_ACCUMULATOR",
+      "selection_policy": {
+        "allowed_market_keys": [
+          "btts_yes"
+        ],
+        "competition_diversity": 0.0,
+        "edge_weight": 2.0,
+        "history_weight": 1.0,
+        "market_bonus": {
+          "btts_yes": 4.0
+        },
+        "market_diversity": 0.0,
+        "market_weight": 0.0,
+        "max_model_spread": 1.0,
+        "min_edge": 0.04,
+        "min_market_disagreement": null,
+        "min_models": 1,
+        "min_probability": 0.52,
+        "preferred_price": 2.0,
+        "price_penalty": 0.3,
+        "probability_weight": 4.0,
+        "required_models": [
+          "gauss",
+          "laplace"
+        ],
+        "spread_penalty": 2.0,
+        "venue_weight": 1.0
+      },
+      "source_style": {
+        "family": "GOAL_GRID",
+        "implementation": "LOCAL_ADAPTATION_NO_DOWNLOADED_RUNTIME_CODE",
+        "source_audit_date": "2026-10-16",
+        "sources": [
+          {
+            "commit": "6a51173454cba172f2e7b2d8374c1770f257b86a",
+            "license": "MIT",
+            "name": "penaltyblog",
+            "url": "https://github.com/martineastwood/penaltyblog",
+            "use": "Poisson, Dixon–Coles, bivariate Poisson and Pi-rating model families."
+          },
+          {
+            "commit": "d147452283f50da35ad51983c4a2c9cfc96e5fbd",
+            "license": "MIT",
+            "name": "odds-calibration",
+            "url": "https://github.com/vladapl21/odds-calibration",
+            "use": "De-vigged market comparison, minimum-edge gates and chronological validation."
+          }
+        ],
+        "style_id": "goal_accumulator",
+        "summary": "A profil saját gólpiacaiból, két modell alátámasztásával épített kombináció.",
+        "title": "Gólpiaci kombináció",
+        "version": "arthur-open-source-style-map-v2-accumulators"
+      },
+      "tagline": "Mindkét csapat góljaira építek.",
+      "target_odds_band": {
+        "max": 24,
+        "min": 10
+      },
+      "target_odds_minimum_enforced": true
+    },
+    {
+      "catalog_version": "arthur-tipster-personas-v7-odds-band-10-50",
+      "fictional": true,
+      "max_legs": 6,
+      "method_kind": "SHARED_EVIDENCE_PERSONA",
+      "min_legs": 3,
+      "model_weights": {
+        "gauss": 0.4,
+        "kepler": 0.3,
+        "laplace": 0.3
+      },
+      "name": "Archív Nóra",
+      "personality": "A hosszabb történeti minta támogatását keresi minden pozitív modellértékű lábnál.",
+      "preferences": [
+        "Történeti alátámasztás",
+        "3–6 külön meccs",
+        "10–22-es összszorzó"
+      ],
+      "preferred_combined_price": 14.832396974191326,
+      "preferred_legs": 4,
+      "profile_id": "tipster_archiv_nora",
+      "reference_odds_band": {
+        "max": 22,
+        "min": 10
+      },
+      "risk": "MEDIUM",
+      "selection_mode": "PROFILE_ACCUMULATOR",
+      "selection_policy": {
+        "allowed_market_keys": null,
+        "competition_diversity": 0.0,
+        "edge_weight": 3.0,
+        "history_weight": 6.0,
+        "market_bonus": {},
+        "market_diversity": 0.0,
+        "market_weight": 0.0,
+        "max_model_spread": 1.0,
+        "min_edge": 0.04,
+        "min_market_disagreement": null,
+        "min_models": 1,
+        "min_probability": 0.25,
+        "preferred_price": 2.0,
+        "price_penalty": 0.3,
+        "probability_weight": 2.0,
+        "required_models": [],
+        "spread_penalty": 2.0,
+        "venue_weight": 0.5
+      },
+      "source_style": {
+        "family": "MARKET_VALUE",
+        "implementation": "LOCAL_ADAPTATION_NO_DOWNLOADED_RUNTIME_CODE",
+        "source_audit_date": "2026-10-16",
+        "sources": [
+          {
+            "commit": "d147452283f50da35ad51983c4a2c9cfc96e5fbd",
+            "license": "MIT",
+            "name": "odds-calibration",
+            "url": "https://github.com/vladapl21/odds-calibration",
+            "use": "De-vigged market comparison, minimum-edge gates and chronological validation."
+          },
+          {
+            "commit": "6a51173454cba172f2e7b2d8374c1770f257b86a",
+            "license": "MIT",
+            "name": "penaltyblog",
+            "url": "https://github.com/martineastwood/penaltyblog",
+            "use": "Poisson, Dixon–Coles, bivariate Poisson and Pi-rating model families."
+          }
+        ],
+        "style_id": "market_accumulator",
+        "summary": "Egyedi modellértékkel rendelkező tippek a profil saját történeti vagy diverzitási súlyaival.",
+        "title": "Piaci értékek kombinációja",
+        "version": "arthur-open-source-style-map-v2-accumulators"
+      },
+      "tagline": "Történeti mintából álló kombináció.",
+      "target_odds_band": {
+        "max": 22,
+        "min": 10
+      },
+      "target_odds_minimum_enforced": true
+    },
+    {
+      "catalog_version": "arthur-tipster-personas-v7-odds-band-10-50",
+      "fictional": true,
+      "max_legs": 5,
+      "method_kind": "SHARED_EVIDENCE_PERSONA",
+      "min_legs": 3,
+      "model_weights": {
+        "gauss": 0.1,
+        "kepler": 0.8,
+        "laplace": 0.1
+      },
+      "name": "Forma Soma",
+      "personality": "Pi-ratinget és friss helyszíni formát párosít az 1X2 kombináció minden tagjánál.",
+      "preferences": [
+        "Pi-rating + helyszíni forma",
+        "3–5 külön meccs",
+        "10–26-os összszorzó"
+      ],
+      "preferred_combined_price": 16.1245154965971,
+      "preferred_legs": 4,
+      "profile_id": "tipster_forma_soma",
+      "reference_odds_band": {
+        "max": 26,
+        "min": 10
+      },
+      "risk": "MEDIUM",
+      "selection_mode": "PROFILE_ACCUMULATOR",
+      "selection_policy": {
+        "allowed_market_keys": [
+          "home",
+          "draw",
+          "away"
+        ],
+        "competition_diversity": 0.0,
+        "edge_weight": 3.0,
+        "history_weight": 0.5,
+        "market_bonus": {},
+        "market_diversity": 0.0,
+        "market_weight": 0.0,
+        "max_model_spread": 1.0,
+        "min_edge": 0.04,
+        "min_market_disagreement": null,
+        "min_models": 1,
+        "min_probability": 0.25,
+        "preferred_price": 2.0,
+        "price_penalty": 0.3,
+        "probability_weight": 2.5,
+        "required_models": [
+          "kepler"
+        ],
+        "spread_penalty": 2.0,
+        "venue_weight": 6.0
+      },
+      "source_style": {
+        "family": "RATING_FORM",
+        "implementation": "LOCAL_ADAPTATION_NO_DOWNLOADED_RUNTIME_CODE",
+        "source_audit_date": "2026-10-16",
+        "sources": [
+          {
+            "commit": "6a51173454cba172f2e7b2d8374c1770f257b86a",
+            "license": "MIT",
+            "name": "penaltyblog",
+            "url": "https://github.com/martineastwood/penaltyblog",
+            "use": "Poisson, Dixon–Coles, bivariate Poisson and Pi-rating model families."
+          },
+          {
+            "commit": "661b85abf1d2cff2fd01d732d8529d2a67ec4664",
+            "license": "MIT",
+            "name": "footAI",
+            "url": "https://github.com/pmatorras/footAI",
+            "use": "Rating and recent-form perspectives kept separate from goal-model signals."
+          }
+        ],
+        "style_id": "venue_accumulator",
+        "summary": "Helyszíni előzmények és rating támogatják a kombináció egyedi választásait.",
+        "title": "Forma és helyszín",
+        "version": "arthur-open-source-style-map-v2-accumulators"
+      },
+      "tagline": "Formában lévő csapatokat kapcsolok össze.",
+      "target_odds_band": {
+        "max": 26,
+        "min": 10
+      },
+      "target_odds_minimum_enforced": true
+    },
+    {
+      "catalog_version": "arthur-tipster-personas-v7-odds-band-10-50",
+      "fictional": true,
+      "max_legs": 5,
+      "method_kind": "SHARED_EVIDENCE_PERSONA",
+      "min_legs": 3,
+      "model_weights": {
+        "gauss": 0.4,
+        "kepler": 0.3,
+        "laplace": 0.3
+      },
+      "name": "Konszenzus Vera",
+      "personality": "GAUSS, KEPLER és LAPLACE szűk becslési sávjához ragaszkodik minden 1X2 lábnál.",
+      "preferences": [
+        "Mindhárom modell lábanként",
+        "3–5 külön meccs",
+        "10–20-as összszorzó"
+      ],
+      "preferred_combined_price": 14.142135623730951,
+      "preferred_legs": 4,
+      "profile_id": "tipster_konszenzus_vera",
+      "reference_odds_band": {
+        "max": 20,
+        "min": 10
+      },
+      "risk": "MEDIUM",
+      "selection_mode": "PROFILE_ACCUMULATOR",
+      "selection_policy": {
+        "allowed_market_keys": [
+          "home",
+          "draw",
+          "away"
+        ],
+        "competition_diversity": 0.0,
+        "edge_weight": 2.0,
+        "history_weight": 1.0,
+        "market_bonus": {},
+        "market_diversity": 0.0,
+        "market_weight": 0.0,
+        "max_model_spread": 0.08,
+        "min_edge": 0.03,
+        "min_market_disagreement": null,
+        "min_models": 3,
+        "min_probability": 0.25,
+        "preferred_price": 2.0,
+        "price_penalty": 0.3,
+        "probability_weight": 4.0,
+        "required_models": [
+          "gauss",
+          "kepler",
+          "laplace"
+        ],
+        "spread_penalty": 10.0,
+        "venue_weight": 1.0
+      },
+      "source_style": {
+        "family": "CONSENSUS",
+        "implementation": "LOCAL_ADAPTATION_NO_DOWNLOADED_RUNTIME_CODE",
+        "source_audit_date": "2026-10-16",
+        "sources": [
+          {
+            "commit": "a4f1239a2bc8d0550408a5f8ee1cebb2f1815138",
+            "license": "MIT",
+            "name": "The Open Model",
+            "url": "https://github.com/Hicruben/theopenmodel",
+            "use": "Rating plus goal-model consensus and pre-kickoff snapshot discipline."
+          },
+          {
+            "commit": "6a51173454cba172f2e7b2d8374c1770f257b86a",
+            "license": "MIT",
+            "name": "penaltyblog",
+            "url": "https://github.com/martineastwood/penaltyblog",
+            "use": "Poisson, Dixon–Coles, bivariate Poisson and Pi-rating model families."
+          }
+        ],
+        "style_id": "consensus_accumulator",
+        "summary": "Profilra szabott meccsszám és összszorzó; minden lábon külön modellkonszenzus.",
+        "title": "Modellkonszenzus-kombináció",
+        "version": "arthur-open-source-style-map-v2-accumulators"
+      },
+      "tagline": "Három modell közös kombinációja.",
+      "target_odds_band": {
+        "max": 20,
+        "min": 10
+      },
+      "target_odds_minimum_enforced": true
+    },
+    {
+      "catalog_version": "arthur-tipster-personas-v7-odds-band-10-50",
+      "fictional": true,
+      "max_legs": 5,
+      "method_kind": "SHARED_EVIDENCE_PERSONA",
+      "min_legs": 3,
+      "model_weights": {
+        "gauss": 0.5,
+        "kepler": 0.0,
+        "laplace": 0.5
+      },
+      "name": "Érték Milán",
+      "personality": "Minden lábnál számszerű modellértéket, igazolt áremelkedést és forrásolt Astra-indoklást követel.",
+      "preferences": [
+        "Marzstalanított piac",
+        "24–48 órás ármozgás lábanként",
+        "12–35-ös összszorzó"
+      ],
+      "preferred_combined_price": 20.493901531919196,
+      "preferred_legs": 4,
+      "profile_id": "tipster_ertek_milan",
+      "reference_odds_band": {
+        "max": 35,
+        "min": 12
+      },
+      "risk": "HIGHER",
+      "selection_mode": "PROFILE_ACCUMULATOR",
+      "selection_policy": {
+        "allowed_market_keys": null,
+        "competition_diversity": 0.0,
+        "contrarian_min_expected_return": 1.15,
+        "contrarian_min_rise": 0.1,
+        "contrarian_value": true,
+        "edge_weight": 5.0,
+        "history_weight": 1.0,
+        "market_bonus": {},
+        "market_diversity": 0.0,
+        "market_weight": 5.0,
+        "max_model_spread": 1.0,
+        "min_edge": 0.15,
+        "min_market_disagreement": null,
+        "min_models": 2,
+        "min_probability": 0.25,
+        "preferred_price": 2.0,
+        "price_penalty": 0.3,
+        "probability_weight": 2.0,
+        "required_models": [
+          "gauss",
+          "laplace"
+        ],
+        "spread_penalty": 2.0,
+        "venue_weight": 1.0
+      },
+      "source_style": {
+        "family": "CONTRARIAN_VALUE",
+        "implementation": "LOCAL_ADAPTATION_NO_DOWNLOADED_RUNTIME_CODE",
+        "source_audit_date": "2026-10-16",
+        "sources": [
+          {
+            "commit": "d147452283f50da35ad51983c4a2c9cfc96e5fbd",
+            "license": "MIT",
+            "name": "odds-calibration",
+            "url": "https://github.com/vladapl21/odds-calibration",
+            "use": "De-vigged market comparison, minimum-edge gates and chronological validation."
+          },
+          {
+            "commit": "6a51173454cba172f2e7b2d8374c1770f257b86a",
+            "license": "MIT",
+            "name": "penaltyblog",
+            "url": "https://github.com/martineastwood/penaltyblog",
+            "use": "Poisson, Dixon–Coles, bivariate Poisson and Pi-rating model families."
+          }
+        ],
+        "style_id": "contrarian_accumulator",
+        "summary": "Minden lábnál igazolt áremelkedés, modellérték és forrásolt felülvizsgálat.",
+        "title": "Ellenáramú kombináció",
+        "version": "arthur-open-source-style-map-v2-accumulators"
+      },
+      "tagline": "Igazolt piaci eltérésekből építek.",
+      "target_odds_band": {
+        "max": 35,
+        "min": 12
+      },
+      "target_odds_minimum_enforced": true
+    },
+    {
+      "catalog_version": "arthur-tipster-personas-v7-odds-band-10-50",
+      "fictional": true,
+      "max_legs": 3,
+      "method_kind": "SHARED_EVIDENCE_PERSONA",
+      "min_legs": 2,
+      "model_weights": {
+        "gauss": 0.4,
+        "kepler": 0.3,
+        "laplace": 0.3
+      },
+      "name": "Rövid Lotti",
+      "personality": "Két-három külön, legalább két modell által támogatott választást fűz.",
+      "preferences": [
+        "2–3 külön meccs",
+        "Legalább két modell lábanként",
+        "10–14-es összszorzó"
+      ],
+      "preferred_combined_price": 11.832159566199232,
+      "preferred_legs": 3,
+      "profile_id": "tipster_rovid_lotti",
+      "reference_odds_band": {
+        "max": 14,
+        "min": 10
+      },
+      "risk": "MEDIUM",
+      "selection_mode": "PROFILE_ACCUMULATOR",
+      "selection_policy": {
+        "allowed_market_keys": null,
+        "competition_diversity": 0.0,
+        "edge_weight": 2.0,
+        "history_weight": 1.0,
+        "market_bonus": {},
+        "market_diversity": 0.0,
+        "market_weight": 0.0,
+        "max_model_spread": 1.0,
+        "min_edge": 0.04,
+        "min_market_disagreement": null,
+        "min_models": 2,
+        "min_probability": 0.25,
+        "preferred_price": 2.2,
+        "price_penalty": 1.2,
+        "probability_weight": 3.0,
+        "required_models": [],
+        "spread_penalty": 2.0,
+        "venue_weight": 1.0
+      },
+      "source_style": {
+        "family": "CONSENSUS",
+        "implementation": "LOCAL_ADAPTATION_NO_DOWNLOADED_RUNTIME_CODE",
+        "source_audit_date": "2026-10-16",
+        "sources": [
+          {
+            "commit": "a4f1239a2bc8d0550408a5f8ee1cebb2f1815138",
+            "license": "MIT",
+            "name": "The Open Model",
+            "url": "https://github.com/Hicruben/theopenmodel",
+            "use": "Rating plus goal-model consensus and pre-kickoff snapshot discipline."
+          },
+          {
+            "commit": "6a51173454cba172f2e7b2d8374c1770f257b86a",
+            "license": "MIT",
+            "name": "penaltyblog",
+            "url": "https://github.com/martineastwood/penaltyblog",
+            "use": "Poisson, Dixon–Coles, bivariate Poisson and Pi-rating model families."
+          }
+        ],
+        "style_id": "consensus_accumulator",
+        "summary": "Profilra szabott meccsszám és összszorzó; minden lábon külön modellkonszenzus.",
+        "title": "Modellkonszenzus-kombináció",
+        "version": "arthur-open-source-style-map-v2-accumulators"
+      },
+      "tagline": "Rövid kombináció, érdemi összszorzó.",
+      "target_odds_band": {
+        "max": 14,
+        "min": 10
+      },
+      "target_odds_minimum_enforced": true
+    },
+    {
+      "catalog_version": "arthur-tipster-personas-v7-odds-band-10-50",
+      "fictional": true,
+      "max_legs": 6,
+      "method_kind": "SHARED_EVIDENCE_PERSONA",
+      "min_legs": 4,
+      "model_weights": {
+        "gauss": 0.5,
+        "kepler": 0.0,
+        "laplace": 0.5
+      },
+      "name": "Fűző Oszkár",
+      "personality": "Négy-hat külön erős pozitív értékű jelből épít magasabb kifizetésű kombinációt.",
+      "preferences": [
+        "4–6 külön meccs",
+        "Két modell és 7% becsült érték lábanként",
+        "18–45-ös összszorzó"
+      ],
+      "preferred_combined_price": 28.460498941515414,
+      "preferred_legs": 5,
+      "profile_id": "tipster_fuzo_oszkar",
+      "reference_odds_band": {
+        "max": 45,
+        "min": 18
+      },
+      "risk": "HIGHER",
+      "selection_mode": "PROFILE_ACCUMULATOR",
+      "selection_policy": {
+        "allowed_market_keys": null,
+        "competition_diversity": 0.0,
+        "edge_weight": 2.0,
+        "history_weight": 1.0,
+        "market_bonus": {},
+        "market_diversity": 0.0,
+        "market_weight": 0.0,
+        "max_model_spread": 1.0,
+        "min_edge": 0.07,
+        "min_market_disagreement": null,
+        "min_models": 2,
+        "min_probability": 0.35,
+        "preferred_price": 1.9,
+        "price_penalty": 0.3,
+        "probability_weight": 4.0,
+        "required_models": [
+          "gauss",
+          "laplace"
+        ],
+        "spread_penalty": 2.0,
+        "venue_weight": 1.0
+      },
+      "source_style": {
+        "family": "CONSENSUS",
+        "implementation": "LOCAL_ADAPTATION_NO_DOWNLOADED_RUNTIME_CODE",
+        "source_audit_date": "2026-10-16",
+        "sources": [
+          {
+            "commit": "a4f1239a2bc8d0550408a5f8ee1cebb2f1815138",
+            "license": "MIT",
+            "name": "The Open Model",
+            "url": "https://github.com/Hicruben/theopenmodel",
+            "use": "Rating plus goal-model consensus and pre-kickoff snapshot discipline."
+          },
+          {
+            "commit": "d147452283f50da35ad51983c4a2c9cfc96e5fbd",
+            "license": "MIT",
+            "name": "odds-calibration",
+            "url": "https://github.com/vladapl21/odds-calibration",
+            "use": "De-vigged market comparison, minimum-edge gates and chronological validation."
+          },
+          {
+            "commit": "6a51173454cba172f2e7b2d8374c1770f257b86a",
+            "license": "MIT",
+            "name": "penaltyblog",
+            "url": "https://github.com/martineastwood/penaltyblog",
+            "use": "Poisson, Dixon–Coles, bivariate Poisson and Pi-rating model families."
+          }
+        ],
+        "style_id": "strict_accumulator",
+        "summary": "Magasabb összszorzó, minden lábon külön szigorú számszerű értékkapuval.",
+        "title": "Szigorú hosszabb kombináció",
+        "version": "arthur-open-source-style-map-v2-accumulators"
+      },
+      "tagline": "Hosszabb fűzés, minden lábnál szigorú értékkapu.",
+      "target_odds_band": {
+        "max": 45,
+        "min": 18
+      },
+      "target_odds_minimum_enforced": true
+    },
+    {
+      "catalog_version": "arthur-tipster-personas-v7-odds-band-10-50",
+      "fictional": true,
+      "max_legs": 5,
+      "method_kind": "SHARED_EVIDENCE_PERSONA",
+      "min_legs": 4,
+      "model_weights": {
+        "gauss": 0.5,
+        "kepler": 0.0,
+        "laplace": 0.5
+      },
+      "name": "Színes Réka",
+      "personality": "A modellérték mellett a piac- és bajnokság-változatosságot keresi.",
+      "preferences": [
+        "Piac- és ligadiverzitás",
+        "4–5 külön meccs",
+        "12–30-as összszorzó"
+      ],
+      "preferred_combined_price": 18.973665961010276,
+      "preferred_legs": 4,
+      "profile_id": "tipster_szines_reka",
+      "reference_odds_band": {
+        "max": 30,
+        "min": 12
+      },
+      "risk": "HIGHER",
+      "selection_mode": "PROFILE_ACCUMULATOR",
+      "selection_policy": {
+        "allowed_market_keys": null,
+        "competition_diversity": 1.0,
+        "edge_weight": 2.0,
+        "history_weight": 1.0,
+        "market_bonus": {},
+        "market_diversity": 1.5,
+        "market_weight": 0.0,
+        "max_model_spread": 1.0,
+        "min_edge": 0.04,
+        "min_market_disagreement": null,
+        "min_models": 1,
+        "min_probability": 0.25,
+        "preferred_price": 2.0,
+        "price_penalty": 0.3,
+        "probability_weight": 4.0,
+        "required_models": [
+          "gauss",
+          "laplace"
+        ],
+        "spread_penalty": 2.0,
+        "venue_weight": 1.0
+      },
+      "source_style": {
+        "family": "MARKET_VALUE",
+        "implementation": "LOCAL_ADAPTATION_NO_DOWNLOADED_RUNTIME_CODE",
+        "source_audit_date": "2026-10-16",
+        "sources": [
+          {
+            "commit": "d147452283f50da35ad51983c4a2c9cfc96e5fbd",
+            "license": "MIT",
+            "name": "odds-calibration",
+            "url": "https://github.com/vladapl21/odds-calibration",
+            "use": "De-vigged market comparison, minimum-edge gates and chronological validation."
+          },
+          {
+            "commit": "6a51173454cba172f2e7b2d8374c1770f257b86a",
+            "license": "MIT",
+            "name": "penaltyblog",
+            "url": "https://github.com/martineastwood/penaltyblog",
+            "use": "Poisson, Dixon–Coles, bivariate Poisson and Pi-rating model families."
+          }
+        ],
+        "style_id": "market_accumulator",
+        "summary": "Egyedi modellértékkel rendelkező tippek a profil saját történeti vagy diverzitási súlyaival.",
+        "title": "Piaci értékek kombinációja",
+        "version": "arthur-open-source-style-map-v2-accumulators"
+      },
+      "tagline": "Különböző piacok és ligák egy szelvényen.",
+      "target_odds_band": {
+        "max": 30,
+        "min": 12
+      },
+      "target_odds_minimum_enforced": true
+    },
+    {
+      "catalog_version": "arthur-tipster-personas-v7-odds-band-10-50",
+      "fictional": true,
+      "max_legs": 6,
+      "method_kind": "SHARED_EVIDENCE_PERSONA",
+      "min_legs": 4,
+      "model_weights": {
+        "gauss": 0.4,
+        "kepler": 0.3,
+        "laplace": 0.3
+      },
+      "name": "Fék Tádé",
+      "personality": "Magasabb modellbecslést és szűk modellkülönbséget kér minden lábnál.",
+      "preferences": [
+        "Magasabb egyedi modellbecslés",
+        "4–6 külön meccs",
+        "10–14-es összszorzó"
+      ],
+      "preferred_combined_price": 11.832159566199232,
+      "preferred_legs": 5,
+      "profile_id": "tipster_fek_tade",
+      "reference_odds_band": {
+        "max": 14,
+        "min": 10
+      },
+      "risk": "MEDIUM",
+      "selection_mode": "PROFILE_ACCUMULATOR",
+      "selection_policy": {
+        "allowed_market_keys": null,
+        "competition_diversity": 0.0,
+        "edge_weight": 3.0,
+        "history_weight": 1.0,
+        "market_bonus": {},
+        "market_diversity": 0.0,
+        "market_weight": 0.0,
+        "max_model_spread": 0.07,
+        "min_edge": 0.02,
+        "min_market_disagreement": null,
+        "min_models": 2,
+        "min_probability": 0.55,
+        "preferred_price": 1.65,
+        "price_penalty": 1.8,
+        "probability_weight": 8.0,
+        "required_models": [],
+        "spread_penalty": 2.0,
+        "venue_weight": 1.0
+      },
+      "source_style": {
+        "family": "CONSENSUS",
+        "implementation": "LOCAL_ADAPTATION_NO_DOWNLOADED_RUNTIME_CODE",
+        "source_audit_date": "2026-10-16",
+        "sources": [
+          {
+            "commit": "a4f1239a2bc8d0550408a5f8ee1cebb2f1815138",
+            "license": "MIT",
+            "name": "The Open Model",
+            "url": "https://github.com/Hicruben/theopenmodel",
+            "use": "Rating plus goal-model consensus and pre-kickoff snapshot discipline."
+          },
+          {
+            "commit": "6a51173454cba172f2e7b2d8374c1770f257b86a",
+            "license": "MIT",
+            "name": "penaltyblog",
+            "url": "https://github.com/martineastwood/penaltyblog",
+            "use": "Poisson, Dixon–Coles, bivariate Poisson and Pi-rating model families."
+          }
+        ],
+        "style_id": "consensus_accumulator",
+        "summary": "Profilra szabott meccsszám és összszorzó; minden lábon külön modellkonszenzus.",
+        "title": "Modellkonszenzus-kombináció",
+        "version": "arthur-open-source-style-map-v2-accumulators"
+      },
+      "tagline": "Magasabb egyedi esélyű lábakból kombinálok.",
+      "target_odds_band": {
+        "max": 14,
+        "min": 10
+      },
+      "target_odds_minimum_enforced": true
+    },
+    {
+      "catalog_version": "arthur-tipster-personas-v7-odds-band-10-50",
+      "fictional": true,
+      "max_legs": 6,
+      "method_kind": "SHARED_EVIDENCE_PERSONA",
+      "min_legs": 3,
+      "model_weights": {
+        "gauss": 0.5,
+        "kepler": 0.0,
+        "laplace": 0.5
+      },
+      "name": "Góltérkép Emese",
+      "personality": "Over, Under és BTTS piacokból választ két gólmodell támogatásával.",
+      "preferences": [
+        "Négy gólpiac",
+        "3–6 külön meccs",
+        "10–26-os összszorzó"
+      ],
+      "preferred_combined_price": 16.1245154965971,
+      "preferred_legs": 4,
+      "profile_id": "tipster_golterkep_emese",
+      "reference_odds_band": {
+        "max": 26,
+        "min": 10
+      },
+      "risk": "MEDIUM",
+      "selection_mode": "PROFILE_ACCUMULATOR",
+      "selection_policy": {
+        "allowed_market_keys": [
+          "btts_no",
+          "btts_yes",
+          "over25",
+          "under25"
+        ],
+        "competition_diversity": 0.0,
+        "edge_weight": 2.0,
+        "history_weight": 1.0,
+        "market_bonus": {
+          "btts_no": 1.0,
+          "btts_yes": 1.0,
+          "over25": 1.0,
+          "under25": 1.0
+        },
+        "market_diversity": 0.8,
+        "market_weight": 0.0,
+        "max_model_spread": 1.0,
+        "min_edge": 0.04,
+        "min_market_disagreement": null,
+        "min_models": 1,
+        "min_probability": 0.25,
+        "preferred_price": 2.0,
+        "price_penalty": 0.3,
+        "probability_weight": 4.0,
+        "required_models": [
+          "gauss",
+          "laplace"
+        ],
+        "spread_penalty": 2.0,
+        "venue_weight": 1.0
+      },
+      "source_style": {
+        "family": "GOAL_GRID",
+        "implementation": "LOCAL_ADAPTATION_NO_DOWNLOADED_RUNTIME_CODE",
+        "source_audit_date": "2026-10-16",
+        "sources": [
+          {
+            "commit": "6a51173454cba172f2e7b2d8374c1770f257b86a",
+            "license": "MIT",
+            "name": "penaltyblog",
+            "url": "https://github.com/martineastwood/penaltyblog",
+            "use": "Poisson, Dixon–Coles, bivariate Poisson and Pi-rating model families."
+          },
+          {
+            "commit": "d147452283f50da35ad51983c4a2c9cfc96e5fbd",
+            "license": "MIT",
+            "name": "odds-calibration",
+            "url": "https://github.com/vladapl21/odds-calibration",
+            "use": "De-vigged market comparison, minimum-edge gates and chronological validation."
+          }
+        ],
+        "style_id": "goal_accumulator",
+        "summary": "A profil saját gólpiacaiból, két modell alátámasztásával épített kombináció.",
+        "title": "Gólpiaci kombináció",
+        "version": "arthur-open-source-style-map-v2-accumulators"
+      },
+      "tagline": "Vegyes gólpiaci kombináció.",
+      "target_odds_band": {
+        "max": 26,
+        "min": 10
+      },
+      "target_odds_minimum_enforced": true
+    },
+    {
+      "catalog_version": "arthur-tipster-personas-v7-odds-band-10-50",
+      "fictional": true,
+      "max_legs": 5,
+      "method_kind": "SHARED_EVIDENCE_PERSONA",
+      "min_legs": 3,
+      "model_weights": {
+        "gauss": 0.5,
+        "kepler": 0.0,
+        "laplace": 0.5
+      },
+      "name": "Merész Hunor",
+      "personality": "Igazolt áremelkedést, két gólmodellt és legalább 20% becsült értékpuffert vár minden lábnál.",
+      "preferences": [
+        "24–48 órás áremelkedés",
+        "Becsült várható érték > 1,20 lábanként",
+        "25–50-es összszorzó"
+      ],
+      "preferred_combined_price": 35.35533905932738,
+      "preferred_legs": 4,
+      "profile_id": "tipster_meresz_hunor",
+      "reference_odds_band": {
+        "max": 50,
+        "min": 25
+      },
+      "risk": "HIGHER",
+      "selection_mode": "PROFILE_ACCUMULATOR",
+      "selection_policy": {
+        "allowed_market_keys": null,
+        "competition_diversity": 0.0,
+        "contrarian_min_expected_return": 1.2,
+        "contrarian_min_rise": 0.1,
+        "contrarian_value": true,
+        "edge_weight": 2.0,
+        "history_weight": 1.0,
+        "market_bonus": {},
+        "market_diversity": 0.0,
+        "market_weight": 0.0,
+        "max_model_spread": 1.0,
+        "min_edge": 0.2,
+        "min_market_disagreement": null,
+        "min_models": 1,
+        "min_probability": 0.2,
+        "preferred_price": 3.0,
+        "price_penalty": 1.4,
+        "probability_weight": 1.5,
+        "required_models": [
+          "gauss",
+          "laplace"
+        ],
+        "spread_penalty": 2.0,
+        "venue_weight": 1.0
+      },
+      "source_style": {
+        "family": "CONTRARIAN_VALUE",
+        "implementation": "LOCAL_ADAPTATION_NO_DOWNLOADED_RUNTIME_CODE",
+        "source_audit_date": "2026-10-16",
+        "sources": [
+          {
+            "commit": "d147452283f50da35ad51983c4a2c9cfc96e5fbd",
+            "license": "MIT",
+            "name": "odds-calibration",
+            "url": "https://github.com/vladapl21/odds-calibration",
+            "use": "De-vigged market comparison, minimum-edge gates and chronological validation."
+          },
+          {
+            "commit": "6a51173454cba172f2e7b2d8374c1770f257b86a",
+            "license": "MIT",
+            "name": "penaltyblog",
+            "url": "https://github.com/martineastwood/penaltyblog",
+            "use": "Poisson, Dixon–Coles, bivariate Poisson and Pi-rating model families."
+          }
+        ],
+        "style_id": "contrarian_accumulator",
+        "summary": "Minden lábnál igazolt áremelkedés, modellérték és forrásolt felülvizsgálat.",
+        "title": "Ellenáramú kombináció",
+        "version": "arthur-open-source-style-map-v2-accumulators"
+      },
+      "tagline": "Merész kombináció, lábanként bizonyított ellenáram.",
+      "target_odds_band": {
+        "max": 50,
+        "min": 25
+      },
+      "target_odds_minimum_enforced": true
+    },
+    {
+      "catalog_version": "arthur-tipster-personas-v7-odds-band-10-50",
+      "fictional": true,
+      "max_legs": 6,
+      "method_kind": "SHARED_EVIDENCE_PERSONA",
+      "min_legs": 3,
+      "model_weights": {
+        "gauss": 0.5,
+        "kepler": 0.0,
+        "laplace": 0.5
+      },
+      "name": "Pajzs Dorka",
+      "personality": "Hazai győzelem, Under és BTTS No piaci jeleket kapcsol össze.",
+      "preferences": [
+        "Hazai / Under / BTTS No",
+        "3–6 külön meccs",
+        "10–20-as összszorzó"
+      ],
+      "preferred_combined_price": 14.142135623730951,
+      "preferred_legs": 4,
+      "profile_id": "tipster_pajzs_dorka",
+      "reference_odds_band": {
+        "max": 20,
+        "min": 10
+      },
+      "risk": "MEDIUM",
+      "selection_mode": "PROFILE_ACCUMULATOR",
+      "selection_policy": {
+        "allowed_market_keys": [
+          "btts_no",
+          "home",
+          "under25"
+        ],
+        "competition_diversity": 0.0,
+        "edge_weight": 2.0,
+        "history_weight": 1.0,
+        "market_bonus": {
+          "btts_no": 1.0,
+          "home": 2.3,
+          "under25": 2.0
+        },
+        "market_diversity": 0.0,
+        "market_weight": 0.0,
+        "max_model_spread": 1.0,
+        "min_edge": 0.04,
+        "min_market_disagreement": null,
+        "min_models": 1,
+        "min_probability": 0.25,
+        "preferred_price": 2.0,
+        "price_penalty": 0.3,
+        "probability_weight": 4.0,
+        "required_models": [
+          "gauss",
+          "laplace"
+        ],
+        "spread_penalty": 2.0,
+        "venue_weight": 2.0
+      },
+      "source_style": {
+        "family": "GOAL_GRID",
+        "implementation": "LOCAL_ADAPTATION_NO_DOWNLOADED_RUNTIME_CODE",
+        "source_audit_date": "2026-10-16",
+        "sources": [
+          {
+            "commit": "6a51173454cba172f2e7b2d8374c1770f257b86a",
+            "license": "MIT",
+            "name": "penaltyblog",
+            "url": "https://github.com/martineastwood/penaltyblog",
+            "use": "Poisson, Dixon–Coles, bivariate Poisson and Pi-rating model families."
+          },
+          {
+            "commit": "d147452283f50da35ad51983c4a2c9cfc96e5fbd",
+            "license": "MIT",
+            "name": "odds-calibration",
+            "url": "https://github.com/vladapl21/odds-calibration",
+            "use": "De-vigged market comparison, minimum-edge gates and chronological validation."
+          }
+        ],
+        "style_id": "goal_accumulator",
+        "summary": "A profil saját gólpiacaiból, két modell alátámasztásával épített kombináció.",
+        "title": "Gólpiaci kombináció",
+        "version": "arthur-open-source-style-map-v2-accumulators"
+      },
+      "tagline": "Védekező meccsképekből kombinálok.",
+      "target_odds_band": {
+        "max": 20,
+        "min": 10
+      },
+      "target_odds_minimum_enforced": true
+    },
+    {
+      "catalog_version": "arthur-tipster-personas-v7-odds-band-10-50",
+      "fictional": true,
+      "max_legs": 6,
+      "method_kind": "SHARED_EVIDENCE_PERSONA",
+      "min_legs": 4,
+      "model_weights": {
+        "gauss": 0.5,
+        "kepler": 0.0,
+        "laplace": 0.5
+      },
+      "name": "Roham Levi",
+      "personality": "Vendég, Over és BTTS Yes tippeket fűz, megtartva minden láb modellértékét.",
+      "preferences": [
+        "Vendég / Over / BTTS Yes",
+        "4–6 külön meccs",
+        "15–40-es összszorzó"
+      ],
+      "preferred_combined_price": 24.49489742783178,
+      "preferred_legs": 5,
+      "profile_id": "tipster_roham_levi",
+      "reference_odds_band": {
+        "max": 40,
+        "min": 15
+      },
+      "risk": "HIGHER",
+      "selection_mode": "PROFILE_ACCUMULATOR",
+      "selection_policy": {
+        "allowed_market_keys": [
+          "away",
+          "btts_yes",
+          "over25"
+        ],
+        "competition_diversity": 0.0,
+        "edge_weight": 2.0,
+        "history_weight": 1.0,
+        "market_bonus": {
+          "away": 2.5,
+          "btts_yes": 1.0,
+          "over25": 2.0
+        },
+        "market_diversity": 0.0,
+        "market_weight": 0.0,
+        "max_model_spread": 1.0,
+        "min_edge": 0.05,
+        "min_market_disagreement": null,
+        "min_models": 1,
+        "min_probability": 0.3,
+        "preferred_price": 2.5,
+        "price_penalty": 0.3,
+        "probability_weight": 4.0,
+        "required_models": [
+          "gauss",
+          "laplace"
+        ],
+        "spread_penalty": 2.0,
+        "venue_weight": 1.0
+      },
+      "source_style": {
+        "family": "GOAL_GRID",
+        "implementation": "LOCAL_ADAPTATION_NO_DOWNLOADED_RUNTIME_CODE",
+        "source_audit_date": "2026-10-16",
+        "sources": [
+          {
+            "commit": "6a51173454cba172f2e7b2d8374c1770f257b86a",
+            "license": "MIT",
+            "name": "penaltyblog",
+            "url": "https://github.com/martineastwood/penaltyblog",
+            "use": "Poisson, Dixon–Coles, bivariate Poisson and Pi-rating model families."
+          },
+          {
+            "commit": "d147452283f50da35ad51983c4a2c9cfc96e5fbd",
+            "license": "MIT",
+            "name": "odds-calibration",
+            "url": "https://github.com/vladapl21/odds-calibration",
+            "use": "De-vigged market comparison, minimum-edge gates and chronological validation."
+          }
+        ],
+        "style_id": "goal_accumulator",
+        "summary": "A profil saját gólpiacaiból, két modell alátámasztásával épített kombináció.",
+        "title": "Gólpiaci kombináció",
+        "version": "arthur-open-source-style-map-v2-accumulators"
+      },
+      "tagline": "Támadó meccsképekből nagyobb kombináció.",
+      "target_odds_band": {
+        "max": 40,
+        "min": 15
+      },
+      "target_odds_minimum_enforced": true
+    },
+    {
+      "catalog_version": "arthur-tipster-personas-v7-odds-band-10-50",
+      "fictional": true,
+      "max_legs": 5,
+      "method_kind": "SHARED_EVIDENCE_PERSONA",
+      "min_legs": 3,
+      "model_weights": {
+        "gauss": 0.4,
+        "kepler": 0.3,
+        "laplace": 0.3
+      },
+      "name": "Stabil Irma",
+      "personality": "Legalább két modell és legfeljebb öt százalékpont eltérés minden választásnál.",
+      "preferences": [
+        "Legfeljebb 5 százalékpont modellkülönbség",
+        "3–5 külön meccs",
+        "10–18-as összszorzó"
+      ],
+      "preferred_combined_price": 13.416407864998739,
+      "preferred_legs": 4,
+      "profile_id": "tipster_stabil_irma",
+      "reference_odds_band": {
+        "max": 18,
+        "min": 10
+      },
+      "risk": "MEDIUM",
+      "selection_mode": "PROFILE_ACCUMULATOR",
+      "selection_policy": {
+        "allowed_market_keys": null,
+        "competition_diversity": 0.0,
+        "edge_weight": 2.0,
+        "history_weight": 1.0,
+        "market_bonus": {},
+        "market_diversity": 0.0,
+        "market_weight": 0.0,
+        "max_model_spread": 0.05,
+        "min_edge": 0.03,
+        "min_market_disagreement": null,
+        "min_models": 2,
+        "min_probability": 0.45,
+        "preferred_price": 2.0,
+        "price_penalty": 0.3,
+        "probability_weight": 4.0,
+        "required_models": [],
+        "spread_penalty": 14.0,
+        "venue_weight": 1.0
+      },
+      "source_style": {
+        "family": "CONSENSUS",
+        "implementation": "LOCAL_ADAPTATION_NO_DOWNLOADED_RUNTIME_CODE",
+        "source_audit_date": "2026-10-16",
+        "sources": [
+          {
+            "commit": "a4f1239a2bc8d0550408a5f8ee1cebb2f1815138",
+            "license": "MIT",
+            "name": "The Open Model",
+            "url": "https://github.com/Hicruben/theopenmodel",
+            "use": "Rating plus goal-model consensus and pre-kickoff snapshot discipline."
+          },
+          {
+            "commit": "6a51173454cba172f2e7b2d8374c1770f257b86a",
+            "license": "MIT",
+            "name": "penaltyblog",
+            "url": "https://github.com/martineastwood/penaltyblog",
+            "use": "Poisson, Dixon–Coles, bivariate Poisson and Pi-rating model families."
+          }
+        ],
+        "style_id": "consensus_accumulator",
+        "summary": "Profilra szabott meccsszám és összszorzó; minden lábon külön modellkonszenzus.",
+        "title": "Modellkonszenzus-kombináció",
+        "version": "arthur-open-source-style-map-v2-accumulators"
+      },
+      "tagline": "Szűk modellkülönbség minden lábnál.",
+      "target_odds_band": {
+        "max": 18,
+        "min": 10
+      },
+      "target_odds_minimum_enforced": true
+    }
+  ],
+  "schema_version": 1
+}

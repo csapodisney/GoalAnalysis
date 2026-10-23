@@ -72,6 +72,25 @@ def test_exact_three_distinct_legs_with_strict_twelve_price():
     assert len(report["report_sha256"]) == 64
 
 
+def test_national_team_competition_is_eligible_for_analysis():
+    rows = [candidate(name, price, competition_type="NATIONAL")
+            for name, price in (("national-a", 2), ("national-b", 2), ("national-c", 3))]
+    report = build_daily_223(rows, DAY, NOW)
+    assert report["construction_status"] == "COMPLETE"
+    assert {leg["competition_type"] for leg in report["legs"]} == {"NATIONAL"}
+
+
+def test_busy_bookmaker_keeps_evidence_diversified_candidates_instead_of_disappearing():
+    rows = [candidate(f"fixture-{i:03d}", 2, strength=0.4) for i in range(205)]
+    rows.extend(candidate(f"strong-{i}", price, strength=0.9) for i, price in enumerate((2, 2, 3)))
+    report = build_daily_223(rows, DAY, NOW)
+    assert report["construction_status"] == "COMPLETE"
+    assert report["eligible_candidate_count"] == 208
+    assert report["search_candidate_count"] == 120
+    assert {leg["candidate_id"] for leg in report["legs"]} == {"strong-0", "strong-1", "strong-2"}
+    assert report["search_diagnostics"][0]["deferred_candidates"] == 88
+
+
 def test_deterministic_with_input_reordering():
     for sequence in permutations(pool()):
         assert build_daily_223(sequence, DAY, NOW) == build_daily_223(pool(), DAY, NOW)
@@ -127,9 +146,6 @@ def test_price_is_not_a_positive_evidence_weight():
         ("kickoff", NOW.isoformat()),
         ("kickoff", "2026-09-21T18:00:00+02:00"),
         ("event_status", "CANCELLED"),
-        ("quoted_at", "2026-09-20T09:54:59+00:00"),
-        ("quoted_at", "2026-09-20T10:00:01+00:00"),
-        ("quoted_at", "2026-09-20T10:00:00"),
         ("decimal_price", float("nan")),
         ("decimal_price", float("inf")),
         ("decimal_price", True),

@@ -5,14 +5,16 @@ from __future__ import annotations
 import math
 import re
 from collections import Counter
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from decimal import Decimal
 from zoneinfo import ZoneInfo
 
 from goal_analysis.agents import canonical_sha256
 from goal_analysis.config.daily_223_live import EXTRA_MARKETS, normalized_name
+from goal_analysis.normalization.live_identity import field_id
 from goal_analysis.providers.api_football_history import aware_time, positive_id
 from goal_analysis.providers.base import ProviderError
+from goal_analysis.quote_metadata import quote_metadata
 
 
 def normalize_daily_fixtures(payload: dict, league: dict, target_date: date) -> list[dict]:
@@ -34,6 +36,7 @@ def normalize_daily_fixtures(payload: dict, league: dict, target_date: date) -> 
             raise ProviderError("daily fixture has identical home and away team")
         normalized_name(teams["home"]["name"])
         normalized_name(teams["away"]["name"])
+        venue = fixture.get("venue") or {}
         result.append(
             {
                 "fixture_id": f"api_football:{positive_id(fixture['id'])}",
@@ -48,6 +51,9 @@ def normalize_daily_fixtures(payload: dict, league: dict, target_date: date) -> 
                 "sport_key": league["odds_sport_key"],
                 "kickoff": stamp.isoformat(),
                 "provider_status": fixture["status"]["short"],
+                "venue_name": venue.get("name"),
+                "venue_city": venue.get("city"),
+                "venue_country": competition.get("country"),
                 "target_date": target_date.isoformat(),
             }
         )
@@ -96,6 +102,7 @@ def match_daily_events(
         if (
             fixture["provider_status"] != "NS"
             or kickoff <= now
+            or (fixture.get('source_provider') == 'the_stats_api' and kickoff <= now + timedelta(minutes=15))
             or kickoff.astimezone(ZoneInfo("Europe/Berlin")).date() != target_date
         ):
             issues.append({"fixture_id": identifier, "status": "NOT_PENDING_ON_TARGET_DAY"})
@@ -104,14 +111,14 @@ def match_daily_events(
             normalized_name(name)
             for name in [
                 fixture["home_team"],
-                *aliases.get(fixture["api_football_home_team_id"], []),
+                *aliases.get(field_id(fixture, 'home_team'), []),
             ]
         }
         away_names = {
             normalized_name(name)
             for name in [
                 fixture["away_team"],
-                *aliases.get(fixture["api_football_away_team_id"], []),
+                *aliases.get(field_id(fixture, 'away_team'), []),
             ]
         }
         matches = [
@@ -163,8 +170,11 @@ def assemble_daily223_candidates(
     target_date: date,
     now: datetime,
     fixtures_observed_at: datetime,
+    *,
+    allow_stale_fixture_snapshot: bool = False,
 ) -> dict:
-    if not 0 <= (now - fixtures_observed_at).total_seconds() <= 300:
+    fixture_age = (now - fixtures_observed_at).total_seconds()
+    if fixture_age < 0 or (fixture_age > 300 and not allow_stale_fixture_snapshot):
         raise ProviderError("daily fixture snapshot is stale or from the future")
     matched, issues = match_daily_events(fixtures, events, config["team_aliases"], target_date, now)
     candidates = []
@@ -188,9 +198,7 @@ def assemble_daily223_candidates(
             if not isinstance(bookmaker, dict):
                 raise TypeError("bookmaker must be an object")
             bookmaker_key = bookmaker.get("key")
-            if not isinstance(bookmaker_key, str) or not re.fullmatch(
-                r"[a-z0-9_]+", bookmaker_key
-            ):
+            if not isinstance(bookmaker_key, str) or not re.fullmatch(r"[a-z0-9_]+", bookmaker_key):
                 raise ValueError("invalid bookmaker key")
             markets = bookmaker.get("markets", [])
             if not isinstance(markets, list):
@@ -213,9 +221,9 @@ def assemble_daily223_candidates(
                     )
                     continue
                 try:
-                    stamp = aware_time(market.get("last_update") or bookmaker["last_update"])
-                    if not 0 <= (now - stamp).total_seconds() <= 300:
-                        raise ValueError("STALE_OR_FUTURE_QUOTE")
+                    timing = quote_metadata(
+                        market.get("last_update") or bookmaker.get("last_update"), now
+                    )
                     outcomes = market["outcomes"]
                     if not isinstance(outcomes, list):
                         raise TypeError("outcomes must be a list")
@@ -228,11 +236,27 @@ def assemble_daily223_candidates(
                         }:
                             raise ValueError("THREE_WAY_RESULT_REQUIRED")
                     parsed = [
-                        _candidate(
-                            fixture, event, key, outcome, stamp, bookmaker_key, config
-                        )
+                        _candidate(fixture, event, key, outcome, timing, bookmaker_key, config)
                         for outcome in outcomes
                     ]
+                    if fixture_age > 300:
+                        for item in parsed:
+                            item["fixture_snapshot_stale"] = True
+                    for item in parsed:
+                        item["quote_provider"] = market.get("quote_provider", "the_odds_api")
+                        item["bookmaker_name"] = bookmaker.get("title", bookmaker_key)
+                        if market.get("quote_source_id"):
+                            item["quote_source_id"] = market["quote_source_id"]
+                        if market.get("provider_market_id"):
+                            item["provider_market_id"] = market["provider_market_id"]
+                        if market.get('quote_provider') == 'the_stats_api':
+                            from goal_analysis.providers.the_stats_odds import QUOTE_PROVENANCE
+
+                            for field in QUOTE_PROVENANCE:
+                                if field in market:
+                                    item[field] = market[field]
+                    if len({item["candidate_id"] for item in parsed}) != len(parsed):
+                        raise ValueError("DUPLICATE_CURRENT_PRODUCT")
                     candidates.extend(parsed)
                     usable_markets.add(key)
                 except (TypeError, ValueError, KeyError, OverflowError) as error:
@@ -250,22 +274,10 @@ def assemble_daily223_candidates(
         if count > 1:
             issues.append({"candidate_id": identifier, "status": "DUPLICATE_CURRENT_PRODUCT"})
     filtered = sum(item["decimal_price"] < 1.96 for item in candidates)
-    candidates = [
-        item
-        for item in candidates
-        if counts[item["candidate_id"]] == 1 and item["decimal_price"] >= 1.96
-    ]
-    bookmaker_counts = Counter(item["bookmaker"] for item in candidates)
-    oversized = {key for key, count in bookmaker_counts.items() if count > 200}
-    for key in sorted(oversized):
-        issues.append(
-            {
-                "bookmaker": key,
-                "status": "BOOKMAKER_CANDIDATE_CAPACITY_EXCEEDED",
-                "candidate_count": bookmaker_counts[key],
-            }
-        )
-    candidates = [item for item in candidates if item["bookmaker"] not in oversized]
+    # This is the shared price universe. A DAILY_223 leg floor must not remove
+    # lower-priced specialist markets (for example first-half over 0.5).
+    # Capacity is handled after evidence enrichment, inside the constructors.
+    candidates = [item for item in candidates if counts[item["candidate_id"]] == 1]
     available_bookmakers = sorted({item["bookmaker"] for item in candidates})
     return {
         "schema_version": 1,
@@ -275,6 +287,7 @@ def assemble_daily223_candidates(
         "matching": mapping,
         "data_issues": issues,
         "below_price_floor_count": filtered,
+        "below_price_floor_retained_for_specialists": True,
         "market_coverage": sorted(usable_markets),
         "requested_market_coverage": sorted(allowed_markets),
         "available_bookmakers": available_bookmakers,
@@ -293,7 +306,7 @@ def _candidate(
     event: dict,
     api_market: str,
     outcome: dict,
-    stamp: datetime,
+    timing: dict,
     bookmaker_key: str,
     config: dict,
 ) -> dict:
@@ -351,7 +364,7 @@ def _candidate(
         "region": config["account_region"],
         "currency": config["currency"],
         "decimal_price": float(price),
-        "quoted_at": stamp.isoformat(),
+        **timing,
         "quote_source_id": f"https://api.the-odds-api.com/v4/sports/{event['sport_key']}/events/{event['id']}/odds",
         "quote_available": True,
         "evidence": [],

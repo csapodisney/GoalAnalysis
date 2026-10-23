@@ -1,0 +1,6 @@
+{
+  "enabled": true,
+  "mode": "SHADOW",
+  "max_requests": 20,
+  "max_seconds": 45
+}

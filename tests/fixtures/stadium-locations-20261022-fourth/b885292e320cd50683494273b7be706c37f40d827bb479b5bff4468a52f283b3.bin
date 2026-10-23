@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+<head>
+    <meta charset="utf-8">
+
+<!-- 
+	made by concedra
+
+	This website is powered by TYPO3 - inspiring people to share!
+	TYPO3 is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.
+	TYPO3 is copyright 1998-2026 of Kasper Skaarhoj. Extensions are copyright of their respective owners.
+	Information and contribution at https://typo3.org/
+-->
+
+<link rel="icon" href="/_assets/566471ce26a1b124b6323a51831bf012/stadion/Icons/favicon.ico" type="image/png">
+<title>Stadion an der Hafenstraße</title>
+<meta http-equiv="x-ua-compatible" content="IE=edge">
+<meta name="generator" content="TYPO3 CMS">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="index,follow">
+<meta property="og:title" content="Stadion an der Hafenstraße">
+<meta name="twitter:card" content="summary">
+<meta name="apple-mobile-web-app-capable" content="no">
+
+
+<link rel="stylesheet" href="/typo3temp/assets/css/df530eb6660847cfeec8cffe25fde6a5.css?1792682766" media="all">
+<link rel="stylesheet" href="/_assets/dff76fa8ed55730fa1fbc71757fc5959/Css/quiz.css?1792682591" media="all">
+<link rel="stylesheet" href="/_assets/5449cb63b1f21189b0bcfe6c2be2eb38/Libraries/justifiedGallery/justifiedGallery.min.css?1792682598" media="all">
+<link rel="stylesheet" href="/_assets/566471ce26a1b124b6323a51831bf012/Dist/stadion/global.css?1792682593" media="all">
+
+
+
+
+
+
+<link rel="apple-touch-icon" sizes="57x57" href="/_assets/566471ce26a1b124b6323a51831bf012/stadion/Assets/Images/Favicon/apple-icon-57x57.png">
+            <link rel="apple-touch-icon" sizes="60x60" href="/_assets/566471ce26a1b124b6323a51831bf012/stadion/Assets/Images/Favicon/apple-icon-60x60.png">
+            <link rel="apple-touch-icon" sizes="72x72" href="/_assets/566471ce26a1b124b6323a51831bf012/stadion/Assets/Images/Favicon/apple-icon-72x72.png">
+            <link rel="apple-touch-icon" sizes="76x76" href="/_assets/566471ce26a1b124b6323a51831bf012/stadion/Assets/Images/Favicon/apple-icon-76x76.png">
+            <link rel="apple-touch-icon" sizes="114x114" href="/_assets/566471ce26a1b124b6323a51831bf012/stadion/Assets/Images/Favicon/apple-icon-114x114.png">
+            <link rel="apple-touch-icon" sizes="120x120" href="/_assets/566471ce26a1b124b6323a51831bf012/stadion/Assets/Images/Favicon/apple-icon-120x120.png">
+            <link rel="apple-touch-icon" sizes="144x144" href="/_assets/566471ce26a1b124b6323a51831bf012/stadion/Assets/Images/Favicon/apple-icon-144x144.png">
+            <link rel="apple-touch-icon" sizes="152x152" href="/_assets/566471ce26a1b124b6323a51831bf012/stadion/Assets/Images/Favicon/apple-icon-152x152.png">
+            <link rel="apple-touch-icon" sizes="180x180" href="/_assets/566471ce26a1b124b6323a51831bf012/stadion/Assets/Images/Favicon/apple-icon-180x180.png">
+            <link rel="icon" type="image/png" sizes="192x192"  href="/_assets/566471ce26a1b124b6323a51831bf012/stadion/Assets/Images/Favicon/android-icon-192x192.png">
+            <link rel="icon" type="image/png" sizes="32x32" href="/_assets/566471ce26a1b124b6323a51831bf012/stadion/Assets/Images/Favicon/favicon-32x32.png">
+            <link rel="icon" type="image/png" sizes="96x96" href="/_assets/566471ce26a1b124b6323a51831bf012/stadion/Assets/Images/Favicon/favicon-96x96.png">
+            <link rel="icon" type="image/png" sizes="16x16" href="/_assets/566471ce26a1b124b6323a51831bf012/stadion/Assets/Images/Favicon/favicon-16x16.png">
+            <link rel="manifest" href="/_assets/566471ce26a1b124b6323a51831bf012/stadion/Assets/Images/Favicon/manifest.json">
+            <meta name="msapplication-TileColor" content="#E1001E">
+            <meta name="msapplication-TileImage" content="/_assets/566471ce26a1b124b6323a51831bf012/stadion/Assets/Images/Favicon/ms-icon-144x144.png">
+            <meta name="theme-color" content="#E1001E"><script>function log(e){window.console&&showLog&&console.log(e)}function css_browser_selector(e){function i(){var e=window.outerWidth||m.clientWidth,i=window.outerHeight||m.clientHeight;t.orientation=i>e?"portrait":"landscape",m.className=m.className.replace(/ ?orientation_\w+/g,"").replace(/ [min|max|cl]+[w|h]_\d+/g,"");for(var n=s-1;n>=0;n--)if(e>=o[n]){t.maxw=o[n];break}widthClasses="";for(var r in t)widthClasses+=" "+r+"_"+t[r];return m.className=m.className+widthClasses,widthClasses}var t={},o=[320,480,640,768,1024,1152,1280,1440,1680,1920,2560],s=o.length,n=e.toLowerCase(),r=function(e){return RegExp(e,"i").test(n)},a=function(e,i){i=i.replace(".","_");for(var t=i.indexOf("_"),o="";t>0;)o+=" "+e+i.substring(0,t),t=i.indexOf("_",t+1);return o+=" "+e+i},p="gecko",d="webkit",g="chrome",l="firefox",x="safari",c="opera",w="mobile",E="android",R="blackberry",$="lang_",_="device_",m=document.documentElement,b=[!/opera|webtv/i.test(n)&&/msie\s(\d+)/.test(n)?"ie ie"+(/trident\/7\.0/.test(n)?"11":RegExp.$1):r(!/opera|webtv/i.test(n)&&/msie\s(\d+)/.test(n))?"ie ie"+(/trident\/6\.0/.test(n)?"10":RegExp.$1):r(!/opera|webtv/i.test(n)&&/msie\s(\d+)/.test(n))?"ie ie"+(/trident\/5\.0/.test(n)?"9":RegExp.$1):r(!/opera|webtv/i.test(n)&&/msie\s(\d+)/.test(n))?"ie ie"+(/trident\/4\.0/.test(n)?"8":RegExp.$1):r("firefox/")?p+" "+l+(/firefox\/((\d+)(\.(\d+))(\.\d+)*)/.test(n)?" "+l+RegExp.$2+" "+l+RegExp.$2+"_"+RegExp.$4:""):r("chrome")?d+" "+g+(/chrome\/((\d+)(\.(\d+))(\.\d+)*)/.test(n)?" "+g+RegExp.$2+(RegExp.$4>0?" "+g+RegExp.$2+"_"+RegExp.$4:""):""):r("gecko/")?p:r("opera")?c+(/version\/((\d+)(\.(\d+))(\.\d+)*)/.test(n)?" "+c+RegExp.$2+" "+c+RegExp.$2+"_"+RegExp.$4:/opera(\s|\/)(\d+)\.(\d+)/.test(n)?" "+c+RegExp.$2+" "+c+RegExp.$2+"_"+RegExp.$3:""):r("konqueror")?"konqueror":r("blackberry")?R+(/Version\/(\d+)(\.(\d+)+)/i.test(n)?" "+R+RegExp.$1+" "+R+RegExp.$1+RegExp.$2.replace(".","_"):/Blackberry ?(([0-9]+)([a-z]?))[\/|;]/gi.test(n)?" "+R+RegExp.$2+(RegExp.$3?" "+R+RegExp.$2+RegExp.$3:""):""):r("android")?E+(/Version\/(\d+)(\.(\d+))+/i.test(n)?" "+E+RegExp.$1+" "+E+RegExp.$1+RegExp.$2.replace(".","_"):"")+(/Android (.+); (.+) Build/i.test(n)?" "+_+RegExp.$2.replace(/ /g,"_").replace(/-/g,"_"):""):r("iron")?d+" iron":r("applewebkit/")?d+" "+x+(/version\/((\d+)(\.(\d+))(\.\d+)*)/.test(n)?" "+x+RegExp.$2+" "+x+RegExp.$2+RegExp.$3.replace(".","_"):/ Safari\/(\d+)/i.test(n)?"419"==RegExp.$1||"417"==RegExp.$1||"416"==RegExp.$1||"412"==RegExp.$1?" "+x+"2_0":"312"==RegExp.$1?" "+x+"1_3":"125"==RegExp.$1?" "+x+"1_2":"85"==RegExp.$1?" "+x+"1_0":"":""):r("mozilla/")?p:"",r("android|mobi|mobile|j2me|iphone|ipod|ipad|blackberry|playbook|kindle|silk")?w:"",r("j2me")?"j2me":r("ipad|ipod|iphone")?(/CPU( iPhone)? OS (\d+[_|\.]\d+([_|\.]\d+)*)/i.test(n)?"ios"+a("ios",RegExp.$2):"")+" "+(/(ip(ad|od|hone))/gi.test(n)?RegExp.$1:""):r("playbook")?"playbook":r("kindle|silk")?"kindle":r("playbook")?"playbook":r("mac")?"mac"+(/mac os x ((\d+)[.|_](\d+))/.test(n)?" mac"+RegExp.$2+" mac"+RegExp.$1.replace(".","_"):""):r("win")?"win"+(r("windows nt 6.3")?" win8.1":r("windows nt 6.2")?" win8":r("windows nt 6.1")?" win7":r("windows nt 6.0")?" vista":r("windows nt 5.2")||r("windows nt 5.1")?" win_xp":r("windows nt 5.0")?" win_2k":r("windows nt 4.0")||r("WinNT4.0")?" win_nt":""):r("freebsd")?"freebsd":r("x11|linux")?"linux":"",/[; |\[](([a-z]{2})(\-[a-z]{2})?)[)|;|\]]/i.test(n)?($+RegExp.$2).replace("-","_")+(""!=RegExp.$3?(" "+$+RegExp.$1).replace("-","_"):""):"",r("ipad|iphone|ipod")&&!r("safari")?"ipad_app":""];window.onresize=i,i();var f=b.join(" ")+" js ";return m.className=(f+m.className.replace(/\b(no[-|_]?)?js\b/g,"")).replace(/^ /,"").replace(/ +/g," "),f}showLog=!0,css_browser_selector(navigator.userAgent);</script><script type="application/javascript">window.SGSitepackagePrivacyUrl='https://www.ime-essen.de/datenschutz/';</script>    <script>var _paq = window._paq = window._paq || [];_paq.push(["disableCookies"]);_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);(function() {var u="https://analytics.concedra.de/";_paq.push(['setTrackerUrl', u+'matomo.php']);_paq.push(['setSiteId', '72']);var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);})();</script>
+<link rel="canonical" href="https://www.stadion-an-der-hafenstrasse.de/">
+</head>
+<body>
+
+    
+        
+
+        <header>
+            <a href="#main-content" class="sr-only sr-only-focusable skip-link">Zum Inhalt springen</a>
+            
+        <a id="btt" class="back-to-top-anchor" rel="nofollow"></a>
+        <nav class="navbar navbar-expand-lg" aria-label="Hauptnavigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">
+                        <img src="/_assets/566471ce26a1b124b6323a51831bf012/stadion/Assets/Images/logo-stadion-essen-rot.svg?1792682597" alt="Stadion an der Hafenstraße – zur Startseite">
+                    </a>
+                </div>
+                <ul class="navbar-nav ml-auto d-none d-xl-flex">
+                    
+                        <li class="nav-item">
+                            
+                                    <a href="/events/ansprechpartner-events/" target="" title="Stadion für Konzerte, Events oder Veranstaltungen anfragen" class="nav-link">Stadion für Konzerte, Events oder Veranstaltungen anfragen</a>
+                                
+                        </li>
+                    
+                </ul>
+                
+                
+
+                <button class="navbar-toggler menu" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Menü">
+                    <span class="menu-bar"></span>
+                    <span class="menu-bar"></span>
+                    <span class="menu-bar"></span>
+                </button>
+            </div>
+            <div id="navigation" class="collapse">
+                <div class="container">
+                    <ul class="navigation-item-con">
+                        
+                            <li class="navigation-item ">
+                                <a href="/events/" target="" title="Events &amp; Konzerte" class="nav-link " >
+                                    Events &amp; Konzerte
+                                </a>
+                                
+                                    <ul class="burger-submenu">
+                                        
+                                            <li class="submenu-item ">
+                                                <a href="/konzerte/informationen-fuer-veranstalter/" target="" title="Informationen für Veranstalter">
+                                                    Informationen für Veranstalter
+                                                </a>
+                                            </li>
+                                        
+                                            <li class="submenu-item ">
+                                                <a href="/events/ansprechpartner-events/" target="" title="Ansprechpartner Events">
+                                                    Ansprechpartner Events
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                        
+                            <li class="navigation-item ">
+                                <a href="/veranstaltungsraeume/" target="" title="Veranstaltungsräume" class="nav-link " >
+                                    Veranstaltungsräume
+                                </a>
+                                
+                                    <ul class="burger-submenu">
+                                        
+                                            <li class="submenu-item ">
+                                                <a href="/events/eventraum-1-obergeschoss-business-club/" target="" title="Assindia">
+                                                    Assindia
+                                                </a>
+                                            </li>
+                                        
+                                            <li class="submenu-item ">
+                                                <a href="/events/eventraum-erdgeschoss-fan-club/" target="" title="Zeche Hafenstraße">
+                                                    Zeche Hafenstraße
+                                                </a>
+                                            </li>
+                                        
+                                            <li class="submenu-item ">
+                                                <a href="/events/eventraum-sparkassen-lounge/" target="" title="Sparkassen-Lounge">
+                                                    Sparkassen-Lounge
+                                                </a>
+                                            </li>
+                                        
+                                            <li class="submenu-item ">
+                                                <a href="/events/logen/" target="" title="Logen">
+                                                    Logen
+                                                </a>
+                                            </li>
+                                        
+                                            <li class="submenu-item ">
+                                                <a href="/events/presseraum/" target="" title="Presseraum">
+                                                    Presseraum
+                                                </a>
+                                            </li>
+                                        
+                                            <li class="submenu-item ">
+                                                <a href="/events/umkleiden-mixed-zone/" target="" title="Umkleiden/Mixed Zone">
+                                                    Umkleiden/Mixed Zone
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                        
+                            <li class="navigation-item ">
+                                <a href="/stadion/architektur/" target="" title="Stadion" class="nav-link " >
+                                    Stadion
+                                </a>
+                                
+                                    <ul class="burger-submenu">
+                                        
+                                            <li class="submenu-item ">
+                                                <a href="/stadion/anfahrt/" target="" title="Anfahrt">
+                                                    Anfahrt
+                                                </a>
+                                            </li>
+                                        
+                                            <li class="submenu-item ">
+                                                <a href="/stadion/barrierefreiheit/" target="" title="Barrierefreiheit">
+                                                    Barrierefreiheit
+                                                </a>
+                                            </li>
+                                        
+                                            <li class="submenu-item ">
+                                                <a href="/stadion/daten-und-fakten/" target="" title="Daten und Fakten">
+                                                    Daten und Fakten
+                                                </a>
+                                            </li>
+                                        
+                                            <li class="submenu-item ">
+                                                <a href="/stadion/architektur/" target="" title="Architektur">
+                                                    Architektur
+                                                </a>
+                                            </li>
+                                        
+                                            <li class="submenu-item ">
+                                                <a href="/stadion/deutsche-fussballroute-nrw/" target="" title="Deutsche Fußballroute NRW">
+                                                    Deutsche Fußballroute NRW
+                                                </a>
+                                            </li>
+                                        
+                                            <li class="submenu-item ">
+                                                <a href="/stadion/wasserzeichen/" target="" title="Wasserzeichen">
+                                                    Wasserzeichen
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                        
+                            <li class="navigation-item ">
+                                <a href="/multimedia/" target="" title="Multimedia" class="nav-link " >
+                                    Multimedia
+                                </a>
+                                
+                                    <ul class="burger-submenu">
+                                        
+                                            <li class="submenu-item ">
+                                                <a href="/stadion/fotoausstellung-vom-alten-ins-neue/" target="" title="Fotoausstellung &quot;Vom Alten ins Neue&quot;">
+                                                    Fotoausstellung &quot;Vom Alten ins Neue&quot;
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                        
+                            <li class="navigation-item ">
+                                <a href="/stadionnews/" target="" title="Stadionnews" class="nav-link " >
+                                    Stadionnews
+                                </a>
+                                
+                            </li>
+                        
+                            <li class="navigation-item ">
+                                <a href="/akteure/" target="" title="Akteure" class="nav-link " >
+                                    Akteure
+                                </a>
+                                
+                                    <ul class="burger-submenu">
+                                        
+                                            <li class="submenu-item ">
+                                                <a href="/akteure/gve/" target="" title="GVE">
+                                                    GVE
+                                                </a>
+                                            </li>
+                                        
+                                            <li class="submenu-item ">
+                                                <a href="/akteure/vereine/" target="" title="Vereine">
+                                                    Vereine
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                        
+                    </ul>
+                </div>
+                
+
+
+            </div>
+        </nav>
+    
+        </header>
+        
+        
+        
+            <aside class="sticky-container" aria-label="Schnellzugriff">
+                
+                
+                
+                    <div class="sticky-item">
+                        <a href="https://www.facebook.com/stadion.essen" target="_blank" aria-label="Stadion an der Hafenstraße bei Facebook (öffnet in neuem Fenster)" rel="nofollow"><i class="fab fa-facebook fa-facebook-sticky position-relative" aria-hidden="true"></i></a>
+                    </div>
+                
+                
+                    <div class="sticky-item">
+                        <a aria-label="Kontakt" href="/kontakt/"><i class="fal fa-phone-alt position-relative" aria-hidden="true"></i></a>
+                    </div>
+                
+                
+            </aside>
+        
+    
+        <main id="main-content" tabindex="-1">
+            <div class="teaser">
+                <!--TYPO3SEARCH_begin-->
+                
+                <!--TYPO3SEARCH_end-->
+            </div>
+            <div class="main-content">
+                <!--TYPO3SEARCH_begin-->
+                
+<div id="c1754" class="frame frame-default frame-type-sg_sitepackage_slider frame-layout-0 frame-space-before-none frame-space-after-none"><div class="frame-container"><div class="frame-inner"><div class="slick slick-slider ce-slider"><div class="slide"><video width="1920px" height="890px" preload="auto" autoplay="autoplay" controls="controls" loop="loop" muted="muted" class="slide-image img-fluid slide-video" poster="/_assets/566471ce26a1b124b6323a51831bf012/Assets/Images/poster.png?1792682593" aria-label="Drohnenflug über das Stadion und über den Rasen mit Blick auf die Veranstaltungsräume im Stadion"><source src="/fileadmin/user_upload/stadion_essen/StadionEssen_Headerfilm.mp4" type="video/mp4" /></video><div class="slide-text"></div></div></div><div class="teaser-content-wrapper"><div class="teaser-content-inner-wrapper"><div class="teaser-content"><div class="teaser-content--headline mb-5"><h1>Willkommen im</h1></div><img class="teaser-content--image pt-5" src="/_assets/566471ce26a1b124b6323a51831bf012/stadion/Assets/Images/logo-stadion-essen-weiss.svg?1792682597" alt="Logo Stadion an der Hafenstraße"></div></div></div></div></div></div>
+
+
+<div id="c3890" class="frame frame-default frame-type-sg_sitepackage_card frame-layout-0 frame-space-before-none frame-space-after-none"><div class="frame-container"><div class="frame-inner"><div class="card card-20"><div class="card-20-wrapper "><div class="container"><div class="row"><div class="col-12 col-lg-6"><div class="card-20-img-wrapper"><img class="card-img img-fluid" src="/fileadmin/_processed_/6/1/csm_01_Aerial_005_B_WOLFF_GRUPPE_final_900_63ed33e732.jpg" width="800" height="600" alt="" /></div></div><div class="col-12 col-lg-6"><div class="card-body bg-primary"><div class="card-content"><h2>GVE stellt Visualisierungen zum Eckenausbau vor</h2><p>Im Sommer diesen Jahres gab der Rat der Stadt Essen die Gelder für die Planungskosten für den Eckenausbau im Stadion an der Hafenstraße frei. Im Zuge der laufenden Planung zur Erweiterung – konkret dem Ausbau der Stadionecken – erstellte nun die WOLFF GRUPPE als Generalplaner im Auftrag des Bauherrn GVE Grundstücksverwaltung Stadt Essen GmbH neue Visualisierungen. Die WOLFF GRUPPE hatte bereits den 2012 eröffneten und 2014 abschließend fertiggestellten Neubau geplant, und führt damit die architektonische Weiterentwicklung des Standorts konsequent fort.</p><p>Die aktuellen Visualisierungen vermitteln bereits jetzt einen eindrucksvollen Ausblick auf die spätere architektonische Qualität und räumliche Wirkung des Projekts. Die Südwestecke wird zu einer modernen Business Lounge erweitert, was sich auch deutlich in der äußeren Erscheinung abzeichnet. Die neue Gebäudestruktur mit zusätzlichen Erschließungselementen fügt sich sichtbar in die prägnante Tragwerkskonstruktion ein und stärkt das architektonische Gesamtbild des Stadions. Das filigrane Dachtragwerk wird in allen Ecken konsequent weitergeführt. Photovoltaikmodule kommen zur Stromerzeugung am Standort zum Einsatz.&nbsp;</p><p>GVE-Geschäftsführer Dirk Miklikowski ist begeistert:<i> „Mit dem Eckenausbau und einer umfassenden Modernisierung setzen wir einen weiteren Meilenstein in der infrastrukturellen Weiterentwicklung unseres Stadions an der Hafenstraße. Der Ausbau stellt einen wichtigen Schritt dar, um das Stadion langfristig zukunftsfähig aufzustellen, die Fan-Experience weiter zu steigern und den Standort weiterhin zu stärken.“</i></p><p>Durch den Eckenausbau würde die Stadionkapazität sukzessive von den aktuellen 20.000 auf das Ziel von 26.000 Steh- und Sitzplätze wachsen.</p><a href="/konzerte/informationen-fuer-veranstalter-2-1/"><div><button class="btn btn-primary-outline">Zur Bildergalerie</button></div></a><div class="card-ctas"><div class="row no-gutters"></div></div></div></div></div></div></div></div></div></div></div></div>
+
+
+<div id="c3894" class="frame frame-default frame-type-image frame-layout-0 frame-space-before-none frame-space-after-none"><div class="frame-container"><div class="frame-inner"><div class="ce-image ce-center ce-above"></div></div></div></div>
+
+
+<div id="c3899" class="frame frame-default frame-type-sg_sitepackage_card frame-layout-0 frame-space-before-none frame-space-after-none"><div class="frame-container"><div class="frame-inner"><div class="card card-30"><div class="card-30-wrapper "><div class="container"><div class="row"><div class="col-12 col-lg-6 order-2 order-lg-1"><div class="card-body bg-white-primary-stadion"><div class="card-content"><h2>Außergewöhnlicher Spielraum für Ihr Event</h2><p>Wir können noch viel mehr als Fußball! Das Stadion an der Hafenstraße ist auch eine vielseitige Eventlocation mit zahlreichen Möglichkeiten für Veranstaltungen aller Art. Verleihen Sie Ihrem Event mit der einzigartigen Stadionatmosphäre den besonderen Kick!&nbsp;</p><a href="https://www.stadion-an-der-hafenstrasse.de/events" rel="nofollow"><div><button class="btn btn-primary">Mehr erfahren</button></div></a><div class="card-ctas"><div class="row no-gutters"></div></div></div></div></div><div class="col-12 col-lg-6 order-1 order-lg-2"><div class="card-30-img-wrapper"><img class="card-img img-fluid" src="/fileadmin/user_upload/csm_2_7883_rwe_lounge_legenden_img_2344_5524a432cb.jpg" width="800" height="600" alt="" /></div></div></div></div></div></div></div></div></div>
+
+
+<div id="c1757" class="frame frame-default frame-type-sg_sitepackage_card frame-layout-0 frame-space-before-medium frame-space-after-none"><div class="frame-container"><div class="frame-inner"><div class="card card-2"><a href="https://my.matterport.com/show/?m=kYjBsDBwgBJ" aria-label="Virtueller Stadionrundgang" rel="nofollow"><img class="card-img img-fluid" src="/fileadmin/_processed_/e/b/csm_360-Grad-Stadion_c571ae433a.jpg" width="1200" height="675" alt="" /></a><div class="container"><div class="row"><div class="col-12 offset-lg-4 col-lg-6"><div class="card-body bg-primary"><h2 class="card-title"><a href="https://my.matterport.com/show/?m=kYjBsDBwgBJ" class="card-title-link" rel="nofollow">
+                            Virtueller Stadionrundgang
+                        </a></h2><div class="card-content"><p>Möchten Sie einen Blick hinter die Kulissen werfen? Mit unseren 360-Grad-Panorama-Aufnahmen nehmen wir Sie mit auf eine virtuelle Tour durch das Stadion! Erleben Sie unsere Fußball- und Eventlocation an der Hafenstraße aus allen Blickwinkeln!</p><a href="https://my.matterport.com/show/?m=kYjBsDBwgBJ" rel="nofollow"><div><button class="btn btn-primary-outline">Los geht&#039;s</button></div></a><div class="card-ctas"><div class="row no-gutters"></div></div></div></div></div></div></div></div></div></div></div>
+
+
+<div id="c3715" class="frame frame-default frame-type-sg_sitepackage_card frame-layout-0 frame-space-before-medium frame-space-after-none"><div class="frame-container"><div class="frame-inner"><div class="card card-30"><div class="card-30-wrapper "><div class="container"><div class="row"><div class="col-12 col-lg-6 order-2 order-lg-1"><div class="card-body bg-white-primary-stadion"><div class="card-content"><h2>Heiraten im Stadion</h2><p>Das Stadion an der Hafenstraße im Stadtteil Bergeborbeck wird sowohl für Fußballspiele der Mannschaften SG Essen-Schönebeck 19/68 und Rot-Weiss Essen als auch als Veranstaltungsort für Events und Konzerte genutzt. Im Stadion an der Hafenstraße können Fußballbegeisterte nicht nur "Tor" schreien sondern auch "Ja" sagen.</p><a href="https://www.stadion-an-der-hafenstrasse.de/konzerte/informationen-fuer-veranstalter-2" rel="nofollow"><div><button class="btn btn-primary">Mehr erfahren</button></div></a><div class="card-ctas"><div class="row no-gutters"></div></div></div></div></div><div class="col-12 col-lg-6 order-1 order-lg-2"><div class="card-30-img-wrapper"><img class="card-img img-fluid" src="/fileadmin/_processed_/d/b/csm_55_Hochzeit_Lounge_e7119114c1.jpg" width="800" height="600" alt="" /></div></div></div></div></div></div></div></div></div>
+
+
+<div id="c1767" class="frame frame-default frame-type-sg_sitepackage_imageheadline_collection frame-layout-50 frame-space-before-medium frame-space-after-none"><div class="frame-container"><div class="frame-inner"><header><h2 class="ce-headline-center">
+				Veranstaltungsräume
+			</h2></header><div id="c1767" class="ce ce--imageheadline-collection"><div class="container"><div class="row"><div class="col-12 col-md-4 pb-6"><div class="imageheadline"><div class="imageheadline-con"><div class="image-con text-center img-hover-zoom"><a href="/fileadmin/_processed_/0/c/csm_ZecheHafenstrasse_dae83d29ff.jpg" data-fancybox="fancybox" aria-label="Bild vergrößern: Zeche Hafenstraße"><img class="img-fluid" src="/fileadmin/_processed_/0/c/csm_ZecheHafenstrasse_7bd83aa268.jpg" width="600" height="400" alt="" /></a></div></div><div class="content-con"><h3><a href="/events/eventraum-erdgeschoss-fan-club/">Zeche Hafenstraße</a></h3></div></div></div><div class="col-12 col-md-4 pb-6"><div class="imageheadline"><div class="imageheadline-con"><div class="image-con text-center img-hover-zoom"><a href="/fileadmin/_processed_/1/a/csm_Assindia_a1f1bee03d.jpg" data-fancybox="fancybox" aria-label="Bild vergrößern: Assindia"><img class="img-fluid" src="/fileadmin/_processed_/1/a/csm_Assindia_d5ec0b02fa.jpg" width="600" height="400" alt="" /></a></div></div><div class="content-con"><h3><a href="/events/eventraum-1-obergeschoss-business-club/">Assindia</a></h3></div></div></div><div class="col-12 col-md-4 pb-6"><div class="imageheadline"><div class="imageheadline-con"><div class="image-con text-center img-hover-zoom"><a href="/fileadmin/_processed_/7/8/csm_Sparkassen-Lounge_ed82d9d430.jpg" data-fancybox="fancybox" aria-label="Bild vergrößern: Sparkassen-Lounge"><img class="img-fluid" src="/fileadmin/_processed_/7/8/csm_Sparkassen-Lounge_6fb6dd1ef5.jpg" width="600" height="400" alt="" /></a></div></div><div class="content-con"><h3><a href="/events/eventraum-sparkassen-lounge/">Sparkassen-Lounge</a></h3></div></div></div><div class="col-12 col-md-4 pb-6"><div class="imageheadline"><div class="imageheadline-con"><div class="image-con text-center img-hover-zoom"><a href="/fileadmin/_processed_/4/d/csm_Logen_224356dab1.jpg" data-fancybox="fancybox" aria-label="Bild vergrößern: Logen"><img class="img-fluid" src="/fileadmin/_processed_/4/d/csm_Logen_c9c14c9881.jpg" width="600" height="400" alt="" /></a></div></div><div class="content-con"><h3><a href="/events/logen/">Logen</a></h3></div></div></div><div class="col-12 col-md-4 pb-6"><div class="imageheadline"><div class="imageheadline-con"><div class="image-con text-center img-hover-zoom"><a href="/fileadmin/_processed_/3/0/csm_Presseraum_8cf2deeada.jpg" data-fancybox="fancybox" aria-label="Bild vergrößern: Presseraum"><img class="img-fluid" src="/fileadmin/_processed_/3/0/csm_Presseraum_bcdabb20bd.jpg" width="600" height="400" alt="" /></a></div></div><div class="content-con"><h3><a href="/events/presseraum/">Presseraum</a></h3></div></div></div><div class="col-12 col-md-4 pb-6"><div class="imageheadline"><div class="imageheadline-con"><div class="image-con text-center img-hover-zoom"><a href="/fileadmin/_processed_/6/d/csm_UmkleideZone_2f175838cb.jpg" data-fancybox="fancybox" aria-label="Bild vergrößern: Umkleide / Mixed-Zone"><img class="img-fluid" src="/fileadmin/_processed_/6/d/csm_UmkleideZone_0ff595dcb7.jpg" width="600" height="400" alt="" /></a></div></div><div class="content-con"><h3><a href="/events/umkleiden-mixed-zone/">Umkleide / Mixed-Zone</a></h3></div></div></div></div></div></div></div></div></div>
+
+
+<div id="c1758" class="frame frame-default frame-type-news_newsliststicky frame-layout-0 frame-space-before-medium frame-space-after-none"><div class="frame-container"><div class="frame-inner"><header><h2 class="ce-headline-center">
+				Neues vom Stadion an der Hafenstraße
+			</h2></header><div class="news"><!--TYPO3SEARCH_end--><div class="slick slick-slider-cards"><div class="slide-card news-card news-card--0" itemscope="itemscope" itemtype="http://schema.org/Article"><div class="card"><div class="img-hover-zoom"><a title="Unterzeichnung des neuen Pachtvertrages für das Stadion an der Hafenstraße" href="/stadionnews/news-detail/unterzeichnung-des-neuen-pachtvertrages-fuer-das-stadion-an-der-hafenstrasse/"><img class="card-img-top" title="Vier Männer stehen gemeinsam an einem Tisch in einem Fußballstadion, während einer von ihnen (Dirk Miklikowski) ein Dokument unterzeichnet" src="/fileadmin/_processed_/3/b/csm_mietvertrag_stadion_0fde89f61e.jpg" width="600" height="340" alt="" /></a></div><div class="card-content"><div class="mb-3 match-height-header"><p class="card-header-meta"><time itemprop="datePublished" datetime="21.08.2026">
+						21.08.2026
+					</time></p><h3 class="card-title" itemprop="headline"><a title="Unterzeichnung des neuen Pachtvertrages für das Stadion an der Hafenstraße" href="/stadionnews/news-detail/unterzeichnung-des-neuen-pachtvertrages-fuer-das-stadion-an-der-hafenstrasse/">
+						Unterzeichnung des neuen Pachtvertrages für das Stadion an der Hafenstraße
+					</a></h3></div><div class="card-text match-height-target" itemprop="description"><p>Die Grundstücksverwaltung Stadt Essen GmbH (GVE) und Rot-Weiss Essen e. V. haben den neuen Pachtvertrag für das Stadion an der Hafenstraße…</p></div><div class="card-cta"><a class="btn btn-outline" title="Unterzeichnung des neuen Pachtvertrages für das Stadion an der Hafenstraße" href="/stadionnews/news-detail/unterzeichnung-des-neuen-pachtvertrages-fuer-das-stadion-an-der-hafenstrasse/">weiterlesen</a></div></div></div></div><div class="slide-card news-card news-card--0" itemscope="itemscope" itemtype="http://schema.org/Article"><div class="card"><div class="img-hover-zoom"><a title="Vorstellung der aktuellen Pläne zum Ausbau des Stadions an der Hafenstraße" href="/stadionnews/news-detail/vorstellung-der-aktuellen-plaene-zum-ausbau-des-stadions-an-der-hafenstrasse-1/"><img class="card-img-top" title="Fünf Personen stehen auf dem Spielfeld des Stadions an der Hafenstraße und posieren vor der rot-weiß gestalteten Tribüne für ein gemeinsames Gruppenfoto." src="/fileadmin/_processed_/8/0/csm_2026-07-09_8_PK_Stadionausbau_900_bfcbd02c62.jpg" width="600" height="340" alt="" /></a></div><div class="card-content"><div class="mb-3 match-height-header"><p class="card-header-meta"><time itemprop="datePublished" datetime="10.07.2026">
+						10.07.2026
+					</time></p><h3 class="card-title" itemprop="headline"><a title="Vorstellung der aktuellen Pläne zum Ausbau des Stadions an der Hafenstraße" href="/stadionnews/news-detail/vorstellung-der-aktuellen-plaene-zum-ausbau-des-stadions-an-der-hafenstrasse-1/">
+						Vorstellung der aktuellen Pläne zum Ausbau des Stadions an der Hafenstraße
+					</a></h3></div><div class="card-text match-height-target" itemprop="description"><p>Nachdem der Rat der Stadt Essen in seiner letzten Sitzung der Erhöhung der Kosten für den Ausbau des Stadions an der Hafenstraße zugestimmt hatte und…</p></div><div class="card-cta"><a class="btn btn-outline" title="Vorstellung der aktuellen Pläne zum Ausbau des Stadions an der Hafenstraße" href="/stadionnews/news-detail/vorstellung-der-aktuellen-plaene-zum-ausbau-des-stadions-an-der-hafenstrasse-1/">weiterlesen</a></div></div></div></div><div class="slide-card news-card news-card--0" itemscope="itemscope" itemtype="http://schema.org/Article"><div class="card"><div class="img-hover-zoom"><a title="Sperrung des Parkplatzes P1 während des nächsten Wochenendes" href="/stadionnews/news-detail/sperrung-des-parkplatzes-p1-waehrend-des-naechsten-wochenendes/"><img class="card-img-top" title="Eine Luftaufnahme des Fußballstadions SGS Essen, auf der die umliegenden Parkplätze, Straßen und viel Grünfläche in einer städtischen Umgebung zu sehen sind" src="/fileadmin/_processed_/1/b/csm_260513_Stadion_6540d689ee.jpg" width="600" height="340" alt="" /></a></div><div class="card-content"><div class="mb-3 match-height-header"><p class="card-header-meta"><time itemprop="datePublished" datetime="13.05.2026">
+						13.05.2026
+					</time></p><h3 class="card-title" itemprop="headline"><a title="Sperrung des Parkplatzes P1 während des nächsten Wochenendes" href="/stadionnews/news-detail/sperrung-des-parkplatzes-p1-waehrend-des-naechsten-wochenendes/">
+						Sperrung des Parkplatzes P1 während des nächsten Wochenendes
+					</a></h3></div><div class="card-text match-height-target" itemprop="description"><p>Unter dem Motto „Essen unterstützt den Frauenfußball – So geht SGS Essen, so geht Showtime!“ steht am Sonntag, den 17. Mai 2026, ein besonderes…</p></div><div class="card-cta"><a class="btn btn-outline" title="Sperrung des Parkplatzes P1 während des nächsten Wochenendes" href="/stadionnews/news-detail/sperrung-des-parkplatzes-p1-waehrend-des-naechsten-wochenendes/">weiterlesen</a></div></div></div></div><div class="slide-card news-card news-card--0" itemscope="itemscope" itemtype="http://schema.org/Article"><div class="card"><div class="img-hover-zoom"><a title="Stadion an der Hafenstraße: Schrittweise Erneuerung der Sitzschalen auf der Nordtribüne kommt planmäßig voran" href="/stadionnews/news-detail/stadion-an-der-hafenstrasse-schrittweise-erneuerung-der-sitzschalen-auf-der-nordtribuene-kommt-planmaessig-voran-1/"><img class="card-img-top" src="/fileadmin/_processed_/4/5/csm_Stadion_Sitzschalen_251211_2_900_c4701931c7.jpg" width="600" height="340" alt="" /></a></div><div class="card-content"><div class="mb-3 match-height-header"><p class="card-header-meta"><time itemprop="datePublished" datetime="12.12.2025">
+						12.12.2025
+					</time></p><h3 class="card-title" itemprop="headline"><a title="Stadion an der Hafenstraße: Schrittweise Erneuerung der Sitzschalen auf der Nordtribüne kommt planmäßig voran" href="/stadionnews/news-detail/stadion-an-der-hafenstrasse-schrittweise-erneuerung-der-sitzschalen-auf-der-nordtribuene-kommt-planmaessig-voran-1/">
+						Stadion an der Hafenstraße: Schrittweise Erneuerung der Sitzschalen auf der Nordtribüne kommt planmäßig voran
+					</a></h3></div><div class="card-text match-height-target" itemprop="description"><p>Dass das Stadion an der Hafenstraße die Heimat von Rot-Weiss Essen ist, wird auch optisch immer deutlicher. Die von der städtischen…</p></div><div class="card-cta"><a class="btn btn-outline" title="Stadion an der Hafenstraße: Schrittweise Erneuerung der Sitzschalen auf der Nordtribüne kommt planmäßig voran" href="/stadionnews/news-detail/stadion-an-der-hafenstrasse-schrittweise-erneuerung-der-sitzschalen-auf-der-nordtribuene-kommt-planmaessig-voran-1/">weiterlesen</a></div></div></div></div><div class="slide-card news-card news-card--0" itemscope="itemscope" itemtype="http://schema.org/Article"><div class="card"><div class="img-hover-zoom"><a title="Bewerbung um Frauen-EM 2029: Präsidium trifft Vorauswahl der Spielorte" href="/stadionnews/news-detail/bewerbung-um-frauen-em-2029-praesidium-trifft-vorauswahl-der-spielorte/"><img class="card-img-top" src="/fileadmin/_processed_/6/0/csm_DJI_0834_35dcaa500e.jpg" width="600" height="340" alt="" /></a></div><div class="card-content"><div class="mb-3 match-height-header"><p class="card-header-meta"><time itemprop="datePublished" datetime="14.02.2025">
+						14.02.2025
+					</time></p><h3 class="card-title" itemprop="headline"><a title="Bewerbung um Frauen-EM 2029: Präsidium trifft Vorauswahl der Spielorte" href="/stadionnews/news-detail/bewerbung-um-frauen-em-2029-praesidium-trifft-vorauswahl-der-spielorte/">
+						Bewerbung um Frauen-EM 2029: Präsidium trifft Vorauswahl der Spielorte
+					</a></h3></div><div class="card-text match-height-target" itemprop="description"><p>Das Präsidium des Deutschen Fußball-Bundes hat in seiner Sitzung am heutigen Freitag (14.02.2025) eine Vorauswahl von elf Spielorten - die so genannte…</p></div><div class="card-cta"><a class="btn btn-outline" title="Bewerbung um Frauen-EM 2029: Präsidium trifft Vorauswahl der Spielorte" href="/stadionnews/news-detail/bewerbung-um-frauen-em-2029-praesidium-trifft-vorauswahl-der-spielorte/">weiterlesen</a></div></div></div></div><div class="slide-card news-card news-card--0" itemscope="itemscope" itemtype="http://schema.org/Article"><div class="card"><div class="img-hover-zoom"><a title="Bewerbung um Frauen-EM 2029: Essen reicht fristgerecht Unterlagen ein" href="/stadionnews/news-detail/bewerbung-um-frauen-em-2029-essen-reicht-fristgerecht-unterlagen-ein/"><img class="card-img-top" src="/fileadmin/_processed_/8/9/csm_Essen241201579RWE-StadionAnDerHafenstrasse_klein_82865df0af.jpg" width="600" height="340" alt="" /></a></div><div class="card-content"><div class="mb-3 match-height-header"><p class="card-header-meta"><time itemprop="datePublished" datetime="27.01.2025">
+						27.01.2025
+					</time></p><h3 class="card-title" itemprop="headline"><a title="Bewerbung um Frauen-EM 2029: Essen reicht fristgerecht Unterlagen ein" href="/stadionnews/news-detail/bewerbung-um-frauen-em-2029-essen-reicht-fristgerecht-unterlagen-ein/">
+						Bewerbung um Frauen-EM 2029: Essen reicht fristgerecht Unterlagen ein
+					</a></h3></div><div class="card-text match-height-target" itemprop="description"><p>Die Stadt Essen bewirbt sich als Host City für die Frauenfußball-Europameisterschaft 2029. In der vergangenen Woche sind die entsprechenden Unterlagen…</p></div><div class="card-cta"><a class="btn btn-outline" title="Bewerbung um Frauen-EM 2029: Essen reicht fristgerecht Unterlagen ein" href="/stadionnews/news-detail/bewerbung-um-frauen-em-2029-essen-reicht-fristgerecht-unterlagen-ein/">weiterlesen</a></div></div></div></div><div class="slide-card news-card news-card--0" itemscope="itemscope" itemtype="http://schema.org/Article"><div class="card"><div class="img-hover-zoom"><a title="Weihnachtssingen im Stadion geht in die dritte Runde" href="/stadionnews/news-detail/weihnachtssingen-im-stadion-geht-in-die-dritte-runde/"><img class="card-img-top" src="/fileadmin/_processed_/1/b/csm_2023-12-21_Weihnachtssingen_Auswahl-49_ff5f4fe368.jpg" width="600" height="340" alt="" /></a></div><div class="card-content"><div class="mb-3 match-height-header"><p class="card-header-meta"><time itemprop="datePublished" datetime="25.11.2024">
+						25.11.2024
+					</time></p><h3 class="card-title" itemprop="headline"><a title="Weihnachtssingen im Stadion geht in die dritte Runde" href="/stadionnews/news-detail/weihnachtssingen-im-stadion-geht-in-die-dritte-runde/">
+						Weihnachtssingen im Stadion geht in die dritte Runde
+					</a></h3></div><div class="card-text match-height-target" itemprop="description"><p>Besinnliches Beisammensein, ein Stadionchor aus tausenden Stimmen und die&nbsp;einzigartige Atmosphäre im Stadion an der Hafenstraße: „Essen singt…</p></div><div class="card-cta"><a class="btn btn-outline" title="Weihnachtssingen im Stadion geht in die dritte Runde" href="/stadionnews/news-detail/weihnachtssingen-im-stadion-geht-in-die-dritte-runde/">weiterlesen</a></div></div></div></div><div class="slide-card news-card news-card--0" itemscope="itemscope" itemtype="http://schema.org/Article"><div class="card"><div class="img-hover-zoom"><a title="GFL-Bowl 2024 - Programm für Essen vorgestellt" href="/stadionnews/news-detail/gfl-bowl-2024-programm-fuer-essen-vorgestellt/"><img class="card-img-top" src="/fileadmin/_processed_/d/3/csm_IMG_1110_547765e688.jpg" width="600" height="340" alt="" /></a></div><div class="card-content"><div class="mb-3 match-height-header"><p class="card-header-meta"><time itemprop="datePublished" datetime="13.09.2024">
+						13.09.2024
+					</time></p><h3 class="card-title" itemprop="headline"><a title="GFL-Bowl 2024 - Programm für Essen vorgestellt" href="/stadionnews/news-detail/gfl-bowl-2024-programm-fuer-essen-vorgestellt/">
+						GFL-Bowl 2024 - Programm für Essen vorgestellt
+					</a></h3></div><div class="card-text match-height-target" itemprop="description"><p>Dieses Jahr wird zum zweiten Mal der GFL Bowl im Stadion an der Essener Hafenstraße&nbsp;ausgetragen. In einer Pressekonferenz informierten der AFVD…</p></div><div class="card-cta"><a class="btn btn-outline" title="GFL-Bowl 2024 - Programm für Essen vorgestellt" href="/stadionnews/news-detail/gfl-bowl-2024-programm-fuer-essen-vorgestellt/">weiterlesen</a></div></div></div></div><div class="slide-card news-card news-card--0" itemscope="itemscope" itemtype="http://schema.org/Article"><div class="card"><div class="img-hover-zoom"><a title="Legendenspiel an der Hafenstraße: UEFA-Kader für Jubiläumsspiel nahezu komplett" href="/stadionnews/news-detail/legendenspiel-an-der-hafenstrasse-uefa-kader-fuer-jubilaeumsspiel-nahezu-komplett-1/"><img class="card-img-top" src="/fileadmin/_processed_/f/a/csm_b8b599e1-f59d-49ae-8e19-a34fbbbdc438_CUSTOM_11a6302f7a.jpg" width="600" height="340" alt="" /></a></div><div class="card-content"><div class="mb-3 match-height-header"><p class="card-header-meta"><time itemprop="datePublished" datetime="05.07.2024">
+						05.07.2024
+					</time></p><h3 class="card-title" itemprop="headline"><a title="Legendenspiel an der Hafenstraße: UEFA-Kader für Jubiläumsspiel nahezu komplett" href="/stadionnews/news-detail/legendenspiel-an-der-hafenstrasse-uefa-kader-fuer-jubilaeumsspiel-nahezu-komplett-1/">
+						Legendenspiel an der Hafenstraße: UEFA-Kader für Jubiläumsspiel nahezu komplett
+					</a></h3></div><div class="card-text match-height-target" itemprop="description"><p>Am kommenden Donnerstag (11. Juli, 21.00 Uhr) steigt im Stadion an der Hafenstraße das große Legendenspiel zwischen der griechischen…</p></div><div class="card-cta"><a class="btn btn-outline" title="Legendenspiel an der Hafenstraße: UEFA-Kader für Jubiläumsspiel nahezu komplett" href="/stadionnews/news-detail/legendenspiel-an-der-hafenstrasse-uefa-kader-fuer-jubilaeumsspiel-nahezu-komplett-1/">weiterlesen</a></div></div></div></div><div class="slide-card news-card news-card--0" itemscope="itemscope" itemtype="http://schema.org/Article"><div class="card"><div class="img-hover-zoom"><a title="Rot-Weiss Essen engagiert sich für mehr Nachhaltigkeit und Klimaschutz" href="/stadionnews/news-detail/rot-weiss-essen-engagiert-sich-fuer-mehr-nachhaltigkeit-und-klimaschutz/"><img class="card-img-top" src="/fileadmin/_processed_/e/9/csm_2023_11_02_ros4478_klimapakt_rwe_speziell_0900_0700_sv_c51f2bf7fd.jpg" width="600" height="340" alt="" /></a></div><div class="card-content"><div class="mb-3 match-height-header"><p class="card-header-meta"><time itemprop="datePublished" datetime="23.05.2024">
+						23.05.2024
+					</time></p><h3 class="card-title" itemprop="headline"><a title="Rot-Weiss Essen engagiert sich für mehr Nachhaltigkeit und Klimaschutz" href="/stadionnews/news-detail/rot-weiss-essen-engagiert-sich-fuer-mehr-nachhaltigkeit-und-klimaschutz/">
+						Rot-Weiss Essen engagiert sich für mehr Nachhaltigkeit und Klimaschutz
+					</a></h3></div><div class="card-text match-height-target" itemprop="description"><p>Wenn Rot-Weiss Essen spielt, füllt sich das Stadion an der Hafenstraße. Nicht selten ist es ausverkauft. Derzeit fasst das Stadion, welches von der…</p></div><div class="card-cta"><a class="btn btn-outline" title="Rot-Weiss Essen engagiert sich für mehr Nachhaltigkeit und Klimaschutz" href="/stadionnews/news-detail/rot-weiss-essen-engagiert-sich-fuer-mehr-nachhaltigkeit-und-klimaschutz/">weiterlesen</a></div></div></div></div><div class="slide-card news-card news-card--0" itemscope="itemscope" itemtype="http://schema.org/Article"><div class="card"><div class="img-hover-zoom"><a title="Stadion an der Hafenstraße: Planungsleistungen für den Ecken-Ausbau beschlossen" href="/stadionnews/news-detail/stadion-an-der-hafenstrasse-planungsleistungen-fuer-den-ecken-ausbau-beschlossen-1/"><img class="card-img-top" src="/fileadmin/_processed_/7/5/csm_DJI_0834_5bb1cfc9b2.jpg" width="600" height="340" alt="" /></a></div><div class="card-content"><div class="mb-3 match-height-header"><p class="card-header-meta"><time itemprop="datePublished" datetime="25.04.2024">
+						25.04.2024
+					</time></p><h3 class="card-title" itemprop="headline"><a title="Stadion an der Hafenstraße: Planungsleistungen für den Ecken-Ausbau beschlossen" href="/stadionnews/news-detail/stadion-an-der-hafenstrasse-planungsleistungen-fuer-den-ecken-ausbau-beschlossen-1/">
+						Stadion an der Hafenstraße: Planungsleistungen für den Ecken-Ausbau beschlossen
+					</a></h3></div><div class="card-text match-height-target" itemprop="description"><p>Der Rat der Stadt Essen hat in seiner gestrigen Sitzung (24.04.) die Planungsleistung für den Ecken-Ausbau des Stadions an der Hafenstraße…</p></div><div class="card-cta"><a class="btn btn-outline" title="Stadion an der Hafenstraße: Planungsleistungen für den Ecken-Ausbau beschlossen" href="/stadionnews/news-detail/stadion-an-der-hafenstrasse-planungsleistungen-fuer-den-ecken-ausbau-beschlossen-1/">weiterlesen</a></div></div></div></div><div class="slide-card news-card news-card--0" itemscope="itemscope" itemtype="http://schema.org/Article"><div class="card"><div class="img-hover-zoom"><a title="Ausbau Stadion an der Hafenstraße: Planungsbeschluss vorbehaltlich neuer Pachteinigung" href="/stadionnews/news-detail/ausbau-stadion-an-der-hafenstrasse-planungsbeschluss-vorbehaltlich-neuer-pachteinigung/"><img class="card-img-top" src="/fileadmin/_processed_/9/f/csm_DJI_0820_26a07a5546.jpg" width="600" height="340" alt="" /></a></div><div class="card-content"><div class="mb-3 match-height-header"><p class="card-header-meta"><time itemprop="datePublished" datetime="14.03.2024">
+						14.03.2024
+					</time></p><h3 class="card-title" itemprop="headline"><a title="Ausbau Stadion an der Hafenstraße: Planungsbeschluss vorbehaltlich neuer Pachteinigung" href="/stadionnews/news-detail/ausbau-stadion-an-der-hafenstrasse-planungsbeschluss-vorbehaltlich-neuer-pachteinigung/">
+						Ausbau Stadion an der Hafenstraße: Planungsbeschluss vorbehaltlich neuer Pachteinigung
+					</a></h3></div><div class="card-text match-height-target" itemprop="description"><p>Das Stadion an der Hafenstraße soll um den Ausbau der bislang noch nicht geschlossenen vier Ecken des Stadions und der anliegenden Infrastruktur…</p></div><div class="card-cta"><a class="btn btn-outline" title="Ausbau Stadion an der Hafenstraße: Planungsbeschluss vorbehaltlich neuer Pachteinigung" href="/stadionnews/news-detail/ausbau-stadion-an-der-hafenstrasse-planungsbeschluss-vorbehaltlich-neuer-pachteinigung/">weiterlesen</a></div></div></div></div><div class="slide-card news-card news-card--0" itemscope="itemscope" itemtype="http://schema.org/Article"><div class="card"><div class="img-hover-zoom"><a title="Mobile Prüfstation des ADAC am Stadion an der Hafenstraße" href="/stadionnews/news-detail/mobile-pruefstation-des-adac-noch-bis-zum-1602-am-stadion-an-der-hafenstrasse/"><img class="card-img-top" src="/fileadmin/_processed_/9/0/csm_IMG_1571_3232ab15bd.jpg" width="600" height="340" alt="" /></a></div><div class="card-content"><div class="mb-3 match-height-header"><p class="card-header-meta"><time itemprop="datePublished" datetime="09.02.2024">
+						09.02.2024
+					</time></p><h3 class="card-title" itemprop="headline"><a title="Mobile Prüfstation des ADAC am Stadion an der Hafenstraße" href="/stadionnews/news-detail/mobile-pruefstation-des-adac-noch-bis-zum-1602-am-stadion-an-der-hafenstrasse/">
+						Mobile Prüfstation des ADAC am Stadion an der Hafenstraße
+					</a></h3></div><div class="card-text match-height-target" itemprop="description"><p>Mit Sicherheit unterwegs – das sollten Autofahrerinnen und Autofahrer immer sein. Einen Beitrag dazu leisten die Mobilen Prüfstationen und Prüfdienste…</p></div><div class="card-cta"><a class="btn btn-outline" title="Mobile Prüfstation des ADAC am Stadion an der Hafenstraße" href="/stadionnews/news-detail/mobile-pruefstation-des-adac-noch-bis-zum-1602-am-stadion-an-der-hafenstrasse/">weiterlesen</a></div></div></div></div><div class="slide-card news-card news-card--0" itemscope="itemscope" itemtype="http://schema.org/Article"><div class="card"><div class="img-hover-zoom"><a title="ERIMA GFL Bowl bleibt in Essen" href="/stadionnews/news-detail/erima-gfl-bowl-bleibt-in-essen/"><img class="card-img-top" src="/fileadmin/_processed_/e/4/csm_GFL-Bow14-10-23l-PRO-SHU-ChrisHaasSportpics-09411_c22376ebb3.jpg" width="600" height="340" alt="" /></a></div><div class="card-content"><div class="mb-3 match-height-header"><p class="card-header-meta"><time itemprop="datePublished" datetime="14.11.2023">
+						14.11.2023
+					</time></p><h3 class="card-title" itemprop="headline"><a title="ERIMA GFL Bowl bleibt in Essen" href="/stadionnews/news-detail/erima-gfl-bowl-bleibt-in-essen/">
+						ERIMA GFL Bowl bleibt in Essen
+					</a></h3></div><div class="card-text match-height-target" itemprop="description"><p>Nach der erfolgreichen Premiere des GFL Bowls in Essen in diesem Jahr, hat das Präsidium des AFVD sich für den Verbleib in Essen entschieden.</p><p>So wird…</p></div><div class="card-cta"><a class="btn btn-outline" title="ERIMA GFL Bowl bleibt in Essen" href="/stadionnews/news-detail/erima-gfl-bowl-bleibt-in-essen/">weiterlesen</a></div></div></div></div><div class="slide-card news-card news-card--0" itemscope="itemscope" itemtype="http://schema.org/Article"><div class="card"><div class="img-hover-zoom"><a title="Rot-Weiss Essen wird neuer Partner beim Klimapakt der Stadt Essen" href="/stadionnews/news-detail/rot-weiss-essen-wird-neuer-partner-beim-klimapakt-der-stadt-essen/"><img class="card-img-top" src="/fileadmin/_processed_/5/4/csm_2023-11-02_ROS4468_Klimapakt_RWE_speziell_0900_0700_sv_28dae43455.jpg" width="600" height="340" alt="" /></a></div><div class="card-content"><div class="mb-3 match-height-header"><p class="card-header-meta"><time itemprop="datePublished" datetime="03.11.2023">
+						03.11.2023
+					</time></p><h3 class="card-title" itemprop="headline"><a title="Rot-Weiss Essen wird neuer Partner beim Klimapakt der Stadt Essen" href="/stadionnews/news-detail/rot-weiss-essen-wird-neuer-partner-beim-klimapakt-der-stadt-essen/">
+						Rot-Weiss Essen wird neuer Partner beim Klimapakt der Stadt Essen
+					</a></h3></div><div class="card-text match-height-target" itemprop="description"><p>Der Traditionsverein Rot-Weiss Essen e.V. (RWE) dokumentiert Klimaverantwortung. Oberbürgermeister Thomas Kufen und der Vorstandsvorsitzende des…</p></div><div class="card-cta"><a class="btn btn-outline" title="Rot-Weiss Essen wird neuer Partner beim Klimapakt der Stadt Essen" href="/stadionnews/news-detail/rot-weiss-essen-wird-neuer-partner-beim-klimapakt-der-stadt-essen/">weiterlesen</a></div></div></div></div><div class="slide-card news-card news-card--0" itemscope="itemscope" itemtype="http://schema.org/Article"><div class="card"><div class="img-hover-zoom"><a title="U21-EM-Qualifikation im Stadion an der Hafenstraße" href="/stadionnews/news-detail/u21-em-qualifikation-im-stadion-an-der-hafenstrasse/"><img class="card-img-top" src="/fileadmin/_processed_/a/3/csm_csm_285664-DFB_U21EURO2023_14062023_00473__1__c2bb18cfce_173de5d0d9.jpg" width="600" height="340" alt="" /></a></div><div class="card-content"><div class="mb-3 match-height-header"><p class="card-header-meta"><time itemprop="datePublished" datetime="17.10.2023">
+						17.10.2023
+					</time></p><h3 class="card-title" itemprop="headline"><a title="U21-EM-Qualifikation im Stadion an der Hafenstraße" href="/stadionnews/news-detail/u21-em-qualifikation-im-stadion-an-der-hafenstrasse/">
+						U21-EM-Qualifikation im Stadion an der Hafenstraße
+					</a></h3></div><div class="card-text match-height-target" itemprop="description"><p>Die Spielorte für die ersten zwei U 21-Heimspiele in der laufenden EM-Qualifikation stehen fest: Am 17. November empfängt die deutsche…</p></div><div class="card-cta"><a class="btn btn-outline" title="U21-EM-Qualifikation im Stadion an der Hafenstraße" href="/stadionnews/news-detail/u21-em-qualifikation-im-stadion-an-der-hafenstrasse/">weiterlesen</a></div></div></div></div><div class="slide-card news-card news-card--0" itemscope="itemscope" itemtype="http://schema.org/Article"><div class="card"><div class="img-hover-zoom"><a title="Entdecken Sie das Stadion an der Hafenstraße virtuell!" href="/stadionnews/news-detail/entdecken-sie-das-stadion-an-der-hafenstrasse-virtuell/"><img class="card-img-top" src="/fileadmin/_processed_/9/f/csm_DJI_0820_26a07a5546.jpg" width="600" height="340" alt="" /></a></div><div class="card-content"><div class="mb-3 match-height-header"><p class="card-header-meta"><time itemprop="datePublished" datetime="28.09.2023">
+						28.09.2023
+					</time></p><h3 class="card-title" itemprop="headline"><a title="Entdecken Sie das Stadion an der Hafenstraße virtuell!" href="/stadionnews/news-detail/entdecken-sie-das-stadion-an-der-hafenstrasse-virtuell/">
+						Entdecken Sie das Stadion an der Hafenstraße virtuell!
+					</a></h3></div><div class="card-text match-height-target" itemprop="description"><p>Das Stadion an der Hafenstraße hat bei seiner Homepage einen umfangreichen Relaunch vorgenommen und eine neue Domain erhalten…</p></div><div class="card-cta"><a class="btn btn-outline" title="Entdecken Sie das Stadion an der Hafenstraße virtuell!" href="/stadionnews/news-detail/entdecken-sie-das-stadion-an-der-hafenstrasse-virtuell/">weiterlesen</a></div></div></div></div><div class="slide-card news-card news-card--0 news-card--topnews" itemscope="itemscope" itemtype="http://schema.org/Article"><div class="card"><div class="img-hover-zoom"><a title="Neuer Rollrasen für das Stadion an der Hafenstraße" href="/stadionnews/news-detail/info-update-zum-thema-stadionrasen/"><img class="card-img-top" src="/fileadmin/_processed_/8/e/csm_Rasen2_8637fce5a6.jpg" width="600" height="340" alt="" /></a></div><div class="card-content"><div class="mb-3 match-height-header"><p class="card-header-meta"><time itemprop="datePublished" datetime="01.09.2023">
+						01.09.2023
+					</time></p><h3 class="card-title" itemprop="headline"><a title="Neuer Rollrasen für das Stadion an der Hafenstraße" href="/stadionnews/news-detail/info-update-zum-thema-stadionrasen/">
+						Neuer Rollrasen für das Stadion an der Hafenstraße
+					</a></h3></div><div class="card-text match-height-target" itemprop="description"><p>Rot-Weiss Essen wird die anstehende Länderspielpause nutzen und den Rasen im Stadion an der Hafenstraße vollständig austauschen. Dies ist das Ergebnis…</p></div><div class="card-cta"><a class="btn btn-outline" title="Neuer Rollrasen für das Stadion an der Hafenstraße" href="/stadionnews/news-detail/info-update-zum-thema-stadionrasen/">weiterlesen</a></div></div></div></div><div class="slide-card news-card news-card--0" itemscope="itemscope" itemtype="http://schema.org/Article"><div class="card"><div class="img-hover-zoom"><a title="Essen ist bereit für das große Football-Finale" href="/stadionnews/news-detail/essen-ist-bereit-fuer-das-grosse-football-finale/"><img class="card-img-top" src="/fileadmin/_processed_/2/6/csm_IMG_3848_f75318e4d3.jpg" width="600" height="340" alt="" /></a></div><div class="card-content"><div class="mb-3 match-height-header"><p class="card-header-meta"><time itemprop="datePublished" datetime="31.07.2023">
+						31.07.2023
+					</time></p><h3 class="card-title" itemprop="headline"><a title="Essen ist bereit für das große Football-Finale" href="/stadionnews/news-detail/essen-ist-bereit-fuer-das-grosse-football-finale/">
+						Essen ist bereit für das große Football-Finale
+					</a></h3></div><div class="card-text match-height-target" itemprop="description"><p>Heute fand in Essen die Kick-off-Pressekonferenz zum 44. Endspiel um die Deutsche Meisterschaft im American Football statt. Der Bürgermeister der…</p></div><div class="card-cta"><a class="btn btn-outline" title="Essen ist bereit für das große Football-Finale" href="/stadionnews/news-detail/essen-ist-bereit-fuer-das-grosse-football-finale/">weiterlesen</a></div></div></div></div><div class="slide-card news-card news-card--0" itemscope="itemscope" itemtype="http://schema.org/Article"><div class="card"><div class="img-hover-zoom"><a title="Kirmes am Stadion steht in den Startlöchern" href="/stadionnews/news-detail/kirmes-am-stadion-steht-in-den-startloechern-1/"><img class="card-img-top" src="/fileadmin/_processed_/7/d/csm_3518_b7acc7cb3d.jpg" width="600" height="340" alt="" /></a></div><div class="card-content"><div class="mb-3 match-height-header"><p class="card-header-meta"><time itemprop="datePublished" datetime="15.06.2023">
+						15.06.2023
+					</time></p><h3 class="card-title" itemprop="headline"><a title="Kirmes am Stadion steht in den Startlöchern" href="/stadionnews/news-detail/kirmes-am-stadion-steht-in-den-startloechern-1/">
+						Kirmes am Stadion steht in den Startlöchern
+					</a></h3></div><div class="card-text match-height-target" itemprop="description"><p>Nervenkitzel, Spaß und Pommes: Willkommen auf der Kirmes am Stadion an der Hafenstraße. Mit einem ähnlichen Konzept wie 2022 wird die Kirmes vom…</p></div><div class="card-cta"><a class="btn btn-outline" title="Kirmes am Stadion steht in den Startlöchern" href="/stadionnews/news-detail/kirmes-am-stadion-steht-in-den-startloechern-1/">weiterlesen</a></div></div></div></div></div><!--TYPO3SEARCH_begin--></div></div></div></div>
+
+
+<div id="c4170" class="frame frame-no-top-padding frame-type-html frame-layout-0 frame-space-before-margin-n4 frame-space-after-none"><div class="frame-container"><div class="frame-inner"><style>
+  .text-note-wrapper {
+  text-align: center;  
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+}
+</style><div class="text-note-wrapper"><p class="text-note">Die vor dem 27. September 2026 veröffentlichten Beiträge und Nachrichten wurden nach den zum damaligen Zeitpunkt geltenden Vorgaben erstellt. Ab dem 27. September 2026 veröffentlichen wir unsere News entsprechend den neuen EmpCo-Vorgaben.</p></div></div></div></div>
+
+
+<div id="c1766" class="frame frame-default frame-type-sg_sitepackage_card frame-layout-0 frame-space-before-medium frame-space-after-none"><div class="frame-container"><div class="frame-inner"><header><h2 class="ce-headline-center">
+				Ihr Weg ins Stadion
+			</h2></header><div class="card card-30"><div class="card-30-wrapper "><div class="container"><div class="row"><div class="col-12 col-lg-6 order-2 order-lg-1"><div class="card-body bg-white-primary-stadion"><div class="card-content"><h2>Per Fahrrad, ÖPNV, PKW …</h2><p>...viele Wege führen zum Stadion an der Hafenstraße. So kommen Sie zu uns!</p><a href="/stadion/anfahrt/"><div><button class="btn btn-primary">Anfahrt</button></div></a><div class="card-ctas"><div class="row no-gutters"></div></div></div></div></div><div class="col-12 col-lg-6 order-1 order-lg-2"><div class="card-30-img-wrapper"><img class="card-img img-fluid" src="/fileadmin/_processed_/2/b/csm_Karte_Anfahrt_14c5d39e4f.png" width="800" height="450" alt="" /></div></div></div></div></div></div></div></div></div>
+
+
+<div id="c4125" class="frame frame-default frame-type-sg_sitepackage_card frame-layout-0 frame-space-before-none frame-space-after-none"><div class="frame-container"><div class="frame-inner"><div class="card card-2"><div class="container"><div class="row"><div class="col-12 offset-lg-2 col-lg-6"><div class="card-body "><span class="topline">Fußballstadion und Veranstaltungsort</span><h2 class="card-title">
+                        
+                            Vielseitige Räume für unvergessliche Events
+                        
+                    </h2><div class="card-content"><p>Willkommen im Stadion an der Hafenstraße – einem außergewöhnlichen Ort, der weit mehr bietet als Fußball. Hier erleben Sie nicht nur die spannenden Spiele des Rot-Weiss Essen und der SGS Essen, Sie können das Stadion auch als Veranstaltungsort für professionelle Firmenevents, einmalige Konzerte oder außergewöhnliche Feiern nutzen.</p><p>Sie suchen einen erstklassigen Veranstaltungsraum für Ihren Workshop, Ihre Tagung oder Ihren Kongress in Essen? Wir bieten Ihnen nicht nur mietbare Räumlichkeiten, sondern auch eine moderne technische Ausstattung, die Ihnen professionelles und konzentriertes Arbeiten ermöglicht.</p><p>Als Konzertveranstalter suchen Sie einen Veranstaltungsort mit großen Kapazitäten und dennoch familiärer Atmosphäre? Wir bieten Ihnen Platz für bis zu 30.000 Konzertbesucher und ein ganz besonderes Gemeinschaftsgefühl.</p><p>Unser flexibles Raumangebot macht das Stadion an der Hafenstraße zur idealen Location für Ihre Veranstaltung. Ob eine intime Hochzeit mit Blick auf den Elfmeterpunkt, eine stilvolle Gala oder eine große Party – unsere vielseitigen Veranstaltungsräume bieten den perfekten Rahmen für Feiern und Feste aller Art. Mit unserer erstklassigen Ausstattung und unserem erfahrenen Team sorgen wir dafür, dass Ihre Events unvergesslich werden.</p><div class="card-ctas"><div class="row no-gutters"></div></div></div></div></div></div></div></div></div></div></div>
+
+
+<div id="c4119" class="frame frame-default frame-type-sg_sitepackage_card frame-layout-0 frame-space-before-none frame-space-after-none"><div class="frame-container"><div class="frame-inner"><div class="card card-20"><div class="card-20-wrapper "><div class="container"><div class="row"><div class="col-12 col-lg-6"><div class="card-20-img-wrapper"><img class="card-img img-fluid" src="/fileadmin/_processed_/1/c/csm_7821_stadion_oben_293fd1e4ff.jpg" width="800" height="450" alt="" /></div></div><div class="col-12 col-lg-6"><div class="card-body bg-primary"><span class="topline">Auf einen Blick</span><h2 class="card-title">
+                            
+                                Entdecken Sie die Vorteile des Stadions an der Hafenstraße
+                            
+                        </h2><div class="card-content"><ul><li data-list-item-id="e2243f25870bd48b656562e2517d37d19">Große Kapazitäten für Konzerte mit bis zu 30.000 Besuchern</li><li data-list-item-id="eddb22e3e057e026142948a93027526da">Vielseitige Räume für Firmenevents, Familienfeiern und vieles mehr</li><li data-list-item-id="e72a5a59ffe5ee0c7b3dd58b6975cdb06">Modernste technische Ausstattung für professionelles Arbeiten und Feiern</li><li data-list-item-id="ef3bc55adf43651a9c6bc0c3ab78aa558">Flexibles Raumangebot, das sich Ihren individuellen Bedürfnissen anpasst</li><li data-list-item-id="e663e4d070e5b052171a05897648ba17c">Indoor- und Outdoorevents gleichermaßen möglich</li><li data-list-item-id="e42773926d7d797134d2d7fadabfe51ce">Kompetenter Service und Unterstützung bei der Veranstaltungsplanung</li><li data-list-item-id="e2debb2d11f8c99534017c514c52b58c0">Attraktiver Standort in Essen mit guten Parkmöglichkeiten</li></ul><div class="card-ctas"><div class="row no-gutters"></div></div></div></div></div></div></div></div></div></div></div></div>
+
+
+                <!--TYPO3SEARCH_end-->
+            </div>
+        </main>
+        
+        <footer>
+        <div class="footer p-5 p-md-none mt-8">
+            <div class="container">
+                <div class="row pt-4">
+                    <div class="col-11">
+                        <h2 class="footer-title">GVE Grundstücksverwaltung Stadt Essen GmbH</h2>
+                    </div>
+                </div>
+                <div class="row pt-4">
+                    <div class="col-12">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12 col-lg-3 pb-3 pl-0">
+                                    <p>Rottstraße 17<br/>45127 Essen</p>
+                                </div>
+                                <div class="col-12 col-lg-3 pb-3 pl-0">
+                                    <p><a href="tel:+492018880901"><i class="far fa-phone-alt" aria-hidden="true"></i> +49(0)201 88 80-901</a><br>
+                                        <i class="far fa-print" aria-hidden="true"></i> +49(0)201 88 80-930</p>
+                                </div>
+                                <div class="col-12 col-lg-3 pb-3 pl-0">
+                                    <p><a href="#" data-mailto-token="kygjrm8gldmYetc+cqqcl,bc" data-mailto-vector="-2"><i class="far fa-envelope" aria-hidden="true"></i> info[at]gve-essen.de</a></p>
+                                </div>
+                                <div class="col-12 col-lg-3 pb-3 pl-0">
+                                    <p>
+                                        <a href="https://de.linkedin.com/company/gve-grundst-cksverwaltung-stadt-essen-gmbh" target="_blank" title="LinkedIn-Profil der GVE (öffnet in neuem Fenster)" rel="nofollow">
+                                            <i class="fab fa-linkedin" aria-hidden="true"></i> LinkedIn
+                                        </a>
+                                        <br>
+                                        <a href="https://www.facebook.com/stadion.essen/" target="_blank" title="Facebook-Profil des Stadions an der Hafenstraße (öffnet in neuem Fenster)" rel="nofollow">
+                                            <i class="fab fa-facebook" aria-hidden="true"></i> facebook
+                                        </a>
+                                    </p>
+                                </div>
+                                <div class="col-12 pl-0 pb-5">
+                                    
+        <ul class="nav">
+            
+                <li>
+                    <a class="btn btn-white-outline" href="/stadion/stadionordnung/" target="" title="Stadionordnung">Stadionordnung</a>
+                </li>
+            
+                <li>
+                    <a class="btn btn-white-outline" href="/kontakt/" target="" title="Kontakt">Kontakt</a>
+                </li>
+            
+                <li>
+                    <a class="btn btn-white-outline" href="/impressum/" target="" title="Impressum">Impressum</a>
+                </li>
+            
+                <li>
+                    <a class="btn btn-white-outline" href="/erklaerung-zur-barrierefreiheit/" target="" title="Erklärung zur Barrierefreiheit">Erklärung zur Barrierefreiheit</a>
+                </li>
+            
+                <li>
+                    <a class="btn btn-white-outline" href="/datenschutz/" target="" title="Datenschutz">Datenschutz</a>
+                </li>
+            
+            
+        </ul>
+    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row pt-4">
+                    <div class="col-12">
+                        <p>Aus Gründen der besseren Lesbarkeit verwenden wir in allen Texten verallgemeinernd das generische Maskulinum. Diese Formulierungen umfassen gleichermaßen weibliche, männliche und diverse Personen; alle sind damit selbstverständlich gleichberechtigt angesprochen.</p>
+                    </div>
+                </div>
+                <div class="row pt-4">
+                    <div class="col-12 col-md-3 pb-6">
+                        <img class="footer-logo img-fluid" src="/_assets/566471ce26a1b124b6323a51831bf012/stadion/Assets/Images/logo-stadion-essen-rot.svg?1792682597" alt="Logo Stadion an der Hafenstraße">
+                    </div>
+                    <div class="col-12 col-md-3 pb-6">
+                        <a href="https://www.gve-essen.de/" target="_blank" rel="nofollow"><img class="footer-logo img-fluid" src="/_assets/566471ce26a1b124b6323a51831bf012/stadion/Assets/Images/gve-logo.png?1792682597" alt="GVE – zur Website der GVE (öffnet in neuem Fenster)"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <p class="mt-5">&copy; <span id="copyrightYear"><script>document.getElementById('copyrightYear').appendChild(document.createTextNode(new Date().getFullYear()))</script></span> Stadion an der Hafenstraße</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </footer>
+<script src="/_assets/566471ce26a1b124b6323a51831bf012/Dist/Js/jquery.min.js?1792682593"></script>
+<script src="/_assets/dff76fa8ed55730fa1fbc71757fc5959/JavaScript/quiz.js?1792682591"></script>
+<script src="/_assets/5449cb63b1f21189b0bcfe6c2be2eb38/Libraries/justifiedGallery/jquery.justifiedGallery.min.js?1792682598"></script>
+<script src="/_assets/5449cb63b1f21189b0bcfe6c2be2eb38/JavaScript/GridGallery.min.js?1792682598" async="async"></script>
+<script src="/_assets/566471ce26a1b124b6323a51831bf012/Dist/stadion/production.min.js?1792682593"></script>
+<script async="async" src="/_assets/2a58d7833cb34b2a67d37f5b750aa297/JavaScript/default_frontend.js?1792682601"></script>
+
+
+</body>
+</html>

@@ -29,8 +29,7 @@ function Save-GoalAnalysisSecret {
     $SecureValue | ConvertFrom-SecureString | Set-Content -LiteralPath $SecretPath
 }
 
-Save-GoalAnalysisSecret -EnvironmentName "API_FOOTBALL_KEY" -Prompt "API-Football kulcs"
-Save-GoalAnalysisSecret -EnvironmentName "THE_ODDS_API_KEY" -Prompt "The Odds API kulcs"
+Save-GoalAnalysisSecret -EnvironmentName "THE_STATS_API_KEY" -Prompt "TheStats API kulcs"
 
 $Desktop = [Environment]::GetFolderPath("Desktop")
 $ShortcutPath = Join-Path $Desktop "Arthur Goal Analysis.lnk"

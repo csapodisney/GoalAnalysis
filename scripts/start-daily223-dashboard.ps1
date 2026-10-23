@@ -25,12 +25,11 @@ function Import-GoalAnalysisSecret {
     return [System.Net.NetworkCredential]::new("", $SecureValue).Password
 }
 
-$env:API_FOOTBALL_KEY = Import-GoalAnalysisSecret `
-    -EnvironmentName "API_FOOTBALL_KEY" `
-    -Prompt "API-Football kulcs"
-$env:THE_ODDS_API_KEY = Import-GoalAnalysisSecret `
-    -EnvironmentName "THE_ODDS_API_KEY" `
-    -Prompt "The Odds API kulcs"
+Remove-Item Env:API_FOOTBALL_KEY -ErrorAction SilentlyContinue
+Remove-Item Env:THE_ODDS_API_KEY -ErrorAction SilentlyContinue
+$env:THE_STATS_API_KEY = Import-GoalAnalysisSecret `
+    -EnvironmentName "THE_STATS_API_KEY" `
+    -Prompt "TheStats API kulcs"
 
 $Python = Join-Path $ProjectRoot ".venv\Scripts\python.exe"
 if (-not (Test-Path -LiteralPath $Python)) {

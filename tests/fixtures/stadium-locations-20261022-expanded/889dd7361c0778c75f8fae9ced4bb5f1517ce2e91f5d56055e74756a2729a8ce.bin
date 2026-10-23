@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr" prefix="og: https://ogp.me/ns#">
+	<head>
+        <!-- Google Tag Manager - Deferred loading for better LCP/TBT -->
+        <script>
+            // Buffer dataLayer events before GTM loads
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'gtm_deferred_init',
+                'gtm_load_type': 'deferred',
+                'page_path': window.location.pathname,
+                'page_title': document.title
+            });
+
+            function loadGTM(trigger) {
+                if (window.gtmLoaded) return;
+                window.gtmLoaded = true;
+                window.dataLayer.push({
+                    'event': 'gtm_loaded',
+                    'gtm_load_time': performance.now(),
+                    'gtm_trigger': trigger || 'unknown'
+                });
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','GTM-5HZSKCR');
+            }
+            // Load GTM after user interaction or after 3.5s/idle (whichever comes first)
+            var gtmEvents = ['scroll', 'click', 'touchstart', 'keydown'];
+            var gtmTimeout = 'requestIdleCallback' in window
+                ? requestIdleCallback(function() { loadGTM('idle'); }, { timeout: 3500 })
+                : setTimeout(function() { loadGTM('timeout'); }, 3500);
+            var cancelTimeout = 'requestIdleCallback' in window ? cancelIdleCallback : clearTimeout;
+            gtmEvents.forEach(function(e) {
+                function gtmHandler() {
+                    cancelTimeout(gtmTimeout);
+                    loadGTM(e);
+                    gtmEvents.forEach(function(ev) { window.removeEventListener(ev, gtmHandler); });
+                }
+                window.addEventListener(e, gtmHandler, { once: true, passive: true });
+            });
+        </script>
+        <!-- End Google Tag Manager -->
+        <link rel="preconnect" href="https://www.googletagmanager.com">
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com/">
+        <link rel="dns-prefetch" href="https://use.typekit.net">
+        <link rel="dns-prefetch" href="https://scripts.clarity.ms">
+        <link rel="dns-prefetch" href="https://static.axept.io">
+        <link rel="dns-prefetch" href="https://p.typekit.net">
+        <link rel="preconnect" href="https://use.typekit.net" crossorigin>
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+        <link rel="preconnect" href="https://scripts.clarity.ms" crossorigin>
+        <link rel="preconnect" href="https://static.axept.io" crossorigin>
+        <link rel="preconnect" href="https://p.typekit.net" crossorigin><meta charset="utf-8" />
+<meta name="description" content="NomCLERMONT FOOT 63CréationJuin 1990StatutSASP au capital de 274 500 €SIRET442 371 514 00013NAF8551ZSiègeStade Gabriel-MontpiedBP 3002163018 CLERMONT-FERRAND..." />
+<link rel="canonical" href="https://www.clermontfoot.com/presentation-generale" />
+<meta name="MobileOptimized" content="width" />
+<meta name="HandheldFriendly" content="true" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="preload" as="image" href="/sites/default/files/styles/logo/public/cfoot-logo.png.avif?itok=pEnAWoHR" />
+<link rel="preload" as="image" href="/sites/default/files/styles/header_page/public/2026-01/8798791.jpg.avif?h=adf7f09d&amp;itok=0qbzUIKN" />
+<link rel="preload" as="image" href="/sites/default/files/styles/header_page_mobile/public/2026-01/8798791.jpg.avif?h=adf7f09d&amp;itok=Txr_VdOC" media="(max-width: 425px)" />
+<link rel="alternate" type="text/markdown" title="Présentation générale" href="https://www.clermontfoot.com/presentation-generale.md" />
+<link rel="alternate" hreflang="fr" href="https://www.clermontfoot.com/presentation-generale" />
+<link rel="icon" href="/themes/custom/cfoot/assets/favicon/favicon.ico" type="image/vnd.microsoft.icon" />
+
+        <title>Présentation générale | Clermont Foot 63</title>
+        <link rel="stylesheet" media="all" href="/sites/default/files/css/css_R3YkBVKc1C7HsSFUua9XrRP3iH2VFGTN51cV7y7yar8.css?delta=0&amp;language=fr&amp;theme=cfoot&amp;include=eJxFyEkOwCAIAMAPubwJFdGEKgE5-PsmvXSOU_veJxPvAhztXJ6LQv1SgDC6oQYBBVKQYbmpC3D6J_kSLzxtYAt27eCTCxi-FOkiwQ" />
+<link rel="stylesheet" media="all" href="/sites/default/files/css/css_LlgdzG7ACbn_PbeLDbsur8e_-BsBgOoeuUDBh9kmtrs.css?delta=1&amp;language=fr&amp;theme=cfoot&amp;include=eJxFyEkOwCAIAMAPubwJFdGEKgE5-PsmvXSOU_veJxPvAhztXJ6LQv1SgDC6oQYBBVKQYbmpC3D6J_kSLzxtYAt27eCTCxi-FOkiwQ" />
+
+        
+
+                <link rel="apple-touch-icon" sizes="60x60" href="/themes/custom/cfoot/assets/favicon/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="57x57" href="/themes/custom/cfoot/assets/favicon/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/themes/custom/cfoot/assets/favicon/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="/themes/custom/cfoot/assets/favicon/apple-touch-icon-76x76.png">
+        <link rel="shortcut icon" type="image/png" sizes="32x32" href="/themes/custom/cfoot/assets/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/themes/custom/cfoot/assets/favicon/favicon-16x16.png">
+        <link rel="icon" type="image/png" sizes="36x36" href="/themes/custom/cfoot/assets/favicon/android-chrome-36x36.png">
+        <link rel="icon" type="image/png" sizes="48x48" href="/themes/custom/cfoot/assets/favicon/android-chrome-48x48.png">
+        <link rel="icon" type="image/png" sizes="72x72" href="/themes/custom/cfoot/assets/favicon/android-chrome-72x72.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="/themes/custom/cfoot/assets/favicon/android-chrome-96x96.png">
+        <link rel="manifest" href="/themes/custom/cfoot/assets/favicon/site.webmanifest">
+        <link rel="mask-icon" href="/themes/custom/cfoot/assets/favicon/safari-pinned-tab.svg" color="#FFFFFF">
+        <meta name="msapplication-TileColor" content="#FFFFFF">
+        <meta name="msapplication-TileImage" content="/themes/custom/cfoot/assets/favicon/mstile-150x150.png">
+        <meta name="theme-color" content="#FFFFFF">
+        <meta name="apple-mobile-web-app-title" content="Clermont Foot 63" />
+        <link rel="manifest" href="/themes/custom/cfoot/assets/favicon/site.webmanifest" />
+
+                                                    <link rel="preload" href="/themes/custom/cfoot/src/webfonts/typekit.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+            <noscript><link rel="stylesheet" href="/themes/custom/cfoot/src/webfonts/typekit.css"></noscript>
+                    <link rel="preload" href="/themes/custom/cfoot/src/webfonts/gfont.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+            <noscript><link rel="stylesheet" href="/themes/custom/cfoot/src/webfonts/gfont.css"></noscript>
+            </head>
+
+    <body class="path-node page-node-type-page">
+        <!-- Google Tag Manager (noscript) -->
+        <noscript>
+            <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5HZSKCR" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+        </noscript>
+                <a href="#main-content" class="visually-hidden focusable skip-link">
+            Aller au contenu principal
+        </a>
+
+        
+          <div class="dialog-off-canvas-main-canvas" data-off-canvas-main-canvas>
+    
+
+<main role="main" class="js-page-main pt-(--page-content-offset) header-is-white ">
+    <div class="layout-content">
+        <div class="relative z-10 js-site-header">
+            <div class="site-header-fixed fixed z-100 pointer-events-none">
+    <div class="js-top-header max-lg:hidden! relative z-10 w-full bg-cfoot-blue-400 pointer-events-auto">
+        <div class="layout flex justify-between items-center h-(--topHeader-height)">
+            <nav role="navigation" aria-labelledby="block-cfoot-topmenu-menu" id="block-cfoot-topmenu" class="block block-menu navigation menu--top-menu">
+                        
+    <span class="sr-only" id="block-cfoot-topmenu-menu">Top menu</span>
+    
+
+                
+                <ul class="menu flex gap-6">
+                                            <li class="menu-item h6 text-white uppercase">
+                    <a href="https://boutique.clermontfoot.com/" target="_blank">Boutique</a>
+                                    </li>
+                                            <li class="menu-item h6 text-white uppercase">
+                    <a href="https://billetterie.clermontfoot.com/fr/" target="_blank">Billetterie</a>
+                                    </li>
+                                            <li class="menu-item h6 text-white uppercase">
+                    <a href="https://www.business-clermontfoot.com/" target="_blank">Business</a>
+                                    </li>
+                    </ul>
+    
+
+
+    </nav>
+
+
+            <a
+                href="/contact"
+                title="Aide et contact"
+                class="inline-flex items-center gap-2 h6 text-white uppercase"
+            >
+                
+<svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8.12 5.376C8.12 6.08 7.584 6.544 6.888 7.056L6.8 7.776H5.76L5.696 6.712C6.2 6.376 6.544 6.088 6.544
+        5.784C6.544 5.368 6.032 5.192 5.504 5.192C5.36 5.192 5.208 5.2 5.08 5.224L5 4.032C5.2 4.008 5.392 4 5.584
+        4C6.928 4 8.12 4.32 8.12 5.376ZM6.944 8.792C6.944 9.152 6.64 9.432 6.272 9.432C5.896 9.432 5.6 9.152 5.6
+        8.792C5.6 8.432 5.896 8.144 6.272 8.144C6.64 8.144 6.944 8.432 6.944 8.792Z"
+    fill="currentColor"/>
+    <circle cx="6.5" cy="6.5" r="6.25" stroke="currentColor" stroke-width="0.5"/>
+</svg>
+                Aide et contact
+            </a>
+        </div>
+    </div>
+
+    <div class="relative z-20 layout-grid">
+        <div class="col-span-2 md:col-span-5">
+                        <div class="mt-5 lg:mt-5.5 flex items-center h-10 wrapper-glossy rounded-full w-fit pointer-events-auto">
+                <button
+                    type="button"
+                    title="Menu"
+                    class="js-nav-btn-toggle btn-glossy bg-transparent! before:bg-transparent! after:bg-transparent!"
+                >
+                    <span class="inline-flex items-center gap-2 px-5.5 h-10">
+                        <span class="text-cfoot-red-400">
+                            <span class="js-nav-btn-toggle-open"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="12" fill="none">
+    <path fill="currentColor" d="M0 12h14v-2H0zm0-5h14V5H0zm0-7v2h14V0z"/>
+</svg></span>
+                            <span class="js-nav-btn-toggle-close hidden"><span>
+<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" class="" fill="none">
+    <path stroke="currentColor" stroke-width="2" d="m.7.7 10 10M.7 10.7l10-10"/>
+</svg></span></span>
+                        </span>
+
+                        <span class="h6 text-(--header-link-color) uppercase">
+                            <span class="js-nav-btn-toggle-open">Menu</span>
+                            <span class="js-nav-btn-toggle-close hidden">Fermer</span>
+                        </span>
+                    </span>
+                </button>
+
+                <nav role="navigation" aria-labelledby="block-cfoot-misesenavant-menu" id="block-cfoot-misesenavant" class="block block-menu navigation menu--mises-en-avant">
+                        
+    <span class="sr-only" id="block-cfoot-misesenavant-menu">Mises en avant</span>
+    
+
+                
+                <ul class="menu max-lg:hidden! flex items-center gap-8 pl-7 pr-4 js-nav-alt-menu">
+                                            <li class="menu-item h6 text-(--header-link-color) uppercase">
+                    <a href="/actus" data-drupal-link-system-path="actus">Actualités</a>
+                                    </li>
+                                            <li class="menu-item h6 text-(--header-link-color) uppercase">
+                    <a href="/equipes" data-drupal-link-system-path="equipes">équipe pro</a>
+                                    </li>
+                                            <li class="menu-item h6 text-(--header-link-color) uppercase">
+                    <a href="/classement" data-drupal-link-system-path="classement">Classement</a>
+                                    </li>
+                                            <li class="menu-item h6 text-(--header-link-color) uppercase">
+                    <a href="/calendrier" data-drupal-link-system-path="calendrier">Calendrier</a>
+                                    </li>
+                    </ul>
+    
+
+
+    </nav>
+
+            </div>
+        </div>
+
+        <div class="col-span-2 flex justify-center">
+                        <a
+                href="/"
+                title="Logo Clermont Foot 63"
+                class="js-site-logo relative inline-flex mt-5.5 lg:-mt-5.5 pointer-events-auto"
+            >
+                                <img
+                    src="/sites/default/files/styles/logo/public/cfoot-logo.png.avif?itok=pEnAWoHR"
+                    alt="Logo Clermont Foot 63"
+                    width="67"
+                    height="80"
+                    class="aspect-67/80 max-w-11.25 lg:max-w-16.75 w-full object-contain"
+                />
+            </a>
+        </div>
+
+        <div class="col-span-2 md:col-span-5 flex justify-end items-start">
+                        <div class="mt-5 lg:mt-5.5 inline-flex h-10 wrapper-glossy rounded-full w-fit pointer-events-auto">
+                <a
+                    href="/recherche"
+                    title="Recherche"
+                    class="h-10 inline-flex w-12.5 items-center justify-center
+                        text-(--header-link-color) btn-glossy"
+                >
+                    <span class="sr-only">Recherche</span>
+                    
+
+<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" class="w-4 h-4" fill="none">
+    <path fill="currentColor" fill-rule="evenodd" d="M7.4 0A7.4 7.4 0 1 0 12 13.3l3.2 3.2a.9.9 0 0 0 1.3-1.3L13.3
+        12A7.4 7.4 0 0 0 7.4 0M1.7 7.4a5.7 5.7 0 1 1 11.4 0 5.7 5.7 0 0 1-11.4 0" clip-rule="evenodd"/>
+</svg>                </a>
+
+                            </div>
+        </div>
+    </div>
+
+    <div class="js-nav-holder nav-holder pointer-events-auto">
+        <div class="layout-grid gap-y-0">
+            <div class="col-span-6 md:col-span-10 md:col-start-2 flex lg:hidden pb-7 mb-3 border-b border-cfoot-blue-300">
+                <nav role="navigation" aria-labelledby="block-cfoot-topmenu-menu" id="block-cfoot-topmenu" class="block block-menu navigation menu--top-menu">
+                        
+    <span class="sr-only" id="block-cfoot-topmenu-menu">Top menu</span>
+    
+
+                
+                <ul class="menu flex gap-6">
+                                            <li class="menu-item h6 text-white uppercase">
+                    <a href="https://boutique.clermontfoot.com/" target="_blank">Boutique</a>
+                                    </li>
+                                            <li class="menu-item h6 text-white uppercase">
+                    <a href="https://billetterie.clermontfoot.com/fr/" target="_blank">Billetterie</a>
+                                    </li>
+                                            <li class="menu-item h6 text-white uppercase">
+                    <a href="https://www.business-clermontfoot.com/" target="_blank">Business</a>
+                                    </li>
+                    </ul>
+    
+
+
+    </nav>
+
+            </div>
+
+            <div class="relative col-span-6 md:col-span-10 lg:col-span-6 md:col-start-2 grid lg:grid-cols-2 lg:grid-gutter lg:col-start-2">
+                <nav role="navigation" aria-labelledby="block-cfoot-navigationprincipale-menu" id="block-cfoot-navigationprincipale" class="block block-menu navigation menu--main">
+                        
+    <span class="sr-only" id="block-cfoot-navigationprincipale-menu">Navigation principale</span>
+    
+
+                
+    
+                        <ul class="menu nav-header">
+        
+                                <li class="menu-item menu-item-0 menu-item--expanded">
+                <a
+                    href=""
+                    title="équipe pro"
+                     class="nav-item-0 has-sub-level js-nav-item-0 is-active"
+                >
+                                            <span>équipe pro</span>
+                                    </a>
+
+                                        
+                        <ul  class="menu menu-level-1 js-menu-level-1 is-visible">
+        
+                                <li class="menu-item menu-item-1">
+                <a
+                    href="/equipes"
+                    title="Effectif"
+                     class="nav-item-1"
+                >
+                                            Effectif
+                                    </a>
+
+                            </li>
+                                <li class="menu-item menu-item-1">
+                <a
+                    href="/classement"
+                    title="Classement"
+                     class="nav-item-1"
+                >
+                                            Classement
+                                    </a>
+
+                            </li>
+                                <li class="menu-item menu-item-1">
+                <a
+                    href="/planning-des-entrainements"
+                    title="Planning des entraînements"
+                     class="nav-item-1"
+                >
+                                            Planning des entraînements
+                                    </a>
+
+                            </li>
+                                <li class="menu-item menu-item-1">
+                <a
+                    href="/actus/matchs"
+                    title="Actualités"
+                     target="_blank" class="nav-item-1"
+                >
+                                            Actualités
+                                    </a>
+
+                            </li>
+                </ul>
+    
+                            </li>
+                                <li class="menu-item menu-item-0 menu-item--expanded">
+                <a
+                    href=""
+                    title="Formation"
+                     class="nav-item-0 has-sub-level js-nav-item-0"
+                >
+                                            <span>Formation</span>
+                                    </a>
+
+                                        
+                        <ul  class="menu menu-level-1 js-menu-level-1">
+        
+                                <li class="menu-item menu-item-1">
+                <a
+                    href="/equipes/senior-r1"
+                    title="Equipe réserve"
+                     class="nav-item-1"
+                >
+                                            Equipe réserve
+                                    </a>
+
+                            </li>
+                                <li class="menu-item menu-item-1">
+                <a
+                    href="/equipes/u19-nat"
+                    title="Equipe U19N"
+                     class="nav-item-1"
+                >
+                                            Equipe U19N
+                                    </a>
+
+                            </li>
+                                <li class="menu-item menu-item-1">
+                <a
+                    href="/equipes/u17-nat"
+                    title="Equipe U17N"
+                     class="nav-item-1"
+                >
+                                            Equipe U17N
+                                    </a>
+
+                            </li>
+                                <li class="menu-item menu-item-1">
+                <a
+                    href="/equipes/u16-r1"
+                    title="Equipe U16 R1"
+                     class="nav-item-1"
+                >
+                                            Equipe U16 R1
+                                    </a>
+
+                            </li>
+                                <li class="menu-item menu-item-1">
+                <a
+                    href="/actus/centre-de-formation"
+                    title="Actualités - Centre de Formation"
+                     class="nav-item-1"
+                >
+                                            Actualités - Centre de Formation
+                                    </a>
+
+                            </li>
+                                <li class="menu-item menu-item-1">
+                <a
+                    href="/preformation"
+                    title="Préformation"
+                     class="nav-item-1"
+                >
+                                            Préformation
+                                    </a>
+
+                            </li>
+                                <li class="menu-item menu-item-1">
+                <a
+                    href="/ecole-de-foot"
+                    title="Ecole de foot"
+                     class="nav-item-1"
+                >
+                                            Ecole de foot
+                                    </a>
+
+                            </li>
+                                <li class="menu-item menu-item-1">
+                <a
+                    href="/actus/academie"
+                    title="Actualités - Académie"
+                     class="nav-item-1"
+                >
+                                            Actualités - Académie
+                                    </a>
+
+                            </li>
+                </ul>
+    
+                            </li>
+                                <li class="menu-item menu-item-0 menu-item--expanded">
+                <a
+                    href=""
+                    title="Section féminine"
+                     class="nav-item-0 has-sub-level js-nav-item-0"
+                >
+                                            <span>Section féminine</span>
+                                    </a>
+
+                                        
+                        <ul  class="menu menu-level-1 js-menu-level-1">
+        
+                                <li class="menu-item menu-item-1">
+                <a
+                    href="/equipes/d3-feminine"
+                    title="D3 Féminine"
+                     class="nav-item-1"
+                >
+                                            D3 Féminine
+                                    </a>
+
+                            </li>
+                                <li class="menu-item menu-item-1">
+                <a
+                    href="/presentation-de-la-section-feminine"
+                    title="Présentation section féminine"
+                     class="nav-item-1"
+                >
+                                            Présentation section féminine
+                                    </a>
+
+                            </li>
+                                <li class="menu-item menu-item-1">
+                <a
+                    href="/actus/feminines"
+                    title="Actualités"
+                     class="nav-item-1"
+                >
+                                            Actualités
+                                    </a>
+
+                            </li>
+                </ul>
+    
+                            </li>
+                                <li class="menu-item menu-item-0">
+                <a
+                    href="/cf63-esports"
+                    title="CF63 eSports"
+                     class="nav-item-0"
+                >
+                                            <span>CF63 eSports</span>
+                                    </a>
+
+                            </li>
+                                <li class="menu-item menu-item-0 menu-item--expanded">
+                <a
+                    href=""
+                    title="Le club"
+                     class="nav-item-0 has-sub-level js-nav-item-0"
+                >
+                                            <span>Le club</span>
+                                    </a>
+
+                                        
+                        <ul  class="menu menu-level-1 js-menu-level-1">
+        
+                                <li class="menu-item menu-item-1">
+                <a
+                    href="/histoire"
+                    title="Notre histoire"
+                     class="nav-item-1"
+                >
+                                            Notre histoire
+                                    </a>
+
+                            </li>
+                                <li class="menu-item menu-item-1">
+                <a
+                    href="/lassociation"
+                    title="L&#039;association"
+                     class="nav-item-1"
+                >
+                                            L&#039;association
+                                    </a>
+
+                            </li>
+                                <li class="menu-item menu-item-1">
+                <a
+                    href="/groupes-de-supporters"
+                    title="Groupe de supporters"
+                     class="nav-item-1"
+                >
+                                            Groupe de supporters
+                                    </a>
+
+                            </li>
+                </ul>
+    
+                            </li>
+                                <li class="menu-item menu-item-0 menu-item--expanded">
+                <a
+                    href=""
+                    title="Infrastructures"
+                     class="nav-item-0 has-sub-level js-nav-item-0"
+                >
+                                            <span>Infrastructures</span>
+                                    </a>
+
+                                        
+                        <ul  class="menu menu-level-1 js-menu-level-1">
+        
+                                <li class="menu-item menu-item-1">
+                <a
+                    href="/stade-gabriel-montpied"
+                    title="Stade Gabriel-Montpied"
+                     class="nav-item-1"
+                >
+                                            Stade Gabriel-Montpied
+                                    </a>
+
+                            </li>
+                                <li class="menu-item menu-item-1">
+                <a
+                    href="/centre-de-performance"
+                    title="Centre de Performance"
+                     class="nav-item-1"
+                >
+                                            Centre de Performance
+                                    </a>
+
+                            </li>
+                </ul>
+    
+                            </li>
+                                <li class="menu-item menu-item-0">
+                <a
+                    href="/stages-cf63-2026"
+                    title="Stages"
+                     class="nav-item-0"
+                >
+                                            <span>Stages</span>
+                                    </a>
+
+                            </li>
+                </ul>
+    
+
+
+    </nav>
+
+            </div>
+
+            <div class="col-span-6 md:col-span-10 lg:col-span-3 md:col-start-2 lg:col-start-10 text-white grid gap-5 self-start lg:w-[17.875rem] max-md:px-4 max-md:w-[21rem]">
+                
+                                <div class="p-8 border border-cfoot-blue-300 rounded-lg">
+                    <span class="inline-flex items-center gap-3 mb-5">
+                        
+<svg width="24" height="24" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8.12 5.376C8.12 6.08 7.584 6.544 6.888 7.056L6.8 7.776H5.76L5.696 6.712C6.2 6.376 6.544 6.088 6.544
+        5.784C6.544 5.368 6.032 5.192 5.504 5.192C5.36 5.192 5.208 5.2 5.08 5.224L5 4.032C5.2 4.008 5.392 4 5.584
+        4C6.928 4 8.12 4.32 8.12 5.376ZM6.944 8.792C6.944 9.152 6.64 9.432 6.272 9.432C5.896 9.432 5.6 9.152 5.6
+        8.792C5.6 8.432 5.896 8.144 6.272 8.144C6.64 8.144 6.944 8.432 6.944 8.792Z"
+    fill="currentColor"/>
+    <circle cx="6.5" cy="6.5" r="6.25" stroke="currentColor" stroke-width="0.5"/>
+</svg>
+                        <span class="h4">Aide et contact</span>
+                    </span>
+
+                    <nav role="navigation" aria-labelledby="block-cfoot-aideetcontact-menu" id="block-cfoot-aideetcontact" class="block block-menu navigation menu--aide-et-contact">
+                        
+    <span class="sr-only" id="block-cfoot-aideetcontact-menu">Aide et contact</span>
+    
+
+                
+                            <ul class="menu grid gap-4">
+                                <li class="menu-item">
+            <a href="/contact" class="text-base font-medium link-with-arrow" data-drupal-link-system-path="node/340">Nous contacter</a>
+                    </li>
+                        <li class="menu-item">
+            <a href="/" class="text-base font-medium link-with-arrow" data-drupal-link-system-path="&lt;front&gt;">Plan d&#039;accès au stade</a>
+                    </li>
+                </ul>
+    
+
+
+    </nav>
+
+                </div>
+            </div>
+        </div>
+
+        <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg=="
+            data-src="/themes/custom/cfoot/assets/images/logo-horse.svg"
+            alt="Logo Clermont Foot 63"
+            width="855" height="746"
+            class="lozad absolute z-0 top-0 right-0 lg:aspect-855/746 object-contain pointer-events-none"
+        />
+    </div>
+</div>
+
+
+
+<div id="block-cfoot-filsdariane" class="block block-system block-system-breadcrumb-block relative layout max-lg:mb-6 lg:pt-16 lg:pb-12">
+                <ul class="lg:max-w-full flex flex-nowrap overflow-x-auto lg:overflow-clip scrollbar-hide">
+                                    <li class="inline-flex items-center whitespace-nowrap">
+                    <a
+                        href="/"
+                        title="Accueil"
+                        class="text-xs text-(--header-link-color)"
+                    >Accueil</a>
+
+                    <span class="inline-flex mx-1.5 text-(--header-link-color)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="1"
+                            viewBox="0 0 11 1" fill="none"
+                        >
+                            <path d="M0.5 0.5H10.5" stroke="currentColor" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                </li>
+                        </ul>
+
+    </div>
+
+
+        </div>
+
+          <div class="region region-secondary-menu">
+    
+  </div>
+
+
+        <a id="main-content" tabindex="-1"></a>
+        <div class="relative z-0 -mt-(--page-body-offset)">
+                              <div class="region region-content">
+    <div data-drupal-messages-fallback class="hidden"></div>
+<div id="block-cfoot-contenudelapageprincipale" class="block block-system block-system-main-block">
+            
+
+
+<div class="node node--type-page node--promoted node--view-mode-full">
+    <div class="relative">
+                                                
+    
+                                
+    <div class="grid grid-cols-1 grid-rows-1 relative">
+        <div class="col-start-1 row-start-1 relative z-10 layout pt-(--page-body-offset) pb-24 flex flex-col items-start justify-end min-h-[30rem] lg:h-auto header-hero">
+            <h1 class="h1 text-white">Présentation générale</h1>
+                    </div>
+
+                            <div class="col-start-1 row-start-1 relative z-0
+                before:absolute before:inset-0 before:z-10
+                before:block before:w-full before:h-full
+                before:bg-linear-to-b before:from-cfoot-blue-700/40 before:to-cfoot-blue-700 header-hero-img"
+            >
+                <picture>
+                    <source media="(min-width: 426px)" srcset="/sites/default/files/styles/header_page/public/2026-01/8798791.jpg.avif?h=adf7f09d&amp;itok=0qbzUIKN">
+                    <source media="(max-width: 425px)" srcset="/sites/default/files/styles/header_page_mobile/public/2026-01/8798791.jpg.avif?h=adf7f09d&amp;itok=Txr_VdOC">
+                    <img  src="/sites/default/files/styles/header_page/public/2026-01/8798791.jpg.avif?h=adf7f09d&amp;itok=0qbzUIKN" alt="Tribune principale du stade de ClermontFoot" class="relative z-0 lozad lg:aspect-[1440/650] w-full h-full object-cover" width="1440" height="650" loading="eager" fetchpriority="high">
+                </picture>
+            </div>
+            </div>
+
+            </div>
+
+            <article>
+                
+  <div class="field field--name-field-blocs field--type-entity-reference-revisions field--label-visually_hidden">
+          <div class="field__items">
+              <div class="field__item">    <div class="paragraph paragraph--type--bloc-tableau paragraph--view-mode--default layout-grid my-modular">
+                    <div class="col-span-full lg:col-span-10 lg:col-start-2">
+                                    <h2 class="h2 mb-10 lg:mb-16">
+                        
+            <div class="clearfix text-formatted field field--name-field-titre-format field--type-text field--label-hidden field__item">Détails du club</div>
+      
+                    </h2>
+                
+                <div class="wysiwyg w-full">
+                        <table class="table"><tbody><tr><td><strong>Nom</strong></td><td><strong>CLERMONT FOOT 63</strong></td></tr><tr class="altcol2"><td><strong>Création</strong></td><td>Juin 1990</td></tr><tr><td><strong>Statut</strong></td><td>SASP au capital de 274 500 €</td></tr><tr><td><strong>SIRET</strong></td><td>442 371 514 00013</td></tr><tr><td><strong>NAF</strong></td><td>8551Z</td></tr><tr class="altcol2"><td><strong>Siège</strong></td><td>Stade Gabriel-Montpied<br>BP 30021<br>63018 CLERMONT-FERRAND CEDEX 2<strong>Horaires d’ouverture:</strong><br>Du lundi au vendredi de 9h00 à 12h30 et de 13h30 à 17h.</td></tr><tr><td><strong>Coordonnées</strong></td><td><strong>Secrétariat Club :</strong><br>Tel : 04-73-25-79-02<br>Fax : 04-73-24-79-19<br>accueil@clermontfoot.com<strong>Secrétariat Centre de Formation :</strong><br>Tel : 04-43-55-19-72Rubrique contacts : <a href="/contact">cliquez ici</a></td></tr><tr class="altcol2"><td><strong>Président SASP</strong></td><td>Stéphane TESSIER</td></tr><tr><td><strong>Président Association</strong></td><td>Patrick SICARD</td></tr><tr class="altcol2"><td><strong>Entraineur</strong></td><td>David GUION</td></tr><tr><td><strong>Équipementier</strong></td><td>Kappa</td></tr><tr class="altcol2"><td><strong>Couleurs</strong></td><td><p><em style="font-size:0.923em;">Domicile : </em><span style="font-size:12pt;">maillot rouge, short bleu, bas rouge</span></p><p><em>Extérieur :</em> maillot blanc, short blanc, bas blanc<br><em>Third :</em></p></td></tr><tr><td><strong>Logo</strong></td><td><img class="alignnone wp-image-72084 lazy entered loaded" src="/sites/default/files/wordpress-inline/2022/10/Logo-CF63_original_rvb-254x300.png" alt srcset="https://www.clermontfoot.com/wp-content/uploads/2022/10/Logo-CF63_original_rvb-254x300.png 254w, https://www.clermontfoot.com/wp-content/uploads/2022/10/Logo-CF63_original_rvb-768x907.png 768w, https://www.clermontfoot.com/wp-content/uploads/2022/10/Logo-CF63_original_rvb-109x129.png 109w, https://www.clermontfoot.com/wp-content/uploads/2022/10/Logo-CF63_original_rvb-163x193.png 163w, https://www.clermontfoot.com/wp-content/uploads/2022/10/Logo-CF63_original_rvb-600x709.png 600w, https://www.clermontfoot.com/wp-content/uploads/2022/10/Logo-CF63_original_rvb.png 833w" sizes="(max-width: 209px) 100vw, 209px" width="209" height="247" decoding="async" data-src="https://www.clermontfoot.com/wp-content/uploads/2022/10/Logo-CF63_original_rvb-254x300.png?x64678" data-srcset="https://www.clermontfoot.com/wp-content/uploads/2022/10/Logo-CF63_original_rvb-254x300.png 254w, https://www.clermontfoot.com/wp-content/uploads/2022/10/Logo-CF63_original_rvb-768x907.png 768w, https://www.clermontfoot.com/wp-content/uploads/2022/10/Logo-CF63_original_rvb-109x129.png 109w, https://www.clermontfoot.com/wp-content/uploads/2022/10/Logo-CF63_original_rvb-163x193.png 163w, https://www.clermontfoot.com/wp-content/uploads/2022/10/Logo-CF63_original_rvb-600x709.png 600w, https://www.clermontfoot.com/wp-content/uploads/2022/10/Logo-CF63_original_rvb.png 833w" data-sizes="(max-width: 209px) 100vw, 209px" data-ll-status="loaded" loading="lazy"></td></tr><tr class="altcol2"><td><strong>Stade</strong></td><td>Stade Gabriel-Montpied<br>Rue Robert Lemoy<br>63100 Clermont-Ferrand</td></tr><tr><td><strong>Centre d’entraînement</strong></td><td>Complexe sportif Gabriel-Montpied<br>Terrains d’entraînements annexes situés derrière la tribune Gergovie.</td></tr></tbody></table>
+
+                </div>
+            </div>
+            </div>
+</div>
+              </div>
+      </div>
+
+        </article>
+    </div>
+
+    </div>
+
+  </div>
+
+                    </div>
+    </div>
+
+    
+    </main>
+
+    <footer role="contentinfo" id="page-footer">
+        
+
+
+<div class="layout mt-20 md:mt-24">
+    <div class="grid-inset border-t border-cfoot-gray-500 pt-6 lg:pt-8 pb-12 lg:pb-8">
+                <div class="col-span-full lg:col-span-7 flex flex-col lg:flex-row items-center">
+            <img
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg=="
+                data-src="/themes/custom/cfoot/assets/images/mock-application.webp"
+                alt="Application mobile Clermont Foot 63"
+                class="lozad max-w-36.5 md:max-w-42.75 w-full object-contain aspect-171/166 shrink-0 mb-5 lg:mb-0"
+                width="171"
+                height="166"
+            />
+
+            <div class="lg:pl-9 text-center lg:text-left">
+                <span class="inline-block mb-6 lg:mb-3 h4 text-cfoot-blue-400 max-lg:max-w-60">L’APPLICATION OFFICIELLE DU CLERMONT FOOT 63</span>
+                <p class="text-base text-black mb-3.5 lg:mb-5.5">Mettez le club dans votre poche et vivez chaque moment.</p>
+                <ul class="flex items-start justify-center lg:justify-start gap-3.5 lg:pl-2">
+                    <li>
+                        <a
+                            href="https://apps.apple.com/fr/app/clermont-foot-63/id6446464758"
+                            title="Appplication App store Clermont Foot 63"
+                        >
+                            <img
+                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg=="
+                                data-src="/themes/custom/cfoot/assets/images/logo-app-store.png"
+                                alt="Appplication App store Clermont Foot 63"
+                                class="lozad object-contain aspect-118/37"
+                                width="118"
+                                height="37"
+                            />
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href="https://play.google.com/store/apps/details?id=com.clermont.app"
+                            title="Appplication Google Play Clermont Foot 63"
+                        >
+                            <img
+                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg=="
+                                data-src="/themes/custom/cfoot/assets/images/logo-google-play.png"
+                                alt="Appplication Google Play Clermont Foot 63"
+                                class="lozad object-contain aspect-125/37"
+                                width="125"
+                                height="37"
+                            />
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+                <div class="col-span-full lg:col-span-5 flex items-center justify-center lg:justify-end
+                pt-5 lg:pt-0 px-14 lg:px-0"
+        >
+            <nav role="navigation" aria-labelledby="block-cfoot-reseauxsociaux-menu" id="block-cfoot-reseauxsociaux" class="block block-menu navigation menu--reseaux-sociaux">
+                        
+    <span class="sr-only" id="block-cfoot-reseauxsociaux-menu">Réseaux sociaux</span>
+    
+
+                
+                            <ul data-region="footer" class="menu flex items-center gap-7.5 flex-wrap justify-center">
+                                <li class="menu-item">
+                                                        
+                                                                            <a href="https://www.facebook.com/clermontfoot" title="Facebook Clermont Foot 63" target="_blank" rel="noopener noreferrer">
+                        <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg==" data-src="/sites/default/files/2025-10/brandico_facebook.svg" alt="Facebook Clermont Foot 63" class="lozad max-h-7.5 w-auto inline-block">
+                    </a>
+                            
+                    </li>
+                        <li class="menu-item">
+                                                        
+                                                                            <a href="https://x.com/clermontfoot" title="X Clermont Foot 63" target="_blank" rel="noopener noreferrer">
+                        <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg==" data-src="/sites/default/files/2025-10/prime_twitter.svg" alt="X Clermont Foot 63" class="lozad max-h-7.5 w-auto inline-block">
+                    </a>
+                            
+                    </li>
+                        <li class="menu-item">
+                                                        
+                                                                            <a href="https://www.instagram.com/clermontfoot/#" title="Instagram Clermont Foot 63" target="_blank" rel="noopener noreferrer">
+                        <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg==" data-src="/sites/default/files/2025-10/ri_instagram-fill.svg" alt="Instagram Clermont Foot 63" class="lozad max-h-7.5 w-auto inline-block">
+                    </a>
+                            
+                    </li>
+                        <li class="menu-item">
+                                                        
+                                                                            <a href="https://fr.linkedin.com/company/cf63" title="LinkedIn Clermont Foot 63" target="_blank" rel="noopener noreferrer">
+                        <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg==" data-src="/sites/default/files/2025-10/akar-icons_linkedin-fill.svg" alt="LinkedIn Clermont Foot 63" class="lozad max-h-7.5 w-auto inline-block">
+                    </a>
+                            
+                    </li>
+                        <li class="menu-item">
+                                                        
+                                                                            <a href="https://www.youtube.com/@ClermontFoot63Officiel" title="Youtube Clermont Foot 63" target="_blank" rel="noopener noreferrer">
+                        <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg==" data-src="/sites/default/files/2025-10/ri_youtube-fill.svg" alt="Youtube Clermont Foot 63" class="lozad max-h-7.5 w-auto inline-block">
+                    </a>
+                            
+                    </li>
+                        <li class="menu-item">
+                                                        
+                                                                            <a href="https://www.tiktok.com/@clermontfoot" title="TikTok Clermont Foot 63" target="_blank" rel="noopener noreferrer">
+                        <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg==" data-src="/sites/default/files/2025-10/ic_baseline-tiktok.svg" alt="TikTok Clermont Foot 63" class="lozad max-h-7.5 w-auto inline-block">
+                    </a>
+                            
+                    </li>
+                        <li class="menu-item">
+                                                        
+                                                                            <a href="https://bere.al/clermontfoot" title="BeReal" target="_blank" rel="noopener noreferrer">
+                        <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg==" data-src="/sites/default/files/2026-05/BeReal_bleu.png" alt="Logo BeReal bleu" class="lozad max-h-7.5 w-auto inline-block">
+                    </a>
+                            
+                    </li>
+                </ul>
+    
+
+
+    </nav>
+
+        </div>
+    </div>
+</div>
+
+<div class="bg-cfoot-blue-400 text-white">
+    <div class="layout-grid pt-10 lg:pt-20 pb-6 lg:pb-20 gap-y-8 lg:gap-y-12">
+        <div class="col-span-full lg:col-span-7">
+                        <nav role="navigation" aria-labelledby="block-cfoot-partenaires-menu" id="block-cfoot-partenaires" class="block block-menu navigation menu--partenaires">
+                        
+    <span class="sr-only" id="block-cfoot-partenaires-menu">Partenaires</span>
+    
+
+                
+<div class="flex flex-col gap-x-8 gap-y-5 lg:gap-8 ">
+                                                                                                                                                        <ul class="menu flex flex-wrap items-center justify-center gap-3 md:gap-11">
+                                                                                    <li class="menu-item">
+                                                                                                                                        
+                                                                                                            <a href="" title="CA Centre France" target="_blank" rel="noopener noreferrer">
+                                <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg==" data-src="/sites/default/files/2025-11/credit-acf.svg" alt="cacf" class="lozad max-h-10 lg:max-h-16 w-auto inline-block">
+                            </a>
+                                                                                </li>
+                                        </ul>
+            
+                                                                                                                                                                <ul class="menu flex flex-wrap items-center justify-center gap-3 md:gap-11 lg:justify-start lg:px-6 lg:gap-[2.8rem]">
+                                                                                    <li class="menu-item">
+                                                                                                                                        
+                                                                                                            <a href="" title="Adecco" target="_blank" rel="noopener noreferrer">
+                                <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg==" data-src="/sites/default/files/2025-11/adecco.svg" alt="adecco" class="lozad max-h-10 lg:max-h-16 w-auto inline-block">
+                            </a>
+                                                                                </li>
+                                                                            <li class="menu-item">
+                                                                                                                                        
+                                                                                                            <a href="https://www.radioscoop.com/" title="Radio Scoop" target="_blank" rel="noopener noreferrer">
+                                <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg==" data-src="/sites/default/files/2025-11/radio-scoop.svg" alt="radio-scoop" class="lozad max-h-10 lg:max-h-16 w-auto inline-block">
+                            </a>
+                                                                                </li>
+                                                                            <li class="menu-item">
+                                                                                                                                        
+                                                                                                            <a href="" title="Manaranche" target="_blank" rel="noopener noreferrer">
+                                <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg==" data-src="/sites/default/files/2026-08/Logo%20MANARANCHE%20dimension%20couleur%20carr%C3%A9%20copie.png" alt="Logo Manaranche" class="lozad max-h-10 lg:max-h-16 w-auto inline-block">
+                            </a>
+                                                                                </li>
+                                                                            <li class="menu-item">
+                                                                                                                                        
+                                                                                                            <a href="https://www.service.eau.veolia.fr/home.html" title="Veolia" target="_blank" rel="noopener noreferrer">
+                                <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg==" data-src="/sites/default/files/2025-11/Veolia.svg" alt="veolia" class="lozad max-h-10 lg:max-h-16 w-auto inline-block">
+                            </a>
+                                                                                </li>
+                                                                            <li class="menu-item">
+                                                                                                                                        
+                                                                                                            <a href="https://www.pro-clim-energies.com/" title="PRO CLIM ENERGIES" target="_blank" rel="noopener noreferrer">
+                                <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg==" data-src="/sites/default/files/2025-11/PCE.svg" alt="pce" class="lozad max-h-10 lg:max-h-16 w-auto inline-block">
+                            </a>
+                                                                                </li>
+                                        </ul>
+            
+                                                                                                                                                                <ul class="menu flex flex-wrap items-center justify-center gap-3 md:gap-11 lg:justify-start lg:gap-8">
+                                                                                    <li class="menu-item">
+                                                                                                                                        
+                                                                                                            <a href="" title="La Région Auvergne-Rhône-Alpes" target="_blank" rel="noopener noreferrer">
+                                <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg==" data-src="/sites/default/files/2025-11/region-ara.svg" alt="Région" class="lozad max-h-10 lg:max-h-16 w-auto inline-block">
+                            </a>
+                                                                                </li>
+                                                                            <li class="menu-item">
+                                                                                                                                        
+                                                                                                            <a href="" title="Puys de Dome" target="_blank" rel="noopener noreferrer">
+                                <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg==" data-src="/sites/default/files/2025-11/Puy-de-Dome.svg" alt="puy de dome" class="lozad max-h-10 lg:max-h-16 w-auto inline-block">
+                            </a>
+                                                                                </li>
+                                                                            <li class="menu-item">
+                                                                                                                                        
+                                                                                                            <a href="" title="Clermont Auvergne Métropole" target="_blank" rel="noopener noreferrer">
+                                <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg==" data-src="/sites/default/files/2025-11/Clermont_Auvergne_Me%CC%81tropole.svg" alt="Clermont Auvergne Métropole" class="lozad max-h-10 lg:max-h-16 w-auto inline-block">
+                            </a>
+                                                                                </li>
+                                                                            <li class="menu-item">
+                                                                                                                                        
+                                                                                                            <a href="" title="Ville de Clermont-Ferrand" target="_blank" rel="noopener noreferrer">
+                                <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg==" data-src="/sites/default/files/2025-11/Logo_Ville_Clermont_Ferrand.svg" alt="Ville de Clermont-Ferrand" class="lozad max-h-10 lg:max-h-16 w-auto inline-block">
+                            </a>
+                                                                                </li>
+                                                                            <li class="menu-item">
+                                                                                                                                        
+                                                                                                            <a href="" title="Kappa" target="_blank" rel="noopener noreferrer">
+                                <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg==" data-src="/sites/default/files/2025-11/kappa.svg" alt="Kappa" class="lozad max-h-10 lg:max-h-16 w-auto inline-block">
+                            </a>
+                                                                                </li>
+                                        </ul>
+            
+                                                
+</div>
+
+
+    </nav>
+
+        </div>
+
+        <div class="col-span-full lg:col-span-5">
+            <div class="bg-white rounded-xl flex flex-col lg:flex-row items-center grid-gutter py-5 md:py-8 px-3 md:px-6 mt-6 lg:gap-10 lg:mt-4">
+                                <img
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAn8B9nTH6wAAAABJRU5ErkJggg=="
+                    data-src="/themes/custom/cfoot/assets/images/logo-entre-dans-le-game.svg"
+                    alt="Newsletter - Entre dans le game Clermont Foot 63"
+                    class="lozad aspect-158/130 w-full max-w-28 lg:max-w-39.5 object-contain"
+                    width="158"
+                    height="130"
+                />
+
+                <div class="text-center lg:text-left">
+                    <p class="text-base text-black mb-2.5">Reçois par email ta dose officielle de Clermont Foot 63 : actus, matchs, émotions...</p>
+                    <button
+                        x-data="{}"
+                        x-on:click="$dispatch('open-layer-iframe-newsletter')"
+                        title="Je m'inscris à la newsletter"
+                        class="btn btn-tertiary max-sm:w-full"
+                    >Je m'inscris à la newsletter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layout">
+        <div class="border-t border-cfoot-blue-300 py-4 lg:py-8">
+            <nav role="navigation" aria-labelledby="block-cfoot-pieddepagelienslegaux-menu" id="block-cfoot-pieddepagelienslegaux" class="block block-menu navigation menu--footer">
+                        
+    <span class="sr-only" id="block-cfoot-pieddepagelienslegaux-menu">Pied de page (liens légaux)</span>
+    
+
+                <ul class="flex flex-col lg:flex-row gap-x-9 lg:gap-x-5 gap-y-6 lg:gap-y-1.5 items-center justify-center">
+    <li class="inline-flex">
+        <span class="text-sm text-white">
+            © 2026 Clermont Foot 63
+        </span>
+    </li>
+
+            <li class="inline-flex">
+            <a
+                href="/presentation-generale"
+                class="text-sm text-white hover:underline "
+                title="Présentation Générale"
+            >Présentation Générale</a>
+        </li>
+            <li class="inline-flex">
+            <a
+                href="/mentions-legales"
+                class="text-sm text-white hover:underline "
+                title="Mentions légales"
+            >Mentions légales</a>
+        </li>
+            <li class="inline-flex">
+            <a
+                href="/donnees-personnelles"
+                class="text-sm text-white hover:underline "
+                title="Politique de confidentialité"
+            >Politique de confidentialité</a>
+        </li>
+            <li class="inline-flex">
+            <a
+                href="/sitemap"
+                class="text-sm text-white hover:underline "
+                title="Plan du site"
+            >Plan du site</a>
+        </li>
+            <li class="inline-flex">
+            <a
+                href="/declaration-daccessibilite"
+                class="text-sm text-white hover:underline "
+                title="Accessibilité: Partiellement conforme"
+            >Accessibilité: Partiellement conforme</a>
+        </li>
+            <li class="inline-flex">
+            <a
+                href="https://boutique.clermontfoot.com/conditions-generales-de-vente"
+                class="text-sm text-white hover:underline "
+                title="Conditions générales de vente"
+            >Conditions générales de vente</a>
+        </li>
+            <li class="inline-flex">
+            <a
+                href="/"
+                class="text-sm text-white hover:underline openAxeptioCookies"
+                title="Gestion des cookies"
+            >Gestion des cookies</a>
+        </li>
+    
+    <li class="inline-flex lg:ml-auto">
+        <a
+            href="https://www.debussac.net/"
+            target="_blank"
+            title="DBM - De Bussac Multimedia"
+            class="text-sm text-white hover:underline inline-flex items-center"
+        >
+            <span class="mr-2">Réalisé par</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="37" height="12" viewBox="0 0 37 12" fill="none" class="inline-block">
+                <path d="M35.4614 9.00758L33.9648 10.4827L35.5041 11.9999L37.0007 10.5248L35.4614 9.00758Z" fill="currentColor"/>
+                <path d="M20.4992 5.55298C21.0233 4.97682 21.376 4.20198 21.376 3.29801C21.376 1.29139 19.693 0.158936 17.6572 0.158936H15.1981V2.27483H17.3851C18.1308 2.27483 18.7557 2.62251 18.7557 3.46688C18.7557 4.31125 18.1107 4.63907 17.2944 4.63907H13.0615V11.9404H17.8688C20.2775 11.9404 22.3637 11.0364 22.3637 8.47351C22.3637 7.07284 21.7388 5.99006 20.4992 5.55298ZM18.0805 9.7947H15.833V6.90397H18.0805C18.8968 6.90397 19.4914 7.53973 19.4914 8.31456C19.4914 9.0894 18.8565 9.7947 18.0805 9.7947Z" fill="currentColor"/>
+                <path d="M4.28322 0.168945H0V6.85438H2.64048V2.62259H4.2933C5.22049 2.62259 5.99651 2.96034 6.61128 3.61597C7.22605 4.28153 7.54855 5.0961 7.54855 6.04974C7.54855 7.00338 7.22605 7.82789 6.59113 8.48351C5.9562 9.13914 5.19026 9.47689 4.2933 9.47689H2.73119V11.9206H4.28322C5.93604 11.9206 7.34699 11.3444 8.47574 10.212C9.59442 9.07954 10.1689 7.67888 10.1689 6.03981C10.1689 4.40073 9.6045 3.00007 8.47574 1.86762C7.35707 0.745104 5.94612 0.168945 4.28322 0.168945Z" fill="currentColor"/>
+                <path d="M34.9917 4.46026V4.4702L35.4654 3.86424V0L31.4442 5.12583L27.6447 0.218543L27.6145 0.168874H25.2461V11.9305H27.9168V4.49007L31.424 9L34.6793 4.85762L34.9917 4.46026Z" fill="currentColor"/>
+            </svg>
+        </a>
+    </li>
+</ul>
+
+    </nav>
+
+        </div>
+    </div>
+</div>
+
+
+    
+    <div x-data="{}" data-layer-id="iframe-newsletter">
+                <template x-teleport="body">
+                        <div
+                x-cloak
+                x-show="layerIsOpen"
+                x-bind:aria-hidden="!layerIsOpen"
+                x-data="layer('iframe-newsletter')"
+                x-on:open-layer-iframe-newsletter.window="openLayer($event)"
+                x-on:close-layer-iframe-newsletter.window="closeLayer()"
+                x-on:keydown.window.escape="closeLayer()"
+            >
+                                <div
+                    x-cloak
+                    class="fixed z-[110] top-0 right-0 pb-20 flex flex-col h-full transform-gpu
+                        bg-white transition-transform overflow-y-auto overflow-x-hidden w-full max-w-[41.4375rem]"
+                    x-show="layerIsOpen"
+                    x-transition:enter="transition ease-out duration-400"
+                    x-transition:enter-start="opacity-0 translate-x-full"
+                    x-transition:enter-end="opacity-100 translate-x-0"
+                    x-transition:leave="transition ease-in duration-400"
+                    x-transition:leave-start="translate-x-0"
+                    x-transition:leave-end="translate-x-full"
+                    x-ref="iframe-newsletter"
+                    x-trap="layerIsOpen"
+                >
+                    <div class="flex shrink-0 h-20 w-full justify-end items-start pt-2.5 pr-2.5 sticky top-0 bg-white/70 z-20">
+                        <button
+                            x-on:click="closeLayer()"
+                            type="button"
+                            class="btn btn-sm-icon btn-tertiary cursor-pointer px-4"
+                        >
+                            
+<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" class="" fill="none">
+    <path stroke="currentColor" stroke-width="2" d="m.7.7 10 10M.7 10.7l10-10"/>
+</svg>                        </button>
+                    </div>
+
+                                        <div class="w-full overflow-x-clip sm:px-10 lg:px-16">
+                            <iframe
+        src=""
+        data-src="https://www.ylt.nl/klanten/sportsalliance/index.php?form=65&amp;lang=fr&amp;key=5432deccbfb387dfa019c96b00feb08b4935948a"
+        loading="lazy"
+        class="lozad h-[100svh] w-full max-w-full"
+        frameborder="0"
+        scrolling="no"
+        style="overflow: hidden;"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen=""
+    ></iframe>
+
+                    </div>
+                </div>
+                                <button
+                    type="button"
+                    x-on:click.stop="closeLayer()"
+                    x-show="layerIsOpen"
+                    x-transition:enter="transition ease-out duration-400"
+                    x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100"
+                    x-transition:leave="transition ease-in duration-400"
+                    x-transition:leave-start="opacity-100"
+                    x-transition:leave-end="opacity-0"
+                    class="fixed z-[105] top-0 left-0 w-full h-full bg-cfoot-blue-400/50 transform-gpu"
+                ></button>
+            </div>
+        </template>
+    </div>
+
+
+    </footer>
+
+  </div>
+
+        
+
+        <script type="application/json" data-drupal-selector="drupal-settings-json">{"path":{"baseUrl":"\/","pathPrefix":"","currentPath":"node\/465","currentPathIsAdmin":false,"isFront":false,"currentLanguage":"fr"},"pluralDelimiter":"\u0003","suppressDeprecationErrors":true,"ajaxPageState":{"libraries":"eJxNyEEKxCAMBdALWT3Tt6ZWSE1IDExvP4thaFcPHj6ka0jBz7zLPEZP-yGySmep4M3XzWP-U9Fpu6QFw94VTpYUhm7Q00uzUHB-JsfUqDz8pJb89kVXqXD6AhgNMug","theme":"cfoot","theme_token":null},"ajaxTrustedUrl":[],"axeptio":{"language":"fr","clientId":"6094ea714001b93028755be1","cookiesVersion":"clermontfoot-base","cookiesDuration":365,"checkboxes":"[{\u0022type\u0022:\u0022processings\u0022,\u0022identifier\u0022:\u0022\u0022,\u0022id\u0022:\u0022\u0022},{\u0022type\u0022:\u0022processings\u0022,\u0022identifier\u0022:\u0022\u0022,\u0022id\u0022:\u0022\u0022},{\u0022type\u0022:\u0022processings\u0022,\u0022identifier\u0022:\u0022\u0022,\u0022id\u0022:\u0022\u0022},{\u0022type\u0022:\u0022contracts\u0022,\u0022identifier\u0022:\u0022\u0022,\u0022id\u0022:\u0022\u0022}]","admin_rendering":null,"consentModeV2":true,"cms_page":""},"formTranslation":{"required":"Ce champ est obligatoire.","email_required":"L\u0027adresse e-mail est obligatoire.","email_invalid":"Veuillez saisir une adresse e-mail valide.","phone_required":"Le num\u00e9ro de t\u00e9l\u00e9phone est obligatoire.","phone_invalid":"Veuillez saisir un num\u00e9ro de t\u00e9l\u00e9phone valide (10 chiffres minimum).","start_date_required":"La date de d\u00e9but est obligatoire.","end_date_required":"La date de fin est obligatoire.","date_invalid":"Veuillez saisir une date valide (JJ\/MM\/AAAA).","rgpd_required":"Vous devez accepter les termes et conditions.","availability_departure":"D\u00e9part","availability_departure_placeholder":"JJ\/MM\/AAAA","availability_arrival":"Arriv\u00e9e","availability_arrival_placeholder":"JJ\/MM\/AAAA","moveMap":"Utilisez deux doigts pour d\u00e9placer la carte","scrollMap":"Utilisez ctrl + D\u00e9filement pour zoomer sur la carte","scrollMapMac":"Utilisez \u2318 + D\u00e9filement pour zoomer sur la carte","iconCaptchaFill":"Veuillez compl\u00e9ter le captcha."},"mercuryEditor":{"rolloverPaddingBlock":10},"user":{"uid":0,"permissionsHash":"8bc85780a903ad923d299c2bb0434dd28b38ec5c4ecd9dec3a39af5d02fbd4ad"}}</script>
+<script src="/core/assets/vendor/jquery/jquery.min.js?v=4.0.0"></script>
+<script src="/sites/default/files/js/js_pvAEevM0LMUct_bolIGqPbRXevstJkB6EQ7OGWTZdtc.js?scope=footer&amp;delta=1&amp;language=fr&amp;theme=cfoot&amp;include=eJxLrEgtKMnM10-E0HrJ-Xlpmek6yWn5-SX66Tn5SYk5usUllTmZeTDBgsT0VN3c_JTSnMQiZKHS4tQiAK3NHhk"></script>
+<script src="/themes/custom/cfoot/dist/main.js?tmxxto" type="module" minified defer></script>
+<script src="/themes/custom/cfoot/dist/modular.js?tmxxto" type="module" minified defer></script>
+<script src="/themes/custom/cfoot/dist/user.js?tmxxto" type="module" minified defer></script>
+
+    </body>
+</html>

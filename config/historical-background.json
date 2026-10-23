@@ -1,0 +1,16 @@
+{
+  "version": "historical-background-v1",
+  "enabled": true,
+  "interval_seconds": 1800,
+  "max_pages": 20,
+  "max_seconds": 55,
+  "quota": {
+    "max_requests": 20,
+    "max_quota_age_seconds": 1800,
+    "monthly_reserve": 5000,
+    "daily_reserve": 2500,
+    "minute_reserve": 30,
+    "daily_cap": 300,
+    "per_minute_cap": 20
+  }
+}

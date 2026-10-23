@@ -2,9 +2,7 @@ from __future__ import annotations
 
 import json
 import os
-import urllib.error
 import urllib.parse
-import urllib.request
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from datetime import date, datetime
@@ -25,17 +23,9 @@ Transport = Callable[[str, Mapping[str, str]], TransportResult]
 def _default_transport(
     url: str, headers: Mapping[str, str]
 ) -> tuple[dict[str, Any], Mapping[str, str], bytes]:
-    request = urllib.request.Request(url, headers=dict(headers))
-    try:
-        with urllib.request.urlopen(request, timeout=30) as response:
-            raw_body = response.read()
-            payload = json.loads(raw_body.decode("utf-8"))
-            return payload, dict(response.headers.items()), raw_body
-    except urllib.error.HTTPError as error:
-        body = error.read().decode("utf-8", errors="replace")
-        raise ProviderError(f"API-Football HTTP {error.code}: {body[:300]}") from error
-    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as error:
-        raise ProviderError(f"API-Football request failed: {error}") from error
+    # Explicitly retired by the user on 2026-10-21. Keep offline adapters and
+    # injected replay transports readable, but no old CLI may spend this key.
+    raise ProviderError('API-Football live access retired; use the TheStats primary pipeline')
 
 
 @dataclass(frozen=True, slots=True)
@@ -77,9 +67,10 @@ class ApiFootballClient:
                 media_type=headers.get("content-type", "application/json"),
                 source_url=url,
             )
+        normalized_headers = {key.lower(): str(value) for key, value in headers.items()}
         self.last_usage = ApiUsage(
-            remaining_day=_optional_int(headers.get("x-ratelimit-requests-remaining")),
-            limit_day=_optional_int(headers.get("x-ratelimit-requests-limit")),
+            remaining_day=_optional_int(normalized_headers.get("x-ratelimit-requests-remaining")),
+            limit_day=_optional_int(normalized_headers.get("x-ratelimit-requests-limit")),
         )
         errors = payload.get("errors")
         if errors:
@@ -146,7 +137,7 @@ def _parse_fixture(item: Mapping[str, Any], competition_id: str, provider: str) 
         ),
         home_team=Team(id=str(teams["home"]["id"]), name=str(teams["home"]["name"])),
         away_team=Team(id=str(teams["away"]["id"]), name=str(teams["away"]["name"])),
-        kickoff=datetime.fromisoformat(str(fixture_data["date"]).replace("Z", "+00:00")),
+        kickoff=datetime.fromisoformat(str(fixture_data["date"])),
         status=_status(status_code),
         provider_ids={"api_football": str(fixture_data["id"])},
     )

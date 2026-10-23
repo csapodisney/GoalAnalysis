@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+
+<meta charset="utf-8">
+<!-- 
+	analog.de
+
+	This website is powered by TYPO3 - inspiring people to share!
+	TYPO3 is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.
+	TYPO3 is copyright 1998-2026 of Kasper Skaarhoj. Extensions are copyright of their respective owners.
+	Information and contribution at https://typo3.org/
+-->
+
+<base href="https://www.ksc.de/">
+
+<title>Anreise: KSC - MEINE HEIMAT.</title>
+<meta http-equiv="x-ua-compatible" content="IE=edge" />
+<meta name="generator" content="TYPO3 CMS" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
+<meta name="robots" content="index,follow" />
+<meta name="twitter:card" content="summary" />
+<meta name="google" content="translate" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+
+
+<link rel="stylesheet" href="/typo3temp/assets/css/066784f2929ea30a3b67ae896a4c175d.css" media="all">
+<link rel="stylesheet" href="/typo3conf/ext/ksc/Resources/Public/Css/style.min.css" media="all">
+<link rel="stylesheet" href="/typo3conf/ext/ksc/Resources/Public/Css/pdfviewer.css" media="all">
+<link rel="stylesheet" href="/typo3conf/ext/powermail/Resources/Public/Css/Basic.css" media="all">
+
+
+
+
+
+
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://hub.ksc.de/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-P836QZP7');</script><meta name="format-detection" content="telephone=no">    <meta name="google-site-verification" content="G0AeITr2HkaKEdZDSu3eC1pjY2kYbVcBr42dPVTQHRY" />        <script>
+            paceOptions = {
+                ajax: false, // disabled
+                document: true, // disabled
+                eventLag: true, // disabled
+                elements: {
+                    selectors: ['.slick-slider']
+                }
+            };
+        </script>
+    <script src="/typo3conf/ext/ksc/Resources/Public/JavaScript/pace.min.js"></script>        <link rel="apple-touch-icon" sizes="180x180" href="/typo3conf/ext/ksc/Resources/Public/AppIcons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/typo3conf/ext/ksc/Resources/Public/AppIcons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/typo3conf/ext/ksc/Resources/Public/AppIcons/favicon-16x16.png">
+        <link rel="manifest" href="/typo3conf/ext/ksc/Resources/Public/AppIcons/manifest.json">
+        <link rel="mask-icon" href="/typo3conf/ext/ksc/Resources/Public/AppIcons/safari-pinned-tab.svg" color="#004c94">
+        <link rel="shortcut icon" href="/typo3conf/ext/ksc/Resources/Public/AppIcons/favicon.ico">
+        <meta name="msapplication-config" content="/typo3conf/ext/ksc/Resources/Public/AppIcons/browserconfig.xml">
+        <meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" type="text/css" href="/fileadmin/livegang/live.css?t=1923456" media="all">
+
+<script>
+window.googletag = window.googletag || { cmd: [] };
+
+window.addEventListener('CookiebotOnAccept', function (e) {
+if (Cookiebot.consent.marketing)
+{
+  /*
+  var script = document.createElement('script');
+  //script.type = 'text/javascript';
+  script.src = 'https://js.adsrvr.org/up_loader.1.1.0.js'; 
+  script.id = 'adsrvr';
+  document.head.appendChild(script);
+ 
+        
+           var script = document.querySelector('#adsrvr');
+  script.addEventListener('load', function() {
+
+         ttd_dom_ready( function() {
+                if (typeof TTDUniversalPixelApi === 'function') {
+                    var universalPixelApi = new TTDUniversalPixelApi();
+                    universalPixelApi.init("0q0qneh", ["9agzs1z"], "https://insight.adsrvr.org/track/up");
+                }
+            });
+         });
+      */
+  // google ads
+  var script = document.createElement('script');
+  //script.type = 'text/javascript';
+  script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';    
+  document.head.appendChild(script);
+
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-1625718003119448",
+    enable_page_level_ads: true
+  });
+      
+ // google publisher tag
+  var script = document.createElement('script');
+  //script.type = 'text/javascript';
+  script.crossorigin = "anonymous";
+  script.src = 'https://securepubads.g.doubleclick.net/tag/js/gpt.js';    
+  document.head.appendChild(script);
+
+}
+
+
+}, false);
+</script><style>
+
+.titleName {
+  visibility: hidden;
+}
+.standings .tickets {display:none !important;}
+#dAopener {background-color: #004B93 !important;}
+#digiAccess {background-color: #004B93 !important;}
+
+
+.da-content.da-tool#da-content button#da-profile-reset
+{
+    background-color: #004b93 !important;
+
+}
+.da-content.da-tool#da-content .da-control-group.da-tool .da-control
+{
+    border: 3px solid #004b93 !important;
+
+}
+.da-content.da-tool#da-content .da-control-group.da-tool .da-control svg path.da-tool + path.da-tool
+{
+    fill: #004b93 !important;
+}
+.da-content.da-tool#da-content select.da-select.dAnavigable
+{
+    background-color: #004b93 !important;
+}
+.da-content.da-tool#da-content .da-range-container .da-button
+{
+    background-color: #004b93 !important;
+}
+.da-content.da-tool#da-content .da-display-flex.da-profile.da-tool.da-active
+{
+    background-color: #004b93 !important;
+}
+.da-content.da-tool#da-content .da-section.da-tool .da-section-header span.da-tool
+{
+
+color: #004b93 !important;
+}
+.da-content.da-tool#da-content .da-profile-switch label.da-switch::before
+{
+ background-color: #004b93 !important;
+}
+
+.da-content.da-tool#da-content .da-profile-switch label.da-switch
+{
+    background-color: #ccc !important;
+}
+
+.da-content.da-tool#da-content .da-profile-switch input:checked ~ .da-switch::before {
+background-color: #004b93 !important;
+}
+
+.digiAccess-right.digiAccess_active .da-content h3, .da-content h4
+{
+color: #004b93 !important;
+}
+
+.digiAccess-right.digiAccess_active .da-content .da-section-header h4.da-tool
+{
+color: #004b93 !important;
+}
+.da-display-flex.da-profile.da-tool .da-display-flex.da-tool svg path#Path_47
+{
+    fill: #004b93 !important;
+}
+.da-display-flex.da-profile.da-tool .da-display-flex.da-tool svg circle.da-tool
+{
+    fill: #004b93 !important;
+}
+.da-content.da-tool#da-content .da-display-flex.da-profile.da-tool.da-active svg circle.da-tool
+{
+    fill: #fff !important;
+}
+#dAmodal-info input#dAcontactsubmit
+{
+background-color: #004b93 !important;
+}
+
+
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .ksc-loginBar .item > a {overflow:hidden}
+  .ksc-loginBar .item > a .icon, .ksc-loginBar .item .label .icon{left:-140px;}
+  .ksc-loginBar .lb-loginBox {top:40px}
+  .ksc-loginBar .lb-loginBox .lb-close:after {clear:both;}
+  .ksc-loginBar .lb-loginBox .lb-close {margin-right:-120px}
+  .ksc-loginBar .rc .item > .label .icon{right:-137px;}
+}
+@media all and (max-width:767px) {
+  section h1, section .h1, h1.day {  hyphens:auto !important;}
+}
+@media all and (max-width:480px) {
+  h1.day {font-size:7vW}
+}
+</style>
+<style>
+div.relegate {display:none !important}
+</style>
+<link rel="canonical" href="https://www.ksc.de/stadion/stadionbesuch/anreise"/>
+
+
+<!-- VhsAssetsDependenciesLoaded slicklayer -->
+</head>
+<body>
+
+		<div class="load"></div><div id="wrap"><header><div class="ksc-loginBar clearfix"><div class="lc"><div class="item lb-ksc"><a href="https://www.ksc.de" aria-label="Link ksc.de"><div class="icon"><svg version="1.1" id="topbar_ksc" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 23 23"
+                                style="enable-background:new 0 0 23 23;" xml:space="preserve"><style type="text/css">
+                                    .colorfill {
+                                        fill: currentColor;
+                                    }
+                                </style><path class="colorfill" d="M11.59,0C5.23,0,0,5.15,0,11.5c0,6.35,5.15,11.5,11.5,11.5c6.35,0,11.5-5.15,11.5-11.5C23,5.15,17.94,0,11.59,0
+	z M10.2,17.43l-1.69,0.24l-1.58-5.08v5.3l-1.68,0.23V6.18l1.68-0.24v4.58L8.6,5.71l1.69-0.24l-2,5.85L10.2,17.43z M13.82,13.36
+	c0,1.09-0.35,2.56-0.58,3.64c0,0-1.78,0.26-1.82,0.26c0.28-1.13,0.63-2.53,0.68-3.64c0.04-0.72-0.41-1.42-0.72-2.05
+	c-0.35-0.72-0.7-1.53-0.7-2.58c0-0.78,0.71-2.46,1.25-3.75l1.91-0.27c-0.65,1.38-1.44,3.17-1.44,3.9
+	C12.4,10.57,13.82,11.54,13.82,13.36z M18.28,16.29c-0.49,0.07-1.52,0.21-1.52,0.21c-1.08,0.14-1.81-0.47-1.81-1.51V6.69
+	c0-0.38,0.19-1.92,1.98-2.16l1.19-0.17v1.81l-0.65,0.09c-0.65,0.09-0.83,0.65-0.83,1.01v6.75c0,0.42,0.39,0.74,0.86,0.69l0.8-0.1
+	V16.29z" /></svg></div><span>KSC.DE</span></a></div><div class="item lb-ev"><a href="https://ev.ksc.de" aria-label="Link ev.ksc.de"><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50"><style type="text/css">
+                                    .colorfill {
+                                        fill: currentColor;
+                                    }
+                                </style><path class="colorfill"
+                                    d="M17.24,24.12l-1.8.25c-.39.06-.59.18-.59.69V29l3-.43V24.63C17.87,24.12,17.63,24.07,17.24,24.12Z" /><path class="colorfill"
+                                    d="M25.2,0A25,25,0,1,0,50,25,24.84,24.84,0,0,0,25.2,0ZM21,30.54l-6.16.86v2c0,.54.2.51.59.45l5.33-.75-.72,3.52-6.79,1c-1.17.16-1.82-.4-1.82-1.54V23.8a2.06,2.06,0,0,1,1.91-2.21l5.77-.81A1.47,1.47,0,0,1,21,22.43Zm3.82,5.74a2,2,0,0,1-2.33-2,2.79,2.79,0,0,1,2.33-2.67,2,2,0,0,1,2.34,2A2.75,2.75,0,0,1,24.83,36.28Zm5.15-1c-1.32-7.15-2.7-14-4-21.19l3.86-.54L32,27.58l2.18-14.67,3.92-.55-4,22.32Zm9.27-1a2,2,0,0,1-2.34-2,2.78,2.78,0,0,1,2.34-2.66,2,2,0,0,1,2.33,2A2.76,2.76,0,0,1,39.25,34.26Z" /></svg></div><span>KSC.EV</span></a></div><div class="item lb-tickets"><a href="https://www.ksc.de/tickets" aria-label="Link KSC Tickets"><div class="icon"><svg version="1.1" id="topbar_tickets" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 19 23"
+                                style="enable-background:new 0 0 19 23;" xml:space="preserve"><style type="text/css">
+                                    .colorfill {
+                                        fill: currentColor;
+                                    }
+                                </style><path class="colorfill" d="M14.89,7.83l-1.98-0.34l-0.4-2.01l-1.28,1.58l-1.9-0.65l0.7,1.92l-1.5,1.36l1.98,0.34l0.4,2.01l1.28-1.58
+	l1.9,0.65l-0.7-1.92L14.89,7.83z M9.63,1.62c0.35-0.64,1.05-0.93,1.56-0.65l1.63,0.92c-0.11,1,0.36,2.03,1.28,2.55
+	c0.92,0.52,2.02,0.39,2.79-0.24l1.63,0.92c0.51,0.29,0.64,1.05,0.29,1.69l-8.35,15.42c-0.35,0.65-1.05,0.93-1.56,0.65l-1.67-0.95
+	c0.07-0.97-0.41-1.93-1.29-2.43c-0.88-0.5-1.93-0.4-2.7,0.17l-1.67-0.95c-0.51-0.29-0.64-1.05-0.29-1.69L9.63,1.62z M7.61,0.46
+	C7.5,0.6,7.39,0.76,7.29,0.93L0,14.4L4.39,1.35c0.34-1,1.31-1.57,2.16-1.27L7.61,0.46z" /></svg></div><span>Ticketshop</span></a></div><div class="item lb-fanshop"><a href="https://www.ksc.de/fanshop" aria-label="Link KSC Fanshop"><div class="icon"><svg version="1.1" id="topbar_fanshop" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 23"
+                                style="enable-background:new 0 0 24 23;" xml:space="preserve"><style type="text/css">
+                                    .colorfill {
+                                        fill: currentColor;
+                                    }
+                                </style><path class="colorfill" d="M12.7,8.22c0,0.96,0.77,1.74,1.73,1.74c0.95,0,1.73-0.78,1.73-1.74c0-0.96-0.77-1.74-1.73-1.74
+	C13.47,6.48,12.7,7.26,12.7,8.22z M23.97,4.24c0.05,0.14,0.04,0.29-0.03,0.43l-1.99,3.94c-0.09,0.19-0.28,0.3-0.48,0.3l-2.88-0.68
+	v13.23c0,0.3-0.24,0.55-0.54,0.55H5.95c-0.3,0-0.54-0.24-0.54-0.55V8.22l-1.67,0.4C3.68,8.64,2.74,8.96,2.69,8.88
+	c-0.1-0.15-0.04-0.06-0.16-0.25L0.06,4.66c-0.07-0.13-0.08-0.29-0.03-0.43C0.08,4.1,0.18,3.98,0.32,3.92l2.3-1.07l2.63-1.18
+	c0.86-0.28,1.73-0.5,2.61-0.67C8.21,1,8.43,1.17,8.49,1.42C8.85,3.04,10.28,4.26,12,4.26s3.15-1.21,3.51-2.83
+	C15.57,1.17,15.79,1,16.04,1c1.11,0.2,2.1,0.46,3.07,0.8l4.58,2.12C23.82,3.98,23.92,4.1,23.97,4.24z" /></svg></div><span>Fanshop</span></a></div><div class="item lb-ksctutgut"><a href="https://ksctutgut.de" aria-label="Link KSCTutGut"><div class="icon"><svg version="1.1" id="toolbar_ksctutgut" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="400 0 1920 1080"
+                                style="enable-background:new 0 0 1920 1080;" xml:space="preserve"><style type="text/css">
+                                    .colorfill {
+                                        fill: currentColor;
+                                    }
+
+                                    .colorfill2 {
+                                        fill-rule: evenodd;
+                                        clip-rule: evenodd;
+                                        fill: currentColor;
+                                    }
+                                </style><g><path class="colorfill" d="M1384.54,159.1c-56.34-63.84-136.96-71.76-171.38-75.13c-1.46-0.15-2.79-0.28-4.05-0.41
+                               c-6.43,0.87-12.87,1.89-19.31,3.15c-28.94,5.7-58.13,15.45-86.91,29.67c-18.25,9-34.36,18.84-49.8,29.71
+                               c30.83,33.24,55.94,72.16,73.64,115.17c11.58-8.38,24.85-16.34,36.78-22.21c17.55-8.63,35.17-14.55,52.53-17.96
+                               c13.73-2.7,27.17-3.86,40.16-3.6c13.33,0.27,26.4,2.04,38.98,5.16c12.17,3.02,23.92,7.36,35.02,12.86
+                               c11.17,5.55,21.71,12.28,31.43,20.08c15.87,12.76,29.58,28.43,40.34,46.48c10.39,17.43,18.05,37.18,22.32,58.74
+                               c0.46,2.53,0.92,5.06,1.34,7.59l-0.03,0.02c0.31,1.87,0.58,3.72,0.83,5.59h-0.04l0.25,2.12c0.27,2.21,0.48,4.57,0.68,7.04
+                               c0.24,2.94,0.39,5.29,0.46,7.07c0.32,6.75,0.15,13.23-0.17,20.02l-0.56,7.19h0.04l-0.63,5.63h0.03l-0.99,7.07l0.03,0.02
+                               c-0.47,2.88-0.98,5.74-1.5,8.61l-1.5,7.09h0.02l-0.58,2.42h0.03l-0.85,3.45h0.02l-0.57,2.22l-0.02-0.02l-0.34,1.41l-0.91,3.24
+                               l-0.03-0.02l-0.63,2.22h0.04l-1.39,4.55l0.03,0.02l-1.09,3.4l-0.05-0.01l-0.2,0.63l0.03,0.02c-1.74,5.29-3.64,10.43-5.67,15.61
+                               l0.03,0.02c-2.3,5.67-4.71,11.12-7.19,16.71l-3.18,6.6l-2.14,4.2h0.05c-1.46,2.85-2.94,5.67-4.45,8.48l-0.03-0.02l-2.88,5.28h-0.03
+                               c-1.36,2.38-2.68,4.8-4.07,7.14l-0.03-0.02l-2.11,3.53l0.04,0.04l-1.33,2.17l-0.02-0.01l-3.91,6.22l-3.62,5.62v0.05
+                               c-1.5,2.15-2.91,4.43-4.39,6.6l-0.02-0.02l-1.71,2.55c-2.36,3.4-4.91,6.96-7.58,10.62c38.37-48.45,66.48-99.45,80.04-154.27
+                               C1469.22,305.64,1430.2,210.84,1384.54,159.1" /><path class="colorfill"
+                                        d="M994.65,864.56c-9.51-6.61-17.52-12.23-23.88-16.74c-14.31-10.15-28.96-20.68-43.64-31.4
+                               c-12.18-8.9-27.49-20.2-45.74-33.83c-31.88,9.03-65.43,13.96-100.12,13.96c-43.48,0-85.2-7.66-124.03-21.61
+                               c27.3,25.71,40.42,37.03,69.8,61.06c24.05,19.66,47.71,37.86,69.88,54.44c14.66,10.95,30.2,22.39,46.22,34.03
+                               c6.41,4.66,13.06,9.46,19.83,14.33c50.29-25.96,101.68-52.96,135.2-71.78L994.65,864.56z" /><path class="colorfill"
+                                        d="M1564.92,399.51c-0.03-14.02-0.84-27.65-2.59-41.56l0.04-0.02l-1.53-12.75h-0.34
+                               c-0.65-4.04-1.29-7.58-1.88-10.59c-7.39-37.57-20.95-72.19-39.46-103.03c-19.14-31.92-43.57-59.74-71.9-82.49
+                               c-17.44-14.02-36.39-26.12-56.48-36.08c-19.93-9.87-41.03-17.66-62.95-23.1c-15.4-3.83-31.26-6.43-47.41-7.88
+                               c36.86,10.12,80.01,29.51,114.18,68.23c47.9,54.29,88.88,153.6,60.21,269.5c-42.63,172.36-221.91,306.31-417.71,439.65
+                               c-21.61,14.71-92.13,52.13-161.86,88.19c5.36,3.82,10.77,7.68,16.29,11.58c15.42,10.94,29.92,21.05,43.13,30.09
+                               c13.06,8.95,25.54,17.3,37.1,24.84l37.22,24.25l37.21-24.25c11.56-7.54,24.03-15.88,37.09-24.84
+                               c13.22-9.04,27.72-19.15,43.14-30.09c11.24-7.97,23.25-16.57,35.95-25.72c12.51-9.06,23.97-17.41,33.98-24.75
+                               c3.81-2.82,8-5.71,11.64-8.65l0.17-0.05l0.29-0.21l-0.01-0.02l3.16-2.36h0.08l4.04-3v-0.07l0.71-0.51h0.04l0.29-0.21l-0.02-0.03
+                               l0.18-0.11l0.65-0.5h0.04l0.38-0.29l-0.02-0.05l1.54-1.07l-0.02-0.04l0.39-0.29l0.02,0.03l1.13-0.84v-0.05l8.27-6.19h0.06
+                               l2.31-1.75l-0.03-0.03l0.44-0.32h0.04l3.15-2.41l-0.02-0.02l2.48-1.88h0.05c5.25-4.01,10.47-8.02,15.7-12.08h0.05l7.44-5.79
+                               l-0.02-0.04l2.74-2.14h0.05l2.92-2.31v-0.05l2.92-2.31h0.05l2.58-2.05l-0.02-0.02l0.32-0.25h0.05c5.98-4.77,11.92-9.59,17.84-14.4
+                               h0.05l2.62-2.15v-0.05l3.12-2.56l0.01,0.04l3.24-2.69v-0.05l3.27-2.73h0.05l3.82-3.19v-0.05l1.89-1.59h0.04
+                               c62.69-52.99,122.75-111.76,170.16-179.18c6.52-9.28,12.78-18.68,18.72-28.19l-0.05-0.02c2.59-4.14,5.09-8.23,7.58-12.43v-0.05
+                               c0.5-0.83,3.22-5.36,3.22-5.51c0.64-1.12,2.54-4.38,2.54-4.5c1.42-2.54,2.83-5.04,4.22-7.6v-0.11l0.88-1.63h0.07
+                               c4.08-7.7,7.92-15.47,11.62-23.38h0.05c1.77-3.8,3.45-7.65,5.14-11.49l0.14-0.23l0.94-2.19v-0.12l0.84-1.98h0.04l1.07-2.56v-0.1
+                               l0.92-2.24c0.13-0.12,1.65-4.14,1.84-4.6c0.23-0.24,2.1-5.45,2.53-6.6l0.06-0.05l1.16-3.14v-0.1l0.52-1.46l0.05-0.05l1.22-3.38
+                               v-0.1l0.42-1.26l0.06-0.04l1.09-3.23v-0.1l0.6-1.82l0.06-0.05l0.99-3.04v-0.1l0.44-1.37l0.04-0.05l1.07-3.38v-0.12l0.46-1.56
+                               l0.07-0.04l0.87-2.96v-0.1l0.55-1.85l0.04-0.05l0.91-3.2v-0.1c1.37-4.92,2.6-9.74,3.8-14.71l0.05-0.1
+                               c0.9-3.81,1.69-7.64,2.48-11.46l0.05-0.1l1.34-7.05l0.04-0.08c0.13-0.71,0.47-2.13,0.47-2.78c1.3-7.48,2.38-15.21,3.21-23.17
+                               c0.8-7.68,1.36-15.52,1.62-23.54c0.12-3.47,0.18-6.91,0.21-10.37l0.05-0.07v-0.97H1564.92z" /></g><path class="colorfill2" d="M782.27,82.76c-183.05,0-333.91,148.39-333.91,331.45S596.74,745.65,779.8,745.65
+                           c183.05,0,331.45-148.39,331.45-331.45S965.32,82.76,782.27,82.76z M737.55,592.56l-48.63,6.84l-45.59-146.52v152.92l-48.36,6.77
+                           V268.03l48.36-6.81v132.14l48.24-138.93l48.71-6.84l-57.63,168.86L737.55,592.56z M841.98,475.13c0,31.55-10.14,73.79-16.77,105.11
+                           c0,0-51.22,7.36-52.35,7.36c8.04-32.61,18.1-72.95,19.71-104.96c1.05-20.79-11.8-41-20.71-59.13
+                           c-10.21-20.78-20.28-44.14-20.28-74.48c0-22.55,20.46-71,36-108.09l55.02-7.73c-18.65,39.83-41.61,91.49-41.61,112.6
+                           C800.98,394.78,841.98,422.84,841.98,475.13z M970.58,559.81c-14.05,2.12-43.71,6.15-43.71,6.15c-31,4.13-52.29-13.69-52.29-43.41
+                           V282.88c0-10.93,5.55-55.43,57.04-62.2l34.22-4.83V268c0,0-18.74,2.72-18.84,2.71c-18.8,2.69-24.06,18.89-24.06,29.05v194.59
+                           c0,12.17,11.31,21.47,24.68,19.76l22.95-2.92V559.81z" /></svg></div><span>KSC&nbsp;TUT&nbsp;GUT.</span></a></div><div class="item lb-ksctv"><a href="https://tv.ksc.de" aria-label="Link KSC TV"><div class="icon"><svg version="1.1" id="topbar_ksctv" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="450 0 1920 1080"
+                                style="enable-background:new 0 0 1920 1080;" xml:space="preserve"><style type="text/css">
+                                    .colorfill {
+                                        fill: currentColor;
+                                    }
+
+                                    .st1 {
+                                        fill: #6F6F6E;
+                                    }
+                                </style><g><path class="colorfill"
+                                        d="M960,1033.91c-272.78,0-493.9-221.12-493.9-493.9c0-272.78,224.81-493.91,497.58-493.91
+                                    c272.78,0,490.23,221.12,490.23,493.91C1453.91,812.78,1232.78,1033.91,960,1033.91 M963.81,28.5c-282.5,0-515.31,229-515.31,511.5
+                                    c0,282.5,229,511.5,511.5,511.5s511.5-229,511.5-511.5C1471.5,257.5,1246.31,28.5,963.81,28.5" /><g><path class="colorfill"
+                                            d="M837.54,717.66c0-0.17-0.03-354.82-0.03-354.82v0c0-4.55,0.93-8.79,2.57-12.58c0.55-1.27,1.17-2.48,1.87-3.65
+                                        c2.78-4.63,6.73-8.36,11.3-11.01c-119.4-50.11-250.44-7.09-292.72,9.54C531.84,404,515.69,470.11,515.69,540
+                                        c0,245.97,199.4,445.36,445.36,445.36c4.56,0,9.1-0.13,13.62-0.27C956.2,969.63,837.54,861.96,837.54,717.66z" /></g><path class="colorfill" d="M1213.82,529.34c84.77-72.73,98.04-204.74,99.64-261.58C1232,162.47,1104.47,94.64,961.06,94.64
+                                    c-166.54,0-311.67,91.45-388.07,226.83c61.08-32.18,200.11-53.52,310.9,10.07c0.36,0.2,321.35,188.94,321.35,188.94
+                                    C1209.11,522.71,1211.94,525.83,1213.82,529.34z" /><path class="colorfill" d="M1331.72,293.25c-0.34,124.86-64.03,228.18-127.6,270.9c-0.82,0.62-319.46,180.66-319.46,180.66
+                                    c-8.5,4.91-17.84,5.28-25.97,2.45c15.29,120.44,106.82,201.02,144.22,236.02c226.32-21.11,403.51-211.43,403.51-443.27
+                                    C1406.42,448.7,1378.85,363.89,1331.72,293.25z" /></g></svg></div><span>KSC&nbsp;TV</span></a></div><div class="item lb-fschlule"><a href="https://fussballschule.ksc.de/de/portal/eventtypes" aria-label="Link KSC Fussballschule"><div class="icon"><?xml version="1.0" encoding="UTF-8"?><svg id="Ebene_1" data-name="Ebene 1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 845 1040.3"><defs><style>
+                                        .cls-1 {
+                                            fill: #fff;
+                                            stroke-width: 0;
+                                        }
+                                    </style></defs><path class="cls-1" d="M520,260.1c-71.7,0-130-58.3-130-130S448.3,0,520,0s130,58.3,130,130-58.3,130-130,130h0ZM520,65c-35.8,0-65,29.2-65,65s29.2,65,65,65,65-29.2,65-65-29.2-65-65-65h0Z"/><path class="cls-1" d="M617.5,1040.3c-71.7,0-130-58.3-130-130s58.3-130,130-130,130,58.3,130,130-58.3,130-130,130ZM617.5,845.3c-35.8,0-65,29.2-65,65s29.2,65,65,65,65-29.2,65-65-29.2-65-65-65Z"/><path class="cls-1" d="M227.4,1040.3c-18,0-35.7-5-51.3-14.5-.1,0-.3-.2-.4-.3-45.3-28.5-59.3-88.7-31.2-134.3l31.9-51.1-33.7-33.7c-31.5-31.6-37.6-80.5-14.7-118.9l57.6-95.7c7.9-13,13.9-27.1,18-41.7l27.3-95.8-81.8,51.1c-45.1,28.6-105.5,14.9-134.4-30.6-28.4-46-14.4-106.2,31-134.7l163-101.5c90.8-56.6,204.5-58.4,296.9-4.7l291.3,169.7c46.2,27.2,61.9,86.9,35.2,133.1-17.3,29.8-49.6,48.4-84.4,48.4s-33.7-4.5-48.8-13c-.1,0-.3-.2-.4-.2l-164.1-95.6-47.5,213.4c-.1.6-.3,1.3-.5,1.9-7.3,25.7-18.3,50.3-32.7,73.1l-143.3,229.7c-17.9,28.7-48.9,45.9-82.9,45.9h0ZM210,970.4c5.4,3.2,11.4,4.9,17.4,4.9,11.4,0,21.7-5.7,27.7-15.2l143.4-229.8c11-17.4,19.3-36.1,25-55.5l57-255.8c2.3-10.1,9.2-18.6,18.7-22.7,9.5-4.2,20.4-3.5,29.4,1.7l202.3,117.9c5.3,2.9,11.1,4.5,16.7,4.5,11.8,0,22.3-6,28.1-15.9,8.9-15.4,3.6-35.4-11.8-44.5l-291.1-169.6c-71.4-41.5-159.4-40.1-229.8,3.7l-162.9,101.4c-15.1,9.5-19.8,29.7-10.3,45.1,9.5,15,29.6,19.6,44.7,10.1l153.6-96c11.4-7.1,26-6.5,36.8,1.6s15.4,21.9,11.7,34.9l-50.4,176.8c-5.6,20.1-14,39.6-24.9,57.6l-57.5,95.5c-7.5,12.5-5.4,29.2,4.9,39.6l23.1,23.1,85.6-136.7c9.5-15.2,29.6-19.8,44.8-10.3,15.2,9.5,19.8,29.6,10.3,44.8l-106.9,170.7c-.2.4-.5.8-.7,1.1l-45.2,72.3c-9.3,15.1-4.7,35.2,10.3,44.8h0Z"/></svg></div><span>Fußballschule</span></a></div><div class="item lb-mitglied"><a href="https://mitgliedschaft-ksc.de/" aria-label="Link KSC Mitgliedschaft"><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 576 512"><defs><style>
+                                  .cls-1 {
+                                    fill: #fff;
+                                  }
+                                </style></defs><path class="cls-1" d="M512,64c17.7,0,32,14.3,32,32v320c0,17.7-14.3,32-32,32H64c-17.7,0-32-14.3-32-32V96c0-17.7,14.3-32,32-32h448ZM64,32C28.7,32,0,60.7,0,96v320c0,35.3,28.7,64,64,64h448c35.3,0,64-28.7,64-64V96c0-35.3-28.7-64-64-64H64ZM160,192c0-17.7,14.3-32,32-32s32,14.3,32,32-14.3,32-32,32-32-14.3-32-32ZM256,192c0-35.3-28.7-64-64-64s-64,28.7-64,64,28.7,64,64,64,64-28.7,64-64ZM112,368c0-26.5,21.5-48,48-48h64c26.5,0,48,21.5,48,48s7.2,16,16,16,16-7.2,16-16c0-44.2-35.8-80-80-80h-64c-44.2,0-80,35.8-80,80s7.2,16,16,16,16-7.2,16-16ZM352,160c-8.8,0-16,7.2-16,16s7.2,16,16,16h128c8.8,0,16-7.2,16-16s-7.2-16-16-16h-128ZM352,224c-8.8,0-16,7.2-16,16s7.2,16,16,16h128c8.8,0,16-7.2,16-16s-7.2-16-16-16h-128ZM352,288c-8.8,0-16,7.2-16,16s7.2,16,16,16h128c8.8,0,16-7.2,16-16s-7.2-16-16-16h-128Z"/></svg></div><span>Mitglied&nbsp;werden</span></a></div></div><div class="rc"><div class="item lb-login"><div class="label logged-out" tabindex="0"><div class="icon"><svg version="1.1" id="topbar_login" xmlns="http://www.w3.org/2000/svg"
+                                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 15 23"
+                                        style="enable-background:new 0 0 15 23;" xml:space="preserve"><style type="text/css">
+                                            .colorfill {
+                                                fill: currentColor;
+                                            }
+                                        </style><path class="colorfill" d="M8.68,15.43c0.51-0.36,0.77-0.87,0.77-1.49c-0.01-0.9-0.65-1.61-1.57-1.8c-0.83-0.16-1.71,0.29-2.06,1.07
+	c-0.37,0.79-0.12,1.7,0.61,2.23c0.15,0.11,0.18,0.21,0.18,0.37L6.61,18.2c0,0.66,0.71,1.15,1.42,0.8c0.3-0.15,0.47-0.47,0.46-0.8
+	l-0.01-2.38C8.48,15.65,8.53,15.54,8.68,15.43z M4.25,7.71v1.98h6.59V7.71c0-1.77-1.48-3.21-3.3-3.21C5.73,4.5,4.25,5.94,4.25,7.71z
+	 M1.68,7.71C1.68,4.56,4.31,2,7.55,2c3.23,0,5.86,2.56,5.86,5.7v1.98c0.89,0,1.59,0.68,1.59,1.51v8.3c0,0.83-0.69,1.51-1.55,1.51
+	H1.55C0.69,21,0,20.32,0,19.49v-8.3c0-0.83,0.69-1.51,1.55-1.51L1.68,7.71z" /></svg></div><span class="user">Login<span class="hide-sm"> &nbsp; KSC-ID</span></span></div><div class="lb-loginBox"><div class="lb-mask"><div class="lb-loginField"><div class="lb-close" tabindex="0"><svg version="1.1" id="topbar_close"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                        viewBox="0 0 15 15" style="enable-background:new 0 0 15 15;"
+                                                        xml:space="preserve"><style type="text/css">
+                                                            .colorfill {
+                                                                fill: currentColor;
+                                                            }
+                                                        </style><path class="colorfill" d="M6.49,7.46l-2.04,3.21h1.38c0.09,0,0.16-0.02,0.22-0.07c0.06-0.05,0.1-0.1,0.14-0.16l1.18-2.06
+	c0.03-0.05,0.06-0.1,0.08-0.17l1.27,2.22c0.03,0.06,0.08,0.12,0.14,0.17c0.06,0.05,0.14,0.07,0.23,0.07h1.47L8.52,7.4l1.99-3.07H9.1
+	c-0.12,0-0.22,0.06-0.3,0.18L7.7,6.41L7.59,6.62L6.32,4.49C6.16,4.34,6.09,4.33,5.99,4.33H4.52L6.49,7.46z M0,7.5
+	C0,3.36,3.36,0,7.5,0C11.64,0,15,3.36,15,7.5c0,4.14-3.36,7.5-7.5,7.5C3.36,15,0,11.64,0,7.5z" /></svg></div><div class="lb-register"><label>Jetzt einloggen:</label>
+
+
+
+
+
+    <fieldset>
+        <div>
+            
+                    <a href="https://idprovider.ksc.de/auth/realms/master/protocol/openid-connect/auth?state=8ef8ab416fc3d4ca7f73f554817d1eff&amp;scope=openid&amp;response_type=code&amp;approval_prompt=auto&amp;redirect_uri=https%3A%2F%2Fwww.ksc.de%2Ftypo3conf%2Fext%2Foidc%2FResources%2FPublic%2Fcallback.php&amp;client_id=oidc-tyop3" class="btn white loginlink"><span>Zum Log-In</span></a>
+                
+        </div>
+
+        
+
+        <div class="felogin-hidden">
+            <input type="hidden" name="logintype" value="login" />
+            <input type="hidden" name="pid" value="210@f5ad8b81003576822ab7e33bb85c27c16c38f687" />
+            
+            
+            
+            
+        </div>
+    </fieldset>
+
+
+
+
+
+
+</div><div class="lb-register"><label>Noch keine KSC-ID?</label><a href="https://idprovider.ksc.de/auth/realms/master/protocol/openid-connect/registrations?client_id=oidc-tyop3&redirect_uri=https%3A%2F%2Fwww.ksc.de%2F&state=&response_mode=fragment&response_type=code&scope=openid"
+                                                        class="btn white registerlink"><span>Registrieren</span></a></div></div></div></div></div></div></div><div class="headerparts"><div class="topheader"><div class="lc"><a class="mainsponsor" href="https://www.sweg.de/" target="_blank" aria-label="Hauptsponsor SWEG - external link"><img src="/typo3conf/ext/ksc/Resources/Public/Sponsors/sweg-white.svg" alt="Hauptsponsor SWEG" /></a></div><div class="rc"><a href="#" id="meineHeimat" aria-label="Link Meine Heimat"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 285.56 85.12"><path d="M9.54,61.58V83.81L0,85.12V37.88l10.34-1.43,5.23,19.3L20.81,35l10.4-1.44V80.82l-9.54,1.32V59.91L15.57,79.6Z"/><path d="M35.19,33l18.69-2.58L55.54,39,45.06,40.44V51.75l8-1.1v8.12l-8,1.1V70.14l10.08-1.39-1.66,9L35.19,80.27Z"/><path d="M58.19,29.86l9.61-1.33V75.78l-9.61,1.33Z"/><path d="M71.77,28l9.15-1.26,4.9,18.37v-19l9.87-1.36V71.94L85.82,73.3l-5.17-19V74l-8.88,1.22Z"/><path d="M99.67,24.14l18.69-2.58L120,30.11l-10.48,1.44V42.86l8-1.1v8.13l-8,1.09V61.25l10.08-1.38-1.66,9L99.67,71.39Z"/><path d="M155.14,63.74l-9.81,1.35V46.25L140.1,47V65.82l-9.81,1.35V19.92l9.81-1.35V38.84l5.23-.72V17.85l9.81-1.36Z"/><path d="M159.12,16l18.68-2.58,1.66,8.55L169,23.36V34.67l7.95-1.1V41.7L169,42.79V53.06l10.07-1.39-1.65,9-18.29,2.52Z"/><path d="M182.11,12.78l9.61-1.33V58.7L182.11,60Z"/><path d="M205.24,34.61V56.84l-9.54,1.31V10.9L206,9.48l5.24,19.3L216.5,8,226.91,6.6V53.85l-9.54,1.32V32.94l-6.1,19.69Z"/><path d="M240.1,46.18l-.86,6-9.68,1.34L238.24,5l10.27-1.41,8.69,46.05L247.52,51l-.86-5.73Zm1.06-7.62L245.6,38l-2.19-16.53Z"/><path d="M274.82,0l2.39,8.44-6.43.89V47.81L261,49.16V10.68l-6.43.89,2.52-9.12Z"/><path d="M280.39,37.06a4.36,4.36,0,0,1,5.17,4.35,6,6,0,0,1-5.17,5.72,4.32,4.32,0,0,1-5.17-4.29A6.07,6.07,0,0,1,280.39,37.06Z"/></svg></a><div class="social"><a href="https://www.ksc.de/archiv/newsletter/anmeldung-newsletter" target="_blank" class="ksc-icon newsletter_V2" aria-label="Newsletter - external link"></a><a href="https://www.facebook.com/KarlsruherSC" target="_blank" class="ksc-icon facebook" aria-label="Facebook - external link"></a><a href="https://instagram.com/karlsruhersc" target="_blank" class="ksc-icon instagram" aria-label="Instgram - external link"></a><a href="https://www.tiktok.com/@karlsruhersc" target="_blank" class="ksc-icon tiktok" aria-label="Tik Tok - external link"></a><a href="https://www.youtube.com/user/WildparkTV" target="_blank" class="ksc-icon youtube" aria-label="YouTube - external link"></a><a href="https://bsky.app/profile/ksc.de" target="_blank" class="ksc-icon bluesky" aria-label="Bluesky - external link"></a><a href="https://www.linkedin.com/company/karlsruhersc" target="_blank" class="ksc-icon linkedin" aria-label="LinkedIn - external link"></a></div><a class="jobOffer" href="https://jobapplication.hrworks.de/de?companyId=ap8232a3 " target="_blank" aria-label="Jobs - external link">Jobs</a></div></div><div class="navcontainer"><a aria-label="Logo" id="logo" href="/"><img src="/typo3conf/ext/ksc/Resources/Public/Img/logo.svg" alt="KSC Logo" /></a><div id="meineHeimat"><img src="/typo3conf/ext/ksc/Resources/Public/Img/meineHeimat-blue.svg" alt="Meine Heimat Logo" /></div><div class="burger"><span></span><span></span><span></span></div><nav class="mainnav" id="primary-navigation" aria-label="Main navigation"><ul class="leftnav"><li id="navitem-0"
+                                            class="inactive"><a class="triggerslide"
+                                               tabindex="0"
+                                               aria-label="Profis"
+                                               aria-controls="profis"
+                                               role="button"
+                                               data-slide="0">Profis
+                                            </a></li><li id="navitem-1"
+                                            class="active"><a class="triggerslide"
+                                               tabindex="0"
+                                               aria-label="Akademie"
+                                               aria-controls="akademie"
+                                               role="button"
+                                               data-slide="1">Akademie
+                                            </a></li><li id="navitem-2"
+                                            class="inactive"><a class="triggerslide"
+                                               tabindex="0"
+                                               aria-label="Tickets"
+                                               aria-controls="tickets"
+                                               role="button"
+                                               data-slide="2">Tickets
+                                            </a></li><li id="navitem-3"
+                                            class="inactive"><a class="triggerslide"
+                                               tabindex="0"
+                                               aria-label="Fans"
+                                               aria-controls="fans"
+                                               role="button"
+                                               data-slide="3">Fans
+                                            </a></li></ul><ul class="rightnav"><li id="navitem-4"
+                                            class="inactive"><a class="triggerslide"
+                                               tabindex="0"
+                                               aria-label="Club"
+                                               aria-controls="club"
+                                               role="button"
+                                               data-slide="4">Club
+                                            </a></li><li id="navitem-5"
+                                            class="inactive"><a class="triggerslide"
+                                               tabindex="0"
+                                               aria-label="Stadion"
+                                               aria-controls="stadion"
+                                               role="button"
+                                               data-slide="5">Stadion
+                                            </a></li><li id="navitem-6"
+                                            class="inactive"><a class="triggerslide"
+                                               tabindex="0"
+                                               aria-label="Medien"
+                                               aria-controls="medien"
+                                               role="button"
+                                               data-slide="6">Medien
+                                            </a></li><li id="navitem-7"
+                                            class="inactive"><a class="triggerslide"
+                                               tabindex="0"
+                                               aria-label="Partner"
+                                               aria-controls="partner"
+                                               role="button"
+                                               data-slide="7">Partner
+                                            </a></li></ul></nav><nav class="subnav" id="secondary-navigation" aria-label="Sub navigation"><ul class="sub leftnav"><li id="subnav-0"
+                                            class="inactive"><a href="/profis/saison/ksc-kompakt" aria-label="KSC kompakt">KSC kompakt
+                                            </a></li><li id="subnav-1"
+                                            class="inactive"><a href="https://tv.ksc.de" aria-label="KSC TV">KSC TV
+                                            </a></li><li id="subnav-2"
+                                            class="inactive"><a href="https://www.ksc.de/index.php?id=456" aria-label="Kids">Kids
+                                            </a></li></ul><ul class="sub rightnav"><li id="subnav-3"
+                                            class="inactive"><a href="http://ksctutgut.de/" aria-label="KSC TUT GUT.">KSC TUT GUT.
+                                            </a></li><li id="subnav-4"
+                                            class="inactive"><a href="/not-in-menue/business/business-uebersicht" aria-label="Business">Business
+                                            </a></li><li id="subnav-5"
+                                            class="inactive"><a href="https://events-ksc.de/" aria-label="EVENTLOCATION">EVENTLOCATION
+                                            </a></li></ul></nav></div></div><div class="layernav"><div class="close" tabindex="0"><span></span><span></span></div><div class="layernav_content"><div class="container-fluid"
+                             id="profis"><div class="row"><div class="col-lg-18 col-md-16 main"><div class="h1">
+                                        Profis
+                                    </div><div class="row columns-3"><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="saison"><li class="header ">
+                                                                Saison
+                                                            </li><li><a class=""
+                                                                       href="/matchcenter">Matchcenter</a></li><li><a class=""
+                                                                       href="/profis/saison/ticker">Ticker</a></li><li><a class=""
+                                                                       href="/profis/saison/news">News</a></li><li><a class=""
+                                                                       href="/profis/saison/ksc-kompakt">KSC kompakt</a></li><li><a class=""
+                                                                       href="/profis/saison/blog-trainingslager-in-neukirchen">Blog: Trainingslager in Neukirchen</a></li><li><a class=""
+                                                                       href="/profis/saison/spielplan">Spielplan</a></li><li><a class=""
+                                                                       href="/profis/saison/tabelle">Tabelle</a></li><li><a class=""
+                                                                       href="/profis/saison/dfb-pokal">DFB-Pokal</a></li><li><a class=""
+                                                                       href="/profis/saison/training">Training</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="team"><li class="header ">
+                                                                Team
+                                                            </li><li><a class=""
+                                                                       href="/profis/team/team">Team</a></li><li><a class=""
+                                                                       href="/profis/team/spieler">Spieler</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="sportlicheleitung"><li class="header ">
+                                                                Sportliche Leitung
+                                                            </li><li><a class=""
+                                                                       href="/profis/sportliche-leitung/geschaeftsfuehrer-sport">Geschäftsführer Sport</a></li><li><a class=""
+                                                                       href="/profis/sportliche-leitung/technischer-leiter-sport">Direktor Profifußball</a></li><li><a class=""
+                                                                       href="/profis/sportliche-leitung/teammanager">Teammanager</a></li><li><a class=""
+                                                                       href="/profis/sportliche-leitung/trainerteam">Trainerteam</a></li></ul></div></div></div><!--TODO: Remove Inline Style--><div class="col-lg-6 col-md-8 aside" style="position: inherit"><div class="teaserItems clearfix " id="c48"><div class="container"><div class="row"><div class="col-lg-24 col-md-12 col-sm-12 col-xs-12 item"><figure><a href="http://mitgliedschaft-ksc.de" target="_blank" class="picturelink" aria-label="Picture Link" rel="noreferrer"><picture><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_a3f0fad480.jpg" media="(max-width: 375px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_a7b59a71c7.jpg" media="(max-width: 480px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_6197ad4128.jpg" media="(max-width: 767px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(max-width: 991px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(max-width: 1279px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(max-width: 1479px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(min-width: 1480px)"><!---Fallback---><img class="img-responsive" src="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" alt="" title="" role="none"></picture></a></figure><div class="content"><a href="http://mitgliedschaft-ksc.de" target="_blank" class="inner" rel="noreferrer"><span>Mitglied werden</span></a></div></div><div class="col-lg-24 col-md-12 col-sm-12 col-xs-12 item"><figure><a href="http://vip-ksc.de" target="_blank" class="picturelink" aria-label="Picture Link" rel="noreferrer"><picture><source srcset="/fileadmin/_processed_/e/3/csm_Buttons_Webseite_500x214_13_ba9736872b.jpg" media="(max-width: 375px)"><source srcset="/fileadmin/_processed_/e/3/csm_Buttons_Webseite_500x214_13_22b4066bbf.jpg" media="(max-width: 480px)"><source srcset="/fileadmin/_processed_/e/3/csm_Buttons_Webseite_500x214_13_44cd1ad637.jpg" media="(max-width: 767px)"><source srcset="/fileadmin/user_upload/Buttons_Webseite_500x214_13.jpg" media="(max-width: 991px)"><source srcset="/fileadmin/user_upload/Buttons_Webseite_500x214_13.jpg" media="(max-width: 1279px)"><source srcset="/fileadmin/user_upload/Buttons_Webseite_500x214_13.jpg" media="(max-width: 1479px)"><source srcset="/fileadmin/user_upload/Buttons_Webseite_500x214_13.jpg" media="(min-width: 1480px)"><!---Fallback---><img class="img-responsive" src="/fileadmin/user_upload/Buttons_Webseite_500x214_13.jpg" alt="" title="" role="none"></picture></a></figure><div class="content"><a href="http://vip-ksc.de" target="_blank" class="inner" rel="noreferrer"><span>Hospitality</span></a></div></div></div></div></div></div></div></div><div class="container-fluid"
+                             id="akademie"><div class="row"><div class="col-lg-18 col-md-16 main"><div class="h1">
+                                        KSC Grenke Akademie
+                                    </div><div class="row columns-4"><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="mannschaften"><li class="header ">
+                                                                Mannschaften
+                                                            </li><li><a class=""
+                                                                       href="/akademie/ksc-grenke-akademie">KSC grenke aKAdemie</a></li><li><a class=""
+                                                                       href="/akademie/mannschaften/news">News</a></li><li><a class=""
+                                                                       href="/akademie/mannschaften/u23/team">U23</a></li><li><a class=""
+                                                                       href="/akademie/mannschaften/u19/team">U19</a></li><li><a class=""
+                                                                       href="/akademie/mannschaften/u17/team">U17</a></li><li><a class=""
+                                                                       href="/akademie/mannschaften/u16/team">U16</a></li><li><a class=""
+                                                                       href="/akademie/mannschaften/u15/team">U15</a></li><li><a class=""
+                                                                       href="/akademie/mannschaften/u14/team">U14</a></li><li><a class=""
+                                                                       href="/akademie/mannschaften/u13/team">U13</a></li><li><a class=""
+                                                                       href="/akademie/mannschaften/u12/team">U12</a></li><li><a class=""
+                                                                       href="/akademie/mannschaften/u11/team">U11</a></li><li><a class=""
+                                                                       href="/akademie/mannschaften/u10/team">U10</a></li><li><a class=""
+                                                                       href="/akademie/mannschaften/perspektivteam">Perspektivteam</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="organisatorisches"><li class="header active">
+                                                                Organisatorisches
+                                                            </li><li><a class=""
+                                                                       href="http://www.ksc.de/index.php?id=828">Mitarbeitende</a></li><li><a class=""
+                                                                       href="/akademie/organisatorisches/fan-verhaltenskodex">Fan-Verhaltenskodex</a></li><li><a class="active"
+                                                                       href="/akademie/organisatorisches/anreise">Anreise</a></li><li><a class=""
+                                                                       href="/akademie/organisatorisches/partner">Partner</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="unserefußball-idee"><li class="header ">
+                                                                Unsere Fußball-Idee
+                                                            </li><li><a class=""
+                                                                       href="/akademie/unsere-fussball-idee/mission">Mission</a></li><li><a class=""
+                                                                       href="/akademie/unsere-fussball-idee/vision">Vision</a></li><li><a class=""
+                                                                       href="/akademie/unsere-fussball-idee/sportpsychologie">Sportpsychologie</a></li><li><a class=""
+                                                                       href="/akademie/unsere-fussball-idee/internat">Internat</a></li><li><a class=""
+                                                                       href="/akademie/unsere-fussball-idee/kinderschutz">Kinderschutz</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="projekte"><li class="header ">
+                                                                Projekte
+                                                            </li><li><a class=""
+                                                                       href="/akademie/projekte/fussball-eliteschule">Fußball-Eliteschule</a></li></ul></div></div></div><!--TODO: Remove Inline Style--><div class="col-lg-6 col-md-8 aside" style="position: inherit"><div class="teaserItems clearfix " id="c49"><div class="container"><div class="row"><div class="col-lg-24 col-md-12 col-sm-12 col-xs-12 item"><figure><a href="https://www.grenke.com/de/" target="_blank" class="picturelink" aria-label="Picture Link" rel="noreferrer"><picture><source srcset="/fileadmin/_processed_/5/d/csm_Teaser_grenke_f19a40656f.png" media="(max-width: 375px)"><source srcset="/fileadmin/_processed_/5/d/csm_Teaser_grenke_f43f4b17bf.png" media="(max-width: 480px)"><source srcset="/fileadmin/_processed_/5/d/csm_Teaser_grenke_a0277a6084.png" media="(max-width: 767px)"><source srcset="/fileadmin/_processed_/5/d/csm_Teaser_grenke_f728b7727d.png" media="(max-width: 991px)"><source srcset="/fileadmin/_processed_/5/d/csm_Teaser_grenke_f728b7727d.png" media="(max-width: 1279px)"><source srcset="/fileadmin/_processed_/5/d/csm_Teaser_grenke_f728b7727d.png" media="(max-width: 1479px)"><source srcset="/fileadmin/_processed_/5/d/csm_Teaser_grenke_f728b7727d.png" media="(min-width: 1480px)"><!---Fallback---><img class="img-responsive" src="/fileadmin/_processed_/5/d/csm_Teaser_grenke_f728b7727d.png" alt="" title="" role="none"></picture></a></figure><div class="content"><a href="https://www.grenke.com/de/" target="_blank" class="inner" rel="noreferrer"><span>Namensgeber</span></a></div></div><div class="col-lg-24 col-md-12 col-sm-12 col-xs-12 item"><figure><a href="http://mitgliedschaft-ksc.de" target="_blank" class="picturelink" aria-label="Picture Link" rel="noreferrer"><picture><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_a3f0fad480.jpg" media="(max-width: 375px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_a7b59a71c7.jpg" media="(max-width: 480px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_6197ad4128.jpg" media="(max-width: 767px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(max-width: 991px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(max-width: 1279px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(max-width: 1479px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(min-width: 1480px)"><!---Fallback---><img class="img-responsive" src="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" alt="" title="" role="none"></picture></a></figure><div class="content"><a href="http://mitgliedschaft-ksc.de" target="_blank" class="inner" rel="noreferrer"><span>Mitglied werden</span></a></div></div></div></div></div></div></div></div><div class="container-fluid"
+                             id="tickets"><div class="row"><div class="col-lg-18 col-md-16 main"><div class="h1">
+                                        Tickets
+                                    </div><div class="row columns-2"><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="tages-&amp;dauerkarten"><li class="header ">
+                                                                Tages- &amp; Dauerkarten
+                                                            </li><li><a class=""
+                                                                       href="/ticketing/tages-dauerkarten/dauerkarten">Dauerkarten</a></li><li><a class=""
+                                                                       href="/ticketing/tages-dauerkarten/vorverkaufs-informationen">Vorverkaufs-Informationen</a></li><li><a class=""
+                                                                       href="/ticketing/tages-dauerkarten/tageskarten">Tageskarten</a></li><li><a class=""
+                                                                       href="/ticketing/tages-dauerkarten/ticketzweitmarkt">Ticketzweitmarkt</a></li><li><a class=""
+                                                                       href="/ticketing/spieltag/karlsruher-pass">Karlsruher Pass</a></li><li><a class=""
+                                                                       href="/ticketing/tages-dauerkarten/gruppenpreise">Gruppenanfragen</a></li><li><a class=""
+                                                                       href="/ticketing/tages-dauerkarten/frauenfussball">Frauenfußball</a></li><li><a class=""
+                                                                       href="/ticketing/tages-dauerkarten/dauerkarten/atgb">ATGB</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="informationen"><li class="header ">
+                                                                Informationen
+                                                            </li><li><a class=""
+                                                                       href="/ticketing/informationen/inklusion-barrierefreier-wildpark">Inklusion - Barrierefreier Wildpark</a></li><li><a class=""
+                                                                       href="/ticketing/informationen/ticketgutschein">KSC-Gutschein</a></li><li><a class=""
+                                                                       href="/ticketing/informationen/schwarzmarkt">Schwarzmarkt</a></li><li><a class=""
+                                                                       href="/ticketing/informationen/u17u19">U17/U19/U23</a></li></ul></div></div></div><!--TODO: Remove Inline Style--><div class="col-lg-6 col-md-8 aside" style="position: inherit"><div class="teaserItems clearfix " id="c68"><div class="container"><div class="row"><div class="col-lg-24 col-md-12 col-sm-12 col-xs-12 item"><figure><a href="http://mitgliedschaft-ksc.de" target="_blank" class="picturelink" aria-label="Picture Link" rel="noreferrer"><picture><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_a3f0fad480.jpg" media="(max-width: 375px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_a7b59a71c7.jpg" media="(max-width: 480px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_6197ad4128.jpg" media="(max-width: 767px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(max-width: 991px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(max-width: 1279px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(max-width: 1479px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(min-width: 1480px)"><!---Fallback---><img class="img-responsive" src="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" alt="" title="" role="none"></picture></a></figure><div class="content"><a href="http://mitgliedschaft-ksc.de" target="_blank" class="inner" rel="noreferrer"><span>Mitglied werden</span></a></div></div><div class="col-lg-24 col-md-12 col-sm-12 col-xs-12 item"><figure><a href="http://vip-ksc.de" target="_blank" class="picturelink" aria-label="Picture Link" rel="noreferrer"><picture><source srcset="/fileadmin/_processed_/e/3/csm_Buttons_Webseite_500x214_13_ba9736872b.jpg" media="(max-width: 375px)"><source srcset="/fileadmin/_processed_/e/3/csm_Buttons_Webseite_500x214_13_22b4066bbf.jpg" media="(max-width: 480px)"><source srcset="/fileadmin/_processed_/e/3/csm_Buttons_Webseite_500x214_13_44cd1ad637.jpg" media="(max-width: 767px)"><source srcset="/fileadmin/user_upload/Buttons_Webseite_500x214_13.jpg" media="(max-width: 991px)"><source srcset="/fileadmin/user_upload/Buttons_Webseite_500x214_13.jpg" media="(max-width: 1279px)"><source srcset="/fileadmin/user_upload/Buttons_Webseite_500x214_13.jpg" media="(max-width: 1479px)"><source srcset="/fileadmin/user_upload/Buttons_Webseite_500x214_13.jpg" media="(min-width: 1480px)"><!---Fallback---><img class="img-responsive" src="/fileadmin/user_upload/Buttons_Webseite_500x214_13.jpg" alt="" title="" role="none"></picture></a></figure><div class="content"><a href="http://vip-ksc.de" target="_blank" class="inner" rel="noreferrer"><span>Hospitality</span></a></div></div></div></div></div></div></div></div><div class="container-fluid"
+                             id="fans"><div class="row"><div class="col-lg-18 col-md-16 main"><div class="h1">
+                                        Fans
+                                    </div><div class="row columns-4"><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="fanbetreuung"><li class="header ">
+                                                                Fanbetreuung
+                                                            </li><li><a class=""
+                                                                       href="/fans/fanbetreuung/fanbetreuung-beim-ksc">Fanbetreuung beim KSC</a></li><li><a class=""
+                                                                       href="/fans/fanbetreuung/fans-mit-behinderungen-beim-ksc">Fans mit Behinderungen beim KSC</a></li><li><a class=""
+                                                                       href="/fans/fanbetreuung/stadionbegleitung">Stadionbegleitung</a></li><li><a class=""
+                                                                       href="/fans/fanbetreuung/auswaertsinfos">Auswärtsinfos</a></li><li><a class=""
+                                                                       href="/fans/fanbetreuung/das-3-saeulen-modell">Das 3-Säulen-Modell</a></li><li><a class=""
+                                                                       href="/fans/fanbetreuung/supporters-karlsruhe">Supporters Karlsruhe</a></li><li><a class=""
+                                                                       href="/fans/fanbetreuung/fanprojekt">Fanprojekt</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="fanclubsundfankneipen"><li class="header ">
+                                                                Fanclubs und Fankneipen
+                                                            </li><li><a class=""
+                                                                       href="/fankneipen">Fankneipen</a></li><li><a class=""
+                                                                       href="/fans/fanclubs-und-treffs/ksc-fanclubs">KSC-Fanclubs</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="service"><li class="header ">
+                                                                Service
+                                                            </li><li><a class=""
+                                                                       href="/fans/service/wo-gehts-nach-panama">Wo geht&#039;s nach Panama?</a></li><li><a class=""
+                                                                       href="/medien/spieltag/fanradio">Fanradio für alle</a></li><li><a class=""
+                                                                       href="/fans/service/stadiongruesse">Stadiongrüße</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="sonstiges"><li class="header ">
+                                                                Sonstiges
+                                                            </li><li><a class=""
+                                                                       href="/fans/sonstiges/feedback">Kontakt</a></li><li><a class=""
+                                                                       href="/fans/sonstiges/willi-wildpark">Willi Wildpark</a></li><li><a class=""
+                                                                       href="/fans/sonstiges/fanshops">Fanshops</a></li></ul></div></div></div><!--TODO: Remove Inline Style--><div class="col-lg-6 col-md-8 aside" style="position: inherit"><div class="teaserItems clearfix " id="c69"><div class="container"><div class="row"><div class="col-lg-24 col-md-12 col-sm-12 col-xs-12 item"><figure><a href="http://mitgliedschaft-ksc.de" target="_blank" class="picturelink" aria-label="Picture Link" rel="noreferrer"><picture><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_a3f0fad480.jpg" media="(max-width: 375px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_a7b59a71c7.jpg" media="(max-width: 480px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_6197ad4128.jpg" media="(max-width: 767px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(max-width: 991px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(max-width: 1279px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(max-width: 1479px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(min-width: 1480px)"><!---Fallback---><img class="img-responsive" src="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" alt="" title="" role="none"></picture></a></figure><div class="content"><a href="http://mitgliedschaft-ksc.de" target="_blank" class="inner" rel="noreferrer"><span>Mitglied werden</span></a></div></div><div class="col-lg-24 col-md-12 col-sm-12 col-xs-12 item"><figure><a href="/fans/sonstiges/fanshops" class="picturelink" aria-label="Picture Link"><picture><source srcset="/fileadmin/_processed_/c/4/csm_Fanshop_Teaser_Box_01_48fb24ca19.jpg" media="(max-width: 375px)"><source srcset="/fileadmin/_processed_/c/4/csm_Fanshop_Teaser_Box_01_38bb0ce45e.jpg" media="(max-width: 480px)"><source srcset="/fileadmin/_processed_/c/4/csm_Fanshop_Teaser_Box_01_6e69528e04.jpg" media="(max-width: 767px)"><source srcset="/fileadmin/user_upload/Fanshop_Teaser_Box_01.jpg" media="(max-width: 991px)"><source srcset="/fileadmin/user_upload/Fanshop_Teaser_Box_01.jpg" media="(max-width: 1279px)"><source srcset="/fileadmin/user_upload/Fanshop_Teaser_Box_01.jpg" media="(max-width: 1479px)"><source srcset="/fileadmin/user_upload/Fanshop_Teaser_Box_01.jpg" media="(min-width: 1480px)"><!---Fallback---><img class="img-responsive" src="/fileadmin/user_upload/Fanshop_Teaser_Box_01.jpg" alt="" title="" role="none"></picture></a></figure><div class="content"><a href="/fans/sonstiges/fanshops" class="inner"><span>Fanshops</span></a></div></div></div></div></div></div></div></div><div class="container-fluid"
+                             id="club"><div class="row"><div class="col-lg-18 col-md-16 main"><div class="h1">
+                                        Club
+                                    </div><div class="row columns-6"><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="allgemein"><li class="header ">
+                                                                Allgemein
+                                                            </li><li><a class=""
+                                                                       href="/club/allgemein/news">News</a></li><li><a class=""
+                                                                       href="/club/allgemein/leitbild-meine-heimat">Leitbild &quot;Meine Heimat&quot;</a></li><li><a class=""
+                                                                       href="/club/allgemein/struktur">Struktur</a></li><li><a class=""
+                                                                       href="/club/allgemein/sicherheitspolitik-des-ksc">Sicherheitspolitik des KSC</a></li><li><a class=""
+                                                                       href="/club/allgemein/chronik">Chronik</a></li><li><a class=""
+                                                                       href="/karriere">Karriere</a></li><li><a class=""
+                                                                       href="/club/allgemein/freundeskreis">Freundeskreis</a></li><li><a class=""
+                                                                       href="/club/allgemein/allstars/ksc-allstars">KSC-Allstars</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="organisation"><li class="header ">
+                                                                Organisation
+                                                            </li><li><a class=""
+                                                                       href="/club/organisation/uebersicht">Übersicht</a></li><li><a class=""
+                                                                       href="/club/organisation/geschaeftsfuehrung">Geschäftsführung</a></li><li><a class=""
+                                                                       href="/club/organisation/mitarbeitende">Mitarbeitende</a></li><li><a class=""
+                                                                       href="/club/organisation/beirat">Beirat</a></li><li><a class=""
+                                                                       href="/club/organisation/aufsichtsrat">Aufsichtsrat</a></li><li><a class=""
+                                                                       href="/club/organisation/tochtergesellschaften">Tochtergesellschaften</a></li><li><a class=""
+                                                                       href="https://ksc.hintbox.de/">Interne Meldestelle</a></li><li><a class=""
+                                                                       href="https://www.ksc.de/fileadmin/business/1.7.1_Verhaltenskodex_KSC_B2B.pdf">Lieferantenkodex</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="investorrelations"><li class="header ">
+                                                                Investor Relations
+                                                            </li><li><a class=""
+                                                                       href="http://www.ksc.de/index.php?id=1072">Allgemein &amp; Hauptversammlung</a></li><li><a class=""
+                                                                       href="http://www.kscaktie.de">Aktienausgabe</a></li><li><a class=""
+                                                                       href="/club/investor-relations/aktienhandel">Aktienhandel</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="visionwildpark"><li class="header ">
+                                                                Vision Wildpark
+                                                            </li><li><a class=""
+                                                                       href="/club/vision-wildpark/uebersicht">Übersicht</a></li><li><a class=""
+                                                                       href="/club/vision-wildpark/news">News</a></li><li><a class=""
+                                                                       href="/club/vision-wildpark/bauabschnitte">Bauabschnitte</a></li><li><a class=""
+                                                                       href="/club/vision-wildpark/baublog">Baublog</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="ksce.v."><li class="header ">
+                                                                KSC e.V.
+                                                            </li><li><a class=""
+                                                                       href="https://ev.ksc.de">Zum KSC e.V.</a></li><li><a class=""
+                                                                       href="https://mitgliedschaft-ksc.de/">Jetzt Mitglied werden</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="ksc-esports"><li class="header ">
+                                                                KSC-eSports
+                                                            </li><li><a class=""
+                                                                       href="/phironix/news">News</a></li><li><a class=""
+                                                                       href="/phironix/uebersicht">Übersicht</a></li><li><a class=""
+                                                                       href="/phironix/team">Team</a></li></ul></div></div></div><!--TODO: Remove Inline Style--><div class="col-lg-6 col-md-8 aside" style="position: inherit"><div class="teaserItems clearfix " id="c68"><div class="container"><div class="row"><div class="col-lg-24 col-md-12 col-sm-12 col-xs-12 item"><figure><a href="http://mitgliedschaft-ksc.de" target="_blank" class="picturelink" aria-label="Picture Link" rel="noreferrer"><picture><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_a3f0fad480.jpg" media="(max-width: 375px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_a7b59a71c7.jpg" media="(max-width: 480px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_6197ad4128.jpg" media="(max-width: 767px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(max-width: 991px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(max-width: 1279px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(max-width: 1479px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(min-width: 1480px)"><!---Fallback---><img class="img-responsive" src="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" alt="" title="" role="none"></picture></a></figure><div class="content"><a href="http://mitgliedschaft-ksc.de" target="_blank" class="inner" rel="noreferrer"><span>Mitglied werden</span></a></div></div><div class="col-lg-24 col-md-12 col-sm-12 col-xs-12 item"><figure><a href="http://vip-ksc.de" target="_blank" class="picturelink" aria-label="Picture Link" rel="noreferrer"><picture><source srcset="/fileadmin/_processed_/e/3/csm_Buttons_Webseite_500x214_13_ba9736872b.jpg" media="(max-width: 375px)"><source srcset="/fileadmin/_processed_/e/3/csm_Buttons_Webseite_500x214_13_22b4066bbf.jpg" media="(max-width: 480px)"><source srcset="/fileadmin/_processed_/e/3/csm_Buttons_Webseite_500x214_13_44cd1ad637.jpg" media="(max-width: 767px)"><source srcset="/fileadmin/user_upload/Buttons_Webseite_500x214_13.jpg" media="(max-width: 991px)"><source srcset="/fileadmin/user_upload/Buttons_Webseite_500x214_13.jpg" media="(max-width: 1279px)"><source srcset="/fileadmin/user_upload/Buttons_Webseite_500x214_13.jpg" media="(max-width: 1479px)"><source srcset="/fileadmin/user_upload/Buttons_Webseite_500x214_13.jpg" media="(min-width: 1480px)"><!---Fallback---><img class="img-responsive" src="/fileadmin/user_upload/Buttons_Webseite_500x214_13.jpg" alt="" title="" role="none"></picture></a></figure><div class="content"><a href="http://vip-ksc.de" target="_blank" class="inner" rel="noreferrer"><span>Hospitality</span></a></div></div></div></div></div></div></div></div><div class="container-fluid"
+                             id="stadion"><div class="row"><div class="col-lg-18 col-md-16 main"><div class="h1">
+                                        BBBank Wildpark
+                                    </div><div class="row columns-2"><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="allgemein"><li class="header ">
+                                                                Allgemein
+                                                            </li><li><a class=""
+                                                                       href="/stadion/stadionbesuch/bbbank-wildpark-tour">BBBank Wildpark-Tour</a></li><li><a class=""
+                                                                       href="/stadion/allgemein/daten-und-fakten">Daten und Fakten</a></li><li><a class=""
+                                                                       href="/stadion/allgemein/geschichte">Geschichte</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="stadionbesuch"><li class="header ">
+                                                                Stadionbesuch
+                                                            </li><li><a class=""
+                                                                       href="/stadion/stadionbesuch/anreise">Anreise</a></li><li><a class=""
+                                                                       href="/stadion/stadionbesuch/stadionplan">Stadionplan</a></li><li><a class=""
+                                                                       href="http://www.ksc.de/index.php?id=1062">Speisen &amp; Getränke</a></li><li><a class=""
+                                                                       href="/stadion/stadionbesuch/bezahlen-im-stadion">Bezahlen im Stadion</a></li><li><a class=""
+                                                                       href="/stadion/stadionbesuch/ksc-pay">KSC Pay</a></li><li><a class=""
+                                                                       href="/stadion/stadionbesuch/stadionordnung">Stadionordnung</a></li><li><a class=""
+                                                                       href="/stadion/stadionbesuch/nicht-erlaubte-gegenstaende">Nicht erlaubte Gegenstände</a></li><li><a class=""
+                                                                       href="https://assets.dfb.de/uploads/000/319/248/original_extremismus.pdf?1745411873">Gegen Extremismus und Diskriminierung</a></li><li><a class=""
+                                                                       href="/stadion/stadionbesuch/hogesa-erklaerung">&#039;HoGeSa&#039;-Erklärung</a></li></ul></div></div></div><!--TODO: Remove Inline Style--><div class="col-lg-6 col-md-8 aside" style="position: inherit"><div class="teaserItems clearfix " id="c70"><div class="container"><div class="row"><div class="col-lg-24 col-md-12 col-sm-12 col-xs-12 item"><figure><a href="https://www.bbbank.de/homepage.html" target="_blank" class="picturelink" aria-label="Picture Link" rel="noreferrer"><picture><source srcset="/fileadmin/_processed_/2/5/csm_BBBank_Logo_Claim_RGB_klein_a6023045d6.jpg" media="(max-width: 375px)"><source srcset="/fileadmin/_processed_/2/5/csm_BBBank_Logo_Claim_RGB_klein_d73313f5b8.jpg" media="(max-width: 480px)"><source srcset="/fileadmin/_processed_/2/5/csm_BBBank_Logo_Claim_RGB_klein_af8b7d7300.jpg" media="(max-width: 767px)"><source srcset="/fileadmin/_processed_/2/5/csm_BBBank_Logo_Claim_RGB_klein_bfaacc8ebb.jpg" media="(max-width: 991px)"><source srcset="/fileadmin/_processed_/2/5/csm_BBBank_Logo_Claim_RGB_klein_c01617deb1.jpg" media="(max-width: 1279px)"><source srcset="/fileadmin/_processed_/2/5/csm_BBBank_Logo_Claim_RGB_klein_c01617deb1.jpg" media="(max-width: 1479px)"><source srcset="/fileadmin/_processed_/2/5/csm_BBBank_Logo_Claim_RGB_klein_c01617deb1.jpg" media="(min-width: 1480px)"><!---Fallback---><img class="img-responsive" src="/fileadmin/_processed_/2/5/csm_BBBank_Logo_Claim_RGB_klein_c01617deb1.jpg" alt="" title="" role="none"></picture></a></figure><div class="content"><a href="https://www.bbbank.de/homepage.html" target="_blank" class="inner" rel="noreferrer"><span>Namensgeber</span></a></div></div><div class="col-lg-24 col-md-12 col-sm-12 col-xs-12 item"><figure><a href="http://vip-ksc.de" target="_blank" class="picturelink" aria-label="Picture Link" rel="noreferrer"><picture><source srcset="/fileadmin/_processed_/6/7/csm_Buttons_Webseite_500x214_02_fedef415dc.jpg" media="(max-width: 375px)"><source srcset="/fileadmin/_processed_/6/7/csm_Buttons_Webseite_500x214_02_8cc2ac4031.jpg" media="(max-width: 480px)"><source srcset="/fileadmin/_processed_/6/7/csm_Buttons_Webseite_500x214_02_ca237ab632.jpg" media="(max-width: 767px)"><source srcset="/fileadmin/_processed_/6/7/csm_Buttons_Webseite_500x214_02_84e86b7f4a.jpg" media="(max-width: 991px)"><source srcset="/fileadmin/_processed_/6/7/csm_Buttons_Webseite_500x214_02_84e86b7f4a.jpg" media="(max-width: 1279px)"><source srcset="/fileadmin/_processed_/6/7/csm_Buttons_Webseite_500x214_02_84e86b7f4a.jpg" media="(max-width: 1479px)"><source srcset="/fileadmin/_processed_/6/7/csm_Buttons_Webseite_500x214_02_84e86b7f4a.jpg" media="(min-width: 1480px)"><!---Fallback---><img class="img-responsive" src="/fileadmin/_processed_/6/7/csm_Buttons_Webseite_500x214_02_84e86b7f4a.jpg" alt="" title="" role="none"></picture></a></figure><div class="content"><a href="http://vip-ksc.de" target="_blank" class="inner" rel="noreferrer"><span>Hospitality</span></a></div></div></div></div></div></div></div></div><div class="container-fluid"
+                             id="medien"><div class="row"><div class="col-lg-18 col-md-16 main"><div class="h1">
+                                        Medien
+                                    </div><div class="row columns-4"><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="spieltag"><li class="header ">
+                                                                Spieltag
+                                                            </li><li><a class=""
+                                                                       href="/heimatspielkompakt">Stadionmagazin &#039;HEIMATSPIEL Kompakt&#039;</a></li><li><a class=""
+                                                                       href="https://www.ksc.de/medien/digital/ksc-app">Live-Ticker</a></li><li><a class=""
+                                                                       href="/medien/spieltag/fanradio">Fanradio</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="digital"><li class="header ">
+                                                                Digital
+                                                            </li><li><a class=""
+                                                                       href="/medien/digital/ksc-app">KSC-App</a></li><li><a class=""
+                                                                       href="/medien/digital/bildergalerien">Bildergalerien</a></li><li><a class=""
+                                                                       href="https://tv.ksc.de">KSC TV</a></li><li><a class=""
+                                                                       href="https://tv.ksc.de/livestream">Livestream</a></li><li><a class=""
+                                                                       href="/medien/digital/ksc-tv-app">KSC TV App</a></li><li><a class=""
+                                                                       href="/archiv/newsletter/anmeldung-ksc-newsletter">Newsletter</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="socialmedia"><li class="header ">
+                                                                Social Media
+                                                            </li><li><a class=""
+                                                                       href="/medien/social-media/social-media-hub">Social Media Hub</a></li><li><a class=""
+                                                                       href="http://www.facebook.com/KarlsruherSC">Facebook</a></li><li><a class=""
+                                                                       href="http://instagram.com/karlsruhersc">Instagram</a></li><li><a class=""
+                                                                       href="https://www.tiktok.com/@karlsruhersc">TikTok</a></li><li><a class=""
+                                                                       href="https://www.linkedin.com/company/karlsruhersc">LinkedIn</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="medien/presse"><li class="header ">
+                                                                Medien/Presse
+                                                            </li><li><a class=""
+                                                                       href="/not-in-menue/presse">Pressebereich</a></li></ul></div></div></div><!--TODO: Remove Inline Style--><div class="col-lg-6 col-md-8 aside" style="position: inherit"><div class="teaserItems clearfix " id="c73"><div class="container"><div class="row"><div class="col-lg-24 col-md-12 col-sm-12 col-xs-12 item"><figure><a href="http://mitgliedschaft-ksc.de" target="_blank" class="picturelink" aria-label="Picture Link" rel="noreferrer"><picture><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_a3f0fad480.jpg" media="(max-width: 375px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_a7b59a71c7.jpg" media="(max-width: 480px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_6197ad4128.jpg" media="(max-width: 767px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(max-width: 991px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(max-width: 1279px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(max-width: 1479px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(min-width: 1480px)"><!---Fallback---><img class="img-responsive" src="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" alt="" title="" role="none"></picture></a></figure><div class="content"><a href="http://mitgliedschaft-ksc.de" target="_blank" class="inner" rel="noreferrer"><span>Mitglied werden</span></a></div></div></div></div></div></div></div></div><div class="container-fluid"
+                             id="partner"><div class="row"><div class="col-lg-18 col-md-16 main"><div class="h1">
+                                        Partner
+                                    </div><div class="row columns-6"><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="profis"><li class="header ">
+                                                                Profis
+                                                            </li><li><a class=""
+                                                                       href="/partner/profis/hauptpartner">Hauptpartner</a></li><li><a class=""
+                                                                       href="/partner/profis/ausruester">Ausrüster</a></li><li><a class=""
+                                                                       href="/partner/profis/exklusivpartner">Exklusivpartner</a></li><li><a class=""
+                                                                       href="/partner/profis/badenpartner">Premiumpartner</a></li><li><a class=""
+                                                                       href="/partner/profis/wildparkpartner">Businesspartner</a></li><li><a class=""
+                                                                       href="/partner/profis/1894-partner">1894-Netzwerk</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="hospitality-welten"><li class="header ">
+                                                                Hospitality-Welten
+                                                            </li><li><a class=""
+                                                                       href="/partner/hospitality-welten/logenseat-partner">Logen Seat-Partner</a></li><li><a class=""
+                                                                       href="/partner/hospitality-welten/businessseat-partner">Business Seat-Partner</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="wildparktaste"><li class="header ">
+                                                                Wildpark Taste
+                                                            </li><li><a class=""
+                                                                       href="/partner/wildparkttaste/hauptpartner">Hauptpartner</a></li><li><a class=""
+                                                                       href="/partner/wildparktaste/premium-partner">Premium-Partner</a></li><li><a class=""
+                                                                       href="/partner/wildparttaste/partner">Partner</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="kscgrenkeakademie"><li class="header ">
+                                                                KSC grenke aKAdemie
+                                                            </li><li><a class=""
+                                                                       href="/partner/ksc-grenke-akademie/namensgeber">Namensgeber</a></li><li><a class=""
+                                                                       href="/partner/ksc-grenke-akademie/hauptpartner">Hauptpartner</a></li><li><a class=""
+                                                                       href="/partner/ksc-grenke-akademie/ausruester">Ausrüster</a></li><li><a class=""
+                                                                       href="/partner/ksc-grenke-akademie/partner">Partner</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="ksctutgut."><li class="header ">
+                                                                KSC TUT GUT.
+                                                            </li><li><a class=""
+                                                                       href="/partner/ksc-tut-gut/hauptpartner">Hauptpartner</a></li><li><a class=""
+                                                                       href="/partner/ksc-tut-gut/premium-partner-1">Premium-Partner</a></li><li><a class=""
+                                                                       href="/partner/ksc-tut-gut/unterstuetzer">Partner</a></li><li><a class=""
+                                                                       href="/partner/ksc-tut-gut/unterstuetzer-1">Unterstützer</a></li></ul></div><div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 "><ul class="fußballschule/esports"><li class="header ">
+                                                                Fußballschule / eSports
+                                                            </li><li><a class=""
+                                                                       href="/partner/ksc-fussballschule/hauptpartner">Fußballschule-Hauptpartner</a></li><li><a class=""
+                                                                       href="/partner/ksc-fussballschule/fussballschule-premiumpartner">Fußballschule-Premiumpartner</a></li><li><a class=""
+                                                                       href="/partner/ksc-fussballschule/fussballschule-partner">Fußballschule-Partner</a></li><li><a class=""
+                                                                       href="/partner/ksc-fussballschule/unterstuetzer">Fußballschule-Unterstützer</a></li><li><a class=""
+                                                                       href="/partner/phironix-esports/main-partner-1">eSport-MAIN Partner</a></li></ul></div></div></div><!--TODO: Remove Inline Style--><div class="col-lg-6 col-md-8 aside" style="position: inherit"><div class="teaserItems clearfix " id="c71"><div class="container"><div class="row"><div class="col-lg-24 col-md-12 col-sm-12 col-xs-12 item"><figure><a href="http://mitgliedschaft-ksc.de" target="_blank" class="picturelink" aria-label="Picture Link" rel="noreferrer"><picture><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_a3f0fad480.jpg" media="(max-width: 375px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_a7b59a71c7.jpg" media="(max-width: 480px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_6197ad4128.jpg" media="(max-width: 767px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(max-width: 991px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(max-width: 1279px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(max-width: 1479px)"><source srcset="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" media="(min-width: 1480px)"><!---Fallback---><img class="img-responsive" src="/fileadmin/_processed_/7/1/csm_Mitgliederkampagne_7cd5c44b07.jpg" alt="" title="" role="none"></picture></a></figure><div class="content"><a href="http://mitgliedschaft-ksc.de" target="_blank" class="inner" rel="noreferrer"><span>Mitglied werden</span></a></div></div><div class="col-lg-24 col-md-12 col-sm-12 col-xs-12 item"><figure><a href="http://vip-ksc.de" target="_blank" class="picturelink" aria-label="Picture Link" rel="noreferrer"><picture><source srcset="/fileadmin/_processed_/b/5/csm_Buttons_Webseite_500x214_01_5a59dd4264.jpg" media="(max-width: 375px)"><source srcset="/fileadmin/_processed_/b/5/csm_Buttons_Webseite_500x214_01_006bd4c4c1.jpg" media="(max-width: 480px)"><source srcset="/fileadmin/_processed_/b/5/csm_Buttons_Webseite_500x214_01_f2786ecb78.jpg" media="(max-width: 767px)"><source srcset="/fileadmin/_processed_/b/5/csm_Buttons_Webseite_500x214_01_a167980c0a.jpg" media="(max-width: 991px)"><source srcset="/fileadmin/_processed_/b/5/csm_Buttons_Webseite_500x214_01_a167980c0a.jpg" media="(max-width: 1279px)"><source srcset="/fileadmin/_processed_/b/5/csm_Buttons_Webseite_500x214_01_a167980c0a.jpg" media="(max-width: 1479px)"><source srcset="/fileadmin/_processed_/b/5/csm_Buttons_Webseite_500x214_01_a167980c0a.jpg" media="(min-width: 1480px)"><!---Fallback---><img class="img-responsive" src="/fileadmin/_processed_/b/5/csm_Buttons_Webseite_500x214_01_a167980c0a.jpg" alt="" title="" role="none"></picture></a></figure><div class="content"><a href="http://vip-ksc.de" target="_blank" class="inner" rel="noreferrer"><span>Hospitality</span></a></div></div></div></div></div></div></div></div></div></div><div class="slick-control-layernav"><div class="slick-arrow slick-left"><div class="ksc-icon arrow"></div></div><div class="dots"></div><div class="slick-arrow slick-right"><div class="ksc-icon arrow-right"></div></div></div></header><main><section class="imageHeader "><picture><source srcset="/fileadmin/_processed_/7/7/csm_MG5_0066_4b5308a8ed.jpg" media="(max-width: 375px)"><source srcset="/fileadmin/_processed_/7/7/csm_MG5_0066_bde8dd5752.jpg" media="(max-width: 480px)"><source srcset="/fileadmin/_processed_/7/7/csm_MG5_0066_bf48567959.jpg" media="(max-width: 767px)"><source srcset="/fileadmin/_processed_/7/7/csm_MG5_0066_cfd18dae56.jpg" media="(max-width: 991px)"><source srcset="/fileadmin/_processed_/7/7/csm_MG5_0066_cf2fc7b23f.jpg" media="(max-width: 1279px)"><source srcset="/fileadmin/_processed_/7/7/csm_MG5_0066_ece438d94a.jpg" media="(max-width: 1479px)"><source srcset="/fileadmin/_processed_/7/7/csm_MG5_0066_2685ba9de0.jpg" media="(min-width: 1480px)"><!---Fallback---><img class="img-responsive" src="/fileadmin/_processed_/7/7/csm_MG5_0066_2685ba9de0.jpg" alt="" title="" role="none"></picture><div class="h1"><span>Anreise zum BBBank Wildpark</span></div></section><div class="container section-white" id="c12923"><h2>Anschrift</h2><p>BBBank Wildpark&nbsp;<br> Adenauerring 17&nbsp;<br> 76131 Karlsruhe&nbsp;</p></div><div style="text-align: center;"><iframe title="bwegt Fahrplanauskunft-Widget" frameborder="0" style="border: 0;" width="340" height="450" src="https://www.bwegt.de/efa-widget/index.html"></iframe></div><div class="container section-white" id="c12927"></div><div class="container  accordeon" id="c12924"><article class="open"><div class="toggler"><h1>
+				Anreise mit den öffentlichen Verkehrsmitteln
+			</h1></div><div class="toggleContent"><p>Mit öffentlichen Verkehrsmitteln reisen Sie über die Haltestellen Durlacher Tor, Kronenplatz oder Marktplatz an, von dort erreichen Sie das Stadion in etwa 20–25 Minuten zu Fuß.<br><br> Ab 90 Minuten vor Spielbeginn können an Spieltagen Sonderbusse der Verkehrsbetriebe Karlsruhe (VBK) von der Haltestelle Durlacher Tor kostenlos mit der Eintrittskarte genutzt werden. Die Busse fahren nach dem Spiel ab 30 Minuten nach Abpfiff ab der Kreuzung Adenauerring/Theodor-Heuss-Allee wieder zum Durlacher Tor.&nbsp;<br><br> Ihre Eintrittskarte gilt als Fahrkarte für kostenlose Hin- und Rückfahrt am Spieltag im Verbundgebiet des KVV. Dabei gelten die Tarif- und Beförderungsbedingungen des KVV.</p></div></article></div><div class="container  accordeon" id="c12920"><article class="open"><div class="toggler"><h1>
+				Anreise mit dem PKW
+			</h1></div><div class="toggleContent"><p><a href="https://maps.app.goo.gl/xfreTwEgQ1HXkB1b7" target="_blank" class="btn rte small" rel="noreferrer">Direkt zu Google Maps</a></p><p>Zur Verbesserung der Verkehrssicherheit wird der Adenauerring im Bereich zwischen Einmündung Theodor-Heuss-Allee und Stutenseer Allee ab Stadionöffnung gesperrt.<br><br> KSC-Besucher mit einer Parkberechtigung für die Parkplätze (P1 | VIP Kat. 1, P9 | Medien und Dienstleister) können nur von Westen (Mühlburger Tor, Linkenheimer Landstraße) über den Adenauerring zufahren. KSC-Besucher mit einer Parkberechtigung für die Parkplätze (P2 | VIP Kat.2, P3 | VIP Kat.3, P4 | Birkenparkplatz) erreichen diese nur vom Durlacher Tor/Karlsruhe-Waldstadt kommend.&nbsp;</p><p>Bitte beachten Sie: Eine Zufahrt ist nur aus der vorgesehenen Richtung möglich, andernfalls werden Sie trotz Parkschein abgewiesen.</p><p>Heimfans können Tagesparkscheine für den Birkenparkplatz (P4) im <a href="https://tickets.ksc.de/shop?wes=88f786665&amp;shopid=5&amp;nextstate=2&amp;lpShortcutId=13" target="_blank" rel="noreferrer">Online-Ticketshop</a> erwerben.</p><p><a href="/fileadmin/Ticketing/Anfahrtsskizze_P4_2.png" class="btn rte small">Anfahrt Birkenparkplatz / P4</a></p><p>Eine Übersicht zur aktuellen Verkehrs- und Baustellensituation im Stadtgebiet finden Sie <a href="https://mobil.trk.de/portal.html?city=Karlsruhe&amp;lang=de&amp;theme=&amp;lat=49.01555719999999&amp;lng=8.4094999&amp;zoom=13" target="_blank" rel="noreferrer">hier</a>.<br> &nbsp;</p><p><strong>Empfohlene Parkhäuser</strong></p><p>Schlossplatz (Am Schlossplatz, 76131 Karlsruhe) &nbsp;<br> Öffnungszeit: täglich 24 h &nbsp;<br> Gesamtzahl der Stellplätze: 912  &nbsp;<br><br> Passagehof (Passagehof 11, 76133 Karlsruhe)  &nbsp;<br> Öffnungszeit: täglich 24 h &nbsp;<br> Gesamtzahl der Stellplätze: 392  &nbsp;<br><br> Herrenstraße/Zirkel (Herrenstraße 9, 76133 Karlsruhe)  &nbsp;<br> Öffnungszeit: täglich 24 h &nbsp;<br> Gesamtzahl der Stellplätze: 222 &nbsp;<br><br> Kronenplatz (Fritz-Erler-Str., 76133 Karlsruhe)  &nbsp;<br> Öffnungszeit: täglich 24 h  &nbsp;<br> Gesamtzahl der Stellplätze: 629&nbsp;<br><br> Informationen zur aktuellen Auslastung der genannten Parkhäuser finden Sie <a href="https://web1.karlsruhe.de/service/Parken/index.php" target="_blank" rel="noreferrer">hier.</a></p><p>Bitte beachten Sie zudem, dass auch an Spieltagen des KSC die Parkregelungen der Straßenverkehrsordnung einzuhalten sind. Die Verkehrsüberwachung des Ordnungs- und Bürgeramtes kontrolliert in unregelmäßigen Abständen teilweise großflächig das Areal rund um den BBBank Wildpark. Für Parkverstöße können Bußgelder drohen.</p><p>&nbsp;</p><p><strong>Baustellen erschweren die Zufahrt zum BBBank Wildparkstadion.</strong></p><p>Die Kreuzung Kriegsstraße und Brauerstraße sollte aufgrund der dortigen Großbaustelle großräumig umfahren werden. Umleitungen sind ausgeschildert.</p><p>Wenn Sie von außerhalb kommen, reisen Sie bevorzugt aus Richtung Norden über die Autobahnausfahrt Bruchsal an.</p><p>Bitte planen Sie ausreichend Zeit für die Anreise ein.</p><p>Weitere Informationen gibt es zu der Baustelle auch unter&nbsp;<a href="https://www.karlsruhe.de/themen/infrastrukturprojekt-kriegsstrasse" title="https://www.karlsruhe.de/themen/infrastrukturprojekt-kriegsstrasse" target="_blank" data-auth="NotApplicable" data-linkindex="0" rel="noreferrer">Karlsruhe: Infrastrukturprojekt Kriegsstraße, Brauerstraße und Gartenstraße</a>.</p></div></article></div><div class="container  accordeon" id="c12925"><article class="open"><div class="toggler"><h1>
+				Anreise für Fußgänger und Radfahrer
+			</h1></div><div class="toggleContent"><p>Mit öffentlichen Verkehrsmitteln reisen Sie über die Haltestellen Durlacher Tor, Kronenplatz oder Marktplatz an, von dort erreichen Sie das Stadion in etwa 20–25 Minuten zu Fuß.</p><p>Rund um den BBBank Wildpark stehen allen Fans eine große Anzahl von Fahrradständern zur Verfügung.&nbsp;</p><p>Am Stadion stehen allen Radfahrerinnen und Radfahrern drei praktische Fahrradreparatursäulen zur Verfügung. Mit den Stationen können kleine Handgriffe wie das Aufpumpen der Reifen oder das Nachziehen von Schrauben direkt vor Ort erledigt werden, schnell, unkompliziert und kostenlos. Zu finden sind die Säulen an den jeweiligen Fahrradständern ums Stadion: Südwest aus dem Schlosspark kommend, Südost vom Durlacher Tor kommend und Nordost vom Birkenparkplatz kommend.</p></div></article></div><div class="container  accordeon" id="c12926"><article class="open"><div class="toggler"><h1>
+				Anreise für Gästefans
+			</h1></div><div class="toggleContent"><p>Die Anfahrt für Gästefans erfolgt ausschließlich aus Richtung Mühlburger Tor (Westen) oder der Linkenheimer Landstraße. Gästefans parken auf dem Gästeparkplatz (P5) und kommen von dort aus direkt auf kurzem Wege zum Gästeblock. Die Parkgebühr wird direkt bei der Einfahrt fällig, es gibt kein Vorverkauf.</p><p>Die Adresse des Stadions lautet:<br> BBBank Wildpark<br> Adenauerring 17<br> 76131 Karlsruhe</p><p><a href="/fileadmin/Ticketing/KSC_Anfahrtsbeschreibung_Gaeste_1.jpg" class="btn rte small">Anfahrt Gästeparkplatz / P5</a></p></div></article></div><div class="container  accordeon" id="c12929"><article class="open"><div class="toggler"><h1>
+				Anreise für Fans mit Behinderung
+			</h1></div><div class="toggleContent"><p><strong>Mit öffentlichen Verkehrsmitteln</strong><br><br> Am Hauptbahnhof Karlsruhe sind alle Gleise stufenfrei zu erreichen. Ein taktiles Leitsystem ist auf den Gleisen 1 bis 12 sowie der Unterführung vorhanden.&nbsp;<br> Mit öffentlichen Verkehrsmitteln empfehlen wir die Anreise für Menschen mit Behinderung über die Haltestelle “Durlacher Tor” und von dort aus mit dem Shuttlebus.<br> Ab 90 Minuten vor Spielbeginn können an Spieltagen Sonderbusse der Verkehrsbetriebe Karlsruhe (VBK) kostenlos mit der Eintrittskarte genutzt werden. Die Busse fahren nach dem Spiel ab 30 Minuten nach Abpfiff am Adenauerring wieder zum Durlacher Tor.&nbsp;<br> Es sind ausschließlich Niederflurfahrzeuge im Einsatz. Beim Aus- und Einstieg ist jedoch eine Stufe zu überwinden. Daher ist Hilfe für mobilitätseingeschränkte Personen durch Begleitpersonen zwingend erforderlich.&nbsp;<br> Die Haltestelle am Stadion befindet sich am Adenauerring vor der Osttribüne.&nbsp;</p><p>Die benötigte Barrierefreiheit für Orte in Karlsruhe kann über die Seite Karlsruhe barrierefrei eingesehen werden.&nbsp;<br> (Link: <a href="https://geoportal.karlsruhe.de/karlsruhe_barrierefrei/" target="_blank" rel="noreferrer noopener">Karlsruhe barrierefrei</a> )&nbsp;<br><br><strong>Mit dem PKW</strong><br><br> Wir haben auf unserem Birkenparkplatz (P3) eine begrenzte Anzahl an Parkplätzen für unsere Fans mit Behinderung. &nbsp;<br> Dies ist der nächstgelegenste Parkplatz zur barrierefreien Osttribüne.&nbsp;<br> Mit dem blauen EU-Parkausweis kann dort kostenfrei geparkt werden.&nbsp;<br><br> Alternativ bieten wir für die Heimspiele zusätzlich Tagesparkscheine, die in unserem <a href="https://tickets.ksc.de/shop?wes=36425ce65&amp;shopid=5&amp;nextstate=2&amp;lpShortcutId=13" target="_blank" rel="noreferrer">Online-Ticketshop</a> erworben werden können.&nbsp;<br> Die Zufahrt erfolgt nur aus der Richtung vom Durlacher Tor/Karlsruhe-Waldstadt kommend.<br><br><strong>Mit dem Taxi &amp; Fahrdienst</strong><br><br> Der Taxipunkt befindet sich an der Kreuzung Adenauerring/Stutenseer Allee.<br> Bitte beachten Sie hierbei, dass es vor und nach dem Spiel zur Sperrung des Adenauerrings kommt.<br><br> Weitere Informationen zum Stadionbesuch beim KSC und Vereinen der Ligen können ebenfalls im Bundesliga-Reiseführer nachgelesen werden.&nbsp;<br> (Link: <a href="https://www.bundesliga-reisefuehrer.de/de/club/karlsruher-sc" target="_blank" rel="noreferrer noopener">Karlsruher SC | Bundesliga Reiseführer</a> )&nbsp;</p></div></article></div><section class="image"><div class="container" id="c952"><picture><source srcset="/fileadmin/_processed_/e/0/csm_Anfahrtsskizze_BBBank-Wildpark7_b0ba8e5f70.jpg" media="(max-width: 375px)"><source srcset="/fileadmin/_processed_/e/0/csm_Anfahrtsskizze_BBBank-Wildpark7_67da653c8e.jpg" media="(max-width: 480px)"><source srcset="/fileadmin/_processed_/e/0/csm_Anfahrtsskizze_BBBank-Wildpark7_c3ca31ee22.jpg" media="(max-width: 767px)"><source srcset="/fileadmin/_processed_/e/0/csm_Anfahrtsskizze_BBBank-Wildpark7_876f0e7e30.jpg" media="(max-width: 991px)"><source srcset="/fileadmin/_processed_/e/0/csm_Anfahrtsskizze_BBBank-Wildpark7_bd8ad3ad25.jpg" media="(max-width: 1279px)"><source srcset="/fileadmin/_processed_/e/0/csm_Anfahrtsskizze_BBBank-Wildpark7_08b8902c06.jpg" media="(max-width: 1479px)"><source srcset="/fileadmin/user_upload/Anfahrtsskizze_BBBank-Wildpark7.jpg" media="(min-width: 1480px)"><!---Fallback---><img class="img-responsive" src="/fileadmin/user_upload/Anfahrtsskizze_BBBank-Wildpark7.jpg" alt="" title="" role="none"></picture></div></section></main><div class="hauptsponsor" role="region" aria-label="Hauptsponsoren"><a class="mainsponsor-logo" href="https://www.sweg.de/" target="_blank" aria-label="SWEG - external link"><img src="/typo3conf/ext/ksc/Resources/Public/Sponsors/sweg.svg" alt="Hauptsponsor SWEG" /></a><hr><a class="left-logo" href="https://www.macron.com/eu/de/" target="_blank" aria-label="Hauptsponsor Macron - external link"><img src="/typo3conf/ext/ksc/Resources/Public/Sponsors/macron_rgb.svg" alt="Hauptsponsor Macron" /></a><a class="right-logo" href="https://www.bbbank.de/" target="_blank" aria-label="Hauptsponsor BBBank - external link"><img src="/typo3conf/ext/ksc/Resources/Public/Sponsors/bbbank.svg" alt="Hauptsponsor BBBank" /></a></div><div class="sponsoren" role="region" aria-label="Sponsoren"><a class="sponsor biliger" href="https://www.billiger.de" target="_blank" aria-label="Sponsor Billiger - external link"><img src="/typo3conf/ext/ksc/Resources/Public/Sponsors/billiger_white.png" alt="Sponsor Billiger" /></a><a class="sponsor bgv" href="https://www.bgv.de" target="_blank" aria-label="Sponsor BGV - external link"><img src="/typo3conf/ext/ksc/Resources/Public/Sponsors/bgv_white_new.png" alt="Sponsor BGV" /></a><a class="sponsor edeka" href="https://www.edeka.de/suedwest/homepage.jsp" target="_blank" aria-label="Sponsor EDEKA - external link"><img src="/typo3conf/ext/ksc/Resources/Public/Sponsors/edeka_herz_weiss.svg" alt="Sponsor EDEKA" /></a><a class="sponsor hoepfner" href="https://www.hoepfner.de/" target="_blank" aria-label="Sponsor hoepfner - external link"><img src="/typo3conf/ext/ksc/Resources/Public/Sponsors/hoepf-logo.svg" alt="Sponsor hoepfner" /></a></div></div><footer><div class="footercontent"><div class="ksc-logo"><a href="/"><img src="/typo3conf/ext/ksc/Resources/Public/Img/logo.svg" alt="KSC Footer Logo" /></a></div><div class="container"><nav class="footernav"><ul><li><a target="_blank" href="http://fanshop.ksc.de">Fanshop</a></li><li><a target="_blank" href="https://tickets.ksc.de">Ticketshop</a></li><li><a target="_blank" href="http://www.kscaktie.de/fileadmin/user_upload/WpPG_KSC_KGaA_WIB_Reinschrift_11082022.pdf">Wertpapierinformationsblatt</a></li><li><a target="" href="/fans/sonstiges/feedback">Feedback</a></li><li><a target="" href="/not-in-menue/presse">Pressebereich</a></li></ul></nav><hr></div><div class="metanav clearfix"><div class="container"><ul class="nav left"><li>&copy;
+								2026
+								Karlsruher SC
+							</li><li class="divider">|</li><li><a href="/not-in-menue/kontakt">
+									Kontakt
+								</a></li></ul><a class="hostedBy" href="https://www.telemaxx.de" target="_blank" aria-label="Telemaxx Link"><img src="/typo3conf/ext/ksc/Resources/Public/Img/hosted-by-TelemaxX.png" alt="Telemaxx Logo" /></a><ul class="nav right"><li><a href="/not-in-menue/impressum" aria-label="legal info">Impressum</a></li><li class="divider">|</li><li><a href="/not-in-menue/datenschutz" aria-label="legal info">Datenschutz</a></li><li class="divider">|</li><li><span onclick="Cookiebot.renew()">Cookies</span></li></ul></div></div></div><div class="liga"><div class="liga-logo"><img src="/typo3conf/ext/ksc/Resources/Public/Img/2.liga_rgb.svg" alt="2. Liga Logo" /></div></div></footer><div class="fixedBottomNav clearfix"><div class="left" role="region" aria-label="Bottom Navigation Marketing"><div class="marketing"><a href="https://www.ksc.de/fanshop/" target="_blank" aria-label="Fanshop - external link"><div class="ksc-icon shop-small"><span>Fanshop</span></div></a><a href="https://www.ksc.de/tickets/" target="_blank" aria-label="Tickets - external link"><div class="ksc-icon ticket-small"><span>Tickets</span></div></a></div></div><div class="center" role="region" aria-label="Bottom Navigation Center"><a aria-label="Link Match Center" class="buttonMC" href="/matchcenter"><div class="ksc-icon football"></div><span>Match<br>Center</span></a><div class="centerLeft"><div class="c108">
+	<div class="tx-kickerapi">
+		
+    
+
+    <div class="content-hidden-cookie-message">
+        <div class="content-hidden-cookie-message__flex">
+            <div class="content-hidden-cookie-message__flex__text">
+                Bei der Anzeige dieser Inhalte werden möglicherweise Daten an Drittanbieter übertragen. Bitte <a href="#" class="content-hidden-cookie-link" onClick="Cookiebot.renew(); return false;">akzeptieren Sie alle Cookies</a> um diesen Inhalt ansehen zu können.
+            </div>
+        </div>
+    </div>
+    <div class="content-hidden-cookie">
+
+        
+                <div class="matchInfo">
+                    <time>
+                        <div class="date">
+                            18.10.26
+                        </div>
+                        <span>13:30h</span>
+                    </time>
+                    <div class="game">
+                        <div class="logo home">
+                            
+                                    <img src="" data-cookie-src="https://upload.wikimedia.org/wikipedia/commons/c/c8/Karlsruher_SC_Logo_2.svg" alt="Karlsruher SC"/>
+                                
+                        </div>
+                        <div class="result">
+                            4:0
+                        </div>
+                        <div class="logo away">
+                            
+                                    <img src="" data-cookie-src="https://upload.wikimedia.org/wikipedia/commons/e/e5/SV_Darmstadt_98_Logo.svg" alt="SV Darmstadt 98"/>
+                                
+                        </div>
+                    </div>
+                </div>
+            
+    </div>
+
+
+
+	</div>
+</div><div class="logo-mh"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 54.57 50"><defs><style>
+                                    .lmh-1, .lmh-3 {fill: #fff;}
+                                    .lmh-1, .lmh-2 {fill-rule: evenodd;}
+                                    .lmh-2 {fill: #004c94;}
+                                </style></defs><path class="lmh-1" d="M9.45,17.84a17.84,17.84,0,1,1,17.7,17.84A17.95,17.95,0,0,1,9.45,17.84Z"/><path class="lmh-2" d="M10.63,17.84A16.66,16.66,0,1,1,27.16,34.49,16.73,16.73,0,0,1,10.63,17.84Z"/><polygon class="lmh-1" points="23.24 9.73 20.9 16.48 20.9 10.07 18.55 10.39 18.55 27.1 20.9 26.78 20.9 19.37 23.11 26.47 25.47 26.13 22.8 17.59 25.6 9.4 23.24 9.73"/><path class="lmh-1" d="M30.56,8.71l-2.66.38a20.54,20.54,0,0,0-1.73,5.24,7.9,7.9,0,0,0,1,3.61,6.27,6.27,0,0,1,1,2.86,30.37,30.37,0,0,1-1,5.1l2.54-.36a27.4,27.4,0,0,0,.81-5.09c0-2.53-2-3.9-2-6.28C28.55,13.14,29.66,10.64,30.56,8.71Z"/><path class="lmh-1" d="M36.77,24.53V22.19l-1.11.14a1,1,0,0,1-1.18-.82.61.61,0,0,1,0-.14V11.93a1.36,1.36,0,0,1,1.11-1.41l.92-.13V7.86l-1.67.23a3,3,0,0,0-2.72,3.06V22.74A2,2,0,0,0,34,24.91a2.32,2.32,0,0,0,.64-.06Z"/><path class="lmh-3" d="M5.93,45.85v3.92L4.25,50V41.67l1.82-.25L7,44.82l.92-3.65,1.84-.26v8.33l-1.68.23V45.56L7,49Z"/><path class="lmh-3" d="M10.45,40.82l3.29-.46L14,41.87l-1.84.25v2l1.4-.2v1.44l-1.4.19v1.81L14,47.11l-.29,1.59-3.22.45Z"/><path class="lmh-3" d="M14.5,40.26,16.19,40v8.32l-1.69.24Z"/><path class="lmh-3" d="M16.9,39.93l1.61-.22.86,3.23V39.59l1.74-.24v8.33l-1.74.24-.91-3.35V48l-1.56.22Z"/><path class="lmh-3" d="M21.81,39.25l3.3-.45.29,1.5-1.85.26v2l1.4-.19v1.43l-1.4.19v1.81l1.78-.24L25,47.13l-3.23.45Z"/><path class="lmh-3" d="M31.59,46.23l-1.73.24V43.15l-.92.13V46.6l-1.73.24V38.51l1.73-.24v3.57l.92-.12V38.14l1.73-.23Z"/><path class="lmh-3" d="M32.29,37.81l3.29-.46.29,1.51L34,39.11v2l1.4-.2v1.44l-1.4.19v1.81l1.77-.25-.29,1.59-3.22.45Z"/><path class="lmh-3" d="M36.34,37.25,38,37v8.32l-1.69.24Z"/><path class="lmh-3" d="M40.42,41.1V45l-1.68.23V36.92l1.82-.25.92,3.4.92-3.66,1.84-.25v8.33l-1.69.23V40.8l-1.07,3.47Z"/><path class="lmh-3" d="M46.56,43.14l-.15,1-1.71.23,1.53-8.53L48,35.64l1.53,8.11-1.7.24-.15-1Zm.19-1.35.78-.1-.39-2.92Z"/><path class="lmh-3" d="M52.68,35l.42,1.49L52,36.64v6.78l-1.73.24V36.88L49.11,37l.44-1.61Z"/><path class="lmh-3" d="M53.66,41.53a.77.77,0,0,1,.91.77,1.06,1.06,0,0,1-.91,1,.76.76,0,0,1-.91-.75A1.08,1.08,0,0,1,53.66,41.53Z"/></svg></div></div><div class="centerRight" role="region" aria-label="Bottom Navigation Center Right"><div class="socialIcons"><a href="https://www.ksc.de/archiv/newsletter/anmeldung-newsletter" target="_blank" class="ksc-icon newsletter_V2" aria-label="social icon newsletter - external link"></a><a href="https://www.facebook.com/KarlsruherSC" target="_blank" class="ksc-icon facebook" aria-label="social icon facebook - external link"></a><a href="https://instagram.com/karlsruhersc" target="_blank" class="ksc-icon instagram" aria-label="social icon instagram - external link"></a><a href="https://www.tiktok.com/@karlsruhersc" target="_blank" class="ksc-icon tiktok" aria-label="social icon tiktok - external link"></a><a href="https://www.youtube.com/user/WildparkTV" target="_blank" class="ksc-icon youtube" aria-label="social icon youtube - external link"></a><a href="https://bsky.app/profile/ksc.de" target="_blank" class="ksc-icon bluesky" aria-label="social icon bluesky - external link"></a><a href="https://www.linkedin.com/company/karlsruhersc" target="_blank" class="ksc-icon linkedin" aria-label="social icon linkedin - external link"></a></div></div></div><div class="right" role="region" aria-label="Bottom Navigation Right"><div class="scrollTop"><div class="ksc-icon arrow-round"></div></div></div></div>
+	<iframe id="oidc-iframe" data-cookieconsent="ignore" src="https://idprovider.ksc.de/auth/realms/master/protocol/openid-connect/login-status-iframe.html" style="width: 1px; height: 1px; border: 0; border: none;"></iframe>
+<iframe id="rp-iframe" data-cookieconsent="ignore" src="https://www.ksc.de/?type=1619548854" style="width: 1px; height: 1px; border: 0; border: none;"></iframe>
+<script type="text/javascript">
+  
+//$(window).scroll(function() {
+    //if($(window).scrollTop() == $(document).height() - $(window).height()) {
+           // ajax call get data from server and append to the div
+    //}
+//});
+
+</script>
+<script id = "dacs" src = "https://download.digiaccess.org/digiaccess"></script>
+<script type = "text/javascript">
+    function GetCode(callback) {
+        var keyValue = "";
+        $.ajax({
+            type: "GET",
+            url: "https://ili.ksc.de/?eID=SkyTicketController%3A%3AGetSkyTicketCode",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                keyValue = response.data;
+                callback(keyValue);
+            },
+            failure: function (response) {
+                console.log(response);
+            }
+        });
+        return keyValue;
+    }
+    
+</script>
+<script type = "text/javascript">
+
+    function UpdateCode(number) {
+        $.ajax({
+            type: "post",
+            data: {code: number},
+            url: "https://ili.ksc.de/?eID=SkyTicketController%3A%3AUpdateSkyTicketCode",
+            enctype: "multipart/form-data",
+            success: function (response) {
+                console.log(response.data);
+            },
+            failure: function (response) {
+                console.log(response);
+            }
+        });
+    }
+
+if (document.getElementById("skyticket-btn")) {
+document.getElementById("skyticket-btn").onclick = function(e) {
+    e.preventDefault();
+    GetCode(function(code) {
+        var url = document.getElementById("skyticket-btn").href;
+        //processing the data
+        var new_url = updateQueryStringParameter(url, 'voucherin', code);
+        document.getElementById("skyticket-btn").href=new_url;
+        UpdateCode(code);
+        window.open(new_url);
+    });
+
+    
+  };
+}
+
+
+  function updateQueryStringParameter(uri, key, value) {
+      var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+      var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+      if (uri.match(re)) {
+        return uri.replace(re, '$1' + key + "=" + value + '$2');
+      } else {
+        return uri + separator + key + "=" + value;
+      }
+
+  }
+
+</script>
+
+
+<div class="c4778"><!-- Must not be empty, causes errors using PHP 8! --></div><script id="powermail_conditions_container" data-condition-uri="https://www.ksc.de/akademie/organisatorisches/anreise?type=3132"></script>
+<script src="/typo3conf/ext/ksc/Resources/Public/JavaScript/vendor.min.js?v=1"></script>
+<script src="/typo3conf/ext/ksc/Resources/Public/JavaScript/jquery.waypoints.min.js?v=1"></script>
+
+<script src="/typo3conf/ext/powermail/Resources/Public/JavaScript/Powermail/Form.min.js" defer="defer"></script>
+<script src="/typo3conf/ext/ksc/Resources/Public/JavaScript/config.min.js"></script>
+<script src="/typo3conf/ext/ksc/Resources/Public/JavaScript/opta-widgets.js"></script>
+<script src="/typo3conf/ext/ksc/Resources/Public/JavaScript/cookiebot.js"></script>
+<script src="/typo3conf/ext/ksc/Resources/Public/JavaScript/popup.js"></script>
+<script src="/typo3conf/ext/powermail_cond/Resources/Public/JavaScript/PowermailCondition.min.js" defer="defer"></script>
+
+
+
+
+<script type="text/javascript" src="/typo3temp/assets/vhs-assets-slicklayer.js"></script></body>
+</html>

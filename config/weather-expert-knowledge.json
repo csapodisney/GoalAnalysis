@@ -1,0 +1,43 @@
+{
+  "version": "weather-knowledge-2026-10-18-v1",
+  "name": "Időjárási szakértő",
+  "method": "Versioned literature guidance plus locally validated statistical analysis; no LLM fine-tuning",
+  "sources": [
+    {
+      "id": "PMC11474995",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11474995/",
+      "title": "The influence of meteorological factors on the technical performance of football teams during matches",
+      "evidence_level": "OBSERVATIONAL_PRIMARY_RESEARCH",
+      "sample": "583 Champions League matches, 2016/17–2020/21; 1166 team observations",
+      "variables": ["temperature", "relative humidity", "wind speed"],
+      "finding": "Weather was associated with selected technical events, including counterattack shots and close-range shots. These are not direct goal or Over 2.5 effects.",
+      "limits": ["No transferable team-specific goal coefficient", "No precipitation analysis", "Repeated teams and shared match weather", "Opponent strength and tactical context insufficiently controlled", "Normalized effect units cannot be interpreted as per-degree effects"]
+    },
+    {
+      "id": "APPLSCI_10_19_6750",
+      "url": "https://www.mdpi.com/2076-3417/10/19/6750",
+      "evidence_level": "OBSERVATIONAL_PRIMARY_RESEARCH",
+      "sample": "3884 complete Spanish first/second division match records, 2013/14–2017/18",
+      "variables": ["daily temperature", "precipitation", "maximum wind", "gusts", "venue differences", "bookmaker odds"],
+      "finding": "Adding weather improved reported match-result classification. This does not establish team-specific goal effects or betting returns.",
+      "limits": ["Chronological out-of-sample testing not established", "Described preprocessing order raises leakage concerns", "Daily realized weather is not a pre-match forecast", "Weather station distance and timing limit accuracy"]
+    },
+    {
+      "id": "STATPAIR_WEATHER",
+      "url": "https://statpair.com/blog/weather-impact-football-statistics-betting",
+      "evidence_level": "SECONDARY_PRACTICAL_HYPOTHESES",
+      "finding": "Wet fast surfaces differ from waterlogging; wind can affect deliveries and defensive errors; heat may alter intensity. These are hypotheses to test, not numeric scoring coefficients.",
+      "limits": ["No reproducible estimated effect size", "Illustrative numbers are not fitted coefficients", "Do not implement a universal rain-equals-under rule"]
+    }
+  ],
+  "rules": [
+    "Separate weather forecast, realized reanalysis and historically available forecast.",
+    "Compare the same team and venue role within the same competition, controlling pre-match opponent strength and recency.",
+    "Do not equate technical-event associations with goal probabilities or causal effects.",
+    "Missing weather, identities, adequate samples or chronological validation imply neutral ranking weight.",
+    "Validate on held-out chronological matches, never random-split duplicate team views of the same game.",
+    "Only archived pre-match forecast validation can activate forecast-based live weighting; reanalysis alone supports retrospective hypotheses.",
+    "Keep market direction explicit: higher total goals supports Over and opposes Under, not both.",
+    "Preserve profile-specific styles, data/quote/lockout checks and all DAILY_223 selection rules."
+  ]
+}

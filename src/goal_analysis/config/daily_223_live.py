@@ -29,6 +29,7 @@ def validate_live_config(payload: dict) -> dict:
         "currency",
         "max_football_calls",
         "max_odds_credits",
+        "api_football_odds_max_calls",
         "extra_markets",
         "leagues",
         "team_aliases",
@@ -43,8 +44,7 @@ def validate_live_config(payload: dict) -> dict:
     if "preferred_bookmakers" not in result:
         result["preferred_bookmakers"] = (
             [legacy_bookmaker]
-            if isinstance(legacy_bookmaker, str)
-            and re.fullmatch(r"[a-z0-9_]+", legacy_bookmaker)
+            if isinstance(legacy_bookmaker, str) and re.fullmatch(r"[a-z0-9_]+", legacy_bookmaker)
             else ["betano"]
         )
     for field, pattern in (
@@ -59,8 +59,7 @@ def validate_live_config(payload: dict) -> dict:
         not isinstance(preferred, list)
         or not preferred
         or any(
-            not isinstance(item, str) or not re.fullmatch(r"[a-z0-9_]+", item)
-            for item in preferred
+            not isinstance(item, str) or not re.fullmatch(r"[a-z0-9_]+", item) for item in preferred
         )
         or len(set(preferred)) != len(preferred)
     ):
@@ -68,6 +67,12 @@ def validate_live_config(payload: dict) -> dict:
     for field in ("max_football_calls", "max_odds_credits"):
         if type(result.get(field)) is not int or not 0 <= result[field] <= 100:
             raise ValueError(f"{field} must be an integer between 0 and 100")
+    # Optional for existing installations. This is a share of the existing
+    # football allowance, never an additional daily allowance or paid service.
+    result.setdefault("api_football_odds_max_calls", 12)
+    cap = result["api_football_odds_max_calls"]
+    if type(cap) is not int or not 0 <= cap <= 30:
+        raise ValueError("api_football_odds_max_calls must be an integer between 0 and 30")
     extras = result.setdefault("extra_markets", [])
     if not isinstance(extras, list) or any(
         not isinstance(item, str) or item not in EXTRA_MARKETS for item in extras
@@ -75,8 +80,8 @@ def validate_live_config(payload: dict) -> dict:
         raise ValueError("unsupported extra markets")
     result["extra_markets"] = sorted(set(extras))
     leagues = result.get("leagues")
-    if not isinstance(leagues, list) or not 1 <= len(leagues) <= 20:
-        raise ValueError("configure between 1 and 20 leagues")
+    if not isinstance(leagues, list) or not 1 <= len(leagues) <= 40:
+        raise ValueError("configure between 1 and 40 leagues")
     ids, sports, codes = set(), set(), set()
     for league in leagues:
         if not isinstance(league, dict):
@@ -103,7 +108,7 @@ def validate_live_config(payload: dict) -> dict:
         sports.add(sport)
         codes.add(code)
         league["api_football_id"] = int(identifier)
-        if league["competition_type"] not in {"LEAGUE", "CUP", "UEFA", "OTHER"}:
+        if league["competition_type"] not in {"LEAGUE", "CUP", "UEFA", "NATIONAL", "OTHER"}:
             raise ValueError("explicit competition_type required")
         seasons = league["history_seasons"]
         if not isinstance(seasons, list) or not seasons:

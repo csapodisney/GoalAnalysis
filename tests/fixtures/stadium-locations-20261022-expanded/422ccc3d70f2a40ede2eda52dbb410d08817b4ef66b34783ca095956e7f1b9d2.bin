@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no">
+
+
+        <!-- Matomo -->
+        <script>
+          var _paq = window._paq = window._paq || [];
+          /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+            var u="https://stats.webetdesign.com/";
+            _paq.push(['setTrackerUrl', u+'matomo.php']);
+            _paq.push(['setSiteId', '58']);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+          })();
+        </script>
+        <script type="text/javascript" async="" src=https://static.klaviyo.com/onsite/js/RLrg4T/klaviyo.js></script>
+        <script>
+            !function(f,b,e,v,n,t,s) {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                n.queue=[];t=b.createElement(e);t.async=!0;
+                t.src=v;s=b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t,s)}(window, document,'script',
+                'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '23907013468962635');
+            fbq('track', 'PageView');
+        </script>
+        <noscript><img height="1" width="1" style="display:none"
+                       src=https://www.facebook.com/tr?id=23907013468962635&ev=PageView&noscript=1
+            /></noscript>
+    <!-- End Matomo Code -->
+
+                    <link rel="icon" type="image/x-icon" href="/main/images/favicon/favicon.bbddf05e.ico">
+            <link rel="apple-touch-icon" sizes="57x57" href="/main/images/favicon/apple-icon-57x57.108710bb.png">
+            <link rel="apple-touch-icon" sizes="60x60" href="/main/images/favicon/apple-icon-60x60.cb49a468.png">
+            <link rel="apple-touch-icon" sizes="72x72" href="/main/images/favicon/apple-icon-72x72.b30f7b13.png">
+            <link rel="apple-touch-icon" sizes="76x76" href="/main/images/favicon/apple-icon-76x76.77a96e38.png">
+            <link rel="apple-touch-icon" sizes="114x114" href="/main/images/favicon/apple-icon-114x114.59843bee.png">
+            <link rel="apple-touch-icon" sizes="120x120" href="/main/images/favicon/apple-icon-120x120.e60c1b66.png">
+            <link rel="apple-touch-icon" sizes="144x144" href="/main/images/favicon/apple-icon-144x144.baf2648a.png">
+            <link rel="apple-touch-icon" sizes="152x152" href="/main/images/favicon/apple-icon-152x152.c5c1239f.png">
+            <link rel="apple-touch-icon" sizes="180x180" href="/main/images/favicon/apple-icon-180x180.8022e6b2.png">
+            <link rel="icon" type="image/png" sizes="192x192" href="/main/images/favicon/android-icon-192x192.b50e8d84.png">
+            <link rel="icon" type="image/png" sizes="32x32" href="/main/images/favicon/favicon-32x32.a9e03584.png">
+            <link rel="icon" type="image/png" sizes="96x96" href="/main/images/favicon/favicon-96x96.1cf4192e.png">
+            <link rel="icon" type="image/png" sizes="16x16" href="/main/images/favicon/favicon-16x16.c21199ba.png">
+        
+                                    
+<title>
+                        Stade Bonal
+            </title>
+
+            <meta name="description" content="Bienvenue sur le site officiel du FC Sochaux-Montbéliard.">
+    
+            <meta name="twitter:card" content="Site officiel du Football Club Sochaux-Montbéliard">
+    
+    <meta name="twitter:site" content="https://www.fcsochaux.fr/stade-bonal">
+
+    
+            <meta name="twitter:description" content="Bienvenue sur le site officiel du FC Sochaux-Montbéliard.">
+    
+
+            <meta name="twitter:image" content="https://www.fcsochaux.fr/media/cache/wd_media/rc/EdfX5QCD/upload/SEO/61f2744a5dad9447866445.jpg.webp">
+    
+    <!-- Open Graph data -->
+            <meta name="og:title" content="Site officiel du Football Club Sochaux-Montbéliard">
+    
+            <meta name="og:image" content="https://www.fcsochaux.fr/media/cache/wd_media/rc/tSEG3SNH/upload/SEO/61f2743d1ef9b517957693.jpg.webp">
+    
+    
+            <meta name="og:description" content="Bienvenue sur le site officiel du FC Sochaux-Montbéliard.">
+    
+    
+    <meta property="og:url" content="https://www.fcsochaux.fr/stade-bonal">
+                    
+        <link rel="stylesheet" href="https://use.typekit.net/ggz5dti.css">
+                                    <link rel="stylesheet" href="/main/415.06a43301.css">
+                            <link rel="stylesheet" href="/main/base.77b94c39.css">
+                        </head>
+    <body
+            data-controller="burger-menu"
+    >
+
+        
+
+        <div data-swup-header>
+                        
+<header id="header" class="">
+    <div class="bg-secondary">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col d-flex justify-content-end justify-content-lg-start">
+                                        <span class="header__sponsor ">
+                        UN CLUB
+                        <img src="/main/images/19111_Drapeau_Franche-Comte_.dfcc5b97.png" height="24" class="ms-2 my-1" alt="Sponsor">
+                    </span>
+                </div>
+                <div class="d-none d-lg-block col-auto">
+                    <nav id="header__topmenu">
+                                                        <ul>
+            
+                <li class="first">        <a href="/actualites" class=""><i class="bi bi-newspaper"></i>ACTUALITÉS</a>        
+    </li>
+
+    
+                <li class="">        <a href="/business" class=""><i class="bi bi-briefcase-fill"></i>ENTREPRISES</a>        
+    </li>
+
+    
+                <li class="">        <a href="https://billetterie.fcsochaux.fr" class=""><i class="bi bi-ticket-perforated"></i>BILLETTERIE</a>        
+    </li>
+
+    
+                <li class="last">        <a href="https://store.fcsochaux.fr" class=""><i class="bi bi-basket"></i>BOUTIQUE</a>        
+    </li>
+
+
+    </ul>
+
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="desktop-menu">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-7 col-lg-3 d-flex align-items-center">
+                                            <a href="/" class="header__logo">
+                            <img src="/main/images/logo_top.ecacdc81.svg" alt="Logo FCSM" height="138px">
+                        </a>
+                                    </div>
+                <div class="col-5 col-lg-9 d-none d-lg-flex justify-content-end">
+                    <nav>
+                                <ul>
+            
+            
+                                                    
+        
+        <li class="first">                <span class="">CLUB</span>                                <ul class="menu_level_1">
+            
+            
+                                
+        
+        <li class="first">                <a href="/presentation-du-fcsm" class="">Identité</a>                        
+        </li>
+    
+    
+            
+                                
+        
+        <li class="">                <a href="/organisation" class="">Organisation</a>                        
+        </li>
+    
+    
+            
+                                
+        
+        <li class="">                <a href="/engagements" class="">Engagements</a>                        
+        </li>
+    
+    
+            
+                                
+        
+        <li class="last">                <a href="/palmares-joueur-du-mois" class="">Joueur du mois</a>                        
+        </li>
+    
+
+    </ul>
+
+        </li>
+    
+    
+            
+                                                    
+                            
+        <li class="">                <span class="active_control ">ÉQUIPE PREMIÈRE</span>                                <ul class="menu_level_1">
+            
+            
+                                
+        
+        <li class="first">                <a href="/calendrier/fc-sochaux-montbeliard" class="">Calendrier</a>                        
+        </li>
+    
+    
+            
+                                
+        
+        <li class="">                <a href="/classement-equipe-premiere" class="">Classement</a>                        
+        </li>
+    
+    
+            
+                                
+                            
+        <li class="">                <a href="/effectif/fc-sochaux-montbeliard" class="active_control ">Effectif</a>                        
+        </li>
+    
+    
+            
+                                
+        
+        <li class="">                <a href="/staff" class="">Staff</a>                        
+        </li>
+    
+    
+            
+                                
+        
+        <li class="last">                <a href="/entrainements" class="">Entraînement</a>                        
+        </li>
+    
+
+    </ul>
+
+        </li>
+    
+    
+            
+                                                    
+        
+        <li class="">                <span class="">HISTOIRE</span>                                <ul class="menu_level_1">
+            
+            
+                                
+        
+        <li class="first">                <a href="/les-dates-cles" class="">Les dates clés</a>                        
+        </li>
+    
+    
+            
+                                
+        
+        <li class="">                <a href="/palmares" class="">Palmarès</a>                        
+        </li>
+    
+    
+            
+                                
+        
+        <li class="">                <a href="/periode-par-periode" class="">Période par période</a>                        
+        </li>
+    
+    
+            
+                                
+        
+        <li class="last">                <a href="/les-grands-noms" class="">Les grands noms</a>                        
+        </li>
+    
+
+    </ul>
+
+        </li>
+    
+    
+            
+                                                    
+        
+        <li class="">                <span class="">CENTRE DE FORMATION</span>                                <ul class="menu_level_1">
+            
+            
+                                
+        
+        <li class="first">                <a href="/le-centre-de-formation-du-fcsm" class="">Organisation</a>                        
+        </li>
+    
+    
+            
+                                
+        
+        <li class="">                <a href="/equipes" class="">Équipes et matches</a>                        
+        </li>
+    
+    
+            
+                                
+        
+        <li class="">                <a href="/recrutement" class="">Recrutement et détections</a>                        
+        </li>
+    
+    
+            
+                                
+        
+        <li class="">                <a href="/histoire-du-centre-de-formation" class="">Histoire</a>                        
+        </li>
+    
+    
+            
+                                
+        
+        <li class="">                <a href="/grands-noms-formes-au-club" class="">Formés au club</a>                        
+        </li>
+    
+    
+            
+                                
+        
+        <li class="last">                <a href="/palmares-joueur-du-mois-du-centre" class="">Palmarès &quot;Joueur du mois&quot; du centre</a>                        
+        </li>
+    
+
+    </ul>
+
+        </li>
+    
+    
+            
+                                                    
+        
+        <li class="">                <span class="">SUPPORTERS</span>                                <ul class="menu_level_1">
+            
+            
+                                
+        
+        <li class="first">                <a href="/presentation-des-supporters" class="">Présentation</a>                        
+        </li>
+    
+    
+            
+                                
+        
+        <li class="">                <a href="/supporters-du-fcsm" class="">Le Supporter Club du FCSM</a>                        
+        </li>
+    
+    
+            
+                                
+        
+        <li class="">                <a href="/tous-les-groupes" class="">Tous les groupes</a>                        
+        </li>
+    
+    
+            
+                                
+        
+        <li class="last">                <a href="/prochain-deplacement" class="">Prochain déplacement</a>                        
+        </li>
+    
+
+    </ul>
+
+        </li>
+    
+    
+            
+                                                    
+        
+        <li class=" active last">                <span class="">STADE BONAL</span>                                <ul class="menu_level_1">
+            
+            
+                                
+        
+        <li class="active first">                <a href="/stade-bonal" class="">Stade Auguste Bonal</a>                        
+        </li>
+    
+    
+            
+                                
+        
+        <li class="">                <a href="/une-histoire-nee-en-1931" class="">Près d’un siècle d’histoire</a>                        
+        </li>
+    
+    
+            
+                                
+        
+        <li class="">                <a href="/acces-stade-bonal" class="">Se rendre au Stade Bonal</a>                        
+        </li>
+    
+    
+            
+                                
+        
+        <li class="">                <a href="/espace-famille" class="">Espace famille</a>                        
+        </li>
+    
+    
+            
+                                
+        
+        <li class="last">                <a href="/objets-interdits-et-reglement" class="">Objets interdits et règlement</a>                        
+        </li>
+    
+
+    </ul>
+
+        </li>
+    
+
+    </ul>
+
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mobile-menu">
+        <div id="mobile-menu-fs" data-burger-menu-target="fsmenu">
+                    <ul>
+            
+                            <li class="first">        <span class="">CLUB</span>                <ul class="menu_level_1">
+            
+                <li class="first">        <a href="/presentation-du-fcsm" class="">Identité</a>        
+    </li>
+
+    
+                <li class="">        <a href="/organisation" class="">Organisation</a>        
+    </li>
+
+    
+                <li class="">        <a href="/engagements" class="">Engagements</a>        
+    </li>
+
+    
+                <li class="last">        <a href="/palmares-joueur-du-mois" class="">Joueur du mois</a>        
+    </li>
+
+
+    </ul>
+
+    </li>
+
+    
+                            <li class="">        <span class="active_control ">ÉQUIPE PREMIÈRE</span>                <ul class="menu_level_1">
+            
+                <li class="first">        <a href="/calendrier/fc-sochaux-montbeliard" class="">Calendrier</a>        
+    </li>
+
+    
+                <li class="">        <a href="/classement-equipe-premiere" class="">Classement</a>        
+    </li>
+
+    
+                <li class="">        <a href="/effectif/fc-sochaux-montbeliard" class="active_control ">Effectif</a>        
+    </li>
+
+    
+                <li class="">        <a href="/staff" class="">Staff</a>        
+    </li>
+
+    
+                <li class="last">        <a href="/entrainements" class="">Entraînement</a>        
+    </li>
+
+
+    </ul>
+
+    </li>
+
+    
+                            <li class="">        <span class="">HISTOIRE</span>                <ul class="menu_level_1">
+            
+                <li class="first">        <a href="/les-dates-cles" class="">Les dates clés</a>        
+    </li>
+
+    
+                <li class="">        <a href="/palmares" class="">Palmarès</a>        
+    </li>
+
+    
+                <li class="">        <a href="/periode-par-periode" class="">Période par période</a>        
+    </li>
+
+    
+                <li class="last">        <a href="/les-grands-noms" class="">Les grands noms</a>        
+    </li>
+
+
+    </ul>
+
+    </li>
+
+    
+                            <li class="">        <span class="">CENTRE DE FORMATION</span>                <ul class="menu_level_1">
+            
+                <li class="first">        <a href="/le-centre-de-formation-du-fcsm" class="">Organisation</a>        
+    </li>
+
+    
+                <li class="">        <a href="/equipes" class="">Équipes et matches</a>        
+    </li>
+
+    
+                <li class="">        <a href="/recrutement" class="">Recrutement et détections</a>        
+    </li>
+
+    
+                <li class="">        <a href="/histoire-du-centre-de-formation" class="">Histoire</a>        
+    </li>
+
+    
+                <li class="">        <a href="/grands-noms-formes-au-club" class="">Formés au club</a>        
+    </li>
+
+    
+                <li class="last">        <a href="/palmares-joueur-du-mois-du-centre" class="">Palmarès &quot;Joueur du mois&quot; du centre</a>        
+    </li>
+
+
+    </ul>
+
+    </li>
+
+    
+                            <li class="">        <span class="">SUPPORTERS</span>                <ul class="menu_level_1">
+            
+                <li class="first">        <a href="/presentation-des-supporters" class="">Présentation</a>        
+    </li>
+
+    
+                <li class="">        <a href="/supporters-du-fcsm" class="">Le Supporter Club du FCSM</a>        
+    </li>
+
+    
+                <li class="">        <a href="/tous-les-groupes" class="">Tous les groupes</a>        
+    </li>
+
+    
+                <li class="last">        <a href="/prochain-deplacement" class="">Prochain déplacement</a>        
+    </li>
+
+
+    </ul>
+
+    </li>
+
+    
+                            <li class=" active last">        <span class="">STADE BONAL</span>                <ul class="menu_level_1">
+            
+                <li class="active first">        <a href="/stade-bonal" class="">Stade Auguste Bonal</a>        
+    </li>
+
+    
+                <li class="">        <a href="/une-histoire-nee-en-1931" class="">Près d’un siècle d’histoire</a>        
+    </li>
+
+    
+                <li class="">        <a href="/acces-stade-bonal" class="">Se rendre au Stade Bonal</a>        
+    </li>
+
+    
+                <li class="">        <a href="/espace-famille" class="">Espace famille</a>        
+    </li>
+
+    
+                <li class="last">        <a href="/objets-interdits-et-reglement" class="">Objets interdits et règlement</a>        
+    </li>
+
+
+    </ul>
+
+    </li>
+
+
+    </ul>
+
+        </div>
+        <nav>
+                                <ul>
+            
+                <li class="first">        <a href="/" class=""><i class="bi bi-house"></i>ACCUEIL</a>        
+    </li>
+
+    
+                <li class="">        <a href="https://billetterie.fcsochaux.fr" class=""><i class="bi bi-ticket-fill"></i>BILLETTERIE</a>        
+    </li>
+
+    
+                <li class="">        <a href="https://store.fcsochaux.fr" class=""><i class="bi bi-basket"></i>BOUTIQUE</a>        
+    </li>
+
+    
+                <li class="">        <a href="/business" class=""><i class="bi bi-briefcase-fill"></i>ENTREPRISES</a>        
+    </li>
+
+    
+                <li class="last">        <a href="/actualites" class=""><i class="bi bi-newspaper"></i>Actualités</a>        
+    </li>
+
+
+    </ul>
+
+
+            <span data-burger-menu-target="trigger" role="button">
+                <i class="bi bi-list"></i>
+                Menu
+            </span>
+        </nav>
+    </div>
+</header>
+                </div>
+
+        <div id="layout-container" data-swup>
+                            <div class="headband-layout">
+        <div class="headband-layout__topbanner">
+            <div class="img-overlay">
+                
+                                    <picture>
+                        <source srcset="media/cache/resolve/wd_media/rc/zBJFiQvZ/upload/default/699427fe31b23888702475.jpg?filters%5Bthumbnail%5D%5Bsize%5D%5B0%5D=1920&amp;filters%5Bthumbnail%5D%5Bsize%5D%5B1%5D=490&amp;filters%5Bthumbnail%5D%5Bmode%5D=outbound&amp;filters%5Brelative_resize%5D%5Bwiden%5D=1920&amp;filters%5Brelative_resize%5D%5Bheighten%5D=490" media="(min-width: 992px)">
+                                    <source srcset="media/cache/resolve/wd_media/rc/5WCCzwXs/upload/default/699427fe31b23888702475.jpg?filters%5Bthumbnail%5D%5Bsize%5D%5B0%5D=1200&amp;filters%5Bthumbnail%5D%5Bsize%5D%5B1%5D=490&amp;filters%5Bthumbnail%5D%5Bmode%5D=outbound&amp;filters%5Brelative_resize%5D%5Bwiden%5D=1200&amp;filters%5Brelative_resize%5D%5Bheighten%5D=490" media="(min-width: 768px)">
+                                    <img loading="lazy" src="media/cache/resolve/wd_media/rc/bTB1xOYW/upload/default/699427fe31b23888702475.jpg?filters%5Bthumbnail%5D%5Bsize%5D%5B0%5D=768&amp;filters%5Bthumbnail%5D%5Bsize%5D%5B1%5D=220&amp;filters%5Bthumbnail%5D%5Bmode%5D=outbound&amp;filters%5Brelative_resize%5D%5Bwiden%5D=768&amp;filters%5Brelative_resize%5D%5Bheighten%5D=220" alt="R6__5631 (1).jpg">
+            </picture>
+
+                            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xxl-9 col-xl-8 bg-white px-4 ps-xl-3 pe-xl-80 headband-layout--main">
+                                            <nav id="breadcrumbs">
+                            <ol class="breadcrumb" vocab="https://schema.org/" typeof="BreadcrumbList">
+                        <li property="itemListElement" typeof="ListItem">
+
+                <a property="item" typeof="WebPage" href="/">
+                    <span property="name" class="text--xs">Accueil</span>
+                </a>
+                <meta property="position" content="1"/>
+            </li>
+                                <li property="itemListElement" typeof="ListItem">
+                <span property="item" typeof="WebPage">
+                    <span property="name" class="text--xs">Stade Bonal</span>
+                </span>
+                <meta property="position" content="2"/>
+            </li>
+            </ol>
+                        </nav>
+                                        <div class="suptitle">
+                        Stade Bonal
+                    </div>
+                    <h1 class="h1 mb-6">
+                        Stade Auguste Bonal
+                    </h1>
+                        <div class="model-five">
+                    <div class="row mb-4">
+                            <div class="col-12">
+                    <a data-fancybox='model-five' href='/upload/default/6994281dd7df4072535772.jpg' data-caption=""><picture>
+                        <source srcset="media/cache/resolve/wd_media/rc/FRzVMGVF/upload/default/6994281dd7df4072535772.jpg?filters%5Bthumbnail%5D%5Bsize%5D%5B0%5D=985&amp;filters%5Bthumbnail%5D%5Bsize%5D%5B1%5D=555&amp;filters%5Bthumbnail%5D%5Bmode%5D=outbound&amp;filters%5Brelative_resize%5D%5Bwiden%5D=985&amp;filters%5Brelative_resize%5D%5Bheighten%5D=555" media="(min-width: 992px)">
+                                    <source srcset="media/cache/resolve/wd_media/rc/rMKt4wLY/upload/default/6994281dd7df4072535772.jpg?filters%5Bthumbnail%5D%5Bsize%5D%5B0%5D=660&amp;filters%5Bthumbnail%5D%5Bsize%5D%5B1%5D=330&amp;filters%5Bthumbnail%5D%5Bmode%5D=outbound&amp;filters%5Brelative_resize%5D%5Bwiden%5D=660&amp;filters%5Brelative_resize%5D%5Bheighten%5D=330" media="(min-width: 768px)">
+                                    <img loading="lazy" src="media/cache/resolve/wd_media/rc/tg6u5ajH/upload/default/6994281dd7df4072535772.jpg?filters%5Bthumbnail%5D%5Bsize%5D%5B0%5D=480&amp;filters%5Bthumbnail%5D%5Bsize%5D%5B1%5D=240&amp;filters%5Bthumbnail%5D%5Bmode%5D=outbound&amp;filters%5Brelative_resize%5D%5Bwiden%5D=480&amp;filters%5Brelative_resize%5D%5Bheighten%5D=240" alt="R6__5631 (1).jpg">
+            </picture>
+</a>
+                </div>
+                    </div>
+                    <div class="row mb-4">
+                            <div class="col-12 model-five--text">
+                    <p><strong>Le Stade de la Forge, inaugur&eacute; en 1931 et devenu Stade Auguste Bonal en 1945, a &eacute;t&eacute; enti&egrave;rement r&eacute;nov&eacute; pour laisser place, en 2000, &agrave; un stade moderne et fonctionnel apr&egrave;s deux ann&eacute;es de travaux.</strong></p>
+
+<p>Le Stade Bonal fait partie des rares stades aujourd&rsquo;hui situ&eacute;s &agrave; proximit&eacute; d&rsquo;un centre-ville. Facile d&rsquo;acc&egrave;s, il compte de nombreux parkings aux alentours. Le Stade Bonal dispose de deux vastes parvis accueillant la boutique officielle du FCSM, ainsi que de nombreuses buvettes et des espaces d&eacute;di&eacute;s aux supporters. Familial et attach&eacute; aux valeurs du club, ce dernier fr&eacute;quente l&rsquo;enceinte avec ferveur. Le stade a accueilli des matches des &eacute;quipes de France de football (masculine, f&eacute;minine et espoirs) et de rugby, ainsi que des concerts.</p>
+
+<h2>Ici bat le c&oelig;ur comtois</h2>
+
+<iframe width="974" height="548" src="https://www.youtube.com/embed/weEvgw65Dhw" title="𝑺𝒕𝒂𝒅𝒆 𝑨𝒖𝒈𝒖𝒔𝒕𝒆 𝑩𝒐𝒏𝒂𝒍 🏟️💗" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+                    </div>
+                    <div class="row mb-4">
+                            <div class="col-12 model-five--text">
+                    <h2>Le Stade Bonal en d&eacute;tails</h2>
+
+<ul>
+	<li>Une capacit&eacute; de <strong>20 005 places</strong></li>
+	<li>1 200 places VIP r&eacute;parties dans cinq salons et 26 loges</li>
+	<li>Deux &eacute;crans g&eacute;ants et une panneautique LED en bord de terrain</li>
+	<li>Une pelouse hybride et chauff&eacute;e de 105 m x 68 m, class&eacute;e cat&eacute;gorie T1</li>
+	<li>Un &eacute;clairage LED de niveau E1</li>
+	<li><a href="https://www.fcsochaux.fr/une-histoire-nee-en-1931" target="_blank">Record d&#39;affluence </a>le 16 mai 1976 contre l&#39;AS Saint-&Eacute;tienne : 20 886 supporters</li>
+</ul>
+                </div>
+                    </div>
+                    <div class="row mb-4">
+                            <div class="col-12">
+                    <a data-fancybox='model-five' href='/upload/default/6ab3eebec1e16706158334.jpg' data-caption=""><picture>
+                        <source srcset="media/cache/resolve/wd_media/rc/YVaydqJ9/upload/default/6ab3eebec1e16706158334.jpg?filters%5Bcrop%5D%5Bstart%5D%5B0%5D=0&amp;filters%5Bcrop%5D%5Bstart%5D%5B1%5D=132.3980275562&amp;filters%5Bcrop%5D%5Bsize%5D%5B0%5D=1920&amp;filters%5Bcrop%5D%5Bsize%5D%5B1%5D=1081.8274111675&amp;filters%5Bthumbnail%5D%5Bsize%5D%5B0%5D=985&amp;filters%5Bthumbnail%5D%5Bsize%5D%5B1%5D=555&amp;filters%5Bthumbnail%5D%5Bmode%5D=outbound&amp;filters%5Brelative_resize%5D%5Bwiden%5D=985&amp;filters%5Brelative_resize%5D%5Bheighten%5D=555" media="(min-width: 992px)">
+                                    <source srcset="media/cache/resolve/wd_media/rc/Ed9nZPog/upload/default/6ab3eebec1e16706158334.jpg?filters%5Bthumbnail%5D%5Bsize%5D%5B0%5D=660&amp;filters%5Bthumbnail%5D%5Bsize%5D%5B1%5D=330&amp;filters%5Bthumbnail%5D%5Bmode%5D=outbound&amp;filters%5Brelative_resize%5D%5Bwiden%5D=660&amp;filters%5Brelative_resize%5D%5Bheighten%5D=330" media="(min-width: 768px)">
+                                    <img loading="lazy" src="media/cache/resolve/wd_media/rc/YvvLHThR/upload/default/6ab3eebec1e16706158334.jpg?filters%5Bthumbnail%5D%5Bsize%5D%5B0%5D=480&amp;filters%5Bthumbnail%5D%5Bsize%5D%5B1%5D=240&amp;filters%5Bthumbnail%5D%5Bmode%5D=outbound&amp;filters%5Brelative_resize%5D%5Bwiden%5D=480&amp;filters%5Brelative_resize%5D%5Bheighten%5D=240" alt="b89cb883-005e-4974-ba97-905b01528eb1.jpg">
+            </picture>
+</a>
+                </div>
+                    </div>
+                    <div class="row mb-4">
+                            <div class="col-12 model-five--text">
+                    <hr />
+<p><img alt="" src="/upload/default/69944700bf8df207052056.jpg" style="width: 50%; margin: 5% 25%; height: auto;" /></p>
+
+<h2>Auguste Bonal, figure embl&eacute;matique et r&eacute;sistante</h2>
+
+<p><strong>Le stade sochalien porte le nom d&rsquo;Auguste Bonal. Dirigeant du club d&egrave;s sa cr&eacute;ation et directeur sportif de juillet 1941 &agrave; juin 1943, il &eacute;tait &eacute;galement, comme tous les membres du comit&eacute; directeur du FC Sochaux-Montb&eacute;liard de l&rsquo;&eacute;poque, employ&eacute; des Automobiles Peugeot.</strong></p>
+
+<p>Directeur de l&rsquo;usine d&rsquo;emboutissage de Peugeot, il &oelig;uvre durant la guerre au sabotage de la production des usines r&eacute;quisitionn&eacute;es par l&rsquo;occupant. Il le paie de sa vie, &agrave; l&rsquo;instar de deux autres dirigeants de l&rsquo;entreprise.</p>
+
+<p>Arr&ecirc;t&eacute; en mars 1944, comme la plupart des directeurs d&rsquo;usine, Auguste Bonal est d&eacute;tenu &agrave; Besan&ccedil;on puis &agrave; Dijon. Il est d&eacute;port&eacute; en ao&ucirc;t de la m&ecirc;me ann&eacute;e, d&rsquo;abord au Struthof, puis dans le camp de travail de Sch&ouml;mberg, dans le Wurtemberg. Cinq jours apr&egrave;s avoir &eacute;t&eacute; &eacute;vacu&eacute; puis abandonn&eacute;, il est abattu le 23 avril 1945, avec l&rsquo;un de ses camarades d&rsquo;infortune, par des officiers allemands au bord d&rsquo;une route &agrave; Bad Waldsee. Il avait 47 ans.</p>
+
+<p>En juillet 1945, trois mois apr&egrave;s sa disparition, le Stade de la Forge prend le nom de ce serviteur de la cause sochalienne. Son corps est rapatri&eacute; en France en novembre 1946. Auguste Bonal est fait chevalier de l&rsquo;ordre national de la L&eacute;gion d&rsquo;honneur &agrave; titre posthume en 1953.</p>
+
+<p>Ing&eacute;nieur de l&rsquo;&Eacute;cole centrale des arts et manufactures, n&eacute; le 7 f&eacute;vrier 1898 &agrave; S&egrave;vres (Yvelines), il avait &eacute;galement particip&eacute; &agrave; la Premi&egrave;re Guerre mondiale.</p>
+
+<h3>Une fresque &agrave; son image inaugur&eacute;e en septembre 2021</h3>
+
+<p>Une fresque g&eacute;ante est r&eacute;alis&eacute;e en septembre 2021 sur la fa&ccedil;ade ouest du Stade Bonal par Jean Linnhoff. Ce portrait d&rsquo;Auguste Bonal, d&rsquo;un format de 7 m&egrave;tres sur 7 m&egrave;tres, est d&eacute;voil&eacute; en pr&eacute;sence d&rsquo;une petite-fille et d&rsquo;une arri&egrave;re-petite-fille de celui qui a donn&eacute; son nom &agrave; l&rsquo;enceinte, ainsi que des joueurs et dirigeants du FCSM et de Pays de Montb&eacute;liard Agglom&eacute;ration, propri&eacute;taire du stade.</p>
+                </div>
+                    </div>
+                    <div class="row mb-4">
+                            <div class="col-12">
+                    <a data-fancybox='model-five' href='/upload/default/69944776cf505460465465.jpg' data-caption=""><picture>
+                        <source srcset="media/cache/resolve/wd_media/rc/dkUuxmH0/upload/default/69944776cf505460465465.jpg?filters%5Bthumbnail%5D%5Bsize%5D%5B0%5D=985&amp;filters%5Bthumbnail%5D%5Bsize%5D%5B1%5D=555&amp;filters%5Bthumbnail%5D%5Bmode%5D=outbound&amp;filters%5Brelative_resize%5D%5Bwiden%5D=985&amp;filters%5Brelative_resize%5D%5Bheighten%5D=555" media="(min-width: 992px)">
+                                    <source srcset="media/cache/resolve/wd_media/rc/PWggGUy7/upload/default/69944776cf505460465465.jpg?filters%5Bthumbnail%5D%5Bsize%5D%5B0%5D=660&amp;filters%5Bthumbnail%5D%5Bsize%5D%5B1%5D=330&amp;filters%5Bthumbnail%5D%5Bmode%5D=outbound&amp;filters%5Brelative_resize%5D%5Bwiden%5D=660&amp;filters%5Brelative_resize%5D%5Bheighten%5D=330" media="(min-width: 768px)">
+                                    <img loading="lazy" src="media/cache/resolve/wd_media/rc/7ShKzWFP/upload/default/69944776cf505460465465.jpg?filters%5Bthumbnail%5D%5Bsize%5D%5B0%5D=480&amp;filters%5Bthumbnail%5D%5Bsize%5D%5B1%5D=240&amp;filters%5Bthumbnail%5D%5Bmode%5D=outbound&amp;filters%5Brelative_resize%5D%5Bwiden%5D=480&amp;filters%5Brelative_resize%5D%5Bheighten%5D=240" alt="18.jpg">
+            </picture>
+</a>
+                </div>
+                    </div>
+    
+</div>
+
+                </div>
+
+                <div class="col-xxl-3 col-xl-4 ps-xl-6 headband-layout--sidebar">
+                         
+
+             <div class="side-insert text-center mb-3">
+        <a href="http://www.agglo-montbeliard.fr/" rel="nofollow" target="_blank">
+            <img src="media/cache/resolve/wd_media/rc/MSsLxgrN/upload/publicity_block/61deac7f802f0627236076.png?filters%5Bthumbnail%5D%5Bsize%5D%5B0%5D=510&amp;filters%5Bthumbnail%5D%5Bsize%5D%5B1%5D=290&amp;filters%5Bthumbnail%5D%5Bmode%5D=outbound&amp;filters%5Brelative_resize%5D%5Bwiden%5D=510&amp;filters%5Brelative_resize%5D%5Bheighten%5D=290" alt="pub PMA.png" class="w-100">
+        </a>
+    </div>
+
+
+
+
+     
+                 </div>
+            </div>
+        </div>
+    </div>
+        </div>
+
+                    <footer id="footer" class="border-top border-5 border-secondary">
+    <div class="container">
+        <div class="row">
+            <nav class="footer__knpmenu col-xl-9 order-2 order-xl-1">
+                                        <ul class="row">
+            
+                            <li class="col-md-4  first">        <span class="d-block h2 text-white mb-3 ">À PROPOS</span>                <ul class="menu_level_1">
+            
+                <li class="first">        <a href="/presentation-du-fcsm" class="">Le Club</a>        
+    </li>
+
+    
+                <li class="">        <a href="/effectif/fc-sochaux-montbeliard" class="">Equipe première</a>        
+    </li>
+
+    
+                <li class="">        <a href="/le-centre-de-formation-du-fcsm" class="">Centre de formation</a>        
+    </li>
+
+    
+                <li class="last">        <a href="/actualites" class="">Toute l&#039;actualité du FCSM</a>        
+    </li>
+
+
+    </ul>
+
+    </li>
+
+    
+                            <li class="col-md-4 ">        <span class="d-block h2 text-white mb-3 ">SERVICES</span>                <ul class="menu_level_1">
+            
+                <li class="first">        <a href="/billetterie" class="">Billetterie</a>        
+    </li>
+
+    
+                <li class="">        <a href="/store" class="">Boutique</a>        
+    </li>
+
+    
+                <li class="">        <a href="/business" class="">Entreprises</a>        
+    </li>
+
+    
+                <li class="last">        <a href="/contact" class="">Contact</a>        
+    </li>
+
+
+    </ul>
+
+    </li>
+
+    
+                            <li class="col-md-4  last">        <span class="d-block h2 text-white mb-3 ">INFORMATIONS LÉGALES</span>                <ul class="menu_level_1">
+            
+                <li class="first">        <a href="/politique-de-confidentialite" class="">Politique de confidentialité</a>        
+    </li>
+
+    
+                <li class="last">        <a href="/mentions-legales" class="">Mentions légales</a>        
+    </li>
+
+
+    </ul>
+
+    </li>
+
+
+    </ul>
+
+            </nav>
+            <div class="col-md-12 col-xl-3 col-xxl-2 offset-xxl-1 order-1 order-xl-2 text-center text-xl-start">
+                <a href="/" class="footer_logo mb-3">
+                    <img src="/main/images/footer-logo-fcsm.3361d0a5.svg" alt="Logo FCSM">
+                </a>
+
+                <div class="footer__socialbox text-md-left">
+                                                                                                        <a href="https://twitter.com/FCSM_officiel" target="_blank" class="mb-3 me-2"
+                                   title="Twitter"
+                                   rel="noopener">
+                                    <i class="bi bi-twitter"></i>
+                                </a>
+                                                                                                                <a href="https://www.instagram.com/fcsm_officiel/" target="_blank" class="mb-3 me-2"
+                                   title="Instagram"
+                                   rel="noopener">
+                                    <i class="bi bi-instagram"></i>
+                                </a>
+                                                                                                                <a href="https://www.facebook.com/FCSM.officiel/" target="_blank" class="mb-3 me-2"
+                                   title="Facebook"
+                                   rel="noopener">
+                                    <i class="bi bi-facebook"></i>
+                                </a>
+                                                                            <br>
+                                                                                                        <a href="https://www.youtube.com/c/FCSochauxMontbéliard" target="_blank" class="mb-3 me-2"
+                                   title="Youtube"
+                                   rel="noopener">
+                                    <i class="bi bi-youtube"></i>
+                                </a>
+                                                                                                                <a href="https://www.linkedin.com/company/fc-sochaux-montb%C3%A9liard-sa" target="_blank" class="mb-3 me-2"
+                                   title="Linked&#039;in"
+                                   rel="noopener">
+                                    <i class="bi bi-linkedin"></i>
+                                </a>
+                                                                                                                <a href="https://www.tiktok.com/@fcsm_officiel" target="_blank" class="mb-3 me-2"
+                                   title="Tiktok"
+                                   rel="noopener">
+                                    <i class="bi bi-tiktok"></i>
+                                </a>
+                                                                            <br>
+                                    </div>
+
+                <div class="footer__signature fw-normal text-white mt-4 mb-3">
+                    <a href="https://www.webetdesign.com/" class="d-inline text-white text-decoration-none">
+                        Une création WEB</a><span class="text-wd">&</span><span class="text-white">DESIGN</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="very-footer">
+        <div class="container">
+            <div class="row align-items-center justify-content-center text-center">
+                                                            <div class="col-6 col-md mb-4">
+                            <a href="https://www.peugeot.fr/">
+                                <img src="media/cache/resolve/wd_media/rc/BebebZh0/upload/partner/69b2794c3c698430786813.png?filters%5Bthumbnail%5D%5Bsize%5D%5B0%5D=120&amp;filters%5Bthumbnail%5D%5Bsize%5D%5B1%5D=62&amp;filters%5Bthumbnail%5D%5Bmode%5D=inset"
+                                     alt="Peugeot.png">
+                            </a>
+                        </div>
+                                                                                <div class="col-6 col-md mb-4">
+                            <a href="https://www.eimi.fr/">
+                                <img src="media/cache/resolve/wd_media/rc/PX9vLKdx/upload/partner/64e769b82589a098481684.png?filters%5Bthumbnail%5D%5Bsize%5D%5B0%5D=120&amp;filters%5Bthumbnail%5D%5Bsize%5D%5B1%5D=62&amp;filters%5Bthumbnail%5D%5Bmode%5D=inset"
+                                     alt="logo EIMI GROUPE_blanc.png">
+                            </a>
+                        </div>
+                                                                                <div class="col-6 col-md mb-4">
+                            <a href="https://www.doubs.fr/">
+                                <img src="media/cache/resolve/wd_media/rc/LFTUrmZi/upload/partner/64e3160367e87317888811.png?filters%5Bthumbnail%5D%5Bsize%5D%5B0%5D=120&amp;filters%5Bthumbnail%5D%5Bsize%5D%5B1%5D=62&amp;filters%5Bthumbnail%5D%5Bmode%5D=inset"
+                                     alt="DepartementDuDoubs.png">
+                            </a>
+                        </div>
+                                                                                <div class="col-6 col-md mb-4">
+                            <a href="https://www.agglo-montbeliard.fr/">
+                                <img src="media/cache/resolve/wd_media/rc/GIMggTeL/upload/partner/61d41d867c929515712036.png?filters%5Bthumbnail%5D%5Bsize%5D%5B0%5D=120&amp;filters%5Bthumbnail%5D%5Bsize%5D%5B1%5D=62&amp;filters%5Bthumbnail%5D%5Bmode%5D=inset"
+                                     alt="pma-blanc.png">
+                            </a>
+                        </div>
+                                                                                <div class="col-6 col-md mb-4">
+                            <a href="https://www.eldera.net/fr/">
+                                <img src="media/cache/resolve/wd_media/rc/0ZUYhEwM/upload/partner/6a7c99bcc4650932917605.png?filters%5Bthumbnail%5D%5Bsize%5D%5B0%5D=120&amp;filters%5Bthumbnail%5D%5Bsize%5D%5B1%5D=62&amp;filters%5Bthumbnail%5D%5Bmode%5D=inset"
+                                     alt="Eldera-Site.png">
+                            </a>
+                        </div>
+                                                </div>
+        </div>
+    </div>
+</footer>
+
+        
+
+                                    <script src="/main/runtime.c2db3f2d.js"></script><script src="/main/415.2bf2ce6d.js"></script><script src="/main/base.3596ab17.js"></script>
+            </body>
+</html>

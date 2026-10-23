@@ -12,8 +12,9 @@ function Import-GoalAnalysisSecret {
     return [System.Net.NetworkCredential]::new("", $SecureValue).Password
 }
 
-$env:API_FOOTBALL_KEY = Import-GoalAnalysisSecret "API_FOOTBALL_KEY"
-$env:THE_ODDS_API_KEY = Import-GoalAnalysisSecret "THE_ODDS_API_KEY"
+Remove-Item Env:API_FOOTBALL_KEY -ErrorAction SilentlyContinue
+Remove-Item Env:THE_ODDS_API_KEY -ErrorAction SilentlyContinue
+$env:THE_STATS_API_KEY = Import-GoalAnalysisSecret "THE_STATS_API_KEY"
 
 $LogDirectory = Join-Path $ProjectRoot "reports\daily223"
 New-Item -ItemType Directory -Path $LogDirectory -Force | Out-Null

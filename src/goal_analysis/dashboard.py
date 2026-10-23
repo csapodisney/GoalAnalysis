@@ -117,8 +117,9 @@ class DashboardState:
                 "preferred_bookmakers": config.get("preferred_bookmakers") or [],
             },
             "credentials": {
-                "api_football": bool(os.environ.get("API_FOOTBALL_KEY", "").strip()),
-                "the_odds_api": bool(os.environ.get("THE_ODDS_API_KEY", "").strip()),
+                "api_football": False,
+                "the_odds_api": False,
+                "the_stats_api": bool(os.environ.get("THE_STATS_API_KEY", "").strip()),
                 "openai": bool(os.environ.get("OPENAI_API_KEY", "").strip()),
             },
             "runtime": runtime,

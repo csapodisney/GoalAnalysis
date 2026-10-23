@@ -67,12 +67,15 @@ def test_dashboard_status_reports_presence_but_never_secret_values(tmp_path, mon
     )
     monkeypatch.setenv("API_FOOTBALL_KEY", "football-secret")
     monkeypatch.setenv("THE_ODDS_API_KEY", "odds-secret")
+    monkeypatch.setenv("THE_STATS_API_KEY", "stats-secret")
     state = DashboardState(tmp_path, config)
 
     serialized = json.dumps(state.snapshot())
 
-    assert '"api_football": true' in serialized
-    assert '"the_odds_api": true' in serialized
+    assert '"api_football": false' in serialized
+    assert '"the_odds_api": false' in serialized
+    assert '"the_stats_api": true' in serialized
+    assert 'stats-secret' not in serialized
     assert "football-secret" not in serialized
     assert "odds-secret" not in serialized
 

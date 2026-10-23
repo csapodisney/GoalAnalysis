@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 import sqlite3
+from collections.abc import Iterator
 from contextlib import contextmanager
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from importlib.resources import files
 from pathlib import Path
-from typing import Iterator
 
 
 class Database:
@@ -30,14 +30,17 @@ class Database:
             connection.executescript(schema)
             connection.execute(
                 "INSERT OR IGNORE INTO schema_version(version, applied_at) VALUES (?, ?)",
-                (self.SCHEMA_VERSION, datetime.now(timezone.utc).isoformat()),
+                (self.SCHEMA_VERSION, datetime.now(UTC).isoformat()),
             )
 
     @contextmanager
-    def transaction(self) -> Iterator[sqlite3.Connection]:
+    def transaction(self, *, immediate: bool = False) -> Iterator[sqlite3.Connection]:
+        """Optionally reserve a writer before reads; ordinary readers stay deferred."""
+        if type(immediate) is not bool:
+            raise TypeError("immediate must be a boolean")
         connection = self.connect()
         try:
-            connection.execute("BEGIN")
+            connection.execute("BEGIN IMMEDIATE" if immediate else "BEGIN")
             yield connection
             connection.commit()
         except Exception:

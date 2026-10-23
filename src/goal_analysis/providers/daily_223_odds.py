@@ -2,10 +2,7 @@
 
 from __future__ import annotations
 
-import json
-import urllib.error
 import urllib.parse
-import urllib.request
 from collections.abc import Callable, Mapping
 from datetime import UTC, date, datetime, time, timedelta
 from typing import Any
@@ -19,17 +16,7 @@ Transport = Callable[[str, Mapping[str, str]], tuple[Any, Mapping[str, str], byt
 
 
 def _transport(url: str, headers: Mapping[str, str]) -> tuple[Any, Mapping[str, str], bytes]:
-    try:
-        with urllib.request.urlopen(
-            urllib.request.Request(url, headers=dict(headers)), timeout=30
-        ) as response:
-            raw = response.read()
-            return json.loads(raw.decode("utf-8")), dict(response.headers.items()), raw
-    except urllib.error.HTTPError as error:
-        # Error bodies and URLs can echo query-string credentials.
-        raise ProviderError(f"The Odds API HTTP {error.code}") from None
-    except (OSError, ValueError):
-        raise ProviderError("The Odds API transport or JSON decoding failed") from None
+    raise ProviderError('The Odds API live access retired; use TheStats odds')
 
 
 class Daily223OddsFeed:
@@ -51,9 +38,12 @@ class Daily223OddsFeed:
         self.calls = 0
         self.usage: list[dict] = []
         self.halted = False
+        self.halt_reason = None
 
     def reserve_check(self, cost: int) -> None:
         if self.halted:
+            if self.halt_reason == 'ODDS_AUTH_REQUIRED':
+                raise ProviderError('The Odds API authentication unavailable; feed halted')
             raise ProviderError("odds feed halted after unexpected provider cost")
         if (
             self.usage
@@ -113,6 +103,8 @@ class Daily223OddsFeed:
                 f"{public_url}?{query}", {"Accept": "application/json"}
             )
         except ProviderError as error:
+            if any(f'HTTP {code}' in str(error) for code in (401, 403)):
+                self.halted, self.halt_reason = True, 'ODDS_AUTH_REQUIRED'
             # Also sanitize custom transports, whose exceptions may contain the full URL.
             message = str(error).replace(self._api_key, "[REDACTED]")
             message = message.replace(urllib.parse.quote_plus(self._api_key), "[REDACTED]")
@@ -142,4 +134,20 @@ class Daily223OddsFeed:
         if usage["last_cost"] is not None and usage["last_cost"] > cost:
             self.halted = True
             raise ProviderError("provider odds cost exceeded the reserved amount; no further calls")
+        if usage["last_cost"] is not None:
+            # Empty responses can cost zero. Release only provider-confirmed
+            # unused credits; failures and absent headers remain conservative.
+            self.reserved_credits -= cost - usage["last_cost"]
         return payload
+
+
+class UnavailableOddsFeed:
+    """An explicit missing credential; fixture collection remains usable."""
+
+    def __init__(self, region, max_credits):
+        self.region, self.max_credits = region, max_credits
+        self.calls = self.reserved_credits = 0
+        self.usage = []
+
+    def reserve_check(self, cost):
+        raise ProviderError("THE_ODDS_API_KEY nincs beállítva; szorzó nélküli előzetes készülhet.")

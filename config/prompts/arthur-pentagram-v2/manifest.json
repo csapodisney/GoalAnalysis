@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "prompt_version": "arthur-pentagram-v2",
+  "source_filename": "Arthur_Pentagram_Master_Prompt_v2 (1).md",
+  "master_file": "master.md",
+  "sha256": "f29de06a751fc1283343083771d2877ef512e0b73be28c3de6891d641ae72fe8",
+  "size_bytes": 61565,
+  "activation_status": "imported_not_activated",
+  "required_anchors": [
+    "# ARTHUR PENTAGRAM 2.0",
+    "FUTÁS_BEMENET",
+    "PREMATCH | FINALIZE | AUDIT",
+    "A szorzó önmagában soha nem lehet kiválasztási ok.",
+    "## 6. A Pentagram öt szakági elemzője",
+    "## 7. VETO-, hiány- és státuszlogika",
+    "## 8. Szorzó, valószínűség és értékkapu",
+    "## 11. Szelvényépítés",
+    "## 14. Audit és utólagos kiértékelés"
+  ]
+}

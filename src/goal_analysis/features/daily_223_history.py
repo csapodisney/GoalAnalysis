@@ -7,7 +7,8 @@ from copy import deepcopy
 from datetime import datetime, timedelta
 
 from goal_analysis.agents import canonical_sha256
-from goal_analysis.providers.api_football_history import aware_time, positive_id
+from goal_analysis.normalization.live_identity import field_id, provider_id, source_provider
+from goal_analysis.providers.api_football_history import aware_time
 
 
 def validate_history(snapshot: dict) -> list[dict]:
@@ -15,7 +16,7 @@ def validate_history(snapshot: dict) -> list[dict]:
         snapshot.get("kind") != "DAILY223_HISTORY"
         or type(snapshot.get("schema_version")) is not int
         or snapshot["schema_version"] != 1
-        or snapshot.get("provider") != "api_football"
+        or snapshot.get("provider") not in {"api_football", "the_stats_api"}
     ):
         raise ValueError("DAILY223_HISTORY schema 1 snapshot required")
     content = {key: value for key, value in snapshot.items() if key != "snapshot_sha256"}
@@ -28,8 +29,11 @@ def validate_history(snapshot: dict) -> list[dict]:
     seen = set()
     for item in records:
         for key in ("fixture_id", "league_id", "home_team_id", "away_team_id"):
-            if positive_id(item[key]) != item[key]:
+            field = key.removesuffix('_id')
+            if provider_id(item[key], field, snapshot['provider']) != item[key]:
                 raise ValueError("history IDs must be canonical strings")
+        if item.get('provider', snapshot['provider']) != snapshot['provider']:
+            raise ValueError('Mixed provider history is not a native snapshot')
         if item["fixture_id"] in seen:
             raise ValueError("duplicate fixture in history snapshot")
         seen.add(item["fixture_id"])
@@ -78,6 +82,8 @@ def enrich_daily223_input(payload: dict, snapshot: dict) -> dict:
             item for item in evidence if item.get("category") not in {"historical", "venue_form"}
         ]
         try:
+            if source_provider(candidate) != snapshot['provider']:
+                raise ValueError('Candidate and history provider mismatch')
             analysis, generated = _analyse(candidate, records, now, snapshot["snapshot_sha256"])
             candidate["evidence"].extend(generated)
         except (KeyError, ValueError, TypeError) as error:
@@ -100,10 +106,10 @@ def enrich_daily223_input(payload: dict, snapshot: dict) -> dict:
 def _analyse(
     candidate: dict, records: list[dict], now: datetime, digest: str
 ) -> tuple[dict, list[dict]]:
-    home = positive_id(candidate["api_football_home_team_id"])
-    away = positive_id(candidate["api_football_away_team_id"])
-    fixture = positive_id(candidate["api_football_fixture_id"])
-    league = positive_id(candidate["api_football_league_id"])
+    home = field_id(candidate, 'home_team')
+    away = field_id(candidate, 'away_team')
+    fixture = field_id(candidate, 'fixture')
+    league = field_id(candidate, 'league')
     if home == away:
         raise ValueError("candidate teams must differ")
     kickoff = aware_time(candidate["kickoff"])

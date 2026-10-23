@@ -17,10 +17,10 @@ from goal_analysis.jobs.daily_223_live import (
     run_daily223_live,
     write_daily223_bundle,
 )
-from goal_analysis.providers.api_football import ApiFootballClient
 from goal_analysis.providers.base import ProviderError
-from goal_analysis.providers.daily_223_odds import Daily223OddsFeed
-from goal_analysis.storage import CacheStore, Database, SnapshotStore
+from goal_analysis.providers.the_stats_odds import TheStatsOddsFeed
+from goal_analysis.providers.the_stats_primary import TheStatsPrimaryClient
+from goal_analysis.storage import CacheStore, Database
 
 
 def main() -> int:
@@ -38,7 +38,7 @@ def main() -> int:
             config = validate_live_config(json.loads(args.config.read_text("utf-8-sig")))
             missing = [
                 key
-                for key in ("API_FOOTBALL_KEY", "THE_ODDS_API_KEY")
+                for key in ("THE_STATS_API_KEY",)
                 if not os.environ.get(key, "").strip()
             ]
             print(
@@ -58,20 +58,14 @@ def main() -> int:
         return 1
     try:
         config = validate_live_config(json.loads(args.config.read_text("utf-8-sig")))
-        for key in ("API_FOOTBALL_KEY", "THE_ODDS_API_KEY"):
+        for key in ("THE_STATS_API_KEY",):
             if not os.environ.get(key, "").strip():
                 raise ProviderError(f"{key} is not configured")
         settings = Settings()
         database = Database(settings.database_path)
         database.initialize()
-        snapshots = SnapshotStore(database, settings.raw_snapshot_dir)
-        football = ApiFootballClient(snapshot_store=snapshots)
-        odds = Daily223OddsFeed(
-            os.environ["THE_ODDS_API_KEY"],
-            config["odds_region"],
-            config["max_odds_credits"],
-            snapshots,
-        )
+        football = TheStatsPrimaryClient(Path.cwd(), max_requests=config['max_football_calls'])
+        odds = TheStatsOddsFeed(Path.cwd(), config['odds_region'], config['max_odds_credits'])
         bundle = run_daily223_live(config, football, odds, CacheStore(database))
     except (OSError, ValueError, TypeError, KeyError, ProviderError, AttributeError) as error:
         bundle = {

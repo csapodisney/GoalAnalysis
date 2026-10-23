@@ -1,0 +1,72 @@
+{
+  "scope": "Source checkpoint; not final project completion or publication certification",
+  "accepted_at": "2026-10-23T19:36:24.130169+00:00",
+  "full_tests": {
+    "passed": 5343,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "dependency_warnings": 44,
+    "seconds": 2182.95,
+    "xml_sha256": "2b815a627736aa0dd4c35c2f45b9e70c3fb807828244ea5d1059010fa8a9878a"
+  },
+  "actual_replays": [
+    {
+      "case": "busy-weekend-2026-10-17",
+      "checks": {
+        "actual_training_snapshots_verified": true,
+        "all_new_shadow_metadata_bound_to_actual_eligible_source_rows_and_fixed_contracts": true,
+        "full_report_only_verified_provenance_dataset_shadow_and_evidence_scenario_sidecars_differ": true,
+        "no_external_requests": true,
+        "no_forbidden_attempts": true,
+        "numeric_fits_equal_validated_baseline": true,
+        "strategy_sources_stable_during_run": true
+      }
+    },
+    {
+      "case": "sparse-weekday-2026-10-12",
+      "checks": {
+        "actual_training_snapshots_verified": true,
+        "all_new_shadow_metadata_bound_to_actual_eligible_source_rows_and_fixed_contracts": true,
+        "full_report_only_verified_provenance_dataset_shadow_and_evidence_scenario_sidecars_differ": true,
+        "no_external_requests": true,
+        "no_forbidden_attempts": true,
+        "numeric_fits_equal_validated_baseline": true,
+        "strategy_sources_stable_during_run": true
+      }
+    },
+    {
+      "case": "cup-national-2026-10-03",
+      "checks": {
+        "actual_training_snapshots_verified": true,
+        "all_new_shadow_metadata_bound_to_actual_eligible_source_rows_and_fixed_contracts": true,
+        "full_report_only_verified_provenance_dataset_shadow_and_evidence_scenario_sidecars_differ": true,
+        "no_external_requests": true,
+        "no_forbidden_attempts": true,
+        "numeric_fits_equal_validated_baseline": true,
+        "strategy_sources_stable_during_run": true
+      }
+    }
+  ],
+  "original_2x2x3_engine_sha256": "d7a25d3d3ba0035918d8760935f3df49d9dfbbb31c7173af285d7e25d2c5100c",
+  "acceptance": {
+    "at": "2026-10-23T19:36:24.130169+00:00",
+    "full_tests_passed": 5343,
+    "actual_replays_passed": 3,
+    "source_unchanged_during_acceptance": true,
+    "old_ledger_rows_unchanged": 3816,
+    "published": false,
+    "next_required": "NORMAL_FRESH_GENERATION_AND_EXACT_SELECTED_LEG_SOURCE_AND_LEDGER_PROOF"
+  },
+  "github_backup_excludes": [
+    "Private runtime settings and credentials",
+    "Local databases and raw model/provider archives",
+    "Packaged local installers and machine-specific files"
+  ],
+  "remaining_at_checkpoint": [
+    "Actual new normal daily generation is running; per-ticket source consumption and physical publication evidence remain pending.",
+    "Further reviewed stadium coordinates and real weather/travel coverage expansion remain pending.",
+    "Final requirement-by-requirement handoff report remains pending."
+  ],
+  "interpretation": "Passing tests and three deterministic numerical replays do not establish profitability or complete physical data coverage."
+}
