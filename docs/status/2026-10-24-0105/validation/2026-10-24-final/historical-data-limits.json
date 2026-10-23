@@ -1,0 +1,40 @@
+{
+  "captured_at": "2026-10-23T15:05:21.961274+00:00",
+  "complete_five_year_import_certified": false,
+  "current_database_reaudited": false,
+  "global_unique_matches_certified": false,
+  "historical_research_replay_is_not_local_point_in_time_certification": true,
+  "limit": "Történeti pillanatkép; nem globálisan deduplikált meccsszám, nem teljes ötéves import, nem mai teljes készültség.",
+  "measurement_windows_are_optimization_not_development_wait": true,
+  "per_provider_inventory": [
+    {
+      "competition_ids": 262,
+      "earliest_match_date": "2025-01-02",
+      "full_score_pairs": 14006,
+      "latest_match_date": "2026-10-18",
+      "provider": "api_football",
+      "provider_identities": 14006,
+      "utc_kickoffs": 14006
+    },
+    {
+      "competition_ids": 22,
+      "earliest_match_date": "2016-07-29",
+      "full_score_pairs": 78235,
+      "latest_match_date": "2026-10-14",
+      "provider": "football_data_co_uk",
+      "provider_identities": 78235,
+      "utc_kickoffs": 0
+    },
+    {
+      "competition_ids": 20,
+      "earliest_match_date": "2024-10-01",
+      "full_score_pairs": 14750,
+      "latest_match_date": "2026-10-21",
+      "provider": "the_stats_api",
+      "provider_identities": 14750,
+      "utc_kickoffs": 14750
+    }
+  ],
+  "provider_match_identities": 106991,
+  "result_versions": 122948
+}

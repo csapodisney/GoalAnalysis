@@ -1,0 +1,74 @@
+{
+  "scope": "Tested source checkpoint. New normal publication and runtime verification still pending; not final project completion.",
+  "created_at": "2026-10-23T23:10:08.010643+00:00",
+  "accepted_at": "2026-10-23T23:08:28.548053+00:00",
+  "full_tests": {
+    "passed": 5402,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "dependency_warnings": 44,
+    "seconds": 2019.6,
+    "xml_sha256": "66a1913bc6d65f28c9d30816af56d2f6e0ad8415d9ec8368f60103e131980a2b"
+  },
+  "targeted_tests_passed": 178,
+  "actual_numerical_replays": [
+    {
+      "case": "busy-weekend-2026-10-17",
+      "checks": {
+        "actual_training_snapshots_verified": true,
+        "all_new_shadow_metadata_bound_to_actual_eligible_source_rows_and_fixed_contracts": true,
+        "full_report_only_verified_provenance_dataset_shadow_and_evidence_scenario_sidecars_differ": true,
+        "no_external_requests": true,
+        "no_forbidden_attempts": true,
+        "numeric_fits_equal_validated_baseline": true,
+        "strategy_sources_stable_during_run": true
+      }
+    },
+    {
+      "case": "sparse-weekday-2026-10-12",
+      "checks": {
+        "actual_training_snapshots_verified": true,
+        "all_new_shadow_metadata_bound_to_actual_eligible_source_rows_and_fixed_contracts": true,
+        "full_report_only_verified_provenance_dataset_shadow_and_evidence_scenario_sidecars_differ": true,
+        "no_external_requests": true,
+        "no_forbidden_attempts": true,
+        "numeric_fits_equal_validated_baseline": true,
+        "strategy_sources_stable_during_run": true
+      }
+    },
+    {
+      "case": "cup-national-2026-10-03",
+      "checks": {
+        "actual_training_snapshots_verified": true,
+        "all_new_shadow_metadata_bound_to_actual_eligible_source_rows_and_fixed_contracts": true,
+        "full_report_only_verified_provenance_dataset_shadow_and_evidence_scenario_sidecars_differ": true,
+        "no_external_requests": true,
+        "no_forbidden_attempts": true,
+        "numeric_fits_equal_validated_baseline": true,
+        "strategy_sources_stable_during_run": true
+      }
+    }
+  ],
+  "replay_summary_sha256": "94db4c2443ab0152e16708116e6fd8a9552056268135b567bcd54026b4133f6c",
+  "acceptance_sha256": "61186451890d16ccb6e13c488879cfbde3ec33f6226c47d266491eb6823f28b6",
+  "old_ledger_rows_preserved": 3887,
+  "source_files": {
+    "src/goal_analysis/agents/astra_review.py": "05ee7ef4a1197886039fe23910cd461e2093700a2c9f390d0b33a5cc92ed8395",
+    "src/goal_analysis/jobs/candidate_context_review.py": "e62e9cfcd97aa9352c4ab8704a86fbf9dae31a6bdc0cc1d937c1e61ddbe4013b",
+    "src/goal_analysis/jobs/portfolio.py": "c55ab1416049a48397221614c1fae0dbd4961cb9e6f9949e908b926312bef0b3",
+    "src/goal_analysis/jobs/the_stats_context.py": "2dcd36f2db8b5686f12eca7eddcb6af0f3a672be9de1b64c30bfc7e43209c1dd",
+    "tests/test_candidate_context_scope.py": "783dce55d66cc96e9c45c2b7ba9b370e7355457f075760add795426c72180d1b",
+    "tests/test_retained_team_stats_cache.py": "8b7f88d03430a841b2cec82f91323e5b408d867b92918e4b398d4b5353f53cf3",
+    "tests/test_astra_compact_wire.py": "046a37ae5dcdfb3215445556729bc519d7796ae6a0dbd9172ba9818ba243fcee"
+  },
+  "input_budget_repair": {
+    "original_bytes": 372320,
+    "lossless_compact_bytes": 353816,
+    "unchanged_limit_bytes": 360000,
+    "proof_sha256": "aa8e3bb5f483f24c9ee1413822db16b32182c38b4a531e9779dc533320a78112"
+  },
+  "previous_failed_run_remains_failed": "2026-10-24-104c8070ef82",
+  "new_publication_proven": false,
+  "final_report_push_still_required": true
+}

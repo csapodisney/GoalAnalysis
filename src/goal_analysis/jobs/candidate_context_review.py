@@ -117,7 +117,27 @@ def verified_supplement(root, collection, fixtures, cutoff):
     return output, dict(issues)
 
 
-def prepare(root, fixtures, packets, *, run_id, clock=lambda: datetime.now(UTC)):
+def context_scope_packets(fixtures, packets, eligible_candidates, cutoff):
+    """Freeze facts for possible later selections without expanding model inputs."""
+    from goal_analysis.engine.publication_window import allows_new_leg
+
+    by_id = {fixture['fixture_id']: fixture for fixture in fixtures}
+    scope = {}
+    for packet in packets:
+        item = {'fixture_id': packet['fixture_id']}
+        if 'weather_forecast' in packet:
+            item['weather_forecast'] = deepcopy(packet['weather_forecast'])
+        scope[packet['fixture_id']] = item
+    for candidate in eligible_candidates:
+        fid = candidate['fixture_id']
+        fixture = by_id.get(fid)
+        if fixture is not None and allows_new_leg(fixture, cutoff):
+            scope.setdefault(fid, {'fixture_id': fid})
+    return list(scope.values())
+
+
+def prepare(root, fixtures, packets, *, run_id, eligible_candidates=(),
+            clock=lambda: datetime.now(UTC)):
     """One bounded acquisition before review; the same collection is reused later."""
     from goal_analysis.jobs.calendar_collection_shadow import collect as calendars
     from goal_analysis.jobs.calendar_collection_shadow import enabled as calendars_enabled
@@ -128,8 +148,11 @@ def prepare(root, fixtures, packets, *, run_id, clock=lambda: datetime.now(UTC))
     from goal_analysis.jobs.xg_specialist_shadow import _targets
 
     root = Path(root).resolve(); started = utc(clock())
-    wanted = {p['fixture_id'] for p in packets}
-    selected = [deepcopy(f) for f in fixtures if f['fixture_id'] in wanted]
+    scope_packets = context_scope_packets(fixtures, packets, eligible_candidates, started)
+    wanted = {p['fixture_id'] for p in scope_packets}
+    by_id = {f['fixture_id']: f for f in fixtures if f['fixture_id'] in wanted}
+    selected = [deepcopy(by_id[p['fixture_id']]) for p in scope_packets
+                if p['fixture_id'] in by_id]
     seed = {'run_id': run_id, 'date': started.date().isoformat(), 'fixtures': selected}
     collected = enrich_sports_supplement(root, seed, clock=clock, context_shadow=True)
     collection = collected['context_collection_shadow']['collection']
@@ -144,9 +167,11 @@ def prepare(root, fixtures, packets, *, run_id, clock=lambda: datetime.now(UTC))
     calendar_collection = _optional_stage(calendars, root, qualified, clock=clock, fallback={}) if (
         qualified and not stopped and calendars_enabled(root)) else {}
     cutoff = utc(clock())
-    prepared = compose(root, selected, packets, collection, as_of=cutoff)
+    prepared = compose(root, selected, scope_packets, collection, as_of=cutoff)
     return {**prepared, 'started_at': started.isoformat(), 'canonical_linking': linking,
-            'player_collection': player_collection, 'calendar_collection': calendar_collection}
+            'player_collection': player_collection, 'calendar_collection': calendar_collection,
+            'scope_packets': scope_packets,
+            'initial_review_fixture_ids': sorted({p['fixture_id'] for p in packets})}
 
 
 def compose(root, fixtures, packets, collection, *, as_of):

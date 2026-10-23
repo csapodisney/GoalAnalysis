@@ -1,0 +1,14 @@
+{
+  "actual_remote_sha": null,
+  "final_source_commit": null,
+  "limit": "A későbbi commit/push és a távoli SHA külön, utólag igazolandó.",
+  "no_git_command_executed": true,
+  "previous_push": {
+    "branch": "build/token-efficient-pipeline",
+    "commit": "6c6b98fefde2793a32b1081e51224af01abd9be0"
+  },
+  "private_runtime_data_included": false,
+  "project_complete": false,
+  "status": "STAGED_EXPORT_ONLY_NOT_PUSHED",
+  "verification_at": null
+}

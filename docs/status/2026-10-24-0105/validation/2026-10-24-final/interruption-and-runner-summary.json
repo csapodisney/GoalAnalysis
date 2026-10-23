@@ -1,0 +1,23 @@
+{
+  "actual_worker_exit_code": null,
+  "actual_worker_outside_codex": true,
+  "automatic_retry": null,
+  "causal_assessment": "A frissítés/sandbox-service-leállítás és a megszakadás kapcsolata erős következtetés, nem külön naplózott pytest-PID-kill.",
+  "documented_event_ids": [
+    9648,
+    9650,
+    217,
+    201
+  ],
+  "event_window_utc": [
+    "2026-10-23T20:31:20Z",
+    "2026-10-23T20:31:22Z"
+  ],
+  "historical_incident_artifact_present": true,
+  "historical_incident_evidence_id": "E-824f96d0c529d4",
+  "new_codex_version": "26.1016.8622.0",
+  "old_codex_version": "26.1013.4894.0",
+  "probe_is_not_publication_proof": true,
+  "raw_event_xml_or_host_identity_included": false,
+  "specific_pytest_pid_termination_directly_logged": false
+}

@@ -26,6 +26,13 @@ PROMPT_VERSION = "arthur-portfolio-v3"
 _PROMPT_ROOT = Path(__file__).resolve().parents[3] / "config" / "prompts" / PROMPT_VERSION
 _ENDPOINT = "https://api.openai.com/v1/responses"
 _CACHE_TTL = timedelta(minutes=30)
+
+
+def _wire_json(value: Any) -> str:
+    """Use the same lossless representation for input limits and model requests."""
+    return json.dumps(value, ensure_ascii=False, allow_nan=False, separators=(",", ":"))
+
+
 _RESEARCH_DIAGNOSTIC_STATUSES = {
     "NO_COMPLETED_SEARCH", "NO_ACCEPTED_SOURCES", "INVALID_RESEARCH_JSON", "VERIFIED",
 }
@@ -787,7 +794,7 @@ class AstraReviewer:
                     {
                         "instructions": self._prompt("research.txt") + (
                             '\n\n' + _SHARED_FACT_INSTRUCTIONS if packed.get('shared_candidate_facts') else ''),
-                        "input": json.dumps(packed, ensure_ascii=False),
+                        "input": _wire_json(packed),
                         "tools": [{"type": "web_search", "search_context_size": "low"}],
                         "tool_choice": "required",
                         "max_tool_calls": 4,
@@ -822,7 +829,7 @@ class AstraReviewer:
                             for item in packed["candidates"]) else ""
                     ) + ("\n\n" + _CONTEXT_INSTRUCTIONS if packed.get('decision_contexts') else "")
                     + ('\n\n' + _SHARED_FACT_INSTRUCTIONS if packed.get('shared_candidate_facts') else ''),
-                    "input": json.dumps(
+                    "input": _wire_json(
                         {
                             **packed,
                             "research_notes": research_text,
@@ -830,7 +837,6 @@ class AstraReviewer:
                             "fixture_context": research_details.get("fixture_context", []),
                             "indicative_web_odds": research_details.get("web_odds", []),
                         },
-                        ensure_ascii=False,
                     ),
                     "text": {
                         "format": {
@@ -1021,7 +1027,7 @@ class AstraReviewer:
             shared = _share_repeated_facts(packed)
             if shared:
                 content['shared_candidate_facts'] = shared
-            raw = json.dumps(content, ensure_ascii=False, allow_nan=False)
+            raw = _wire_json(content)
         except (ValueError, TypeError):
             raise _ReviewError("Astra input must contain finite JSON values only.") from None
         maximum_bytes = 360_000 if decision_contexts else 180_000

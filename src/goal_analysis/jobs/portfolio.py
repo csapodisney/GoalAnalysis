@@ -518,7 +518,8 @@ def run_portfolio(
                     context_attempt = {'version': context_job.VERSION, 'mode': context_mode,
                                        'status': 'ATTEMPTED_BUDGET_MUST_NOT_RESTART'}
                     candidate_context = context_job.prepare(context_root, fixture_records, packets,
-                                                            run_id=run_id, clock=clock)
+                                                            run_id=run_id, clock=clock,
+                                                            eligible_candidates=enriched['candidates'])
                     augmented = context_job.attach(packets, candidate_context)
                     artifacts['candidate_context_inputs'] = candidate_context
                     artifacts['candidate_review_control_packets'] = deepcopy(packets)

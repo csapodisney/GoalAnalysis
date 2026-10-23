@@ -24,6 +24,7 @@ from goal_analysis.storage import CacheStore, Database, SnapshotStore
 VERSION = "thestatsapi-context-v1"
 PROVIDER = "the_stats_api"
 MAX_DAILY_REQUESTS = 110  # Provider allows 120/min; keep ten calls of headroom.
+TEAM_SEASON_STATS_TTL = timedelta(hours=6)
 # IDs checked against the complete provider catalogue on 2026-10-18.
 
 # Pure, closed canonical fact schema shared with the Grok packet validator.
@@ -116,19 +117,31 @@ class Resources:
         self.unavailable_capabilities = set()
         self.usage = {"requests": 0, "cache_hits": 0, "max_requests": max_requests, "stopped_reason": None, "by_endpoint": {}}
 
-    def get(self, endpoint, params=None, *, ttl=timedelta(minutes=30), cache_only=False):
+    def get(self, endpoint, params=None, *, ttl=timedelta(minutes=30), cache_only=False,
+            retained_team_stats=False):
         if type(cache_only) is not bool:
             raise ValueError('cache_only must be boolean')
+        if type(retained_team_stats) is not bool:
+            raise ValueError('retained_team_stats must be boolean')
         if not timedelta(0) < ttl <= timedelta(hours=6):
             raise ValueError('Invalid resource cache lifetime')
         capability = 'PLAYER_PROPS' if re.fullmatch(r'/v2/football/matches/mt_\d+/odds/players', endpoint) else None
         if capability in self.unavailable_capabilities:
             return None, None, 'ADDON_REQUIRED'
         params = dict(sorted((params or {}).items()))
+        if retained_team_stats and not (
+                re.fullmatch(r'/football/teams/tm_\d+/stats', endpoint)
+                and set(params) == {'season_id'}
+                and re.fullmatch(r'sn_\d+', str(params['season_id']))
+                and ttl == TEAM_SEASON_STATS_TTL):
+            raise ValueError('Retained reuse is limited to identified team season stats')
         key = json.dumps([endpoint, params], sort_keys=True, separators=(",", ":"))
-        if key in self.memo:
-            return self.memo[key]
+        memo_key = (key, ttl, retained_team_stats)
         now = _stamp(self.clock())
+        if memo_key in self.memo:
+            result = self.memo[memo_key]
+            if result[1] is None or timedelta(0) <= now - _stamp(result[1]['observed_at']) < ttl:
+                return result
         encoded = {k: str(v).lower() if type(v) is bool else v for k, v in params.items()}
         url = BASE_URL + endpoint + ("?" + urlencode(encoded) if encoded else "")
         # Verify metadata too: a forged receipt time must not make an old/future
@@ -138,10 +151,17 @@ class Resources:
                 "SELECT value_json,content_hash,created_at,expires_at FROM cache_entries WHERE namespace=? AND cache_key=?",
                 (VERSION, key)).fetchone()
         cached = None
+        retained = False
         if cache_row:
             try:
+                created, expires = _stamp(cache_row['created_at']), _stamp(cache_row['expires_at'])
+                # A previous collector stored only a 30-minute cache horizon.
+                # Reuse those bytes solely under the existing six-hour team
+                # stats freshness contract, with a mandatory original witness.
+                retained = (retained_team_stats and created < expires <= now
+                            and now < created + ttl)
                 if (hashlib.sha256(cache_row["value_json"].encode("utf-8")).hexdigest() == cache_row["content_hash"]
-                        and _stamp(cache_row["created_at"]) <= now < _stamp(cache_row["expires_at"])):
+                        and (created <= now < expires or retained)):
                     cached = json.loads(cache_row["value_json"])
             except (ValueError, TypeError):
                 pass
@@ -151,9 +171,12 @@ class Resources:
                 raw = self.snapshots.read(source["content_hash"])
                 if (source["source_url"] != url or source["provider"] != PROVIDER
                         or not timedelta(0) <= now - _stamp(source["observed_at"]) < ttl
+                        or (retained and _stamp(source['observed_at']) != created)
                         or hashlib.sha256(raw).hexdigest() != source["content_hash"]):
                     raise ValueError("INVALID_CACHE")
                 payload = json.loads(raw)
+                if retained and not source.get('http_observation_id'):
+                    raise ValueError('RETAINED_STATS_REQUIRE_ORIGINAL_HTTP_WITNESS')
                 if source.get('http_observation_id'):
                     try:
                         from goal_analysis.storage.http_observations import read_http_observation
@@ -162,10 +185,12 @@ class Resources:
                             read_http_observation(connection, self.root, source['http_observation_id'],
                                                   now, source=source)
                     except Exception:  # noqa: BLE001 - No refetch or fresh witness on cache failure.
+                        if retained:
+                            raise ValueError('INVALID_RETAINED_STATS_WITNESS') from None
                         source = {**source, 'http_observation_status': 'UNAVAILABLE'}
                 self.usage["cache_hits"] += 1
-                self.memo[key] = (payload["data"], source, None)
-                return self.memo[key]
+                self.memo[memo_key] = (payload["data"], source, None)
+                return self.memo[memo_key]
             except (ValueError, KeyError, OSError, TypeError):
                 pass
         if cache_only:
@@ -210,7 +235,7 @@ class Resources:
             result = (None, None, error.code)
         except (ValueError, KeyError, TypeError, OSError, RuntimeError):
             result = (None, None, "INVALID_RESPONSE")
-        self.memo[key] = result
+        self.memo[memo_key] = result
         return result
 
 
@@ -429,7 +454,9 @@ def _collect_fact(resources, record, category, subject, *, cache_only=False):
         suffix = {"team_season_stats": "/stats", "injuries_suspensions": "/injuries-suspensions", "squad": "/players", "team_profile": ""}[category]
         endpoint = f"/football/teams/{subject}" + suffix
         params = {"season_id": season} if category == "team_season_stats" else {"current": True} if category == "injuries_suspensions" else {}
-    raw, source, error = resources.get(endpoint, params, cache_only=cache_only)
+    lifetime = ({'ttl': TEAM_SEASON_STATS_TTL, 'retained_team_stats': True}
+                if category == 'team_season_stats' else {})
+    raw, source, error = resources.get(endpoint, params, cache_only=cache_only, **lifetime)
     if cache_only and error == 'CACHE_MISS':
         return False
     data = None
