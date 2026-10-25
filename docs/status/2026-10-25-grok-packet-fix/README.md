@@ -50,3 +50,11 @@ A külön publikációs és lezáró követők az ellenőrzési hibánál megál
 `2026-10-26-912b18b94ee3`: PARTIAL, egy READY DAILY, három láb. Kettőn játékos/xG/naptár-adat tényleges hivatkozása igazolt; a harmadiknál mindhárom kategória UNKNOWN volt a befagyasztott kontextusban. Ez nem teljes háromlábas háttéradat-használati bizonyítás. A szigorú fizikai ellenőrző megállt, a szelvényt nem írtuk át.
 
 A Grok-csomagot ettől külön dátumátadási hiba akadályozta: a futás célja október 26., de a közös sportadatcsomag a gyűjtés október 25-i UTC-napját kapta. A megőrzött riport ugyanazon valódi záróidőn végzett tiszta helyi építése `Invalid sports supplement scope` hibával megáll. A tényleges mentett Grok UNAVAILABLE, request_id nélkül; nem pozitív ellenőrzés. A javítás a célnap továbbadása lesz, nem a forrásellenőrzés lazítása vagy a valódi gyűjtési idő átírása. Új, verziózott javítási bizonyíték következik; változatlan fizetős újrapróba nem indul.
+
+## Dátumátadás javítása — saját új elfogadás folyamatban
+
+A javítás csak a validált portfólió-célnapot adja át az előzetes sportadatgyűjtésnek. A valódi időbélyegek, eredeti quote-azonosságok és a szigorú Grok-forrásellenőrzés változatlanok. A 12 új regresszió javítás előtt 11 hibát talált; utána a kapcsolódó **316 célzott teszt, 10 adapter-ellenpróba és Ruff PASS**. A tesztek holnapi és hétnapos célokat, a berlini/UTC-éjfél eltérését, valódi órákat és hibás dátumot is vizsgálnak.
+
+A négy megőrzött csomag olvasási SHADOW-ja ismét PASS. A megállt új futás külön, kifejezetten tesztként dátumjavított másolata 97 855 karakteres szigorú szolgáltatói csomaggá épül; ez nem új kérés vagy válasz, az eredeti mentett riport változatlanul elutasított. A harmadik láb UNKNOWN háttere nem lett forrásoltnak átírva.
+
+Az új forráson már fut a saját **5742 teljes teszt + 3 új tényleges numerikus replay**, 1216 fagyasztott forrásfájl és 4005 korábbi ledger-sor mellett, egyszeri véges körben. Ez még nem sikeres új teljes elfogadás, normál publikáció vagy helyreállítás. 5382 korábbi archívum-/bizonyítékfájl védett; a régi taskok és hibák megmaradnak.

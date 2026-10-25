@@ -1,0 +1,32 @@
+{
+  "at": "2026-10-25T22:36:20.876075+00:00",
+  "task": "9.3.N1",
+  "attempt": "followup-v2",
+  "status": "TARGET_DAY_REPAIR_TARGETS_SHADOW_PASS_OWN_FULL5742_AND_THREE_ACTUAL_REPLAYS_RUNNING",
+  "targeted_tests_passed": 316,
+  "new_target_day_tests": 12,
+  "before_regression_failed": 11,
+  "before_regression_passed": 1,
+  "adapter_tests_passed": 10,
+  "ruff": "PASS",
+  "expected_full": 5742,
+  "own_full_passed": false,
+  "own_actual_replays_passed": false,
+  "frozen_source_files": 1216,
+  "prior_ledger_rows": 4005,
+  "protected_archive_files": 5382,
+  "old_full5730_acceptance_is_not_new_source_acceptance": true,
+  "counterfactual_retained_target_projection_wire": 97770,
+  "counterfactual_provider_wire": 97855,
+  "counterfactual_is_not_actual_request_or_response": true,
+  "old_failed_report_modified": false,
+  "new_generation_since_source_repair": 0,
+  "publication_verified": false,
+  "runtime_restored": false,
+  "project_complete": false,
+  "numbered_worklist": {
+    "total": 167,
+    "checked": 135,
+    "open": 32
+  }
+}

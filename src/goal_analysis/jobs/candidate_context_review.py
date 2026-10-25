@@ -2,7 +2,7 @@
 import json
 from collections import Counter
 from copy import deepcopy
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 
 from goal_analysis.agents import canonical_sha256
@@ -199,7 +199,7 @@ def frozen_weather_fixtures(report, now):
 
 
 def prepare(root, fixtures, packets, *, run_id, eligible_candidates=(), weather_provider=None,
-            clock=lambda: datetime.now(UTC)):
+            target_date=None, clock=lambda: datetime.now(UTC)):
     """One bounded acquisition before review; the same collection is reused later."""
     from goal_analysis.jobs.calendar_collection_shadow import collect as calendars
     from goal_analysis.jobs.calendar_collection_shadow import enabled as calendars_enabled
@@ -210,12 +210,16 @@ def prepare(root, fixtures, packets, *, run_id, eligible_candidates=(), weather_
     from goal_analysis.jobs.xg_specialist_shadow import _targets
 
     root = Path(root).resolve(); started = utc(clock())
+    if target_date is not None and type(target_date) is not date:
+        raise ValueError('INVALID_CONTEXT_TARGET_DAY')
+    # Collection scope follows the requested match day; receipts keep the real clock.
+    target_day = started.date() if target_date is None else target_date
     scope_packets = context_scope_packets(fixtures, packets, eligible_candidates, started)
     wanted = {p['fixture_id'] for p in scope_packets}
     by_id = {f['fixture_id']: f for f in fixtures if f['fixture_id'] in wanted}
     selected = [deepcopy(by_id[p['fixture_id']]) for p in scope_packets
                 if p['fixture_id'] in by_id]
-    seed = {'run_id': run_id, 'date': started.date().isoformat(), 'fixtures': selected}
+    seed = {'run_id': run_id, 'date': target_day.isoformat(), 'fixtures': selected}
     collected = enrich_sports_supplement(root, seed, clock=clock, context_shadow=True)
     collection = collected['context_collection_shadow']['collection']
     linking = link_report(root, {**seed, 'sports_supplement': {'the_stats_api': collection}},

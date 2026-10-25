@@ -536,7 +536,7 @@ def run_portfolio(
                     context_attempt = {'version': context_job.VERSION, 'mode': context_mode,
                                        'status': 'ATTEMPTED_BUDGET_MUST_NOT_RESTART'}
                     candidate_context = context_job.prepare(context_root, fixture_records, packets,
-                                                            run_id=run_id, clock=clock,
+                                                            run_id=run_id, target_date=target_date, clock=clock,
                                                             eligible_candidates=enriched['candidates'],
                                                             weather_provider=weather_provider if context_mode == 'ACTIVE' else None)
                     augmented = context_job.attach(packets, candidate_context)
