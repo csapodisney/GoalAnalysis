@@ -42,13 +42,15 @@ def unknown(fixture: dict, reason: str = _UNKNOWN) -> dict:
 
 
 class OpenMeteoForecast:
-    def __init__(self, transport=_get_json, *, clock=None, recorder=None):
+    def __init__(self, transport=_get_json, *, clock=None, recorder=None, isolate_request_failures=False):
         self.transport = transport
         self.clock = clock or (lambda: datetime.now(UTC))
         self.recorder = recorder
         self._locations = {}
         self._forecasts = {}
         self._unavailable_hosts = set()
+        self._failed_requests = set()
+        self.isolate_request_failures = isolate_request_failures
 
     def _observed_at(self):
         observed = self.clock()
@@ -78,12 +80,21 @@ class OpenMeteoForecast:
 
     def _fetch(self, url: str) -> dict:
         host = urllib.parse.urlsplit(url).netloc
-        if host in self._unavailable_hosts:
+        if host in self._unavailable_hosts or url in self._failed_requests:
             raise ValueError("Open-Meteo endpoint unavailable for this run")
         try:
             return self.transport(url)
+        except urllib.error.HTTPError as error:
+            self._failed_requests.add(url)
+            # Access/quota denial applies to the host. A single timeout or bad
+            # location response must not suppress all other eligible fixtures.
+            if not self.isolate_request_failures or error.code in {401, 403, 429}:
+                self._unavailable_hosts.add(host)
+            raise
         except (OSError, ValueError, TimeoutError):
-            self._unavailable_hosts.add(host)
+            self._failed_requests.add(url)
+            if not self.isolate_request_failures:
+                self._unavailable_hosts.add(host)
             raise
 
     def forecast(self, fixture: dict, *, coordinates=None) -> dict:

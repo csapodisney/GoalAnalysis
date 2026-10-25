@@ -548,6 +548,9 @@ def analyze_report(root, report, *, weather_provider=None, clock=lambda: datetim
     now = _stamp(clock())
     fixtures = deepcopy(report.get('fixtures', []))
     forecasts = {f['fixture_id']: deepcopy(f['weather']) for f in fixtures if isinstance(f.get('weather'), dict)}
+    from goal_analysis.jobs.candidate_context_review import frozen_weather_fixtures
+
+    frozen_forecasts = frozen_weather_fixtures(report, now)
     used = {leg['fixture_id'] for group in GROUPS for card in report.get(group, [])
             for leg in card.get('legs', [])}
     attempts = 0
@@ -564,7 +567,8 @@ def analyze_report(root, report, *, weather_provider=None, clock=lambda: datetim
                 and timedelta(0) <= now - _stamp(old.get('observed_at')) <= timedelta(minutes=5))
         except (TypeError, ValueError):
             attempted_this_run = False
-        if (not usable and not attempted_this_run and fixture['fixture_id'] in used
+        if (not usable and not attempted_this_run and fixture['fixture_id'] not in frozen_forecasts
+                and fixture['fixture_id'] in used
                 and weather_provider is not None and attempts < max_missing_forecasts):
             attempts += 1
             try:

@@ -28,7 +28,7 @@ from goal_analysis.providers.open_meteo import OpenMeteoForecast
 from goal_analysis.storage import SnapshotStore
 from goal_analysis.storage.temporal import TemporalStore
 
-FIXTURES=Path(__file__).parent/'fixtures/stadium-locations-20261023-fifth'
+FIXTURES=Path(__file__).parent/'fixtures/stadium-locations-20261024-sixth'
 ORIGINAL=json.loads((FIXTURES/'reviewed-locations.json').read_bytes())
 
 
@@ -71,7 +71,7 @@ def test_reviewed_free_wgs84_entities_keep_provenance_precision_and_real_externa
     sources(tmp_path,monkeypatch)
     monkeypatch.setattr(socket,'socket',Mock(side_effect=AssertionError('NO_NETWORK')))
     result=geo.read_locations(tmp_path,as_of=NOW)
-    assert len(result)==56
+    assert len(result)==69
     brest=result[('Stade Francis-Le Ble','Brest')]
     assert brest['payload']['venue_id']=='wikidata:Q1432517'
     assert brest['payload']['latitude']==48.40293 and brest['payload']['longitude']==-4.46148

@@ -9,6 +9,7 @@ from goal_analysis.agents import canonical_sha256
 from goal_analysis.normalization.canonical import utc
 
 VERSION = 'candidate-context-review-v1'
+WEATHER_VERSION = 'candidate-context-weather-v1'
 CATEGORIES = ('players', 'xg', 'schedule', 'travel', 'rotation', 'weather')
 
 
@@ -136,7 +137,68 @@ def context_scope_packets(fixtures, packets, eligible_candidates, cutoff):
     return list(scope.values())
 
 
-def prepare(root, fixtures, packets, *, run_id, eligible_candidates=(),
+def _forecast_scope(fixtures, scope_packets, provider, clock):
+    """One lookup per eligible fixture; preserve original receipts on reuse."""
+    from goal_analysis.engine.publication_window import allows_new_leg
+    from goal_analysis.providers.open_meteo import unknown
+
+    by_id = {f['fixture_id']: f for f in fixtures}
+    forecasts, attempted, skipped = {}, [], []
+    for packet in scope_packets:
+        fid = packet['fixture_id']
+        fixture = by_id.get(fid)
+        started = utc(clock())
+        if fixture is None or not allows_new_leg(fixture, started):
+            skipped.append(fid)
+            continue
+        if isinstance(packet.get('weather_forecast'), dict):
+            forecasts[fid] = deepcopy(packet['weather_forecast'])
+            continue
+        attempted.append(fid)
+        try:
+            lookup = getattr(provider, 'forecast_for_candidate_context', provider.forecast)
+            forecast = lookup(deepcopy(fixture))
+            if not isinstance(forecast, dict) or forecast.get('fixture_id') != fid:
+                raise ValueError('WEATHER_FIXTURE_IDENTITY_MISMATCH')
+        except Exception:  # noqa: BLE001 - isolate each optional forecast, never retry
+            forecast = unknown(fixture, 'Az Open-Meteo lekérés nem sikerült; az időjárás ismeretlen.')
+            forecast.update(weather_kind='FORECAST', provider_issue_time=None,
+                observed_at=started.isoformat(), kickoff=fixture.get('kickoff'),
+                time_basis='LOOKUP_ATTEMPT_AT')
+        forecasts[fid] = deepcopy(forecast)
+        packet['weather_forecast'] = deepcopy(forecast)
+    return forecasts, attempted, skipped
+
+
+def frozen_weather_fixtures(report, now):
+    """Validate the same-run frozen attempts before suppressing later lookups."""
+    value = report.get('candidate_context_weather')
+    try:
+        if (not isinstance(value, dict) or value['version'] != WEATHER_VERSION
+                or not report.get('run_id') or value['run_id'] != report['run_id']
+                or utc(value['as_of']) > utc(now)):
+            return set()
+        ids = value['fixture_ids']
+        attempted, skipped = value['attempted_fixture_ids'], value['skipped_fixture_ids']
+        if (not isinstance(ids, list) or ids != sorted(set(ids))
+                or attempted != sorted(set(attempted)) or skipped != sorted(set(skipped))
+                or not set(attempted).issubset(ids) or set(ids) & set(skipped)):
+            return set()
+        fixtures = [f for f in report.get('fixtures', []) if f['fixture_id'] in ids]
+        if len(fixtures) != len(ids):
+            return set()
+        forecasts = {f['fixture_id']: f['weather'] for f in fixtures}
+        if any(not isinstance(w, dict) or w.get('fixture_id') != fid
+               or utc(w['observed_at']) > utc(value['as_of']) for fid, w in forecasts.items()):
+            return set()
+        if canonical_sha256(forecasts) != value['forecasts_sha256']:
+            return set()
+        return set(ids)
+    except (KeyError, TypeError, ValueError):
+        return set()
+
+
+def prepare(root, fixtures, packets, *, run_id, eligible_candidates=(), weather_provider=None,
             clock=lambda: datetime.now(UTC)):
     """One bounded acquisition before review; the same collection is reused later."""
     from goal_analysis.jobs.calendar_collection_shadow import collect as calendars
@@ -166,10 +228,23 @@ def prepare(root, fixtures, packets, *, run_id, eligible_candidates=(),
         qualified and not stopped and players_enabled(root)) else {}
     calendar_collection = _optional_stage(calendars, root, qualified, clock=clock, fallback={}) if (
         qualified and not stopped and calendars_enabled(root)) else {}
+    weather = None
+    if weather_provider is not None:
+        weather, attempted, skipped = _forecast_scope(selected, scope_packets, weather_provider, clock)
+    venue_collection = {}
+    if weather_provider is not None and hasattr(weather_provider, 'collect_previous_venues'):
+        venue_collection = _optional_stage(weather_provider.collect_previous_venues, selected, fallback={})
     cutoff = utc(clock())
     prepared = compose(root, selected, scope_packets, collection, as_of=cutoff)
+    if weather is not None:
+        prepared['weather_by_fixture'] = weather
+        prepared['frozen_weather'] = {'version': WEATHER_VERSION, 'run_id': run_id,
+            'as_of': cutoff.isoformat(), 'fixture_ids': sorted(weather),
+            'attempted_fixture_ids': sorted(attempted), 'skipped_fixture_ids': sorted(skipped),
+            'forecasts_sha256': canonical_sha256(weather)}
     return {**prepared, 'started_at': started.isoformat(), 'canonical_linking': linking,
             'player_collection': player_collection, 'calendar_collection': calendar_collection,
+            'previous_venue_collection': venue_collection,
             'scope_packets': scope_packets,
             'initial_review_fixture_ids': sorted({p['fixture_id'] for p in packets})}
 
@@ -253,6 +328,8 @@ def compose(root, fixtures, packets, collection, *, as_of):
 def attach(packets, prepared):
     output = deepcopy(packets)
     for packet in output:
+        if packet['fixture_id'] in prepared.get('weather_by_fixture', {}):
+            packet['weather_forecast'] = deepcopy(prepared['weather_by_fixture'][packet['fixture_id']])
         context = prepared.get('contexts', {}).get(packet['fixture_id'])
         if context is None:
             # Follow-ups share the frozen source cutoff; uncovered facts stay unknown.

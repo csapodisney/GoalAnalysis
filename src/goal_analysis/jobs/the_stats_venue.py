@@ -5,8 +5,8 @@ from goal_analysis.normalization.canonical import utc
 from goal_analysis.normalization.live_identity import field_id, fixture_identity
 
 
-def resolve_venue(resources, fixture):
-    if fixture.get('source_provider') != 'the_stats_api' or fixture.get('venue_city'):
+def resolve_venue(resources, fixture, *, refresh_existing=False):
+    if fixture.get('source_provider') != 'the_stats_api' or (fixture.get('venue_city') and not refresh_existing):
         return dict(fixture), None
     if utc(resources.clock()) >= utc(fixture['kickoff']) - timedelta(minutes=15):
         return dict(fixture), {'status': 'LOCKED'}

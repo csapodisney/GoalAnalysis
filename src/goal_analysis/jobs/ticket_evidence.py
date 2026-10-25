@@ -236,6 +236,14 @@ def _preselection_review(report, artifacts, leg, sources):
                                         allow_nan=False).encode()).hexdigest()
         if actual_hash != response.get('decision_context_input_sha256'):
             raise ValueError('Actual candidate review input hash mismatch')
+        from goal_analysis.agents.astra_review import _expand_shared_facts, _ReviewError
+
+        # The archived hash binds the sent wire; verify references before comparing
+        # its fully restored facts with the original frozen packet.
+        try:
+            packed = _expand_shared_facts(packed)
+        except (_ReviewError, KeyError, TypeError, ValueError) as error:
+            raise ValueError('Invalid shared facts in actual candidate review input') from error
         requested = [p for p in packed.get('candidates', []) if p.get('candidate_id') == identifier]
         if (len(requested) != 1 or any(requested[0].get(k) != packet.get(k)
                 for k in ('candidate_id', 'fixture_id', 'market_key', 'selection_key', 'period', 'decimal_price'))

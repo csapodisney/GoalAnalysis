@@ -82,6 +82,15 @@ reading a candidate's historical_context, history_analysis or weather_forecast.
 These are deduplicated supplied facts, not missing data or additional evidence.
 The content_sha256 records the original value; do not infer extra facts.
 """
+_CONTEXT_SHARED_FACT_INSTRUCTIONS = """This input also shares unchanged values in
+candidate evidence and decision_context.source_urls, and in each
+decision_contexts category's data and source_urls. Resolve shared_fact_id
+references recursively in all these fields using shared_candidate_facts.
+Each content_sha256 hashes the fully restored original value. All facts,
+source URLs, availability times and evidence IDs remain present; a reference
+never means missing data. Candidate IDs, prices and category summaries remain
+inline. Evaluate each original candidate against its own supplied evidence.
+"""
 _CONTEXT_INSTRUCTIONS = """Candidates with decision_context refer to the exact shared
 source-bound decision_contexts input. Evaluate every one of its six categories
 once in context_assessments for that exact candidate and market. For SOURCED
@@ -495,6 +504,105 @@ def _share_repeated_facts(candidates):
     return pool
 
 
+def _expand_shared_facts(content):
+    """Restore and verify wire facts before any local review/cache validation."""
+    pool = content.get('shared_candidate_facts', {})
+    if not isinstance(pool, dict):
+        raise _ReviewError('Invalid shared candidate fact pool.')
+
+    def expand(value, trail=(), depth=0):
+        if depth > 48:
+            raise _ReviewError('Shared candidate facts are nested too deeply.')
+        if isinstance(value, dict):
+            if 'shared_fact_id' in value:
+                key = value['shared_fact_id']
+                if (not isinstance(key, str) or key not in pool or key in trail
+                        or set(value) - {'shared_fact_id', 'status', 'source_url'}):
+                    raise _ReviewError('Invalid shared candidate fact reference.')
+                row = pool[key]
+                if not isinstance(row, dict) or set(row) != {'value', 'content_sha256'}:
+                    raise _ReviewError('Invalid shared candidate fact entry.')
+                restored = expand(row['value'], (*trail, key), depth + 1)
+                digest = hashlib.sha256(json.dumps(restored, sort_keys=True,
+                    ensure_ascii=False, allow_nan=False).encode()).hexdigest()
+                if digest != row['content_sha256'] or any(
+                        not isinstance(restored, dict) or restored.get(name) != item
+                        for name, item in value.items() if name != 'shared_fact_id'):
+                    raise _ReviewError('Shared candidate fact differs from its original value.')
+                return restored
+            return {key: expand(item, trail, depth + 1) for key, item in value.items()}
+        if isinstance(value, list):
+            return [expand(item, trail, depth + 1) for item in value]
+        return value
+
+    return {key: expand(value) for key, value in content.items()
+            if key not in {'shared_candidate_facts', 'shared_context_facts'}}
+
+
+def _share_context_facts(content):
+    """Lossless fallback for repeated source data, only when ordinary packing is full."""
+    from collections import Counter
+
+    output = _expand_shared_facts(content)
+    roots = []
+    for candidate in output['candidates']:
+        roots.extend((candidate, field) for field in (
+            'historical_context', 'history_analysis', 'weather_forecast', 'evidence')
+            if field in candidate)
+        if isinstance(candidate.get('decision_context'), dict):
+            roots.append((candidate['decision_context'], 'source_urls'))
+    for context in output.get('decision_contexts', []):
+        for category in context['categories']:
+            roots.extend((category, field) for field in ('data', 'source_urls'))
+    counts, values, pool = Counter(), {}, {}
+
+    def identify(value):
+        digest = hashlib.sha256(json.dumps(value, sort_keys=True,
+            ensure_ascii=False, allow_nan=False).encode()).hexdigest()
+        return digest, len(_wire_json(value).encode())
+
+    def count(value, depth=0):
+        if depth > 24:
+            raise _ReviewError('Shared candidate facts are nested too deeply.')
+        if not isinstance(value, (dict, list)):
+            return
+        digest, size = identify(value)
+        if size >= 96:
+            counts[digest] += 1
+            values[digest] = value
+        for child in value.values() if isinstance(value, dict) else value:
+            count(child, depth + 1)
+
+    for container, field in roots:
+        count(container[field])
+
+    def replace(value, skip=None):
+        if not isinstance(value, (dict, list)):
+            return value
+        digest, size = identify(value)
+        key = 'fact:' + digest[:16]
+        reference = {'shared_fact_id': key}
+        entry = {'content_sha256': digest, 'value': value}
+        saved_bytes = (counts[digest] * (size - len(_wire_json(reference).encode()))
+                       - (len(_wire_json({key: entry}).encode()) - 2))
+        if size >= 96 and counts[digest] > 1 and saved_bytes > 0 and digest != skip:
+            if key not in pool:
+                pool[key] = {'content_sha256': digest, 'value': replace(values[digest], skip=digest)}
+            elif pool[key]['content_sha256'] != digest:
+                raise _ReviewError('Shared candidate fact ID collision.')
+            return reference
+        return ({key: replace(item) for key, item in value.items()} if isinstance(value, dict)
+                else [replace(item) for item in value])
+
+    for container, field in roots:
+        container[field] = replace(container[field])
+    output['shared_candidate_facts'] = pool
+    output['shared_context_facts'] = 'lossless-context-and-evidence-v1'
+    if _expand_shared_facts(output) != _expand_shared_facts(content):
+        raise _ReviewError('Shared candidate facts could not be restored exactly.')
+    return output
+
+
 def _validate_reviews(
     payload: Any, candidates: list[dict[str, Any]], sources: list[dict[str, str]]
 ) -> list[dict[str, Any]]:
@@ -765,6 +873,8 @@ class AstraReviewer:
             return self._result("UNAVAILABLE", "OPENAI_API_KEY is not configured.", usage)
         try:
             packed, prompt_hash = self._prepare(candidates, target_date, feedback)
+            validated_candidates = (_expand_shared_facts(packed)['candidates']
+                if packed.get('shared_context_facts') else packed['candidates'])
             cache_key = hashlib.sha256(
                 json.dumps(
                     {
@@ -779,12 +889,12 @@ class AstraReviewer:
                     ensure_ascii=False,
                 ).encode("utf-8")
             ).hexdigest()
-            cached = self._read_cache(cache_key, packed["candidates"])
+            cached = self._read_cache(cache_key, validated_candidates)
             if cached is not None:
                 return cached
             observed_at = _utcnow().isoformat()
             packed["observed_at"] = observed_at
-            sources = self._supplied_sources(packed["candidates"])
+            sources = self._supplied_sources(validated_candidates)
             research_text = "Web research disabled; use supplied facts only."
             research_status = "DISABLED"
             research_details = {}
@@ -793,7 +903,8 @@ class AstraReviewer:
                 response = self._request(
                     {
                         "instructions": self._prompt("research.txt") + (
-                            '\n\n' + _SHARED_FACT_INSTRUCTIONS if packed.get('shared_candidate_facts') else ''),
+                            '\n\n' + _SHARED_FACT_INSTRUCTIONS if packed.get('shared_candidate_facts') else '') + (
+                            '\n\n' + _CONTEXT_SHARED_FACT_INSTRUCTIONS if packed.get('shared_context_facts') else ''),
                         "input": _wire_json(packed),
                         "tools": [{"type": "web_search", "search_context_size": "low"}],
                         "tool_choice": "required",
@@ -828,7 +939,8 @@ class AstraReviewer:
                             isinstance(item.get("veto_override_context"), dict)
                             for item in packed["candidates"]) else ""
                     ) + ("\n\n" + _CONTEXT_INSTRUCTIONS if packed.get('decision_contexts') else "")
-                    + ('\n\n' + _SHARED_FACT_INSTRUCTIONS if packed.get('shared_candidate_facts') else ''),
+                    + ('\n\n' + _SHARED_FACT_INSTRUCTIONS if packed.get('shared_candidate_facts') else '')
+                    + ('\n\n' + _CONTEXT_SHARED_FACT_INSTRUCTIONS if packed.get('shared_context_facts') else ''),
                     "input": _wire_json(
                         {
                             **packed,
@@ -863,7 +975,7 @@ class AstraReviewer:
                 raise _ReviewError(
                     "OpenAI did not return valid structured analysis JSON."
                 ) from None
-            reviews = _validate_reviews(payload, packed["candidates"], sources)
+            reviews = _validate_reviews(payload, validated_candidates, sources)
             result = self._result(
                 "COMPLETE",
                 "Astra review completed with traceable references.",
@@ -1031,6 +1143,11 @@ class AstraReviewer:
         except (ValueError, TypeError):
             raise _ReviewError("Astra input must contain finite JSON values only.") from None
         maximum_bytes = 360_000 if decision_contexts else 180_000
+        if decision_contexts and len(raw.encode('utf-8')) > maximum_bytes:
+            shared_content = _share_context_facts(content)
+            shared_raw = _wire_json(shared_content)
+            if len(shared_raw.encode('utf-8')) < len(raw.encode('utf-8')):
+                content, raw = shared_content, shared_raw
         if len(raw.encode("utf-8")) > maximum_bytes or len(encoded_feedback) > 12_000:
             raise _ReviewError(f"Astra input exceeded the compact review budget ({len(raw.encode('utf-8'))} bytes).")
         if re.search(
@@ -1044,7 +1161,8 @@ class AstraReviewer:
              + (_VETO_OVERRIDE_INSTRUCTIONS if any(isinstance(item.get("veto_override_context"), dict)
                                                    for item in packed) else "")
              + (_CONTEXT_INSTRUCTIONS if decision_contexts else "")
-             + (_SHARED_FACT_INSTRUCTIONS if shared else '')).encode(
+             + (_SHARED_FACT_INSTRUCTIONS if content.get('shared_candidate_facts') else '')
+             + (_CONTEXT_SHARED_FACT_INSTRUCTIONS if content.get('shared_context_facts') else '')).encode(
                 "utf-8"
             )
         ).hexdigest()

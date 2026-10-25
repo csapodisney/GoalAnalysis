@@ -28,3 +28,6 @@ config/daily223-live.json
 *.sqlite
 *.sqlite3
 backups/
+
+# Archived third-party credential material remains local and immutable.
+/tests/fixtures/stadium-locations-20261024-sixth/a51be549ec36777ac012cd53f8d7a743d53e8e1791595c62dc0454e108c3c6ba.bin

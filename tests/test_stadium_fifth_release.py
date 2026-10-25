@@ -12,6 +12,8 @@ from goal_analysis.normalization.canonical import utc
 
 FIXTURES=Path(__file__).parent/'fixtures/stadium-locations-20261023-fifth'
 PACKET=json.loads((FIXTURES/'reviewed-locations.json').read_bytes())
+FIFTH_BUNDLE='6a6ef106af3d782708df8df56aa5ce533c99302f3b7fb41eab858c21a66a9ceb'
+FOURTH_BUNDLE='57926fc865a79717e7039d82c56b90cb1efa5fef37bed4d23eb2ba11544f1011'
 AT=utc(PACKET['available_at'])
 NEW=[
     ('Mestalla','Valencia','Q202762'),
@@ -50,7 +52,7 @@ def test_new_own_availability_does_not_relabel_fourth_release(tmp_path,delta,cou
     install_original_release(tmp_path,'stadium-locations-20261022-fourth');install(tmp_path)
     rows=geo.read_locations(tmp_path,as_of=AT+timedelta(microseconds=delta))
     assert len(rows)==count and (('Mestalla','Valencia') in rows)==(count==56)
-    if delta<0:assert {r['payload']['bundle_sha256'] for r in rows.values()}=={geo.HISTORICAL_RELEASES[0][0]}
+    if delta<0:assert {r['payload']['bundle_sha256'] for r in rows.values()}=={FOURTH_BUNDLE}
 
 @pytest.mark.parametrize('name,city',[("Stade de l'Aube",'Troyes'),('Estadio de la Cartuja','Seville')])
 def test_unresolved_coordinate_disagreement_and_unavailable_identity_page_are_not_admitted(tmp_path,name,city):
@@ -67,7 +69,7 @@ def test_all_four_predecessor_records_retained_exactly():
     fourth=json.loads((Path(__file__).parent/'fixtures/stadium-locations-20261022-fourth/reviewed-locations.json').read_bytes())
     assert PACKET['records'][:44]==fourth['records']
     assert utc(fourth['available_at'])<AT
-    assert sha256((FIXTURES/'reviewed-locations.json').read_bytes()).hexdigest()==geo.REVIEWED_BUNDLE
+    assert sha256((FIXTURES/'reviewed-locations.json').read_bytes()).hexdigest()==FIFTH_BUNDLE
 
 def test_current_byte_limit_only_applies_to_current_release(tmp_path,monkeypatch):
     install(tmp_path);limits=[];original=geo._bytes
@@ -80,7 +82,7 @@ def test_current_byte_limit_only_applies_to_current_release(tmp_path,monkeypatch
 @pytest.mark.parametrize('fault',['missing','corrupt','oversize'])
 def test_bad_fifth_release_cannot_fall_back_to_44_favorable_records(tmp_path,fault):
     install_original_release(tmp_path,'stadium-locations-20261022-fourth');folder=install(tmp_path)
-    p=folder/(geo.REVIEWED_BUNDLE+'.json')
+    p=folder/(FIFTH_BUNDLE+'.json')
     if fault=='missing':p.unlink()
     elif fault=='corrupt':p.write_bytes(p.read_bytes()+b' ')
     else:p.write_bytes(b' '*80_001)
@@ -88,5 +90,5 @@ def test_bad_fifth_release_cannot_fall_back_to_44_favorable_records(tmp_path,fau
 
 def test_corrupt_future_release_is_not_dependency_of_original_44_record_view(tmp_path):
     install_original_release(tmp_path,'stadium-locations-20261022-fourth')
-    folder=install(tmp_path);(folder/(geo.REVIEWED_BUNDLE+'.json')).write_bytes(b'bad future bytes')
+    folder=install(tmp_path);(folder/(FIFTH_BUNDLE+'.json')).write_bytes(b'bad future bytes')
     assert len(geo.read_locations(tmp_path,as_of=AT-timedelta(microseconds=1)))==44

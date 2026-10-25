@@ -493,7 +493,16 @@ def run_portfolio(
             )
         review_cutoff = clock()
         packets = [item for item in packets if allows_new_leg(item, review_cutoff)]
-        if weather_provider is not None and packets:
+        context_root = None
+        if packets and ledger is not None and getattr(ledger, 'path', None) is not None:
+            from goal_analysis.jobs import candidate_context_review as context_job
+
+            context_root = Path(ledger.path).resolve().parents[2]
+            try:
+                context_mode = context_job.policy(context_root)
+            except (OSError, ValueError, TypeError):
+                context_mode = 'UNAVAILABLE'
+        if weather_provider is not None and packets and context_mode != 'ACTIVE':
             from goal_analysis.providers.open_meteo import unknown, weather_context
 
             fixtures = {item["fixture_id"]: item for item in artifacts.get("fixtures", {}).get("records", [])}
@@ -508,18 +517,15 @@ def run_portfolio(
             for packet in packets:
                 packet["weather_forecast"] = weather_by_fixture.get(packet["fixture_id"])
         original_review_packets = deepcopy(packets)
-        if packets and ledger is not None and getattr(ledger, 'path', None) is not None:
+        if context_root is not None:
             try:
-                from goal_analysis.jobs import candidate_context_review as context_job
-
-                context_root = Path(ledger.path).resolve().parents[2]
-                context_mode = context_job.policy(context_root)
                 if context_mode in {'SHADOW', 'ACTIVE'}:
                     context_attempt = {'version': context_job.VERSION, 'mode': context_mode,
                                        'status': 'ATTEMPTED_BUDGET_MUST_NOT_RESTART'}
                     candidate_context = context_job.prepare(context_root, fixture_records, packets,
                                                             run_id=run_id, clock=clock,
-                                                            eligible_candidates=enriched['candidates'])
+                                                            eligible_candidates=enriched['candidates'],
+                                                            weather_provider=weather_provider if context_mode == 'ACTIVE' else None)
                     augmented = context_job.attach(packets, candidate_context)
                     artifacts['candidate_context_inputs'] = candidate_context
                     artifacts['candidate_review_control_packets'] = deepcopy(packets)
@@ -529,6 +535,7 @@ def run_portfolio(
                         as_of=candidate_context['as_of'])
                     if context_mode == 'ACTIVE':
                         packets = augmented
+                        weather_by_fixture.update(candidate_context.get('weather_by_fixture', {}))
             except Exception:  # noqa: BLE001 - optional facts cannot discard the stable construction
                 context_mode = 'UNAVAILABLE'
                 if context_attempt is not None:
@@ -548,6 +555,8 @@ def run_portfolio(
         )
         _attach_veto_reviews(club_enriched, packets, review, clock())
         if weather_by_fixture:
+            from goal_analysis.providers.open_meteo import weather_context
+
             review["fixture_context"] = [
                 *[item for item in review.get("fixture_context", []) if item.get("topic") != "weather"],
                 *(weather_context(item) for item in weather_by_fixture.values()),
@@ -672,6 +681,8 @@ def run_portfolio(
         report['candidate_context_attempt'] = context_attempt
         if candidate_context:
             report['sports_supplement'] = {'the_stats_api': candidate_context['collection']}
+            if context_mode == 'ACTIVE' and candidate_context.get('frozen_weather'):
+                report['candidate_context_weather'] = deepcopy(candidate_context['frozen_weather'])
             report['candidate_context_review'] = {
                 'version': context_job.VERSION, 'mode': context_mode,
                 'status': 'APPLIED_EXISTING_REVIEW_CONTRACT' if context_mode == 'ACTIVE' else 'CAPTURED_FOR_SEPARATE_SHADOW_COMPARISON',

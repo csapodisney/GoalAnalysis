@@ -92,9 +92,9 @@ def test_invalid_current_release_is_not_replaced_by_favorable_old_packet(tmp_pat
 
 
 def test_expanded_release_has_unique_exact_aliases_and_sources():
-    assert len(ORIGINAL['records'])==56
-    assert len({(r['native_name'],r['native_city']) for r in ORIGINAL['records']})==56
-    assert len({r['wikidata_id'] for r in ORIGINAL['records']})==56
+    assert len(ORIGINAL['records'])==69
+    assert len({(r['native_name'],r['native_city']) for r in ORIGINAL['records']})==69
+    assert len({r['wikidata_id'] for r in ORIGINAL['records']})==69
 
 
 def install_original_release(root, name):
@@ -158,6 +158,7 @@ def test_current_missing_release_does_not_fall_back_to_older_present_records(tmp
     ('stadium-locations-20261022-expanded',23,50_000),
     ('stadium-locations-20261022-third',34,50_000),
     ('stadium-locations-20261022-fourth',44,64_000),
+    ('stadium-locations-20261023-fifth',56,80_000),
 ])
 def test_larger_current_packet_does_not_widen_historical_byte_limits(tmp_path,monkeypatch,release,count,limit):
     packet,path=install_original_release(tmp_path,release)

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+        <meta charset="UTF-8">
+    <title>Stade des Alpes - Grenoble.fr</title>
+    <meta name="Description" content="[ADRESSE]">
+    <meta name="author" content="Ville de Grenoble">
+    <link rel="shortcut icon" href="/uploads/Site/sit_favicon/25/SIT_GRENOBLE_598_SIT_GRENOBLE_143_vdg.ico" type="image/x-icon">
+    <script>
+        const SERVER_ROOT = '/';
+        window.cmsCore = {};
+        cmsCore.title_newwindow = '(nouvelle fenêtre)';
+        cmsCore.SIT_IMAGE = '/images/GBI_GRENOBLE/';
+        cmsCore.postMaxSize = 67108864;
+    </script>
+<link rel="stylesheet" href="/include/public/vendor/vendor.min.css" >
+<link rel="stylesheet" href="/include/public/GAB_GRENOBLE/GAB_GRENOBLE.min.css?v=1789721722" >
+<link rel="stylesheet" href="/include/js/leaflet/leaflet.css" >
+<link rel="stylesheet" href="/include/js/leaflet/fullScreen/leaflet.fullscreen.css" >
+<link rel="stylesheet" href="/include/js/leaflet/gestureHandling/leaflet-gesture-handling.css" >
+<script src="/include/js/tarteaucitron.js/tarteaucitron.min.js" ></script>
+<script src="/include/public/vendor/vendor.min.js" defer="defer"></script>
+<script src="/include/public/GAB_GRENOBLE/GAB_GRENOBLE.min.js?v=1788368990" defer="defer"></script>
+<script src="/include/js/jquery/jquery.min.js" ></script>
+<script src="/include/js/leaflet/leaflet.js" ></script>
+<script src="/include/js/leaflet/fullScreen/Leaflet.fullscreen.min.js" ></script>
+<script src="/include/js/leaflet/gestureHandling/leaflet-gesture-handling.min.js" ></script>
+<script src="/include/js/leaflet/geolet/geolet.js" ></script>
+<script src="/include/js/leaflet/osm.js" ></script>
+<script>
+dataLayer = [{
+	'ID_PAGE' : '137',
+	'LEVEL1' : 'Vivre à Grenoble',
+	'LEVEL2' : 'Portail cartographique',
+	'LEVEL3' : '',
+	'LEVEL4' : '',
+	'TYPE' : 'lieu',
+	'IDTF' : '983',
+	'LABEL' : 'Stade des Alpes'
+}];
+</script>
+<meta property="og:title" content="Stade des Alpes">
+<meta property="og:url" content="https://www.grenoble.fr/lieu/983/137-stade-des-alpes.htm">
+<link rel="canonical" href="https://www.grenoble.fr/lieu/983/137-stade-des-alpes.htm">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:local" content="fr_FR">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ville de Grenoble">
+<meta property="og:description" content="[ADRESSE]">
+<script>(tarteaucitron.job = tarteaucitron.job || []).push('calameo');
+tarteaucitron.user.hotjarId='6372214';
+tarteaucitron.user.HotjarSv='6';
+(tarteaucitron.job = tarteaucitron.job || []).push('hotjar');
+tarteaucitron.user.matomotmUrl='https://grenoblealpesmetropole.matomo.cloud/js/container_AZ9SdV0n.js';
+(tarteaucitron.job = tarteaucitron.job || []).push('matomotm');
+(tarteaucitron.job = tarteaucitron.job || []).push('youtube');
+
+tarteaucitron.init({
+    "privacyUrl": "/97-protection-des-donnees-personnelles.htm",
+    "bodyPosition": "top",
+    "hashtag": "#tarteaucitron",
+    "cookieName": "tarteaucitron",
+    "orientation": "bottom",
+    "groupServices": false,
+    "showDetailsOnClick": true,
+    "serviceDefaultState": "wait",
+    "showAlertSmall": true,
+    "showTitleBanner": false,
+    "cookieslist": false,
+    "cookieslistEmbed": false,
+    "closePopup": false,
+    "showIcon": false,
+    "iconSrc": "/uploads/WeboIMAGE/web_chemin/01/50314_586_Picot-TAC.png",
+    "iconPosition": "BottomRight",
+    "adblocker": false,
+    "DenyAllCta" : true,
+    "AcceptAllCta" : true,
+    "highPrivacy": true,
+    "alwaysNeedConsent": false,
+    "handleBrowserDNTRequest": false,
+    "removeCredit": false,
+    "moreInfoLink": true,
+    "useExternalCss": false,
+    "useExternalJs": false,
+    "readmoreLink": "/97-protection-des-donnees-personnelles.htm",
+    "mandatory": true,
+    "mandatoryCta": false,
+    "googleConsentMode": true,
+    "bingConsentMode": true,
+    "pianoConsentMode": true,
+    "pianoConsentModeEssential": true,
+    "softConsentMode": false,
+    "dataLayer": true,
+    "serverSide": false,
+    "partnersList": false
+});
+        </script>
+<meta name="google-site-verification" content="og17lVGoHz5GZuJ9b54XuTWG7Kmxd74j3J9BTExGI0o" />
+<script type="application/ld+json">
+[{"@context":"https:\/\/schema.org","@type":"GovernmentOrganization","@id":"https:\/\/www.grenoble.fr\/#organization","name":"Ville de Grenoble","url":"https:\/\/www.grenoble.fr","logo":{"@type":"ImageObject","url":"https:\/\/www.grenoble.fr\/images\/GBI_GRENOBLE\/logoVDG_B.png","width":60,"height":60},"address":{"@type":"PostalAddress","streetAddress":"11 boulevard Jean Pain","addressLocality":"Grenoble","postalCode":38000,"addressRegion":"Isère","addressCountry":"FR"},"areaServed":{"@type":"AdministrativeArea","name":"Grenoble"},"contactPoint":{"@type":"ContactPoint","telephone":"+33-4-76-76-36-36","contactType":"information"},"sameAs":["https:\/\/www.facebook.com\/VilledeGrenoble","https:\/\/x.com\/villedegrenoble","https:\/\/www.instagram.com\/villedegrenoble\/","https:\/\/www.linkedin.com\/company\/ville-de-grenoble\/","https:\/\/www.youtube.com\/user\/villedegrenoble","https:\/\/www.tiktok.com\/@villedegrenoble"]},{"@context":"https:\/\/schema.org","@type":"LocalBusiness","@id":"https:\/\/www.grenoble.fr\/lieu\/983\/137-stade-des-alpes.htm#localBusiness","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/www.grenoble.fr\/lieu\/983\/137-stade-des-alpes.htm"},"name":"Stade des Alpes","address":{"@type":"PostalAddress","streetAddress":"3 Boulevard Jean Pain","addressLocality":"Grenoble","postalCode":38000,"addressCountry":"FR"},"geo ":{"@type":"GeoCoordinates","latitude":45.187427278869,"longitude":5.7401339662442},"telephone ":"04 57 38 48 00"},{"@context":"https:\/\/schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https:\/\/www.grenoble.fr\/"},{"@type":"ListItem","position":2,"name":"Vivre à Grenoble","item":"https:\/\/www.grenoble.fr\/32-vivre-a-grenoble.htm"},{"@type":"ListItem","position":3,"name":"Portail cartographique","item":"https:\/\/www.grenoble.fr\/137-portail-cartographique.htm"},{"@type":"ListItem","position":4,"name":"Stade des Alpes","item":"https:\/\/www.grenoble.fr\/lieu\/983\/137-stade-des-alpes.htm"}]}]
+</script>
+</head>
+<body class="interne">
+<div id="document" class="l-document" data-mode="ON_" data-idtf="137">
+    <nav class="c-skiplinks js-skiplinks" aria-label="Accès rapide" role="navigation">
+    <ul class="c-skiplinks__list">
+        <li class="c-skiplinks__item">
+            <a class="c-skiplinks__link trigger-click" href="#btnMenu">Menu</a>
+        </li>
+        <li class="c-skiplinks__item">
+            <a class="c-skiplinks__link" href="#main">Contenu</a>
+        </li>
+                    <li class="c-skiplinks__item">
+                <a class="c-skiplinks__link trigger-click" href="#btnRecherche">Recherche</a>
+            </li>
+            </ul>
+</nav>
+
+<header role="banner" class="c-main-header">
+    <div class="c-main-header__top">
+        <div class="container">
+            <nav role="navigation" aria-label="Menu">
+                <button type="button" class="js-aria-toggle c-main-header__button c-main-header__button--nav" id="btnMenu" aria-controls="menu" aria-expanded="false" data-close-on-blur="true" data-slide="true">
+                    <span class="c-main-header__button-inner">
+                        <i class="o-icon o-icon--menu o-icon--big" aria-hidden="true"></i>
+                        <span class="c-main-header__button-text u-visuallyhidden@sm">Menu</span>
+                    </span>
+                </button>
+                <div id="menu" class="c-navigation">
+                    <div class="c-navigation__inner">
+                        <ul class="c-navigation__list c-navigation__list--level-1">
+                                                                                        <li class="c-navigation__item c-navigation__item--level-1">
+                                                                            <button type="button" href="/32-vivre-a-grenoble.htm" class="c-navigation__link c-navigation__link--level-1 c-navigation__link--selected js-submenu-trigger" title="Vivre à Grenoble (rubrique courante)" data-idtf=32 aria-expanded="false" aria-controls="submenu-32">
+                                            Vivre à Grenoble<i class="o-icon o-icon--arrow-right" aria-hidden="true"></i>                                        </button>
+                                        <div id="submenu-32" class="js-submenu c-navigation__submenu"></div>
+                                                                    </li>
+                                                            <li class="c-navigation__item c-navigation__item--level-1">
+                                                                            <button type="button" href="/33-institution.htm" class="c-navigation__link c-navigation__link--level-1 js-submenu-trigger" data-idtf=33 aria-expanded="false" aria-controls="submenu-33">
+                                            Institution<i class="o-icon o-icon--arrow-right" aria-hidden="true"></i>                                        </button>
+                                        <div id="submenu-33" class="js-submenu c-navigation__submenu"></div>
+                                                                    </li>
+                                                            <li class="c-navigation__item c-navigation__item--level-1">
+                                                                            <button type="button" href="/34-actions-et-projets.htm" class="c-navigation__link c-navigation__link--level-1 js-submenu-trigger" data-idtf=34 aria-expanded="false" aria-controls="submenu-34">
+                                            Actions et projets<i class="o-icon o-icon--arrow-right" aria-hidden="true"></i>                                        </button>
+                                        <div id="submenu-34" class="js-submenu c-navigation__submenu"></div>
+                                                                    </li>
+                                                            <li class="c-navigation__item c-navigation__item--level-1">
+                                                                            <a href="/78-gremag.htm" class="c-navigation__link c-navigation__link--level-1">
+                                            Actualités et agendas                                        </a>
+                                                                    </li>
+                                                            <li class="c-navigation__item c-navigation__item--level-1">
+                                                                            <a href="https://grenoble.metropoleparticipative.fr/" class="c-navigation__link c-navigation__link--level-1 external">
+                                            Participation citoyenne<i class="o-icon o-icon--external" aria-hidden="true"></i>                                        </a>
+                                                                    </li>
+                                                    </ul>
+                        <div id="menuSecondaire" class="c-navigation__submenu"></div>
+                        <div class="c-navigation__bottom">
+                                                            <ul class="c-navigation__rs-list">
+                                                                            <li class="c-navigation__rs-item">
+                                            <a class="c-navigation__rs-link" href="https://www.facebook.com/VilledeGrenoble" target="_blank">
+                                                <i class="o-icon o-icon--facebook" aria-hidden="true"></i>
+                                                <span class="u-visuallyhidden">Partager sur Facebook</span>
+                                            </a>
+                                        </li>
+                                                                            <li class="c-navigation__rs-item">
+                                            <a class="c-navigation__rs-link" href="https://twitter.com/villedegrenoble" target="_blank">
+                                                <i class="o-icon o-icon--x-twitter" aria-hidden="true"></i>
+                                                <span class="u-visuallyhidden">Partager sur Twitter</span>
+                                            </a>
+                                        </li>
+                                                                            <li class="c-navigation__rs-item">
+                                            <a class="c-navigation__rs-link" href="https://www.instagram.com/villedegrenoble/" target="_blank">
+                                                <i class="o-icon o-icon--instagram" aria-hidden="true"></i>
+                                                <span class="u-visuallyhidden">Partager sur Instagram</span>
+                                            </a>
+                                        </li>
+                                                                            <li class="c-navigation__rs-item">
+                                            <a class="c-navigation__rs-link" href="https://www.linkedin.com/company/ville-de-grenoble/" target="_blank">
+                                                <i class="o-icon o-icon--linkedin" aria-hidden="true"></i>
+                                                <span class="u-visuallyhidden">Partager sur LinkedIn</span>
+                                            </a>
+                                        </li>
+                                                                            <li class="c-navigation__rs-item">
+                                            <a class="c-navigation__rs-link" href="https://www.youtube.com/user/villedegrenoble" target="_blank">
+                                                <i class="o-icon o-icon--youtube" aria-hidden="true"></i>
+                                                <span class="u-visuallyhidden">Partager sur Youtube</span>
+                                            </a>
+                                        </li>
+                                                                            <li class="c-navigation__rs-item">
+                                            <a class="c-navigation__rs-link" href="https://www.snapchat.com/add/grenoblemaville" target="_blank">
+                                                <i class="o-icon o-icon--snapchat" aria-hidden="true"></i>
+                                                <span class="u-visuallyhidden">Partager sur Snapchat</span>
+                                            </a>
+                                        </li>
+                                                                            <li class="c-navigation__rs-item">
+                                            <a class="c-navigation__rs-link" href="https://www.tiktok.com/@villedegrenoble" target="_blank">
+                                                <i class="o-icon o-icon--tiktok" aria-hidden="true"></i>
+                                                <span class="u-visuallyhidden">Partager sur TikTok</span>
+                                            </a>
+                                        </li>
+                                                                            <li class="c-navigation__rs-item">
+                                            <a class="c-navigation__rs-link" href="https://bsky.app/profile/villedegrenoble.bsky.social" target="_blank">
+                                                <i class="o-icon o-icon--bluesky" aria-hidden="true"></i>
+                                                <span class="u-visuallyhidden">Partager sur BlueSky</span>
+                                            </a>
+                                        </li>
+                                                                            <li class="c-navigation__rs-item">
+                                            <a class="c-navigation__rs-link" href="https://www.threads.net/@villedegrenoble" target="_blank">
+                                                <i class="o-icon o-icon--threads" aria-hidden="true"></i>
+                                                <span class="u-visuallyhidden">Partager sur Threads</span>
+                                            </a>
+                                        </li>
+                                                                    </ul>
+                                                                                </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="c-main-header__logo-wrapper">
+                <div class="c-main-header__logo-ville">
+                    <a href="https://www.grenoble.fr">
+                        <img src="/images/GBI_GRENOBLE/logoVDG_B.png" alt="Ville de Grenoble - Grenoble.fr">
+                    </a>
+                </div>
+                                    <div class="c-main-header__logo-univers">
+                        <a href="/">
+                            <img src="/images/GBI_GRENOBLE/logoGrenobleFr.png" alt="Grenoble.fr">
+                        </a>
+                    </div>
+                                            <div class="c-main-header__meteo u-visible@sm">
+                            <a href="/328-indice-atmo.htm" class="c-main-header__meteo-link" title="Voir la page Indice Atmo">
+                                <img class="c-main-header__meteo-image" src="/images/GBI_GRENOBLE/meteo/ATMO_Indice_2.svg" alt="Voir la page Indice Atmo">
+                            </a>
+                            <p class="c-main-header__meteo-qualite">Air Moyen</p>
+                        </div>
+                                                                <div class="c-main-header__button-wrapper u-visible@sm">
+                            <a href="/582-contacter-la-ville-de-grenoble.htm" class="o-button">
+                                Contact                            </a>
+                        </div>
+                                                </div>
+                            <div role="search">
+                    <button type="button" class="js-aria-toggle c-main-header__button c-main-header__button--search"
+                            id="btnRecherche"
+                            aria-controls="blocRecherche"
+                            data-close-on-blur="true"
+                            data-slide="true"
+                            aria-expanded="false">
+                        <span class="c-main-header__button-inner">
+                            <i class="o-icon o-icon--search o-icon--big" aria-hidden="true"></i>
+                            <span class="c-main-header__button-text u-visuallyhidden@sm">Recherche</span>
+                        </span>
+                    </button>
+                    <div id="blocRecherche" class="c-search-header">
+                        <div class="container">
+                            <form method="get" action="/237-votre-recherche.htm" aria-labelledby="btnRecherche" class="c-search-header__form">
+                                <label for="searchStringTop" class="o-form-control__label u-visuallyhidden">Rechercher sur le site</label>
+                                <input type="search" class="o-form-control__input" id="searchStringTop" name="searchString" value="" minlength="3" placeholder="Votre recherche" title="Votre recherche" required>
+                                <input type="submit" class="o-button" id="searchSubmit" name="search" value="Lancer la recherche">
+                                <input type="hidden" name="idtf" value="237">
+                                <button type="button" class="js-aria-close" id="btnRechercheClose" aria-controls="blocRecherche">
+                                    <i class="o-icon o-icon--close o-icon--medium" aria-hidden="true"></i>
+                                    <span class="u-visuallyhidden">Fermer la recherche</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                    </div>
+    </div>
+    
+            <div class="c-main-header__bottom">
+            <div class="container">
+                <nav id="ariane" class="c-ariane" aria-label="Fil d&#039;Ariane" role="navigation"><ol class="c-ariane__list"><li class="c-ariane__item"><a class="c-ariane__link" href="/">Accueil</a><i class="c-ariane__icon o-icon o-icon--separator" aria-hidden="true"></i></li><li class="c-ariane__item"><a class="c-ariane__link" href="/32-vivre-a-grenoble.htm">Vivre à Grenoble</a><i class="c-ariane__icon o-icon o-icon--separator" aria-hidden="true"></i></li><li class="c-ariane__item"><a href="/137-portail-cartographique.htm" class="c-ariane__link">Portail cartographique</a><i class="c-ariane__icon o-icon o-icon--separator" aria-hidden="true"></i></li><li class="c-ariane__item">Stade des Alpes</li></ol></nav>            </div>
+        </div>
+    </header>
+    <main id="main" role="main" tabindex="-1">
+            <div class="container">
+        <div class="c-accroche">
+                            
+                        <div class="c-accroche__content c-accroche__content--bold">
+                <h1>Stade des Alpes</span></h1>
+
+                                    
+                
+                                    <p class="c-accroche__thematique"><span class="o-tag">Stades</span> - <span class="o-tag">Secteur5</span></p>
+                            </div>
+        </div>
+    </div>
+
+        <div class="main-wrapper has-left-column" id="contenu">
+            <section class="main-column-start js-dragndrop">
+    <div class="paragraphe tpl TPL_LIEU"><div class="paragraphe__inner"><div class="has-both-columns">
+    <section class="main-column-center">
+        <div class="paragraphe txt PRS_FOND2 PRS_WIDTH_LIEU">
+            <div class="paragraphe__inner">
+                <h2>Adresse</h2>
+                <p>3 Boulevard Jean Pain<br>38000 Grenoble<br>Secteur 5</p>
+                                    <div id="mapLieu" class="o-map"></div>
+                    <script>
+                        function mapLieuInit() {const mapLieu = osm.init("mapLieu");window.mLIE983 = osm.addMarker(45.187427278869, 5.7401339662442, {title:"Stade des Alpes", icon: L.icon({iconUrl:'/uploads/LieuThematique/lth_picto_bis/8a/5_279_Style-bold.png', iconAnchor: [15, 30], popupAnchor: [1, -30]})}).bindPopup('<h3>Stade des Alpes</h3><p>3 Boulevard Jean Pain<br>38000 Grenoble<br>Secteur 5</p>')}mapLieuInit();;
+                    </script>
+                            </div>
+        </div>
+
+            </section>
+
+            <section class="main-column-end">
+            <div class="c-column">
+                <h2 class="u-visuallyhidden">Informations complémentaires</h2>
+                
+                                    <div class="c-column__section">
+                        <h3 class="c-column__title has-icon has-icon--left">
+                            <i class="o-icon o-icon--envelope o-icon--color-primary" aria-hidden="true"></i>
+                            Contact
+                        </h3>
+                        <ul>
+                                                            <li><a href=" https://www.grenoblealpesmetropole.fr/76-stade-des-alpes.htm " class="external"> https://www.grenoblealpesmetropole.fr/76-stade-des-alpes.htm </a></li>
+                                                                                                                    <li><a href="tel:04 57 38 48 00">04 57 38 48 00</a></li>
+                                                    </ul>
+                    </div>
+                
+                
+                            </div>
+        </section>
+    </div>
+
+
+</div></div></section>
+    
+    
+    </div>
+    </main>
+    <footer id="bandeauBas" role="contentinfo" class="c-footer">
+    <div class="container">
+        <div class="c-footer__start">
+            <div class="row u-justify-center">
+                <div class="col-md-2">
+                    <div class="c-footer__logo-wrapper">
+                        <p class="c-footer__logo-text">Un site de</p>
+                        <a href="https://www.grenoble.fr">
+                            <img class="c-footer__logo" alt="Ville de Grenoble" src="/images/GBI_GRENOBLE/logoGrenoble.png" loading="lazy">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                    <div class="c-footer__infos-wrapper">
+                        <h2 class="c-footer__title">Ville<br><span class="u-font-bold">de Grenoble</span></h2>
+                        <p>Tél. 04 76 76 36 36</p>
+                        <p>
+                                                            <a href="https://grenoble.iziici.fr/signalement/" class="o-link u-mb-4 external">
+                                    Le Fil de la Ville                                </a>
+                                                        <a href="tel:0800121314" class="numeroVert">
+                                <img class="c-footer__image" src="/images/GBI_GRENOBLE/numero_vert.png" alt="0800121314 : Service et appel gratuits">
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                                    <div class="col-md-5">
+                        <div class="c-footer__links-wrapper">
+                                                            <ul class="c-footer__nav-list">
+                                    <li class="c-footer__nav-item">
+                                        <a href="/582-contacter-la-ville-de-grenoble.htm" class="o-button">
+                                            Contact                                        </a>
+                                    </li>
+                                </ul>
+                            
+                            <h3 class="c-footer__title-rs u-visuallyhidden">Suivez Grenoble</h3>
+                            <ul class="c-footer__nav-list">
+                                                                    <li class="c-footer__rs-item">
+                                        <a class="c-footer__rs-link external" href="https://www.facebook.com/VilledeGrenoble">
+                                            <i class="o-icon o-icon--facebook" aria-hidden="true"></i>
+                                            <span class="u-visuallyhidden">Partager sur Facebook</span>
+                                        </a>
+                                    </li>
+                                                                    <li class="c-footer__rs-item">
+                                        <a class="c-footer__rs-link external" href="https://twitter.com/villedegrenoble">
+                                            <i class="o-icon o-icon--x-twitter" aria-hidden="true"></i>
+                                            <span class="u-visuallyhidden">Partager sur Twitter</span>
+                                        </a>
+                                    </li>
+                                                                    <li class="c-footer__rs-item">
+                                        <a class="c-footer__rs-link external" href="https://www.instagram.com/villedegrenoble/">
+                                            <i class="o-icon o-icon--instagram" aria-hidden="true"></i>
+                                            <span class="u-visuallyhidden">Partager sur Instagram</span>
+                                        </a>
+                                    </li>
+                                                                    <li class="c-footer__rs-item">
+                                        <a class="c-footer__rs-link external" href="https://www.linkedin.com/company/ville-de-grenoble/">
+                                            <i class="o-icon o-icon--linkedin" aria-hidden="true"></i>
+                                            <span class="u-visuallyhidden">Partager sur LinkedIn</span>
+                                        </a>
+                                    </li>
+                                                                    <li class="c-footer__rs-item">
+                                        <a class="c-footer__rs-link external" href="https://www.youtube.com/user/villedegrenoble">
+                                            <i class="o-icon o-icon--youtube" aria-hidden="true"></i>
+                                            <span class="u-visuallyhidden">Partager sur Youtube</span>
+                                        </a>
+                                    </li>
+                                                                    <li class="c-footer__rs-item">
+                                        <a class="c-footer__rs-link external" href="https://www.snapchat.com/add/grenoblemaville">
+                                            <i class="o-icon o-icon--snapchat" aria-hidden="true"></i>
+                                            <span class="u-visuallyhidden">Partager sur Snapchat</span>
+                                        </a>
+                                    </li>
+                                                                    <li class="c-footer__rs-item">
+                                        <a class="c-footer__rs-link external" href="https://www.tiktok.com/@villedegrenoble">
+                                            <i class="o-icon o-icon--tiktok" aria-hidden="true"></i>
+                                            <span class="u-visuallyhidden">Partager sur TikTok</span>
+                                        </a>
+                                    </li>
+                                                                    <li class="c-footer__rs-item">
+                                        <a class="c-footer__rs-link external" href="https://bsky.app/profile/villedegrenoble.bsky.social">
+                                            <i class="o-icon o-icon--bluesky" aria-hidden="true"></i>
+                                            <span class="u-visuallyhidden">Partager sur BlueSky</span>
+                                        </a>
+                                    </li>
+                                                                    <li class="c-footer__rs-item">
+                                        <a class="c-footer__rs-link external" href="https://www.threads.net/@villedegrenoble">
+                                            <i class="o-icon o-icon--threads" aria-hidden="true"></i>
+                                            <span class="u-visuallyhidden">Partager sur Threads</span>
+                                        </a>
+                                    </li>
+                                                            </ul>
+                        </div>
+                    </div>
+                            </div>
+        </div>
+
+        <div class="c-footer__end">
+                            <ul class="c-footer__nav-links">
+                                            <li class="c-footer__nav-item">
+                            <a class="c-footer__nav-link" href="/235-mentions-legales.htm">
+                                Mentions légales                            </a>
+                        </li>
+                                            <li class="c-footer__nav-item">
+                            <a class="c-footer__nav-link" href="/236-protection-des-donnees-personnelles.htm">
+                                Données personnelles                            </a>
+                        </li>
+                                            <li class="c-footer__nav-item">
+                            <a class="c-footer__nav-link" href="/752-accessibilite-totalement-conforme.htm">
+                                Accessibilité totalement conforme                            </a>
+                        </li>
+                                            <li class="c-footer__nav-item">
+                            <a class="c-footer__nav-link" href="/234-plan-de-site.htm">
+                                Plan de site                            </a>
+                        </li>
+                                            <li class="c-footer__nav-item">
+                            <a class="c-footer__nav-link" href="/648-nos-autres-sites.htm">
+                                Nos autres sites                            </a>
+                        </li>
+                                    </ul>
+                    </div>
+    </div>
+</footer>
+    <div class="o-backdrop js-backdrop"></div>
+</div>
+</body>
+</html>

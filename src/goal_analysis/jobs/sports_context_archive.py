@@ -27,7 +27,8 @@ def make_weather_provider(root: Path, source_run_id: str | None = None, *, clock
         source_run_id = f"weather-{clock().isoformat()}"
     archive = WeatherStore(Database(Path(root) / "data/goal_analysis.sqlite3"))
     archive_status = None
-    venue_resources = None
+    venue_resources = {}
+    previous_venues_collected = False
 
     def record(fixture, weather, context):
         nonlocal archive_status
@@ -55,28 +56,35 @@ def make_weather_provider(root: Path, source_run_id: str | None = None, *, clock
     provider = OpenMeteoForecast(**kwargs)
     forecast = provider.forecast
 
-    def archived_forecast(fixture):
-        nonlocal archive_status, venue_resources
+    def archived_forecast(fixture, *, exact_stadium=False):
+        nonlocal archive_status
+        provider.isolate_request_failures = exact_stadium
         checked_at = clock()
         archive_status = None
         venue_lookup = None
         try:
-            if fixture.get('source_provider') == 'the_stats_api' and not fixture.get('venue_city'):
-                from goal_analysis.jobs.the_stats_context import Resources
-                from goal_analysis.jobs.the_stats_venue import resolve_venue
-                from goal_analysis.providers.the_stats_primary import TheStatsPrimaryClient
-
-                if venue_resources is None:
-                    venue_resources = Resources(root, TheStatsPrimaryClient(root, max_requests=12, clock=clock), clock, 12)
-                fixture, venue_lookup = resolve_venue(venue_resources, fixture)
-                from goal_analysis.normalization.live_identity import field_id
-
-                for field in ('league', 'home_team', 'away_team'):
-                    fixture[field + '_id'] = 'the_stats_api:' + field_id(fixture, field)
             location = None
             if fixture.get('source_provider') == 'the_stats_api':
                 from goal_analysis.jobs.stadium_locations_shadow import fixture_location
 
+                location = fixture_location(root, fixture, as_of=clock())
+            if (fixture.get('source_provider') == 'the_stats_api'
+                    and location is None and (exact_stadium or not fixture.get('venue_city'))):
+                from goal_analysis.jobs.the_stats_context import Resources
+                from goal_analysis.jobs.the_stats_venue import resolve_venue
+                from goal_analysis.providers.the_stats_primary import TheStatsPrimaryClient
+
+                limit = 40 if exact_stadium else 12
+                if limit not in venue_resources:
+                    # Each mode shares one ceiling across its fixture scope.
+                    venue_resources[limit] = Resources(root,
+                        TheStatsPrimaryClient(root, max_requests=limit, clock=clock), clock, limit)
+                fixture, venue_lookup = resolve_venue(venue_resources[limit], fixture,
+                    refresh_existing=exact_stadium)
+                from goal_analysis.normalization.live_identity import field_id
+
+                for field in ('league', 'home_team', 'away_team'):
+                    fixture[field + '_id'] = 'the_stats_api:' + field_id(fixture, field)
                 location = fixture_location(root, fixture, as_of=clock())
             if location is not None:
                 p = location['payload']
@@ -85,6 +93,13 @@ def make_weather_provider(root: Path, source_run_id: str | None = None, *, clock
                 weather = forecast(fixture, coordinates=(p['latitude'],p['longitude']))
                 weather['location_basis'] = 'EXACT_MATCH_AND_REVIEWED_STADIUM_WGS84'
                 weather['location_record_id'] = location['record_id']
+            elif exact_stadium:
+                weather = unknown(fixture,
+                    'Nincs igazolt mérkőzés–stadion–koordináta kapcsolat; az időjárás ismeretlen.')
+                weather.update(weather_kind='FORECAST', provider_issue_time=None,
+                    observed_at=checked_at.isoformat(), kickoff=fixture.get('kickoff'),
+                    time_basis='LOOKUP_ATTEMPT_AT', location_basis='UNVERIFIED_STADIUM')
+                record(fixture, weather, {'raw_payload': None})
             else:
                 weather = forecast(fixture)
         except Exception:  # noqa: BLE001 - same optional-weather boundary as portfolio
@@ -96,10 +111,63 @@ def make_weather_provider(root: Path, source_run_id: str | None = None, *, clock
         weather["archive_status"] = archive_status
         if venue_lookup is not None:
             weather['venue_lookup'] = venue_lookup
-            weather['venue_lookup_requests'] = venue_resources.usage['requests']
+            weather['venue_lookup_requests'] = venue_resources[40 if exact_stadium else 12].usage['requests']
         return weather
 
     provider.forecast = archived_forecast
+    provider.forecast_for_candidate_context = lambda fixture: archived_forecast(fixture, exact_stadium=True)
+    def collect_previous_venues(fixtures):
+        """At most 20 missing, exact previous-match details, once per run."""
+        nonlocal previous_venues_collected
+        if previous_venues_collected:
+            return {'status': 'ALREADY_ATTEMPTED', 'requests': 0}
+        previous_venues_collected = True
+        from goal_analysis.engine.publication_window import allows_new_leg
+        from goal_analysis.jobs.schedule_shadow import inspect_schedule
+        from goal_analysis.jobs.stadium_locations_shadow import match_locations
+        from goal_analysis.jobs.the_stats_context import Resources
+        from goal_analysis.providers.the_stats_primary import TheStatsPrimaryClient
+
+        selected = [f for f in fixtures if f.get('source_provider') == 'the_stats_api'
+                    and allows_new_leg(f, clock())]
+        inspected = inspect_schedule(root, selected, as_of=clock())
+        matches, conflicts = {}, set()
+        for feature in inspected['features']:
+            for team in feature.get('teams', []):
+                previous = team.get('previous_fixture')
+                if previous and previous.get('status') == 'finished':
+                    if previous['fixture_id'] in matches and matches[previous['fixture_id']] != previous:
+                        conflicts.add(previous['fixture_id'])
+                    matches[previous['fixture_id']] = previous
+        matches = {fid: match for fid, match in matches.items() if fid not in conflicts}
+        known, _ = match_locations(root, list(matches.values()), as_of=clock())
+        missing = sorted(set(matches)-set(known))
+        if not missing:
+            return {'status': 'LOCAL_SOURCES_SUFFICIENT', 'requests': 0,
+                    'previous_match_ids': sorted(matches), 'locally_verified': len(known),
+                    'conflicting_previous_fixture_ids': sorted(conflicts)}
+        resources = Resources(root, TheStatsPrimaryClient(root, max_requests=20, clock=clock), clock, 20)
+        attempted, failures = [], []
+        for fid in missing[:20]:
+            # Requests merely preserve the original response. Exact identity,
+            # status, receipt and reviewed coordinates are checked by the reader.
+            attempted.append(fid)
+            _row, _source, error = resources.get('/football/matches/'+fid)
+            if error:
+                failures.append({'fixture_id': fid, 'reason': error})
+                if resources.usage.get('stopped_reason'):
+                    break
+        verified, issues = match_locations(root, list(matches.values()), as_of=clock())
+        return {'status': 'PREVIOUS_VENUE_SOURCES_ATTEMPTED',
+                'requests': resources.usage['requests'], 'max_requests': 20,
+                'previous_match_ids': sorted(matches), 'attempted_fixture_ids': attempted,
+                'conflicting_previous_fixture_ids': sorted(conflicts),
+                'locally_verified_before': len(known), 'verified_after': len(verified),
+                'unresolved_fixture_ids': sorted(set(matches)-set(verified)),
+                'failures': failures, 'reader_issues': issues,
+                'actual_itinerary_claimed': False}
+
+    provider.collect_previous_venues = collect_previous_venues
     return provider
 
 

@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="fr-FR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="profile" href="http://gmpg.org/xfn/11">
+
+    <title>Le Stade Bauer | Red Star Football Club</title>
+<link data-rocket-prefetch href="https://fonts.googleapis.com" rel="dns-prefetch">
+<link data-rocket-prefetch href="https://connect.facebook.net" rel="dns-prefetch">
+<link data-rocket-prefetch href="https://www.googletagmanager.com" rel="dns-prefetch">
+<link data-rocket-prefetch href="https://app.lemlist.com" rel="dns-prefetch">
+<link data-rocket-prefetch href="https://s3.eu-west-3.amazonaws.com" rel="dns-prefetch">
+<link data-rocket-prefetch href="https://tracker.metricool.com" rel="dns-prefetch">
+<link data-rocket-prefetch href="https://kit.fontawesome.com" rel="dns-prefetch">
+<link data-rocket-preload as="style" href="https://fonts.googleapis.com/css?family=Open%20Sans&#038;display=swap" rel="preload">
+<link href="https://fonts.googleapis.com/css?family=Open%20Sans&#038;display=swap" media="print" onload="this.media=&#039;all&#039;" rel="stylesheet">
+<noscript data-wpr-hosted-gf-parameters=""><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open%20Sans&#038;display=swap"></noscript><link rel="preload" data-rocket-preload as="image" href="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2018/01/17164026/redstar-home.png" imagesrcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2018/01/17164026/redstar-home.png 1199w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2018/01/17164026/redstar-home-400x262.png 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2018/01/17164026/redstar-home-1024x670.png 1024w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2018/01/17164026/redstar-home-768x503.png 768w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2018/01/17164026/redstar-home-962x630.png 962w" imagesizes="(max-width: 1199px) 100vw, 1199px" fetchpriority="high">
+<meta name='robots' content='max-image-preview:large' />
+<link rel='dns-prefetch' href='//cdnjs.cloudflare.com' />
+<link rel='dns-prefetch' href='//maxcdn.bootstrapcdn.com' />
+<link rel='dns-prefetch' href='//unpkg.com' />
+<link rel='dns-prefetch' href='//vjs.zencdn.net' />
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link href='https://fonts.gstatic.com' crossorigin rel='preconnect' />
+<link rel="alternate" type="application/rss+xml" title="Red Star Football Club &raquo; Flux" href="https://www.redstar.fr/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Red Star Football Club &raquo; Flux des commentaires" href="https://www.redstar.fr/comments/feed/" />
+<link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="https://www.redstar.fr/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.redstar.fr%2Fle-stade-bauer%2F" />
+<link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed" href="https://www.redstar.fr/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.redstar.fr%2Fle-stade-bauer%2F&#038;format=xml" />
+<!-- www.redstar.fr is managing ads with Advanced Ads 2.0.29 – https://wpadvancedads.com/ --><!--noptimize--><script id="redst-ready">
+			window.advanced_ads_ready=function(e,a){a=a||"complete";var d=function(e){return"interactive"===a?"loading"!==e:"complete"===e};d(document.readyState)?e():document.addEventListener("readystatechange",(function(a){d(a.target.readyState)&&e()}),{once:"interactive"===a})},window.advanced_ads_ready_queue=window.advanced_ads_ready_queue||[];		</script>
+		<!--/noptimize--><style id="wp-img-auto-sizes-contain-inline-css">
+img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
+/*# sourceURL=wp-img-auto-sizes-contain-inline-css */
+</style>
+<style id="wp-emoji-styles-inline-css">
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+/*# sourceURL=wp-emoji-styles-inline-css */
+</style>
+<style id="classic-theme-styles-inline-css">
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+/*# sourceURL=/wp-includes/css/classic-themes.min.css */
+</style>
+<style id="wp-block-styles-placeholder-inline-css">
+:root { --wp-internal-comment: "Placeholder for wp_hoist_late_printed_styles() to replace with the block styles printed at wp_footer." }
+/*# sourceURL=wp-block-styles-placeholder-inline-css */
+</style>
+<link data-minify="1" rel='stylesheet' id='jet-engine-frontend-css' href='https://www.redstar.fr/wp-content/cache/min/1/wp-content/plugins/jet-engine/assets/css/frontend.css?ver=1792689087' media='all' />
+<style id="wp-global-styles-placeholder-inline-css">
+:root { --wp-internal-comment: "Placeholder for wp_hoist_late_printed_styles() to replace with the global-styles printed at wp_footer." }
+/*# sourceURL=wp-global-styles-placeholder-inline-css */
+</style>
+<link rel='stylesheet' id='cmplz-general-css' href='https://www.redstar.fr/wp-content/plugins/complianz-gdpr-premium/assets/css/cookieblocker.min.css?ver=1790791128' media='all' />
+<link data-minify="1" rel='stylesheet' id='if-menu-site-css-css' href='https://www.redstar.fr/wp-content/cache/min/1/wp-content/plugins/if-menu/assets/if-menu-site.css?ver=1792689087' media='all' />
+<link data-minify="1" rel='stylesheet' id='redstar-style-css' href='https://www.redstar.fr/wp-content/cache/min/1/wp-content/themes/redstar/style.css?ver=1792689087' media='all' />
+
+<link data-minify="1" rel='stylesheet' id='bootstrap-css' href='https://www.redstar.fr/wp-content/cache/min/1/bootstrap/4.0.0-beta.3/css/bootstrap.min.css?ver=1792689087' media='all' />
+<link rel='stylesheet' id='jquery-fancybox-css' href='https://www.redstar.fr/wp-content/themes/redstar/css/jquery.fancybox.min.css?ver=7.1.3' media='all' />
+<link rel='stylesheet' id='jquery-gridder-css' href='https://www.redstar.fr/wp-content/themes/redstar/css/jquery.gridder.min.css?ver=7.1.3' media='all' />
+<link data-minify="1" rel='stylesheet' id='flickity-css' href='https://www.redstar.fr/wp-content/cache/min/1/flickity@2/dist/flickity.min.css?ver=1792689087' media='all' />
+<link data-minify="1" rel='stylesheet' id='video-js-css' href='https://www.redstar.fr/wp-content/cache/min/1/6.6.3/video-js.css?ver=1792689087' media='all' />
+<link data-minify="1" rel='stylesheet' id='redstar-css' href='https://www.redstar.fr/wp-content/cache/min/1/wp-content/themes/redstar/css/redstar.css?ver=1792689087' media='all' />
+<link data-minify="1" rel='stylesheet' id='jet-popup-frontend-css' href='https://www.redstar.fr/wp-content/cache/min/1/wp-content/plugins/jet-popup/assets/css/jet-popup-frontend.css?ver=1792689087' media='all' />
+<link data-minify="1" rel='stylesheet' id='elementor-icons-css' href='https://www.redstar.fr/wp-content/cache/min/1/wp-content/plugins/elementor/assets/lib/eicons/css/elementor-icons.min.css?ver=1792689087' media='all' />
+<link rel='stylesheet' id='elementor-frontend-css' href='https://www.redstar.fr/wp-content/plugins/elementor/assets/css/frontend.min.css?ver=4.3.5' media='all' />
+<link rel='stylesheet' id='elementor-post-493824-css' href='https://www.redstar.fr/wp-content/uploads/elementor/css/post-493824.css?ver=1792689087' media='all' />
+<link data-minify="1" rel='stylesheet' id='jet-tabs-frontend-css' href='https://www.redstar.fr/wp-content/cache/min/1/wp-content/plugins/jet-tabs/assets/css/jet-tabs-frontend.css?ver=1792689087' media='all' />
+<link data-minify="1" rel='stylesheet' id='swiper-css' href='https://www.redstar.fr/wp-content/cache/min/1/wp-content/plugins/elementor/assets/lib/swiper/v8/css/swiper.min.css?ver=1792689087' media='all' />
+<link rel='stylesheet' id='widget-heading-css' href='https://www.redstar.fr/wp-content/plugins/elementor/assets/css/widget-heading.min.css?ver=4.3.5' media='all' />
+<link rel='stylesheet' id='elementor-post-77139-css' href='https://www.redstar.fr/wp-content/uploads/elementor/css/post-77139.css?ver=1792743802' media='all' />
+<link rel='stylesheet' id='eael-general-css' href='https://www.redstar.fr/wp-content/plugins/essential-addons-for-elementor-lite/assets/front-end/css/view/general.min.css?ver=6.8.6' media='all' />
+<link data-minify="1" rel='stylesheet' id='cmplz-banner-1-optin-css' href='https://www.redstar.fr/wp-content/cache/min/1/wp-content/uploads/complianz/css/banner-1-optin.css?ver=1792689087' media='all' />
+<style id="rocket-lazyload-inline-css">
+.rll-youtube-player{position:relative;padding-bottom:56.23%;height:0;overflow:hidden;max-width:100%;}.rll-youtube-player:focus-within{outline: 2px solid currentColor;outline-offset: 5px;}.rll-youtube-player iframe{position:absolute;top:0;left:0;width:100%;height:100%;z-index:100;background:0 0}.rll-youtube-player img{bottom:0;display:block;left:0;margin:auto;max-width:100%;width:100%;position:absolute;right:0;top:0;border:none;height:auto;-webkit-transition:.4s all;-moz-transition:.4s all;transition:.4s all}.rll-youtube-player img:hover{-webkit-filter:brightness(75%)}.rll-youtube-player .play{height:100%;width:100%;left:0;top:0;position:absolute;background:url(https://www.redstar.fr/wp-content/plugins/wp-rocket/assets/img/youtube.png) no-repeat center;background-color: transparent !important;cursor:pointer;border:none;}
+/*# sourceURL=rocket-lazyload-inline-css */
+</style>
+<link data-minify="1" rel='stylesheet' id='elementor-gf-local-roboto-css' href='https://www.redstar.fr/wp-content/cache/min/1/wp-content/uploads/elementor/google-fonts/css/roboto.css?ver=1792689088' media='all' />
+<link data-minify="1" rel='stylesheet' id='elementor-gf-local-robotoslab-css' href='https://www.redstar.fr/wp-content/cache/min/1/wp-content/uploads/elementor/google-fonts/css/robotoslab.css?ver=1792689088' media='all' />
+<script id="jquery-core-js" src="https://www.redstar.fr/wp-includes/js/jquery/jquery.min.js?ver=3.7.1"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script id="facebook-signal-js-extra">
+var facebookSignalConfig = {"cookieName":"wc_facebook_signals_state","ajaxUrl":"https://www.redstar.fr/wp-admin/admin-ajax.php","signalsAction":"fbpix_set_pixel_signals","signalsNonce":"601d55bb15"};
+//# sourceURL=facebook-signal-js-extra
+</script>
+
+<link rel="https://api.w.org/" href="https://www.redstar.fr/wp-json/" /><link rel="alternate" title="JSON" type="application/json" href="https://www.redstar.fr/wp-json/wp/v2/pages/77139" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.redstar.fr/xmlrpc.php?rsd" />
+<link rel='shortlink' href='https://www.redstar.fr/?p=77139' />
+			<style>.cmplz-hidden {
+					display: none !important;
+				}</style>
+						<style>.elementor-widget-eael-google-map .google-map-notice { display: none; }</style>
+		<meta name="generator" content="Elementor 4.3.5; features: additional_custom_breakpoints; settings: css_print_method-external, google_font-enabled, font_display-auto">
+
+<!-- Meta Pixel Code -->
+<script data-service="facebook" data-category="marketing" type="text/plain">
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+</script>
+<!-- End Meta Pixel Code -->
+<script data-service="facebook" data-category="marketing" type="text/plain">
+    fbq('track', 'PageView', []);
+  </script><style>.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style><!-- SEO meta tags powered by SmartCrawl https://wpmudev.com/project/smartcrawl-wordpress-seo/ -->
+<link rel="canonical" href="https://www.redstar.fr/le-stade-bauer/" />
+<meta name="description" content="Le Stade Bauer | Red Star Football Club Localisé à Saint-Ouen, le stade Bauer – alors Stade de Paris - a été inauguré en 1909 à l&#039;occasion d&#039;un ma ..." />
+<script type="application/ld+json">{"@context":"https:\/\/schema.org","@graph":[{"@type":"Organization","@id":"https:\/\/www.redstar.fr\/#schema-publishing-organization","url":"https:\/\/www.redstar.fr","name":"Red Star Football Club"},{"@type":"WebSite","@id":"https:\/\/www.redstar.fr\/#schema-website","url":"https:\/\/www.redstar.fr","name":"Red Star Football Club","encoding":"UTF-8","potentialAction":{"@type":"SearchAction","target":"https:\/\/www.redstar.fr\/search\/{search_term_string}\/","query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https:\/\/www.redstar.fr\/author\/admin_byus\/#schema-author","name":"Team ByUs","url":"https:\/\/www.redstar.fr\/author\/admin_byus\/"}]}</script>
+<meta property="fb:app_id" content="342079315859449" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://www.redstar.fr/le-stade-bauer/" />
+<meta property="og:title" content="Le Stade Bauer | Red Star Football Club" />
+<meta property="og:description" content="Le Stade Bauer | Red Star Football Club Localisé à Saint-Ouen, le stade Bauer – alors Stade de Paris - a été inauguré en 1909 à l&apos;occasion d&apos;un ma ..." />
+<meta property="og:image" content="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2018/01/17164026/redstar-home.png" />
+<meta property="og:image:secure_url" content="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2018/01/17164026/redstar-home.png" />
+<meta property="og:image:width" content="1199" />
+<meta property="og:image:height" content="785" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Le Stade Bauer | Red Star Football Club" />
+<meta name="twitter:description" content="Le Stade Bauer | Red Star Football Club Localisé à Saint-Ouen, le stade Bauer – alors Stade de Paris - a été inauguré en 1909 à l&apos;occasion d&apos;un ma ..." />
+<meta name="twitter:image" content="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2018/01/17164026/redstar-home.png" />
+<!-- /SEO -->
+			<style>
+				.e-con.e-parent:nth-of-type(n+4):not(.e-lazyloaded):not(.e-no-lazyload),
+				.e-con.e-parent:nth-of-type(n+4):not(.e-lazyloaded):not(.e-no-lazyload) * {
+					background-image: none !important;
+				}
+				@media screen and (max-height: 1024px) {
+					.e-con.e-parent:nth-of-type(n+3):not(.e-lazyloaded):not(.e-no-lazyload),
+					.e-con.e-parent:nth-of-type(n+3):not(.e-lazyloaded):not(.e-no-lazyload) * {
+						background-image: none !important;
+					}
+				}
+				@media screen and (max-height: 640px) {
+					.e-con.e-parent:nth-of-type(n+2):not(.e-lazyloaded):not(.e-no-lazyload),
+					.e-con.e-parent:nth-of-type(n+2):not(.e-lazyloaded):not(.e-no-lazyload) * {
+						background-image: none !important;
+					}
+				}
+			</style>
+			<script type="text/javascript" src="https://app.lemlist.com/api/visitors/tracking?k=ZJZtp9ibQKbeNrsyBSq%2FQz4jTJu%2BAIrbLM%2B1O8aIi5c%3D&t=tea_v8ZrtMXo43Cdy8tYK" data-rocket-defer defer></script><link rel="icon" href="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2026/07/31154705/Red-Star-FC-favicon.png" sizes="32x32" />
+<link rel="icon" href="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2026/07/31154705/Red-Star-FC-favicon.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2026/07/31154705/Red-Star-FC-favicon.png" />
+<meta name="msapplication-TileImage" content="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2026/07/31154705/Red-Star-FC-favicon.png" />
+<noscript><style id="rocket-lazyload-nojs-css">.rll-youtube-player, [data-lazy-src]{display:none !important;}</style></noscript>    
+    <meta name="facebook-domain-verification" content="6sn4q7y1fmm2h4zb01bblfeh2omxeg" />
+
+</head>
+
+<body data-cmplz=1 class="wp-singular page-template-default page page-id-77139 wp-custom-logo wp-theme-redstar elementor-default elementor-kit-493824 elementor-page elementor-page-77139 aa-prefix-redst-">
+
+<div  id="page" class="site">
+    <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+
+    <div  id="content" class="site-content">
+
+        <div  id="primary" class="content-area">
+            <main id="main" class="site-main">
+                <div class="container redstar-container">
+                    <div class="row">
+                        <div class="col-12">
+                                                            <header id="masthead">
+                                    <div class="text-center">
+                                        <a href="https://www.redstar.fr"><img class="logo-img img-responsive"
+                                                                                     src="https://www.redstar.fr/wp-content/themes/redstar/img/redstar.png"
+                                                                                     alt="RedStar"/></a>
+                                    </div>
+                                    <div class="text-right socials">
+                                        <a href="https://www.tiktok.com/@redstarfc" target="_blank"
+                                           title="Tiktok RedStar"><img class=""
+                                                                          src="https://www.redstar.fr/wp-content/themes/redstar/img/tic-tac.png"
+                                                                          alt="Tiktok RedStar"></a>
+                                        <a href="https://www.instagram.com/redstarfc/" target="_blank"
+                                           title="Instagram RedStar"><img class=""
+                                                                  src="https://www.redstar.fr/wp-content/themes/redstar/img/igs.png"
+                                                                  alt="Instagram RedStar"></a>
+                                        <a href="https://www.facebook.com/RedStarFC.Officiel/" target="_blank"
+                                           title="Facebook RedStar"><img class=""
+                                                                 src="https://www.redstar.fr/wp-content/themes/redstar/img/facebook.png"
+                                                                 alt="Facebook RedStar"></a>
+                                        <div class="d-block d-sm-none">
+                                        </div>
+                                        <a href="https://www.linkedin.com/company/red-star-fc" target="_blank" title="LinkedIn"><img
+                                                    class="" src="https://www.redstar.fr/wp-content/themes/redstar/img/linkedinv.png"
+                                                    alt="LinkedIn RedStar"></a>
+                                        <a href="/newsletter-redstar" title="Newsletter RedStar"><img
+                                                    class="" src="https://www.redstar.fr/wp-content/themes/redstar/img/e-mail.png"
+                                                    alt="Newsletter RedStar"></a>
+                                    </div>
+                                    <nav class="navbar navbar-expand-lg navbar-light redstar-menu" role="navigation">
+                                        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                                                data-target="#bs-example-navbar-collapse-1"
+                                                aria-controls="bs-example-navbar-collapse-1" aria-expanded="false"
+                                                aria-label="Toggle navigation">
+                                            <span class="navbar-toggler-icon"></span>
+                                        </button>
+                                        <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse"><ul id="menu-menu-1" class="nav navbar-nav"><li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-52709" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-52709 nav-item"><a title="NEWS" href="https://www.redstar.fr/news/" class="nav-link">NEWS</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-50684" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-50684 nav-item"><a title="PROS" href="https://www.redstar.fr/les-pros/" class="nav-link">PROS</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-50763" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-50763 nav-item"><a title="JEUNES" href="https://www.redstar.fr/les-jeunes/" class="nav-link">JEUNES</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-82966" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-82966 nav-item"><a title="RED STAR LAB" href="https://www.redstar.fr/redstar-lab/" class="nav-link">RED STAR LAB</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-82969" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-82969 nav-item"><a title="500002" href="https://www.redstar.fr/500002-1897/" class="nav-link">500002</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-1328161" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1328161 nav-item"><a title="Partenaires" href="https://www.redstar.fr/partenaires/" class="nav-link">Partenaires</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-82968" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-82968 nav-item"><a title="OURS" href="https://www.redstar.fr/ours/" class="nav-link">OURS</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-581035" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-581035 nav-item"><a title="BAUER" href="https://www.redstar.fr/bauer/" class="nav-link">BAUER</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-525631" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-525631 nav-item"><a title="MARVILLE" href="https://www.redstar.fr/marville/" class="nav-link">MARVILLE</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-82971" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-82971 nav-item"><a title="SHOP" target="_blank" href="https://shop.redstar.fr/" class="nav-link">SHOP</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-275194" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-275194 nav-item"><a title="BILLETTERIE" href="https://billetterie.redstar.fr" class="nav-link">BILLETTERIE</a></li>
+<li itemscope="itemscope" itemtype="https://www.schema.org/SiteNavigationElement" id="menu-item-1406265" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1406265 nav-item"><a title="PLACES VIP" href="https://redstarfc.blackseat.fr" class="nav-link">PLACES VIP</a></li>
+</ul></div>                                    </nav>
+                                </header>
+                                                    </div>
+                        <div class="col-12">
+<div class="redstar-container">
+    <div class="row">
+    <div class="col-12">
+        <div class="page-top-img">
+        <img fetchpriority="high" width="1199" height="785" src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2018/01/17164026/redstar-home.png" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" decoding="async" srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2018/01/17164026/redstar-home.png 1199w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2018/01/17164026/redstar-home-400x262.png 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2018/01/17164026/redstar-home-1024x670.png 1024w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2018/01/17164026/redstar-home-768x503.png 768w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2018/01/17164026/redstar-home-962x630.png 962w" sizes="(max-width: 1199px) 100vw, 1199px" />        </div>
+        		<div data-elementor-type="wp-page" data-elementor-id="77139" class="elementor elementor-77139" data-elementor-post-type="page">
+						<section class="elementor-section elementor-top-section elementor-element elementor-element-67217395 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="67217395" data-element_type="section" data-e-type="section" data-settings="{&quot;jet_parallax_layout_list&quot;:[]}">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-3df86ae5" data-id="3df86ae5" data-element_type="column" data-e-type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-553c11a elementor-widget elementor-widget-heading" data-id="553c11a" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h1 class="elementor-heading-title elementor-size-default">Le Stade Bauer | Red Star Football Club</h1>				</div>
+				</div>
+				<div class="elementor-element elementor-element-3faceea2 elementor-widget elementor-widget-text-editor" data-id="3faceea2" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									<div class="col-12 col-sm-8 offset-sm-2 text-justify">Localisé à Saint-Ouen, le stade Bauer – alors Stade de Paris &#8211; a été inauguré en 1909 à l&rsquo;occasion d&rsquo;un match amical contre Old Westmisters. Théâtre des exploits de l&rsquo;Etoile Rouge, il accueille également quelques matchs de l&rsquo;équipe de France avant la première guerre mondiale, ainsi qu&rsquo;une rencontre des J.O de Paris (1924).
+Certains matchs du Paris Saint-Germain (durant la saison 1971-72), de l&rsquo;équipe de France Espoirs ou encore certaines rencontres internationales comme Brésil &#8211; Andorre en 1998, ont aussi eu lieu. Des générations de grands joueurs, de Chayriguès au phénomène Ronaldo, auront foulé la pelouse de ce stade centenaire, appelé Bauer du nom de la rue qui mène au stade, à la mémoire du Docteur Bauer, résistant fusillé par les Allemands en 1942.</div>								</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				</div>
+		    </div>
+    </div><!-- end row -->
+</div>
+
+
+    
+    </div> <!--end row-->
+    </div> <!--end container-->
+    </main><!-- #main -->
+    </div><!-- #primary -->
+    </div><!-- #page -->
+    </div>
+
+    		<footer  data-elementor-type="footer" data-elementor-id="1250983" class="elementor elementor-1250983" data-elementor-post-type="elementor_library">
+					<section class="elementor-section elementor-top-section elementor-element elementor-element-7c54933 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="7c54933" data-element_type="section" data-e-type="section" data-settings="{&quot;jet_parallax_layout_list&quot;:[]}">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-ed4c5a8" data-id="ed4c5a8" data-element_type="column" data-e-type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-e884d71 elementor-widget elementor-widget-image" data-id="e884d71" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://trust-it.fr/" target="_blank">
+							<img width="549" height="126" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20549%20126'%3E%3C/svg%3E" class="attachment-large size-large wp-image-1251275" alt="" data-lazy-srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02082906/logo-complet-sans-fond.png 549w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02082906/logo-complet-sans-fond-400x92.png 400w" data-lazy-sizes="(max-width: 549px) 100vw, 549px" data-lazy-src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02082906/logo-complet-sans-fond.png" /><noscript><img width="549" height="126" src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02082906/logo-complet-sans-fond.png" class="attachment-large size-large wp-image-1251275" alt="" srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02082906/logo-complet-sans-fond.png 549w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02082906/logo-complet-sans-fond-400x92.png 400w" sizes="(max-width: 549px) 100vw, 549px" /></noscript>								</a>
+															</div>
+				</div>
+				<section class="elementor-section elementor-inner-section elementor-element elementor-element-ee1eb8d elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="ee1eb8d" data-element_type="section" data-e-type="section" data-settings="{&quot;jet_parallax_layout_list&quot;:[]}">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-20 elementor-inner-column elementor-element elementor-element-a3a829e" data-id="a3a829e" data-element_type="column" data-e-type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-3745758 elementor-widget elementor-widget-image" data-id="3745758" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://www.valtec-france.com/" target="_blank">
+							<img width="1024" height="252" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201024%20252'%3E%3C/svg%3E" class="attachment-large size-large wp-image-1324986" alt="" data-lazy-srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04171932/Valtec-2025-1024x252.png 1024w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04171932/Valtec-2025-400x99.png 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04171932/Valtec-2025-768x189.png 768w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04171932/Valtec-2025-1536x379.png 1536w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04171932/Valtec-2025-2048x505.png 2048w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04171932/Valtec-2025-962x237.png 962w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04171932/Valtec-2025-1400x345.png 1400w" data-lazy-sizes="(max-width: 1024px) 100vw, 1024px" data-lazy-src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04171932/Valtec-2025-1024x252.png" /><noscript><img width="1024" height="252" src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04171932/Valtec-2025-1024x252.png" class="attachment-large size-large wp-image-1324986" alt="" srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04171932/Valtec-2025-1024x252.png 1024w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04171932/Valtec-2025-400x99.png 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04171932/Valtec-2025-768x189.png 768w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04171932/Valtec-2025-1536x379.png 1536w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04171932/Valtec-2025-2048x505.png 2048w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04171932/Valtec-2025-962x237.png 962w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04171932/Valtec-2025-1400x345.png 1400w" sizes="(max-width: 1024px) 100vw, 1024px" /></noscript>								</a>
+															</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-20 elementor-inner-column elementor-element elementor-element-391fe19" data-id="391fe19" data-element_type="column" data-e-type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-e3bffe7 elementor-widget elementor-widget-image" data-id="e3bffe7" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://www.kappa.fr/" target="_blank">
+							<img width="320" height="224" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20320%20224'%3E%3C/svg%3E" class="attachment-large size-large wp-image-940314" alt="" data-lazy-src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2018/04/20113809/kappa-B2.png" /><noscript><img width="320" height="224" src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2018/04/20113809/kappa-B2.png" class="attachment-large size-large wp-image-940314" alt="" /></noscript>								</a>
+															</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-20 elementor-inner-column elementor-element elementor-element-9265a08" data-id="9265a08" data-element_type="column" data-e-type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-da46f62 elementor-widget elementor-widget-image" data-id="da46f62" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://launch-pad.fr/" target="_blank">
+							<img width="1024" height="187" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201024%20187'%3E%3C/svg%3E" class="attachment-large size-large wp-image-1421140" alt="" data-lazy-srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/24144218/Logomark-black-1024x187.png 1024w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/24144218/Logomark-black-400x73.png 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/24144218/Logomark-black-768x140.png 768w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/24144218/Logomark-black-962x175.png 962w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/24144218/Logomark-black.png 1086w" data-lazy-sizes="(max-width: 1024px) 100vw, 1024px" data-lazy-src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/24144218/Logomark-black-1024x187.png" /><noscript><img width="1024" height="187" src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/24144218/Logomark-black-1024x187.png" class="attachment-large size-large wp-image-1421140" alt="" srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/24144218/Logomark-black-1024x187.png 1024w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/24144218/Logomark-black-400x73.png 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/24144218/Logomark-black-768x140.png 768w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/24144218/Logomark-black-962x175.png 962w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/24144218/Logomark-black.png 1086w" sizes="(max-width: 1024px) 100vw, 1024px" /></noscript>								</a>
+															</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-20 elementor-inner-column elementor-element elementor-element-f611230" data-id="f611230" data-element_type="column" data-e-type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-03e6c35 elementor-widget elementor-widget-image" data-id="03e6c35" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://www.cafe-creme.cc/" target="_blank">
+							<img width="640" height="105" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20640%20105'%3E%3C/svg%3E" class="attachment-large size-large wp-image-1244678" alt="" data-lazy-src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/08/19115002/logo-cafe-creme-2-1024x167.png" /><noscript><img width="640" height="105" src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/08/19115002/logo-cafe-creme-2-1024x167.png" class="attachment-large size-large wp-image-1244678" alt="" /></noscript>								</a>
+															</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-20 elementor-inner-column elementor-element elementor-element-f1a29f7" data-id="f1a29f7" data-element_type="column" data-e-type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-6eb9469 elementor-widget elementor-widget-image" data-id="6eb9469" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://www.exnetservices.com/" target="_blank">
+							<img width="640" height="640" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20640%20640'%3E%3C/svg%3E" class="attachment-large size-large wp-image-1399270" alt="" data-lazy-srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04142843/Exnet-OFFICIEL.webp 1000w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04142843/Exnet-OFFICIEL-400x400.webp 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04142843/Exnet-OFFICIEL-150x150.webp 150w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04142843/Exnet-OFFICIEL-768x768.webp 768w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04142843/Exnet-OFFICIEL-100x100.webp 100w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04142843/Exnet-OFFICIEL-300x300.webp 300w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04142843/Exnet-OFFICIEL-962x962.webp 962w" data-lazy-sizes="(max-width: 640px) 100vw, 640px" data-lazy-src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04142843/Exnet-OFFICIEL.webp" /><noscript><img width="640" height="640" src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04142843/Exnet-OFFICIEL.webp" class="attachment-large size-large wp-image-1399270" alt="" srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04142843/Exnet-OFFICIEL.webp 1000w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04142843/Exnet-OFFICIEL-400x400.webp 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04142843/Exnet-OFFICIEL-150x150.webp 150w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04142843/Exnet-OFFICIEL-768x768.webp 768w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04142843/Exnet-OFFICIEL-100x100.webp 100w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04142843/Exnet-OFFICIEL-300x300.webp 300w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/04142843/Exnet-OFFICIEL-962x962.webp 962w" sizes="(max-width: 640px) 100vw, 640px" /></noscript>								</a>
+															</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-inner-section elementor-element elementor-element-93741fb elementor-section-content-middle elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="93741fb" data-element_type="section" data-e-type="section" data-settings="{&quot;jet_parallax_layout_list&quot;:[]}">
+						<div class="elementor-container elementor-column-gap-extended">
+					<div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-a6078b5" data-id="a6078b5" data-element_type="column" data-e-type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-1907e26 elementor-widget elementor-widget-image" data-id="1907e26" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://www.monsterenergy.com/fr-fr/" target="_blank">
+							<img width="768" height="340" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20768%20340'%3E%3C/svg%3E" class="attachment-medium_large size-medium_large wp-image-1350733" alt="" data-lazy-srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/03150059/MONSTER_ENERGY_Branding_Digital-logos-WHITE_Monster-energy-horizontal-thin-768x340.png 768w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/03150059/MONSTER_ENERGY_Branding_Digital-logos-WHITE_Monster-energy-horizontal-thin-400x177.png 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/03150059/MONSTER_ENERGY_Branding_Digital-logos-WHITE_Monster-energy-horizontal-thin.png 821w" data-lazy-sizes="(max-width: 768px) 100vw, 768px" data-lazy-src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/03150059/MONSTER_ENERGY_Branding_Digital-logos-WHITE_Monster-energy-horizontal-thin-768x340.png" /><noscript><img width="768" height="340" src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/03150059/MONSTER_ENERGY_Branding_Digital-logos-WHITE_Monster-energy-horizontal-thin-768x340.png" class="attachment-medium_large size-medium_large wp-image-1350733" alt="" srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/03150059/MONSTER_ENERGY_Branding_Digital-logos-WHITE_Monster-energy-horizontal-thin-768x340.png 768w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/03150059/MONSTER_ENERGY_Branding_Digital-logos-WHITE_Monster-energy-horizontal-thin-400x177.png 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/03150059/MONSTER_ENERGY_Branding_Digital-logos-WHITE_Monster-energy-horizontal-thin.png 821w" sizes="(max-width: 768px) 100vw, 768px" /></noscript>								</a>
+															</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-inner-section elementor-element elementor-element-6513712 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="6513712" data-element_type="section" data-e-type="section" data-settings="{&quot;jet_parallax_layout_list&quot;:[]}">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-d9f6e76" data-id="d9f6e76" data-element_type="column" data-e-type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-3c993e1 elementor-widget elementor-widget-image" data-id="3c993e1" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://www.celio.com/fr-fr" target="_blank">
+							<img width="400" height="128" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20400%20128'%3E%3C/svg%3E" class="attachment-medium size-medium wp-image-1397476" alt="" data-lazy-srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/31162108/CELIO_LOGOTYPE_NEGATIF-400x128.png 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/31162108/CELIO_LOGOTYPE_NEGATIF-1024x327.png 1024w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/31162108/CELIO_LOGOTYPE_NEGATIF-768x246.png 768w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/31162108/CELIO_LOGOTYPE_NEGATIF-1536x491.png 1536w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/31162108/CELIO_LOGOTYPE_NEGATIF-2048x655.png 2048w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/31162108/CELIO_LOGOTYPE_NEGATIF-962x308.png 962w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/31162108/CELIO_LOGOTYPE_NEGATIF-1400x448.png 1400w" data-lazy-sizes="(max-width: 400px) 100vw, 400px" data-lazy-src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/31162108/CELIO_LOGOTYPE_NEGATIF-400x128.png" /><noscript><img width="400" height="128" src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/31162108/CELIO_LOGOTYPE_NEGATIF-400x128.png" class="attachment-medium size-medium wp-image-1397476" alt="" srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/31162108/CELIO_LOGOTYPE_NEGATIF-400x128.png 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/31162108/CELIO_LOGOTYPE_NEGATIF-1024x327.png 1024w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/31162108/CELIO_LOGOTYPE_NEGATIF-768x246.png 768w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/31162108/CELIO_LOGOTYPE_NEGATIF-1536x491.png 1536w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/31162108/CELIO_LOGOTYPE_NEGATIF-2048x655.png 2048w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/31162108/CELIO_LOGOTYPE_NEGATIF-962x308.png 962w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/31162108/CELIO_LOGOTYPE_NEGATIF-1400x448.png 1400w" sizes="(max-width: 400px) 100vw, 400px" /></noscript>								</a>
+															</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-87cf072" data-id="87cf072" data-element_type="column" data-e-type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-61cbd3c elementor-widget elementor-widget-image" data-id="61cbd3c" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://dadstreetfood.fr/" target="_blank">
+							<img width="320" height="224" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20320%20224'%3E%3C/svg%3E" class="attachment-medium size-medium wp-image-1180207" alt="" data-lazy-src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2024/09/03130051/dad-B-1.png" /><noscript><img width="320" height="224" src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2024/09/03130051/dad-B-1.png" class="attachment-medium size-medium wp-image-1180207" alt="" /></noscript>								</a>
+															</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-ecce3be" data-id="ecce3be" data-element_type="column" data-e-type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-9c5ea2e elementor-widget elementor-widget-image" data-id="9c5ea2e" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://www.sn-ufs.fr/" target="_blank">
+							<img width="160" height="112" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20160%20112'%3E%3C/svg%3E" class="attachment-medium size-medium wp-image-640536" alt="" data-lazy-src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2021/11/25102407/UFS-B.jpg" /><noscript><img width="160" height="112" src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2021/11/25102407/UFS-B.jpg" class="attachment-medium size-medium wp-image-640536" alt="" /></noscript>								</a>
+															</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-58bbabd" data-id="58bbabd" data-element_type="column" data-e-type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-cb99e2d elementor-widget elementor-widget-image" data-id="cb99e2d" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://dlsi-emploi.com/" target="_blank">
+							<img width="240" height="120" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20240%20120'%3E%3C/svg%3E" class="attachment-medium size-medium wp-image-1338655" alt="" data-lazy-src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/05112132/dlsi-emploi_couleurs.png" /><noscript><img width="240" height="120" src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/05112132/dlsi-emploi_couleurs.png" class="attachment-medium size-medium wp-image-1338655" alt="" /></noscript>								</a>
+															</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-5cae87a" data-id="5cae87a" data-element_type="column" data-e-type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-11ad7fd elementor-widget elementor-widget-image" data-id="11ad7fd" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://up.coop/" target="_blank">
+							<img width="400" height="141" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20400%20141'%3E%3C/svg%3E" class="attachment-medium size-medium wp-image-1409636" alt="" data-lazy-srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/26110305/UPCOOP_bloc_marque_blanc_RVB-400x141.png 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/26110305/UPCOOP_bloc_marque_blanc_RVB-1024x362.png 1024w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/26110305/UPCOOP_bloc_marque_blanc_RVB-768x271.png 768w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/26110305/UPCOOP_bloc_marque_blanc_RVB-962x340.png 962w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/26110305/UPCOOP_bloc_marque_blanc_RVB.png 1140w" data-lazy-sizes="(max-width: 400px) 100vw, 400px" data-lazy-src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/26110305/UPCOOP_bloc_marque_blanc_RVB-400x141.png" /><noscript><img width="400" height="141" src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/26110305/UPCOOP_bloc_marque_blanc_RVB-400x141.png" class="attachment-medium size-medium wp-image-1409636" alt="" srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/26110305/UPCOOP_bloc_marque_blanc_RVB-400x141.png 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/26110305/UPCOOP_bloc_marque_blanc_RVB-1024x362.png 1024w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/26110305/UPCOOP_bloc_marque_blanc_RVB-768x271.png 768w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/26110305/UPCOOP_bloc_marque_blanc_RVB-962x340.png 962w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/26110305/UPCOOP_bloc_marque_blanc_RVB.png 1140w" sizes="(max-width: 400px) 100vw, 400px" /></noscript>								</a>
+															</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-f7e23eb" data-id="f7e23eb" data-element_type="column" data-e-type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-9524a07 elementor-widget elementor-widget-image" data-id="9524a07" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://www.li.me/fr-fr" target="_blank">
+							<img width="400" height="145" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20400%20145'%3E%3C/svg%3E" class="attachment-medium size-medium wp-image-1421200" alt="" data-lazy-srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/30135123/Logo-LIME-400x145.png 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/30135123/Logo-LIME-1024x371.png 1024w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/30135123/Logo-LIME-768x279.png 768w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/30135123/Logo-LIME-962x349.png 962w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/30135123/Logo-LIME-1400x508.png 1400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/30135123/Logo-LIME.png 1428w" data-lazy-sizes="(max-width: 400px) 100vw, 400px" data-lazy-src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/30135123/Logo-LIME-400x145.png" /><noscript><img width="400" height="145" src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/30135123/Logo-LIME-400x145.png" class="attachment-medium size-medium wp-image-1421200" alt="" srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/30135123/Logo-LIME-400x145.png 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/30135123/Logo-LIME-1024x371.png 1024w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/30135123/Logo-LIME-768x279.png 768w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/30135123/Logo-LIME-962x349.png 962w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/30135123/Logo-LIME-1400x508.png 1400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/30135123/Logo-LIME.png 1428w" sizes="(max-width: 400px) 100vw, 400px" /></noscript>								</a>
+															</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-e0edbcf" data-id="e0edbcf" data-element_type="column" data-e-type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-38d857c elementor-widget elementor-widget-image" data-id="38d857c" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://omnis-watches.com/" target="_blank">
+							<img width="400" height="309" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20400%20309'%3E%3C/svg%3E" class="attachment-medium size-medium wp-image-1251277" alt="" data-lazy-srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02083314/6081bcd56db96d368214eb9082245800222101e6-400x309.png 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02083314/6081bcd56db96d368214eb9082245800222101e6.png 622w" data-lazy-sizes="(max-width: 400px) 100vw, 400px" data-lazy-src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02083314/6081bcd56db96d368214eb9082245800222101e6-400x309.png" /><noscript><img width="400" height="309" src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02083314/6081bcd56db96d368214eb9082245800222101e6-400x309.png" class="attachment-medium size-medium wp-image-1251277" alt="" srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02083314/6081bcd56db96d368214eb9082245800222101e6-400x309.png 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02083314/6081bcd56db96d368214eb9082245800222101e6.png 622w" sizes="(max-width: 400px) 100vw, 400px" /></noscript>								</a>
+															</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-12 elementor-inner-column elementor-element elementor-element-028ee36" data-id="028ee36" data-element_type="column" data-e-type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-e72aabc elementor-widget elementor-widget-image" data-id="e72aabc" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://accro.fr/?utm_source=web&#038;utm_medium=saison2025-2026&#038;utm_campaign=ACCRO&#038;utm_id=RedStar" target="_blank">
+							<img width="400" height="178" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20400%20178'%3E%3C/svg%3E" class="attachment-medium size-medium wp-image-1281039" alt="" data-lazy-srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/03102629/Accro-noir-400x178.png 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/03102629/Accro-noir.png 529w" data-lazy-sizes="(max-width: 400px) 100vw, 400px" data-lazy-src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/03102629/Accro-noir-400x178.png" /><noscript><img width="400" height="178" src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/03102629/Accro-noir-400x178.png" class="attachment-medium size-medium wp-image-1281039" alt="" srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/03102629/Accro-noir-400x178.png 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/03102629/Accro-noir.png 529w" sizes="(max-width: 400px) 100vw, 400px" /></noscript>								</a>
+															</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-inner-section elementor-element elementor-element-93b2fa2 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="93b2fa2" data-element_type="section" data-e-type="section" data-settings="{&quot;jet_parallax_layout_list&quot;:[]}">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-82015cd" data-id="82015cd" data-element_type="column" data-e-type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-b06cf5f elementor-widget elementor-widget-image" data-id="b06cf5f" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://www.iledefrance.fr/" target="_blank">
+							<img width="640" height="234" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20640%20234'%3E%3C/svg%3E" class="attachment-large size-large wp-image-1251296" alt="" data-lazy-srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02084131/LOGO_RIDF_2019_NOIR-1.png 840w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02084131/LOGO_RIDF_2019_NOIR-1-400x146.png 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02084131/LOGO_RIDF_2019_NOIR-1-768x281.png 768w" data-lazy-sizes="(max-width: 640px) 100vw, 640px" data-lazy-src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02084131/LOGO_RIDF_2019_NOIR-1.png" /><noscript><img width="640" height="234" src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02084131/LOGO_RIDF_2019_NOIR-1.png" class="attachment-large size-large wp-image-1251296" alt="" srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02084131/LOGO_RIDF_2019_NOIR-1.png 840w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02084131/LOGO_RIDF_2019_NOIR-1-400x146.png 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02084131/LOGO_RIDF_2019_NOIR-1-768x281.png 768w" sizes="(max-width: 640px) 100vw, 640px" /></noscript>								</a>
+															</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-d62e799" data-id="d62e799" data-element_type="column" data-e-type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-d79cfd9 elementor-widget elementor-widget-image" data-id="d79cfd9" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://seinesaintdenis.fr/" target="_blank">
+							<img width="423" height="102" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20423%20102'%3E%3C/svg%3E" class="attachment-large size-large wp-image-1251297" alt="" data-lazy-srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02084312/seine-saint-denis-conseil-departemental-93-bobigny.png 423w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02084312/seine-saint-denis-conseil-departemental-93-bobigny-400x96.png 400w" data-lazy-sizes="(max-width: 423px) 100vw, 423px" data-lazy-src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02084312/seine-saint-denis-conseil-departemental-93-bobigny.png" /><noscript><img width="423" height="102" src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02084312/seine-saint-denis-conseil-departemental-93-bobigny.png" class="attachment-large size-large wp-image-1251297" alt="" srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02084312/seine-saint-denis-conseil-departemental-93-bobigny.png 423w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/02084312/seine-saint-denis-conseil-departemental-93-bobigny-400x96.png 400w" sizes="(max-width: 423px) 100vw, 423px" /></noscript>								</a>
+															</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-45c6588" data-id="45c6588" data-element_type="column" data-e-type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-d4ba5c8 elementor-widget elementor-widget-image" data-id="d4ba5c8" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://www.renew-tech.fr/%20" target="_blank">
+							<img width="160" height="112" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20160%20112'%3E%3C/svg%3E" class="attachment-large size-large wp-image-516499" alt="" data-lazy-src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2018/04/18092120/SAINTOUENNEW.jpg" /><noscript><img width="160" height="112" src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2018/04/18092120/SAINTOUENNEW.jpg" class="attachment-large size-large wp-image-516499" alt="" /></noscript>								</a>
+															</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-d40205b" data-id="d40205b" data-element_type="column" data-e-type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-c928651 elementor-widget elementor-widget-image" data-id="c928651" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://plainecommune.fr/" target="_blank">
+							<img width="1024" height="457" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201024%20457'%3E%3C/svg%3E" class="attachment-large size-large wp-image-1301623" alt="" data-lazy-srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/17141600/csm_Logo_Plaine_Commune_n_b_NEW_2_6ef9238621-1024x457.jpg 1024w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/17141600/csm_Logo_Plaine_Commune_n_b_NEW_2_6ef9238621-400x178.jpg 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/17141600/csm_Logo_Plaine_Commune_n_b_NEW_2_6ef9238621-768x342.jpg 768w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/17141600/csm_Logo_Plaine_Commune_n_b_NEW_2_6ef9238621-962x429.jpg 962w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/17141600/csm_Logo_Plaine_Commune_n_b_NEW_2_6ef9238621.jpg 1200w" data-lazy-sizes="(max-width: 1024px) 100vw, 1024px" data-lazy-src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/17141600/csm_Logo_Plaine_Commune_n_b_NEW_2_6ef9238621-1024x457.jpg" /><noscript><img width="1024" height="457" src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/17141600/csm_Logo_Plaine_Commune_n_b_NEW_2_6ef9238621-1024x457.jpg" class="attachment-large size-large wp-image-1301623" alt="" srcset="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/17141600/csm_Logo_Plaine_Commune_n_b_NEW_2_6ef9238621-1024x457.jpg 1024w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/17141600/csm_Logo_Plaine_Commune_n_b_NEW_2_6ef9238621-400x178.jpg 400w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/17141600/csm_Logo_Plaine_Commune_n_b_NEW_2_6ef9238621-768x342.jpg 768w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/17141600/csm_Logo_Plaine_Commune_n_b_NEW_2_6ef9238621-962x429.jpg 962w, https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2025/09/17141600/csm_Logo_Plaine_Commune_n_b_NEW_2_6ef9238621.jpg 1200w" sizes="(max-width: 1024px) 100vw, 1024px" /></noscript>								</a>
+															</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+				<section class="elementor-section elementor-inner-section elementor-element elementor-element-bb3c7d2 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="bb3c7d2" data-element_type="section" data-e-type="section" data-settings="{&quot;jet_parallax_layout_list&quot;:[]}">
+						<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-100 elementor-inner-column elementor-element elementor-element-16df6e8" data-id="16df6e8" data-element_type="column" data-e-type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-c26319d elementor-icon-list--layout-inline elementor-align-center elementor-mobile-align-center elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="c26319d" data-element_type="widget" data-e-type="widget" data-widget_type="icon-list.default">
+				<div class="elementor-widget-container">
+							<ul class="elementor-icon-list-items elementor-inline-items">
+							<li class="elementor-icon-list-item elementor-inline-item">
+										<span class="elementor-icon-list-text">©2026 Red Star Football Club</span>
+									</li>
+								<li class="elementor-icon-list-item elementor-inline-item">
+											<a href="https://www.redstar.fr/espace-carriere/" target="_blank">
+
+											<span class="elementor-icon-list-text">Espace carrière</span>
+											</a>
+									</li>
+								<li class="elementor-icon-list-item elementor-inline-item">
+											<a href="https://www.redstar.fr/politique-de-cookies/" target="_blank">
+
+											<span class="elementor-icon-list-text">Politique de cookies</span>
+											</a>
+									</li>
+								<li class="elementor-icon-list-item elementor-inline-item">
+											<a href="https://www.redstar.fr/declaration-de-confidentialite/" target="_blank">
+
+											<span class="elementor-icon-list-text">Déclaration de confidentialité</span>
+											</a>
+									</li>
+								<li class="elementor-icon-list-item elementor-inline-item">
+											<a href="https://www.redstar.fr/mentions-legales/" target="_blank">
+
+											<span class="elementor-icon-list-text">Mentions légales</span>
+											</a>
+									</li>
+						</ul>
+						</div>
+				</div>
+					</div>
+		</div>
+					</div>
+		</section>
+					</div>
+		</div>
+					</div>
+		</section>
+				</footer>
+		
+
+
+        <!-- Meta Pixel Event Code -->
+        
+        <!-- End Meta Pixel Event Code -->
+                <!-- Meta Pixel Event Code -->
+        
+        <!-- End Meta Pixel Event Code -->
+        <script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/wp-*.php","/wp-admin/*","/wp-content/uploads/*","/wp-content/*","/wp-content/plugins/*","/wp-content/themes/redstar/*","/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+
+<!-- Consent Management powered by Complianz | GDPR/CCPA Cookie Consent https://wordpress.org/plugins/complianz-gdpr -->
+<div id="cmplz-cookiebanner-container"><div id="cmplz-cookiebanner-1-optin" class="cmplz-cookiebanner cmplz-hidden banner-1 banniere-cookies optin cmplz-bottom-right cmplz-categories-type-view-preferences" aria-modal="true" data-nosnippet="true" role="dialog" aria-live="polite" aria-labelledby="cmplz-header-1-optin" aria-describedby="cmplz-message-1-optin">
+	<div class="cmplz-header">
+		<div class="cmplz-logo"><a href="https://www.redstar.fr/" class="custom-logo-link" rel="home"><img width="300" height="300" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" class="custom-logo" alt="Red Star Football Club" decoding="async" data-lazy-src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2026/07/31154335/Red-Star-FC-2-e1785505453629.png" /><noscript><img width="300" height="300" src="https://s3.eu-west-3.amazonaws.com/s3.redstar.fr/wp-content/uploads/2026/07/31154335/Red-Star-FC-2-e1785505453629.png" class="custom-logo" alt="Red Star Football Club" decoding="async" /></noscript></a></div>
+		<div class="cmplz-title" id="cmplz-header-1-optin">Gérer le consentement aux cookies</div>
+		<div class="cmplz-close" tabindex="0" role="button" aria-label="close-dialog">
+			<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="times" class="svg-inline--fa fa-times fa-w-11" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512"><path fill="currentColor" d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path></svg>
+		</div>
+	</div>
+
+	<div class="cmplz-divider cmplz-divider-header"></div>
+	<div class="cmplz-body">
+		<div class="cmplz-message" id="cmplz-message-1-optin">Nous utilisons des cookies pour optimiser notre site web et notre service.</div>
+		<!-- categories start -->
+		<div class="cmplz-categories">
+			<div class="cmplz-category cmplz-functional">
+				<div class="cmplz-category-header">
+					<span class="cmplz-category-title" id="cmplz-title-functional-1-optin">Fonctionnel</span>
+					<span class='cmplz-always-active'>
+						<span class="cmplz-banner-checkbox">
+							<input type="checkbox"
+									id="cmplz-functional-optin"
+									data-category="cmplz_functional"
+									class="cmplz-consent-checkbox cmplz-functional"
+									size="40"
+									value="1"/>
+							<label class="cmplz-label" for="cmplz-functional-optin"><span class="screen-reader-text">Fonctionnel</span></label>
+						</span>
+						Toujours activé					</span>
+					<button class="cmplz-category-toggle"
+							aria-expanded="false"
+							aria-controls="cmplz-desc-functional-1-optin"
+							aria-labelledby="cmplz-title-functional-1-optin">
+						<span class="cmplz-icon cmplz-open">
+							<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18"><path d="M224 416c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L224 338.8l169.4-169.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-192 192C240.4 412.9 232.2 416 224 416z"/></svg>
+						</span>
+					</button>
+				</div>
+				<div class="cmplz-description" id="cmplz-desc-functional-1-optin" hidden>
+					<span class="cmplz-description-functional">Le stockage ou l’accès technique est strictement nécessaire dans la finalité d’intérêt légitime de permettre l’utilisation d’un service spécifique explicitement demandé par l’abonné ou l’utilisateur, ou dans le seul but d’effectuer la transmission d’une communication sur un réseau de communications électroniques.</span>
+				</div>
+			</div>
+
+			<div class="cmplz-category cmplz-preferences">
+				<div class="cmplz-category-header">
+					<span class="cmplz-category-title" id="cmplz-title-preferences-1-optin">Préférences</span>
+					<span class="cmplz-banner-checkbox">
+						<input type="checkbox"
+								id="cmplz-preferences-optin"
+								data-category="cmplz_preferences"
+								class="cmplz-consent-checkbox cmplz-preferences"
+								size="40"
+								value="1"/>
+						<label class="cmplz-label" for="cmplz-preferences-optin"><span class="screen-reader-text">Préférences</span></label>
+					</span>
+					<button class="cmplz-category-toggle"
+							aria-expanded="false"
+							aria-controls="cmplz-desc-preferences-1-optin"
+							aria-labelledby="cmplz-title-preferences-1-optin">
+						<span class="cmplz-icon cmplz-open">
+							<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18"><path d="M224 416c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L224 338.8l169.4-169.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-192 192C240.4 412.9 232.2 416 224 416z"/></svg>
+						</span>
+					</button>
+				</div>
+				<div class="cmplz-description" id="cmplz-desc-preferences-1-optin" hidden>
+					<span class="cmplz-description-preferences">Le stockage ou l’accès technique est nécessaire dans la finalité d’intérêt légitime de stocker des préférences qui ne sont pas demandées par l’abonné ou l’utilisateur.</span>
+				</div>
+			</div>
+
+			<div class="cmplz-category cmplz-statistics">
+				<div class="cmplz-category-header">
+					<span class="cmplz-category-title" id="cmplz-title-statistics-1-optin">Statistiques</span>
+					<span class="cmplz-banner-checkbox">
+						<input type="checkbox"
+								id="cmplz-statistics-optin"
+								data-category="cmplz_statistics"
+								class="cmplz-consent-checkbox cmplz-statistics"
+								size="40"
+								value="1"/>
+						<label class="cmplz-label" for="cmplz-statistics-optin"><span class="screen-reader-text">Statistiques</span></label>
+					</span>
+					<button class="cmplz-category-toggle"
+							aria-expanded="false"
+							aria-controls="cmplz-desc-statistics-1-optin"
+							aria-labelledby="cmplz-title-statistics-1-optin">
+						<span class="cmplz-icon cmplz-open">
+							<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18"><path d="M224 416c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L224 338.8l169.4-169.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-192 192C240.4 412.9 232.2 416 224 416z"/></svg>
+						</span>
+					</button>
+				</div>
+				<div class="cmplz-description" id="cmplz-desc-statistics-1-optin" hidden>
+					<span class="cmplz-description-statistics">Le stockage ou l’accès technique qui est utilisé exclusivement à des fins statistiques.</span>
+					<span class="cmplz-description-statistics-anonymous">Le stockage ou l’accès technique qui est utilisé exclusivement dans des finalités statistiques anonymes. En l’absence d’une assignation à comparaître, d’une conformité volontaire de la part de votre fournisseur d’accès à internet ou d’enregistrements supplémentaires provenant d’une tierce partie, les informations stockées ou extraites à cette seule fin ne peuvent généralement pas être utilisées pour vous identifier.</span>
+				</div>
+			</div>
+
+			<div class="cmplz-category cmplz-marketing">
+				<div class="cmplz-category-header">
+					<span class="cmplz-category-title" id="cmplz-title-marketing-1-optin">Marketing</span>
+					<span class="cmplz-banner-checkbox">
+						<input type="checkbox"
+								id="cmplz-marketing-optin"
+								data-category="cmplz_marketing"
+								class="cmplz-consent-checkbox cmplz-marketing"
+								size="40"
+								value="1"/>
+						<label class="cmplz-label" for="cmplz-marketing-optin"><span class="screen-reader-text">Marketing</span></label>
+					</span>
+					<button class="cmplz-category-toggle"
+							aria-expanded="false"
+							aria-controls="cmplz-desc-marketing-1-optin"
+							aria-labelledby="cmplz-title-marketing-1-optin">
+						<span class="cmplz-icon cmplz-open">
+							<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height="18"><path d="M224 416c-8.188 0-16.38-3.125-22.62-9.375l-192-192c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L224 338.8l169.4-169.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-192 192C240.4 412.9 232.2 416 224 416z"/></svg>
+						</span>
+					</button>
+				</div>
+				<div class="cmplz-description" id="cmplz-desc-marketing-1-optin" hidden>
+					<span class="cmplz-description-marketing">Le stockage ou l’accès technique est nécessaire pour créer des profils d’utilisateurs afin d’envoyer des publicités, ou pour suivre l’utilisateur sur un site web ou sur plusieurs sites web à des fins de marketing similaires.</span>
+				</div>
+			</div>
+		</div><!-- categories end -->
+			</div>
+
+	<div class="cmplz-links cmplz-information">
+		<ul>
+			<li><a class="cmplz-link cmplz-manage-options cookie-statement" href="#" data-relative_url="#cmplz-manage-consent-container">Gérer les options</a></li>
+			<li><a class="cmplz-link cmplz-manage-third-parties cookie-statement" href="#" data-relative_url="#cmplz-cookies-overview">Gérer les services</a></li>
+			<li><a class="cmplz-link cmplz-manage-vendors tcf cookie-statement" href="#" data-relative_url="#cmplz-tcf-wrapper">Gérer {vendor_count} fournisseurs</a></li>
+			<li><a class="cmplz-link cmplz-external cmplz-read-more-purposes tcf" target="_blank" rel="noopener noreferrer nofollow" href="https://cookiedatabase.org/tcf/purposes/" aria-label="Read more about TCF purposes on Cookie Database">En savoir plus sur ces finalités</a></li>
+		</ul>
+			</div>
+
+	<div class="cmplz-divider cmplz-footer"></div>
+
+	<div class="cmplz-buttons">
+		<button class="cmplz-btn cmplz-accept">Accepter tous les cookies</button>
+		<button class="cmplz-btn cmplz-deny">Fonctionnels uniquement</button>
+		<button class="cmplz-btn cmplz-view-preferences">Voir les préférences</button>
+		<button class="cmplz-btn cmplz-save-preferences">Enregistrer les préférences</button>
+		<a class="cmplz-btn cmplz-manage-options tcf cookie-statement" href="#" data-relative_url="#cmplz-manage-consent-container">Voir les préférences</a>
+			</div>
+
+
+	<div class="cmplz-documents cmplz-links">
+		<ul>
+			<li><a class="cmplz-link cookie-statement" href="#" data-relative_url="">{title}</a></li>
+			<li><a class="cmplz-link privacy-statement" href="#" data-relative_url="">{title}</a></li>
+			<li><a class="cmplz-link impressum" href="#" data-relative_url="">{title}</a></li>
+		</ul>
+			</div>
+</div>
+</div>
+					<div id="cmplz-manage-consent" data-nosnippet="true"><button class="cmplz-btn cmplz-hidden cmplz-manage-consent manage-consent-1" aria-haspopup="dialog" aria-controls="cmplz-cookiebanner-1-optin">Gérer le consentement</button>
+
+</div>    <!-- Meta Pixel Event Code -->
+    
+    <!-- End Meta Pixel Event Code -->
+        <div  id="fb-pxl-ajax-code"></div>			
+			<link data-minify="1" rel='stylesheet' id='wpcode-snippet-1157261-css' href='https://www.redstar.fr/wp-content/cache/min/1/wp-content/uploads/wpcode/assets/6efeddf71ffc9f7f2ead4d92b7f4601f.css?ver=1792689087' media='all' />
+<link rel='stylesheet' id='elementor-post-1250983-css' href='https://www.redstar.fr/wp-content/uploads/elementor/css/post-1250983.css?ver=1792689087' media='all' />
+<link rel='stylesheet' id='widget-image-css' href='https://www.redstar.fr/wp-content/plugins/elementor/assets/css/widget-image.min.css?ver=4.3.5' media='all' />
+<link rel='stylesheet' id='widget-icon-list-css' href='https://www.redstar.fr/wp-content/plugins/elementor/assets/css/widget-icon-list.min.css?ver=4.3.5' media='all' />
+<style id="global-styles-inline-css">
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgb(6,147,227) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgb(252,185,0) 0%,rgb(255,105,0) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgb(255,105,0) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgb(255, 255, 255), 6px 6px rgb(0, 0, 0);--wp--preset--shadow--crisp: 6px 6px 0px rgb(0, 0, 0);}.wp-block-button{--wp--preset--dimension--25: 25%;--wp--preset--dimension--50: 50%;--wp--preset--dimension--75: 75%;--wp--preset--dimension--100: 100%;}:where(body) { margin: 0; }:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}body{padding-top: 0px;padding-right: 0px;padding-bottom: 0px;padding-left: 0px;}:root :where(.wp-element-button, .wp-block-button__link){background-color: #32373c;border-width: 0;color: #fff;font-family: inherit;font-size: inherit;font-style: inherit;font-weight: inherit;letter-spacing: inherit;line-height: inherit;padding-top: calc(0.667em + 2px);padding-right: calc(1.333em + 2px);padding-bottom: calc(0.667em + 2px);padding-left: calc(1.333em + 2px);text-decoration: none;text-transform: inherit;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+/*# sourceURL=global-styles-inline-css */
+</style>
+<link data-minify="1" rel='stylesheet' id='jet-elements-css' href='https://www.redstar.fr/wp-content/cache/min/1/wp-content/plugins/jet-elements/assets/css/jet-elements.css?ver=1792689087' media='all' />
+<link data-minify="1" rel='stylesheet' id='elementor-gf-local-opensans-css' href='https://www.redstar.fr/wp-content/cache/min/1/wp-content/uploads/elementor/google-fonts/css/opensans.css?ver=1792689087' media='all' />
+<script id="rocket-browser-checker-js-after">
+"use strict";var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||!1,descriptor.configurable=!0,"value"in descriptor&&(descriptor.writable=!0),Object.defineProperty(target,descriptor.key,descriptor)}}return function(Constructor,protoProps,staticProps){return protoProps&&defineProperties(Constructor.prototype,protoProps),staticProps&&defineProperties(Constructor,staticProps),Constructor}}();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor))throw new TypeError("Cannot call a class as a function")}var RocketBrowserCompatibilityChecker=function(){function RocketBrowserCompatibilityChecker(options){_classCallCheck(this,RocketBrowserCompatibilityChecker),this.passiveSupported=!1,this._checkPassiveOption(this),this.options=!!this.passiveSupported&&options}return _createClass(RocketBrowserCompatibilityChecker,[{key:"_checkPassiveOption",value:function(self){try{var options={get passive(){return!(self.passiveSupported=!0)}};window.addEventListener("test",null,options),window.removeEventListener("test",null,options)}catch(err){self.passiveSupported=!1}}},{key:"initRequestIdleCallback",value:function(){!1 in window&&(window.requestIdleCallback=function(cb){var start=Date.now();return setTimeout(function(){cb({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-start))}})},1)}),!1 in window&&(window.cancelIdleCallback=function(id){return clearTimeout(id)})}},{key:"isDataSaverModeOn",value:function(){return"connection"in navigator&&!0===navigator.connection.saveData}},{key:"supportsLinkPrefetch",value:function(){var elem=document.createElement("link");return elem.relList&&elem.relList.supports&&elem.relList.supports("prefetch")&&window.IntersectionObserver&&"isIntersecting"in IntersectionObserverEntry.prototype}},{key:"isSlowConnection",value:function(){return"connection"in navigator&&"effectiveType"in navigator.connection&&("2g"===navigator.connection.effectiveType||"slow-2g"===navigator.connection.effectiveType)}}]),RocketBrowserCompatibilityChecker}();
+//# sourceURL=rocket-browser-checker-js-after
+</script>
+<script id="rocket-preload-links-js-extra">
+var RocketPreloadLinksConfig = {"excludeUris":"/joueur-du-mois/|/oh-dear-health-check-results/|/oh-dear-health-check/|/joueur-de-la-saison/|/(?:.+/)?feed(?:/(?:.+/?)?)?$|/(?:.+/)?embed/|/(index.php/)?(.*)wp-json(/.*|$)|/refer/|/go/|/recommend/|/recommends/|/linkout/.+","usesTrailingSlash":"1","imageExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls|xlsx|php","fileExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls|xlsx|php|html|htm","siteUrl":"https://www.redstar.fr","onHoverDelay":"100","rateThrottle":"3"};
+//# sourceURL=rocket-preload-links-js-extra
+</script>
+<script id="rocket-preload-links-js-after">
+(function() {
+"use strict";var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var t=function(){function n(e,t){i(this,n),this.browser=e,this.config=t,this.options=this.browser.options,this.prefetched=new Set,this.eventTime=null,this.threshold=1111,this.numOnHover=0}return e(n,[{key:"init",value:function(){!this.browser.supportsLinkPrefetch()||this.browser.isDataSaverModeOn()||this.browser.isSlowConnection()||(this.regex={excludeUris:RegExp(this.config.excludeUris,"i"),images:RegExp(".("+this.config.imageExt+")$","i"),fileExt:RegExp(".("+this.config.fileExt+")$","i")},this._initListeners(this))}},{key:"_initListeners",value:function(e){-1<this.config.onHoverDelay&&document.addEventListener("mouseover",e.listener.bind(e),e.listenerOptions),document.addEventListener("mousedown",e.listener.bind(e),e.listenerOptions),document.addEventListener("touchstart",e.listener.bind(e),e.listenerOptions)}},{key:"listener",value:function(e){var t=e.target.closest("a"),n=this._prepareUrl(t);if(null!==n)switch(e.type){case"mousedown":case"touchstart":this._addPrefetchLink(n);break;case"mouseover":this._earlyPrefetch(t,n,"mouseout")}}},{key:"_earlyPrefetch",value:function(t,e,n){var i=this,r=setTimeout(function(){if(r=null,0===i.numOnHover)setTimeout(function(){return i.numOnHover=0},1e3);else if(i.numOnHover>i.config.rateThrottle)return;i.numOnHover++,i._addPrefetchLink(e)},this.config.onHoverDelay);t.addEventListener(n,function e(){t.removeEventListener(n,e,{passive:!0}),null!==r&&(clearTimeout(r),r=null)},{passive:!0})}},{key:"_addPrefetchLink",value:function(i){return this.prefetched.add(i.href),new Promise(function(e,t){var n=document.createElement("link");n.rel="prefetch",n.href=i.href,n.onload=e,n.onerror=t,document.head.appendChild(n)}).catch(function(){})}},{key:"_prepareUrl",value:function(e){if(null===e||"object"!==(void 0===e?"undefined":r(e))||!1 in e||-1===["http:","https:"].indexOf(e.protocol))return null;var t=e.href.substring(0,this.config.siteUrl.length),n=this._getPathname(e.href,t),i={original:e.href,protocol:e.protocol,origin:t,pathname:n,href:t+n};return this._isLinkOk(i)?i:null}},{key:"_getPathname",value:function(e,t){var n=t?e.substring(this.config.siteUrl.length):e;return n.startsWith("/")||(n="/"+n),this._shouldAddTrailingSlash(n)?n+"/":n}},{key:"_shouldAddTrailingSlash",value:function(e){return this.config.usesTrailingSlash&&!e.endsWith("/")&&!this.regex.fileExt.test(e)}},{key:"_isLinkOk",value:function(e){return null!==e&&"object"===(void 0===e?"undefined":r(e))&&(!this.prefetched.has(e.href)&&e.origin===this.config.siteUrl&&-1===e.href.indexOf("?")&&-1===e.href.indexOf("#")&&!this.regex.excludeUris.test(e.href)&&!this.regex.images.test(e.href))}}],[{key:"run",value:function(){"undefined"!=typeof RocketPreloadLinksConfig&&new n(new RocketBrowserCompatibilityChecker({capture:!0,passive:!0}),RocketPreloadLinksConfig).init()}}]),n}();t.run();
+}());
+
+//# sourceURL=rocket-preload-links-js-after
+</script>
+
+
+
+
+<script id="jet-popup-frontend-js-extra">
+var jetPopupData = {"version":"2.2.3.4","ajax_url":"https://www.redstar.fr/wp-admin/admin-ajax.php","currentPostId":"77139","isElementor":"true","accessibility":{"popupLabel":"Popup dialog","closeButtonLabel":"Close popup"}};
+//# sourceURL=jet-popup-frontend-js-extra
+</script>
+
+
+<script id="advadsTrackingScript-js-extra">
+var advadsTracking = {"impressionActionName":"aatrack-records","clickActionName":"aatrack-click","targetClass":"redst-target","blogId":"1","frontendPrefix":"redst-"};
+//# sourceURL=advadsTrackingScript-js-extra
+</script>
+
+
+
+
+
+<script id="elementor-frontend-js-extra">
+var EAELImageMaskingConfig = {"svg_dir_url":"https://www.redstar.fr/wp-content/plugins/essential-addons-for-elementor-lite/assets/front-end/img/image-masking/svg-shapes/"};
+//# sourceURL=elementor-frontend-js-extra
+</script>
+<script id="elementor-frontend-js-before">
+var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false,"isScriptDebug":false},"i18n":{"shareOnFacebook":"Partager sur Facebook","shareOnX":"Partager sur X","pinIt":"L\u2019\u00e9pingler","download":"T\u00e9l\u00e9charger","downloadImage":"T\u00e9l\u00e9charger une image","fullscreen":"Plein \u00e9cran","zoom":"Zoom","share":"Partager","playVideo":"Lire la vid\u00e9o","previous":"Pr\u00e9c\u00e9dent","next":"Suivant","close":"Fermer","a11yCarouselPrevSlideMessage":"Diapositive pr\u00e9c\u00e9dente","a11yCarouselNextSlideMessage":"Diapositive suivante","a11yCarouselFirstSlideMessage":"Ceci est la premi\u00e8re diapositive","a11yCarouselLastSlideMessage":"Ceci est la derni\u00e8re diapositive","a11yCarouselPaginationBulletMessage":"Aller \u00e0 la diapositive"},"is_rtl":false,"breakpoints":{"xs":0,"sm":480,"md":768,"lg":1025,"xl":1440,"xxl":1600},"responsive":{"breakpoints":{"mobile":{"label":"Portrait mobile","value":767,"default_value":767,"direction":"max","is_enabled":true},"mobile_extra":{"label":"Mobile Paysage","value":880,"default_value":880,"direction":"max","is_enabled":false},"tablet":{"label":"Tablette en mode portrait","value":1024,"default_value":1024,"direction":"max","is_enabled":true},"tablet_extra":{"label":"Tablette en mode paysage","value":1200,"default_value":1200,"direction":"max","is_enabled":false},"laptop":{"label":"Portable","value":1366,"default_value":1366,"direction":"max","is_enabled":false},"widescreen":{"label":"\u00c9cran large","value":2400,"default_value":2400,"direction":"min","is_enabled":false}},"hasCustomBreakpoints":false},"version":"4.3.5","is_static":false,"experimentalFeatures":{"additional_custom_breakpoints":true,"theme_builder_v2":true,"landing-pages":true,"import-export-customization":true,"e_pro_atomic_form":true,"e_pro_collection_loop":true},"urls":{"assets":"https:\/\/www.redstar.fr\/wp-content\/plugins\/elementor\/assets\/","ajaxurl":"https:\/\/www.redstar.fr\/wp-admin\/admin-ajax.php","uploadUrl":"https:\/\/www.redstar.fr\/wp-content\/uploads"},"nonces":{"floatingButtonsClickTracking":"845064e64b","atomicFormsSendForm":"4bfcdc6e30"},"swiperClass":"swiper","settings":{"page":[],"editorPreferences":[]},"kit":{"active_breakpoints":["viewport_mobile","viewport_tablet"],"global_image_lightbox":"yes","lightbox_enable_counter":"yes","lightbox_enable_fullscreen":"yes","lightbox_enable_zoom":"yes","lightbox_enable_share":"yes","lightbox_title_src":"title","lightbox_description_src":"description"},"post":{"id":77139,"title":"Le%20Stade%20Bauer%20%7C%20Red%20Star%20Football%20Club","excerpt":"","featuredImage":"https:\/\/s3.eu-west-3.amazonaws.com\/s3.redstar.fr\/wp-content\/uploads\/2018\/01\/17164026\/redstar-home-1024x670.png"}};
+//# sourceURL=elementor-frontend-js-before
+</script>
+
+<script id="eael-general-js-extra">
+var localize = {"ajaxurl":"https://www.redstar.fr/wp-admin/admin-ajax.php","nonce":"936d4a485d","i18n":{"added":"Added ","compare":"Compare","loading":"Loading..."},"eael_translate_text":{"required_text":"is a required field","invalid_text":"Invalid","billing_text":"Billing","shipping_text":"Shipping","fg_mfp_counter_text":"of"},"page_permalink":"https://www.redstar.fr/le-stade-bauer/","cart_redirectition":"","cart_page_url":"","el_breakpoints":{"mobile":{"label":"Portrait mobile","value":767,"default_value":767,"direction":"max","is_enabled":true},"mobile_extra":{"label":"Mobile Paysage","value":880,"default_value":880,"direction":"max","is_enabled":false},"tablet":{"label":"Tablette en mode portrait","value":1024,"default_value":1024,"direction":"max","is_enabled":true},"tablet_extra":{"label":"Tablette en mode paysage","value":1200,"default_value":1200,"direction":"max","is_enabled":false},"laptop":{"label":"Portable","value":1366,"default_value":1366,"direction":"max","is_enabled":false},"widescreen":{"label":"\u00c9cran large","value":2400,"default_value":2400,"direction":"min","is_enabled":false}},"ParticleThemesData":{"default":"{\"particles\":{\"number\":{\"value\":160,\"density\":{\"enable\":true,\"value_area\":800}},\"color\":{\"value\":\"#ffffff\"},\"shape\":{\"type\":\"circle\",\"stroke\":{\"width\":0,\"color\":\"#000000\"},\"polygon\":{\"nb_sides\":5},\"image\":{\"src\":\"img/github.svg\",\"width\":100,\"height\":100}},\"opacity\":{\"value\":0.5,\"random\":false,\"anim\":{\"enable\":false,\"speed\":1,\"opacity_min\":0.1,\"sync\":false}},\"size\":{\"value\":3,\"random\":true,\"anim\":{\"enable\":false,\"speed\":40,\"size_min\":0.1,\"sync\":false}},\"line_linked\":{\"enable\":true,\"distance\":150,\"color\":\"#ffffff\",\"opacity\":0.4,\"width\":1},\"move\":{\"enable\":true,\"speed\":6,\"direction\":\"none\",\"random\":false,\"straight\":false,\"out_mode\":\"out\",\"bounce\":false,\"attract\":{\"enable\":false,\"rotateX\":600,\"rotateY\":1200}}},\"interactivity\":{\"detect_on\":\"canvas\",\"events\":{\"onhover\":{\"enable\":true,\"mode\":\"repulse\"},\"onclick\":{\"enable\":true,\"mode\":\"push\"},\"resize\":true},\"modes\":{\"grab\":{\"distance\":400,\"line_linked\":{\"opacity\":1}},\"bubble\":{\"distance\":400,\"size\":40,\"duration\":2,\"opacity\":8,\"speed\":3},\"repulse\":{\"distance\":200,\"duration\":0.4},\"push\":{\"particles_nb\":4},\"remove\":{\"particles_nb\":2}}},\"retina_detect\":true}","nasa":"{\"particles\":{\"number\":{\"value\":250,\"density\":{\"enable\":true,\"value_area\":800}},\"color\":{\"value\":\"#ffffff\"},\"shape\":{\"type\":\"circle\",\"stroke\":{\"width\":0,\"color\":\"#000000\"},\"polygon\":{\"nb_sides\":5},\"image\":{\"src\":\"img/github.svg\",\"width\":100,\"height\":100}},\"opacity\":{\"value\":1,\"random\":true,\"anim\":{\"enable\":true,\"speed\":1,\"opacity_min\":0,\"sync\":false}},\"size\":{\"value\":3,\"random\":true,\"anim\":{\"enable\":false,\"speed\":4,\"size_min\":0.3,\"sync\":false}},\"line_linked\":{\"enable\":false,\"distance\":150,\"color\":\"#ffffff\",\"opacity\":0.4,\"width\":1},\"move\":{\"enable\":true,\"speed\":1,\"direction\":\"none\",\"random\":true,\"straight\":false,\"out_mode\":\"out\",\"bounce\":false,\"attract\":{\"enable\":false,\"rotateX\":600,\"rotateY\":600}}},\"interactivity\":{\"detect_on\":\"canvas\",\"events\":{\"onhover\":{\"enable\":true,\"mode\":\"bubble\"},\"onclick\":{\"enable\":true,\"mode\":\"repulse\"},\"resize\":true},\"modes\":{\"grab\":{\"distance\":400,\"line_linked\":{\"opacity\":1}},\"bubble\":{\"distance\":250,\"size\":0,\"duration\":2,\"opacity\":0,\"speed\":3},\"repulse\":{\"distance\":400,\"duration\":0.4},\"push\":{\"particles_nb\":4},\"remove\":{\"particles_nb\":2}}},\"retina_detect\":true}","bubble":"{\"particles\":{\"number\":{\"value\":15,\"density\":{\"enable\":true,\"value_area\":800}},\"color\":{\"value\":\"#1b1e34\"},\"shape\":{\"type\":\"polygon\",\"stroke\":{\"width\":0,\"color\":\"#000\"},\"polygon\":{\"nb_sides\":6},\"image\":{\"src\":\"img/github.svg\",\"width\":100,\"height\":100}},\"opacity\":{\"value\":0.3,\"random\":true,\"anim\":{\"enable\":false,\"speed\":1,\"opacity_min\":0.1,\"sync\":false}},\"size\":{\"value\":50,\"random\":false,\"anim\":{\"enable\":true,\"speed\":10,\"size_min\":40,\"sync\":false}},\"line_linked\":{\"enable\":false,\"distance\":200,\"color\":\"#ffffff\",\"opacity\":1,\"width\":2},\"move\":{\"enable\":true,\"speed\":8,\"direction\":\"none\",\"random\":false,\"straight\":false,\"out_mode\":\"out\",\"bounce\":false,\"attract\":{\"enable\":false,\"rotateX\":600,\"rotateY\":1200}}},\"interactivity\":{\"detect_on\":\"canvas\",\"events\":{\"onhover\":{\"enable\":false,\"mode\":\"grab\"},\"onclick\":{\"enable\":false,\"mode\":\"push\"},\"resize\":true},\"modes\":{\"grab\":{\"distance\":400,\"line_linked\":{\"opacity\":1}},\"bubble\":{\"distance\":400,\"size\":40,\"duration\":2,\"opacity\":8,\"speed\":3},\"repulse\":{\"distance\":200,\"duration\":0.4},\"push\":{\"particles_nb\":4},\"remove\":{\"particles_nb\":2}}},\"retina_detect\":true}","snow":"{\"particles\":{\"number\":{\"value\":450,\"density\":{\"enable\":true,\"value_area\":800}},\"color\":{\"value\":\"#fff\"},\"shape\":{\"type\":\"circle\",\"stroke\":{\"width\":0,\"color\":\"#000000\"},\"polygon\":{\"nb_sides\":5},\"image\":{\"src\":\"img/github.svg\",\"width\":100,\"height\":100}},\"opacity\":{\"value\":0.5,\"random\":true,\"anim\":{\"enable\":false,\"speed\":1,\"opacity_min\":0.1,\"sync\":false}},\"size\":{\"value\":5,\"random\":true,\"anim\":{\"enable\":false,\"speed\":40,\"size_min\":0.1,\"sync\":false}},\"line_linked\":{\"enable\":false,\"distance\":500,\"color\":\"#ffffff\",\"opacity\":0.4,\"width\":2},\"move\":{\"enable\":true,\"speed\":6,\"direction\":\"bottom\",\"random\":false,\"straight\":false,\"out_mode\":\"out\",\"bounce\":false,\"attract\":{\"enable\":false,\"rotateX\":600,\"rotateY\":1200}}},\"interactivity\":{\"detect_on\":\"canvas\",\"events\":{\"onhover\":{\"enable\":true,\"mode\":\"bubble\"},\"onclick\":{\"enable\":true,\"mode\":\"repulse\"},\"resize\":true},\"modes\":{\"grab\":{\"distance\":400,\"line_linked\":{\"opacity\":0.5}},\"bubble\":{\"distance\":400,\"size\":4,\"duration\":0.3,\"opacity\":1,\"speed\":3},\"repulse\":{\"distance\":200,\"duration\":0.4},\"push\":{\"particles_nb\":4},\"remove\":{\"particles_nb\":2}}},\"retina_detect\":true}","nyan_cat":"{\"particles\":{\"number\":{\"value\":150,\"density\":{\"enable\":false,\"value_area\":800}},\"color\":{\"value\":\"#ffffff\"},\"shape\":{\"type\":\"star\",\"stroke\":{\"width\":0,\"color\":\"#000000\"},\"polygon\":{\"nb_sides\":5},\"image\":{\"src\":\"http://wiki.lexisnexis.com/academic/images/f/fb/Itunes_podcast_icon_300.jpg\",\"width\":100,\"height\":100}},\"opacity\":{\"value\":0.5,\"random\":false,\"anim\":{\"enable\":false,\"speed\":1,\"opacity_min\":0.1,\"sync\":false}},\"size\":{\"value\":4,\"random\":true,\"anim\":{\"enable\":false,\"speed\":40,\"size_min\":0.1,\"sync\":false}},\"line_linked\":{\"enable\":false,\"distance\":150,\"color\":\"#ffffff\",\"opacity\":0.4,\"width\":1},\"move\":{\"enable\":true,\"speed\":14,\"direction\":\"left\",\"random\":false,\"straight\":true,\"out_mode\":\"out\",\"bounce\":false,\"attract\":{\"enable\":false,\"rotateX\":600,\"rotateY\":1200}}},\"interactivity\":{\"detect_on\":\"canvas\",\"events\":{\"onhover\":{\"enable\":false,\"mode\":\"grab\"},\"onclick\":{\"enable\":true,\"mode\":\"repulse\"},\"resize\":true},\"modes\":{\"grab\":{\"distance\":200,\"line_linked\":{\"opacity\":1}},\"bubble\":{\"distance\":400,\"size\":40,\"duration\":2,\"opacity\":8,\"speed\":3},\"repulse\":{\"distance\":200,\"duration\":0.4},\"push\":{\"particles_nb\":4},\"remove\":{\"particles_nb\":2}}},\"retina_detect\":true}"},"eael_login_nonce":"9136b2b4bc","eael_register_nonce":"17d4d285fd","eael_lostpassword_nonce":"2ad68e2a3f","eael_resetpassword_nonce":"073dae8cde"};
+//# sourceURL=eael-general-js-extra
+</script>
+
+<script id="cmplz-cookiebanner-js-extra">
+var complianz = {"prefix":"cmplz_","debug":"","user_banner_id":"1","set_cookies":[],"block_ajax_content":"","banner_version":"82","version":"7.6.6","store_consent":"","do_not_track_enabled":"1","consenttype":"optin","region":"eu","geoip":"1","dismiss_timeout":"","disable_cookiebanner":"","soft_cookiewall":"","dismiss_on_scroll":"","cookie_expiry":"365","url":"https://www.redstar.fr/wp-json/complianz/v1/","locale":"lang=fr&locale=fr_FR","set_cookies_on_root":"","cookie_domain":"","current_policy_id":"21","cookie_path":"/","categories":{"statistics":"statistiques","marketing":"marketing"},"tcf_active":"","placeholdertext":"Cliquez pour accepter les cookies {category} et activer ce contenu","css_file":"https://www.redstar.fr/wp-content/uploads/complianz/css/banner-{banner_id}-{type}.css?v=82","page_links":{"eu":{"cookie-statement":{"title":"Politique de cookies","url":"https://www.redstar.fr/politique-de-cookies/"}}},"tm_categories":"1","forceEnableStats":"","preview":"","clean_cookies":"","aria_label":"Cliquez pour accepter les cookies {category} et activer ce contenu","iapi_nav":"fallback","is_cookiepolicy_page":""};
+//# sourceURL=cmplz-cookiebanner-js-extra
+</script>
+
+
+
+<script id="jet-elements-js-extra">
+var jetElements = {"ajaxUrl":"https://www.redstar.fr/wp-admin/admin-ajax.php","isMobile":"false","templateApiUrl":"https://www.redstar.fr/wp-json/jet-elements-api/v1/elementor-template","devMode":"false","mapboxToken":"","messages":{"invalidMail":"Please specify a valid e-mail"}};
+//# sourceURL=jet-elements-js-extra
+</script>
+
+<script id="wp-hooks-js" src="https://www.redstar.fr/wp-includes/js/dist/hooks.min.js?ver=f0f188028580e8dc1255"></script>
+<script id="wp-i18n-js" src="https://www.redstar.fr/wp-includes/js/dist/i18n.min.js?ver=1dfe7db3940c23ea9216"></script>
+
+<script id="elementor-pro-frontend-js-before">
+var ElementorProFrontendConfig = {"ajaxurl":"https:\/\/www.redstar.fr\/wp-admin\/admin-ajax.php","nonce":"6e51a323e9","urls":{"assets":"https:\/\/www.redstar.fr\/wp-content\/plugins\/elementor-pro\/assets\/","rest":"https:\/\/www.redstar.fr\/wp-json\/"},"settings":{"lazy_load_background_images":true},"popup":{"hasPopUps":false},"shareButtonsNetworks":{"facebook":{"title":"Facebook","has_counter":true},"twitter":{"title":"Twitter"},"linkedin":{"title":"LinkedIn","has_counter":true},"pinterest":{"title":"Pinterest","has_counter":true},"reddit":{"title":"Reddit","has_counter":true},"vk":{"title":"VK","has_counter":true},"odnoklassniki":{"title":"OK","has_counter":true},"tumblr":{"title":"Tumblr"},"digg":{"title":"Digg"},"skype":{"title":"Skype"},"stumbleupon":{"title":"StumbleUpon","has_counter":true},"mix":{"title":"Mix"},"telegram":{"title":"Telegram"},"pocket":{"title":"Pocket","has_counter":true},"xing":{"title":"XING","has_counter":true},"whatsapp":{"title":"WhatsApp"},"email":{"title":"Email"},"print":{"title":"Print"},"x-twitter":{"title":"X"},"threads":{"title":"Threads"}},"facebook_sdk":{"lang":"fr_FR","app_id":""},"lottie":{"defaultAnimationUrl":"https:\/\/www.redstar.fr\/wp-content\/plugins\/elementor-pro\/modules\/lottie\/assets\/animations\/default.json"}};
+//# sourceURL=elementor-pro-frontend-js-before
+</script>
+
+
+
+<script id="jet-tabs-frontend-js-extra">
+var JetTabsSettings = {"ajaxurl":"https://www.redstar.fr/wp-admin/admin-ajax.php","isMobile":"false","templateApiUrl":"https://www.redstar.fr/wp-json/jet-tabs-api/v1/elementor-template","devMode":"false","isSelfRequest":""};
+//# sourceURL=jet-tabs-frontend-js-extra
+</script>
+
+<script id="font-awesome-pro-js" src="https://kit.fontawesome.com/129ade73a2.js?ver=4.3.2" data-rocket-defer defer></script>
+<!-- Statistics script Complianz GDPR/CCPA -->
+						<script data-category="functional">
+							(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WFDK369');
+						</script>
+						<!--noptimize--><script>!function(){window.advanced_ads_ready_queue=window.advanced_ads_ready_queue||[],advanced_ads_ready_queue.push=window.advanced_ads_ready;for(var d=0,a=advanced_ads_ready_queue.length;d<a;d++)advanced_ads_ready(advanced_ads_ready_queue[d])}();</script><!--/noptimize--><div  hidden data-wpu-integrity="4c16c411427f7ede0fa52df3c27e0ab4"></div>
+<script id="redst-tracking">var advads_tracking_ads = {};var advads_tracking_urls = {"1":"https:\/\/www.redstar.fr\/wp-admin\/admin-ajax.php"};var advads_tracking_methods = {"1":"frontend"};var advads_tracking_parallel = {"1":false};var advads_tracking_linkbases = {"1":"https:\/\/www.redstar.fr\/linkout\/"};</script><script>window.lazyLoadOptions=[{elements_selector:"img[data-lazy-src],.rocket-lazyload,iframe[data-lazy-src]",data_src:"lazy-src",data_srcset:"lazy-srcset",data_sizes:"lazy-sizes",class_loading:"lazyloading",class_loaded:"lazyloaded",threshold:300,callback_loaded:function(element){if(element.tagName==="IFRAME"&&element.dataset.rocketLazyload=="fitvidscompatible"){if(element.classList.contains("lazyloaded")){if(typeof window.jQuery!="undefined"){if(jQuery.fn.fitVids){jQuery(element).parent().fitVids()}}}}}},{elements_selector:".rocket-lazyload",data_src:"lazy-src",data_srcset:"lazy-srcset",data_sizes:"lazy-sizes",class_loading:"lazyloading",class_loaded:"lazyloaded",threshold:300,}];window.addEventListener('LazyLoad::Initialized',function(e){var lazyLoadInstance=e.detail.instance;if(window.MutationObserver){var observer=new MutationObserver(function(mutations){var image_count=0;var iframe_count=0;var rocketlazy_count=0;mutations.forEach(function(mutation){for(var i=0;i<mutation.addedNodes.length;i++){if(typeof mutation.addedNodes[i].getElementsByTagName!=='function'){continue}
+if(typeof mutation.addedNodes[i].getElementsByClassName!=='function'){continue}
+images=mutation.addedNodes[i].getElementsByTagName('img');is_image=mutation.addedNodes[i].tagName=="IMG";iframes=mutation.addedNodes[i].getElementsByTagName('iframe');is_iframe=mutation.addedNodes[i].tagName=="IFRAME";rocket_lazy=mutation.addedNodes[i].getElementsByClassName('rocket-lazyload');image_count+=images.length;iframe_count+=iframes.length;rocketlazy_count+=rocket_lazy.length;if(is_image){image_count+=1}
+if(is_iframe){iframe_count+=1}}});if(image_count>0||iframe_count>0||rocketlazy_count>0){lazyLoadInstance.update()}});var b=document.getElementsByTagName("body")[0];var config={childList:!0,subtree:!0};observer.observe(b,config)}},!1)</script><script data-no-minify="1" async src="https://www.redstar.fr/wp-content/plugins/wp-rocket/assets/js/lazyload/17.8.3/lazyload.min.js"></script>
+<script src="https://www.redstar.fr/wp-content/cache/min/1/44f93fdf06c0bca47050b3cec6984751.js" data-minify="1" data-rocket-defer defer></script></body>
+</html>
+
+<!-- Cached for great performance -->

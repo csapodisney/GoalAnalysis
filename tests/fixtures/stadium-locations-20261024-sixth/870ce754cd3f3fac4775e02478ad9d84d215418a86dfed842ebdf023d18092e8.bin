@@ -1,0 +1,969 @@
+<!doctype html>
+<html lang="de-DE" dir="ltr">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, shrink-to-fit=no">
+  <meta name="generator" content="dvv-Mastertemplates 24.2.5-RELEASE">
+  <meta name="keywords" content="Gemeinde, Buerger, Wirtschaft">
+  <meta name="description" content="Internetpräsenz">
+  <meta name="author" content="Manuel Schlegel">
+  <meta name="og:title" content="Sportstätten">
+  <meta name="og:description" content="Internetpräsenz">
+  <meta name="og:type" content="website">
+  <meta name="og:locale:alternate" content="de">
+  <meta name="og:url" content="https://www.heidenheim.de/sport-und-freizeit/sportangebote/sportstaetten">
+  <meta name="geo.placename" content="Grabenstraße 15, 89522 Heidenheim an der Brenz, Deutschland">
+  <meta name="geo.region" content="DE-BW">
+  <meta name="geo.position" content="48.675598722015856;10.15364143005184">
+  <meta name="ICBM" content="48.675598722015856,10.15364143005184">
+  <meta name="robots" content="index, follow">
+  <title>Sportstätten | Heidenheim</title>
+  <link rel="shortcut icon" href="/site/Heidenheim/resourceCached/10.4.2.2.0/img/favicon.ico">
+  <link href="/common/js/jQuery/jquery-ui-themes/1.13.2/base/jquery-ui.min.css" rel="stylesheet" type="text/css">
+  <link href="/site/Heidenheim/resourceTemplate/heidenheim/-/804106/10.4.2.2.0/resource.dynamic.css" rel="stylesheet" type="text/css">
+  <link href="/common/fontawesome5/css/all.min.css" rel="stylesheet" type="text/css">
+  <script src="/site/Heidenheim/resourceCached/10.4.2.2.0/js/vendors/mburger/mburger.js" type="module"></script>
+  <script src="https://www.heidenheim.de/ccm19os/os19ccm/public/index.php/app.js?apiKey=80e298ff232f41694abbd0b0837806d1d139acc2dd784c29&amp;domain=f3c1fa6" referrerpolicy="origin"></script>
+  <script src="/site/Heidenheim/resourceCached/10.4.2.2.0/js/libs/leaflet-1.3.4/leaflet.js"></script>
+  <script src="/common/js/jQuery/3.7.1/jquery.min.js"></script>
+  <script src="/common/js/jQuery/external/hoverIntent/jquery.hoverIntent.min.js"></script>
+  <script src="/common/js/jQuery/external/superfish/js/superfish.min.js"></script>
+  <script src="/common/js/jQuery/jquery-ui/1.14.1/jquery-ui.min.js"></script>
+  <script src="/common/js/jQuery/external/dvvUiDisclosure/disclosure.min.js"></script>
+  <script src="/site/Heidenheim/resourceCached/10.4.2.2.0/mergedScript_de_DE.js"></script>
+  <script src="/site/Heidenheim/resourceCached/10.4.2.2.0/js/bootstrap.bundle.min.js"></script>
+  <script src="/site/Heidenheim/resourceCached/10.4.2.2.0/js/functions.js"></script>
+  <script src="/site/Heidenheim/resourceCached/10.4.2.2.0/js/mobilemenu.js"></script>
+  <script src="/site/Heidenheim/resourceCached/10.4.2.2.0/js/vendors/mmenu/mmenu.js"></script>
+  <script src="/site/Heidenheim/resourceCached/10.4.2.2.0/js/vendors/tinyslider/tiny-slider.js"></script>
+  <script src="/site/Heidenheim/resourceCached/10.4.2.2.0/js/vendors/slick/slick.min.js"></script>
+  <script src="/site/Heidenheim/resourceCached/10.4.2.2.0/js/iframeResizer.min.js"></script>
+  <script defer src="/site/Heidenheim/resourceCached/10.4.2.2.0/search-autocomplete/autocomplete.js"></script>
+  <script>
+jQuery(function () {
+    jQuery('.pbsearch-autocomplete').pbsearch_autocomplete({
+        url: '/site/Heidenheim/search-autocomplete/804103/index.html',
+        delay: 300,
+        maxTerms: 5,
+        minLength: 3,
+        rows: 20,
+        avoidParallelRequests: true
+    });
+});
+jQuery(function(){jQuery('ul.sf-menu').superfish();});
+</script>
+  <link href="/site/Heidenheim/resourceCached/10.4.2.2.0/css/styles.css" rel="stylesheet" type="text/css">
+  <link href="/site/Heidenheim/resourceCached/10.4.2.2.0/css/vendors/jquery.jConveyorTicker.css" rel="stylesheet" type="text/css">
+ </head>
+ <body id="node804103" class="knot_standard body_node level3 main id-home740921">
+  <div class="c-loginout">
+  </div>
+  <div class="l-header__jumplinks invisible">
+   <ul class="sr-only">
+    <li><a class="sr-only" href="#navigation">Gehe zum Navigationsbereich</a></li>
+    <li><a class="sr-only" href="">Gehe zum Inhalt</a></li>
+   </ul>
+  </div>
+  <div role="dialog" aria-label="öffnet die Suche" aria-hidden="true" id="search-overlay-id" class="search-overlay">
+   <div class="search-outer-close toggle-overlay"><a href="#" class="close-search"><span class="sr-only">Schließen</span></a>
+   </div>
+   <div class="search-overlay__outer">
+    <div class="search-overlay__inner">
+     <div class="search-overlay__wrapper">
+      <div class="c-meta__search">
+       <div class="c-meta__search__titel">
+        Wonach suchen Sie?
+       </div>
+       <div id="quicksearch" class="quicksearchdiv">
+        <form action="/site/Heidenheim/search/740921/index.html" class="c-quicksearch quicksearch noprint" method="GET" role="search"><input type="hidden" name="quicksearch" value="true"> <label for="qs_query">Suche</label> <input type="search" name="query" id="qs_query" class="c-quicksearch__input quicksearchtext pbsearch-autocomplete" aria-label="Suche" value="Suchbegriff(e)" onfocus="if(this.value == this.defaultValue){this.value = '';}">
+         <div class="input-group-append"><button class="quicksearchimg" aria-label="Suche starten" title="Suche starten"><i class="fal fa-search"></i></button>
+         </div>
+        </form>
+       </div>
+      </div>
+      <div class="c-search-oftgesucht">
+       <div class="c-search-oftgesucht__titel">
+        Oft gesucht
+       </div>
+       <div class="c-search-oftgesucht__liste">
+        <a id="anker989500"></a>
+        <div class="v-box composedcontent-tng_box--box boxborder block_989500" id="cc_989500">
+         <div class="c-list basecontent-list--liste text-left" id="anker989492">
+          <ul>
+           <li><a class="internerLink" href="/,Lde_DE/rathaus-und-verwaltung/buergerservice/terminbuchung" title="Terminbuchung">Termin online buchen</a></li>
+           <li><a class="internerLink" href="/,Lde_DE/rathaus-und-verwaltung/oeffnungszeiten" title="Öffnungszeiten">Öffnungszeiten</a></li>
+           <li><a class="httpsLink" href="https://www.heidenheim.de/-/verfahrensbeschreibungen/vbid169" title="Geburtsurkunde beantragen">Geburtsurkunde beantragen</a></li>
+           <li><a class="httpsLink neuFensterLink" href="https://www.heidenheim.de/-/verfahrensbeschreibungen/wohnsitz-anmelden/vbid112" target="_blank" title="Wohnsitz anmelden">Wohnsitz anmelden</a></li>
+           <li><a class="httpsLink neuFensterLink" href="https://www.heidenheim.de/-/verfahrensbeschreibungen/personalausweis-erstmalig-oder-nach-ablauf-beantragen/vbid2020" target="_blank" title="Personalausweis beantragen">Personalausweis beantragen</a></li>
+           <li><a class="httpsLink neuFensterLink" href="https://www.heidenheim.de/-/verfahrensbeschreibungen/meldebescheinigung-beantragen/vbid949" target="_blank" title="Meldebescheinigung beantragen">Meldebescheinigung</a></li>
+           <li><a class="httpsLink externerLink neuFensterLink" href="https://www.service-bw.de/zufi/leistungen/763?plz=89518-89522-89520&amp;ags=08135019" rel="external noopener" target="_blank" title="Bewohnerparkausweis beantragen">Bewohnerparkausweis</a></li>
+           <li><a class="httpsLink externerLink neuFensterLink" href="https://www.laendleevents.de" rel="external noopener" target="_blank" title="Veranstaltungsportal für Heidenheim">Veranstaltungskalender</a></li>
+           <li><a class="httpsLink neuFensterLink" href="https://www.heidenheim.de/-/behoerdenwegweiser/steuern-und-abgaben-stadt-heidenheim/oe6007068" target="_blank" title="Hebesätze">Hebesätze</a></li>
+           <li><a class="internerLink" href="/,Lde_DE/rathaus-und-verwaltung/karriere/freie+stellen" title="Freie Stellen">Freie Stellen</a></li>
+          </ul>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div> <a id="pageTop"></a>
+  <div class="l-page">
+   <header class="l-header">
+    <div class="l-header__wrapper">
+     <div class="l-header__inner">
+      <div class="l-header__main-nav">
+       <div class="l-hamburger-menu mobile-nav-button-wrapper"><a class="mburger mburger--collapse" id="mobile-nav-button" aria-label="Öffne das Hauptmenü" tabindex="0"> <b></b> <b></b> <b></b> </a>
+       </div>
+      </div>
+      <div class="l-header__brand">
+       <div class="brand" role="banner"><a href="/startseite" title="Zur Startseite von Heidenheim" aria-label="Zur Startseite von Heidenheim"> <img src="/site/Heidenheim/resourceCached/10.4.2.2.0/img/logo-hdh-negativ.svg" alt="Logo der Stadt Heidenheim an der Brenz"> </a>
+       </div>
+      </div>
+      <div class="l-header__func-nav">
+       <div class="l-header__nav-inner">
+        <nav class="l-navigation" id="navigation">
+        </nav>
+       </div>
+      </div>
+      <div class="l-header__funktionslinks">
+       <nav class="funcnav" aria-label="Funktionslinks">
+        <ul>
+         <li class="farbumschaltung"></li>
+         <li class="einfachesprache"><a href="/barrierefreiheit/leichte-sprache" title="Leichte Sprache" aria-label="Leichte Sprache">Leichte Sprache</a></li>
+         <li class="gebeardensprache"><a href="/barrierefreiheit/gebaerdensprache" title="Gebärdensprache" aria-label="Gebärdensprache">Gebärdensprache</a></li>
+         <li class="sprache"><a href="/sport-und-freizeit/sportangebote/sportstaetten" hreflang="de" lang="de">Deutsch</a></li>
+        </ul>
+       </nav>
+      </div>
+      <div class="l-header__searchicon"><button class="search toggle-overlay" aria-label="Suche aufklappen"><i class="fal fa-search"></i></button>
+      </div>
+     </div>
+    </div>
+   </header>
+   <div class="l-header__stage"><a id="anker801768"></a>
+    <div class="composedcontent-heidenheim_module composedcontent-heidenheim_module--heidenheim_module block_801768" id="cc_801768">
+     <figure class="basecontent-external-responsive-image basecontent-external-responsive-image--bild--responsiv--aus-bibliothek c-image" id="anker801769">
+      <div class="image-inner" id="img_801769_3">
+       <img alt="Schloss Hellenstein im Sommer. Foto: Oliver Vogel" sizes="100vw" src="/site/Heidenheim/get/params_E272899267/801769/schloss01_01_full_header_unterseiten_2560x630.jpg" srcset="/site/Heidenheim/get/params_E272899267_Nfirst/801769/schloss01_01_full_header_unterseiten_2560x630.jpg 2560w, /site/Heidenheim/get/params_E-882699977_N1596548766046/801769/schloss01_01_full_header_unterseiten_2560x630.jpg 1280w, /site/Heidenheim/get/params_E1366469218_N1596548901919/801769/schloss01_01_full_header_unterseiten_2560x630.jpg 420w" title="Schloss Hellenstein im Sommer. Foto: Oliver Vogel">
+      </div>
+     </figure>
+    </div>
+   </div>
+   <div id="l-quicklinks">
+    <div class="d-wrap d-wrap1"><a class="d-open" title="Schaltfläche zum Öffnen der Direktlinks" href="#l-quicklinks"></a> <a class="d-close" title="Schaltfläche zum Öffnen der Direktlinks" href="#"></a>
+    </div>
+    <div class="d-wrap d-wrap2"><a id="anker833261"></a>
+     <div class="l-schnellzugriff_wrapper">
+      <article class="composedcontent-heidenheim_module composedcontent-heidenheim_module--heidenheim_module block_833261" id="cc_833261">
+       <a id="anker833265"></a>
+       <div class="v-row composedcontent-tng_zeile--zeile row subcolumns v-row--4x25 schnellzugriff" id="row_833265">
+        <div id="id838309" class="col-lg-3 double-col"><a id="anker838309"></a>
+         <div class="v-col composedcontent-tng_spalte--spalte col subrows buergerservice" id="col_838309">
+          <div id="id838405">
+           <div>
+            <a id="anker838405"></a>
+            <div class="v-box composedcontent-tng_box--box boxborder block_838405" id="cc_838405">
+             <h3 class="c-h3 basecontent-dvv-sub-heading-3--uberschrift-2" id="anker833268">Bürgerservice</h3>
+             <p class="c-text basecontent-line-break-text--text" id="anker833269"><a class="internerLink" href="/,Lde_DE/rathaus-und-verwaltung/buergerservice" title="Bürgerservice">Formulare, Dienstleistungen, Lebenslagen und Behörden-Wegweiser. Dort finden Sie Infos zu unterschiedlichen Leistungen.</a></p>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div id="id838314" class="col-lg-3 double-col">
+         <div class="subc">
+          <a id="anker838314"></a>
+          <div class="v-col composedcontent-tng_spalte--spalte col subrows oeffnungszeiten" id="col_838314">
+           <div id="id833388">
+            <div>
+             <a id="anker833388"></a>
+             <div class="v-box composedcontent-tng_box--box boxborder block_833388" id="cc_833388">
+              <h3 class="c-h3 basecontent-dvv-sub-heading-3--uberschrift-2" id="anker833389">Öffnungszeiten</h3>
+              <p class="c-text basecontent-line-break-text--text" id="anker833390"><a class="internerLink" href="/,Lde_DE/rathaus-und-verwaltung/oeffnungszeiten" title="Öffnungszeiten">Hat das Bürgeramt geöffnet? Eine Übersicht der Öffnungszeiten verschiedener städtischer Einrichtungen gibt es hier.</a></p>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div id="id838319" class="col-lg-3 double-col">
+         <div class="subc">
+          <a id="anker838319"></a>
+          <div class="v-col composedcontent-tng_spalte--spalte col subrows karriere" id="col_838319">
+           <div id="id833391">
+            <div>
+             <a id="anker833391"></a>
+             <div class="v-box composedcontent-tng_box--box boxborder block_833391" id="cc_833391">
+              <h3 class="c-h3 basecontent-dvv-sub-heading-3--uberschrift-2" id="anker833392">Karriere</h3>
+              <p class="c-text basecontent-line-break-text--text" id="anker833393"><a class="internerLink" href="/,Lde_DE/rathaus-und-verwaltung/karriere" title="Karriere bei der Stadt Heidenheim">Wir bieten einen sicheren und zukunftsfähigen Arbeitsplatz. Ausbildung, Praktika und freie Stellen gibt es auf dieser Seite.</a></p>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div id="id838324" class="col-lg-3 double-col"><a id="anker838324"></a>
+         <div class="v-col composedcontent-tng_spalte--spalte col subrows onlineshop" id="col_838324">
+          <div id="id833394">
+           <div>
+            <a id="anker833394"></a>
+            <div class="v-box composedcontent-tng_box--box boxborder block_833394" id="cc_833394">
+             <h3 class="c-h3 basecontent-dvv-sub-heading-3--uberschrift-2" id="anker833395">Onlineshop</h3>
+             <p class="c-text basecontent-line-break-text--text" id="anker833396"><a class="httpsLink externerLink neuFensterLink" href="https://heidenheim.eventim-inhouse.de/webshop/webticket/eventlist" rel="external noopener" target="_blank" title="Onlineshop">Hier gibt es Tickets zu Veranstaltungen der Stadt und Souvenirs aus Heidenheim. Besuchen Sie unseren Onlineshop.</a></p>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div id="id838329" class="col-lg-3 double-col"><a id="anker838329"></a>
+         <div class="v-col composedcontent-tng_spalte--spalte col subrows buergerinfoportal" id="col_838329">
+          <div id="id833397">
+           <div>
+            <a id="anker833397"></a>
+            <div class="v-box composedcontent-tng_box--box boxborder block_833397" id="cc_833397">
+             <h3 class="c-h3 basecontent-dvv-sub-heading-3--uberschrift-2" id="anker833398">Bürgerinfoportal</h3>
+             <p class="c-text basecontent-line-break-text--text" id="anker833399"><a class="httpsLink externerLink neuFensterLink" href="https://heidenheim-sitzungsdienst.komm.one/bi" rel="external noopener" target="_blank" title="Bürgerinfo-Portal">Das Ratsinfo-System der Stadt Heidenheim. Tagesordnungspunkte und Beschlüsse der Gremien werden auf dieser Seite veröffentlicht.</a></p>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div id="id838334" class="col-lg-3 double-col">
+         <div class="subc">
+          <a id="anker838334"></a>
+          <div class="v-col composedcontent-tng_spalte--spalte col subrows bekanntmachungen" id="col_838334">
+           <div id="id833400">
+            <div>
+             <a id="anker833400"></a>
+             <div class="v-box composedcontent-tng_box--box boxborder block_833400" id="cc_833400">
+              <h3 class="c-h3 basecontent-dvv-sub-heading-3--uberschrift-2" id="anker833401">Bekanntmachungen</h3>
+              <p class="c-text basecontent-line-break-text--text" id="anker833402"><a class="internerLink" href="/,Lde_DE/sonderseiten/bekanntmachungen" title="Bekanntmachungen">An dieser zentralen Seite werden Öffentliche Bekanntmachungen rechtsgültig veröffentlicht.</a></p>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div id="id838339" class="col-lg-3 double-col">
+         <div class="subc">
+          <a id="anker838339"></a>
+          <div class="v-col composedcontent-tng_spalte--spalte col subrows ausschreibungen" id="col_838339">
+           <div id="id833403">
+            <div>
+             <a id="anker833403"></a>
+             <div class="v-box composedcontent-tng_box--box boxborder block_833403" id="cc_833403">
+              <h3 class="c-h3 basecontent-dvv-sub-heading-3--uberschrift-2" id="anker833404">Ausschreibungen</h3>
+              <p class="c-text basecontent-line-break-text--text" id="anker833405"><a class="internerLink" href="/,Lde_DE/rathaus-und-verwaltung/ausschreibungen" title="Ausschreibungen">Auf dieser Seite finden Sie öffentliche und beabsichtigt beschränkte Ausschreibungen, sowie vergebene Aufträge.</a></p>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div id="id833266" class="col-lg-3 double-col"><a id="anker833266"></a>
+         <div class="v-col composedcontent-tng_spalte--spalte col subrows maengelmelder" id="col_833266">
+          <div id="id833406">
+           <div>
+            <a id="anker833406"></a>
+            <div class="v-box composedcontent-tng_box--box boxborder block_833406" id="cc_833406">
+             <h3 class="c-h3 basecontent-dvv-sub-heading-3--uberschrift-2" id="anker833407">Schaden melden</h3>
+             <p class="c-text basecontent-line-break-text--text" id="anker833408"><a class="internerLink" href="/,Lde_DE/sonderseiten/formulare-anmeldungen/schaden+melden" title="Mängelmelder">Nutzen Sie unser Schaden-Melde-Formular, um uns einen Schaden zu melden. Wir sind auch auf Ihre Mithilfe angewiesen.</a></p>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </article>
+     </div>
+    </div>
+   </div>
+   <div class="l-breadcrumb noprint">
+    <div class="row">
+     <div class="col">
+      <nav class="c-breadcrumb" aria-label="breadcrumb">
+       <ul class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/startseite" hreflang="de" lang="de">Startseite</a></li>
+        <li class="breadcrumb-item"><a href="/sport-und-freizeit" hreflang="de" lang="de">Sport &amp; Freizeit</a></li>
+        <li class="breadcrumb-item"><a href="/sport-und-freizeit/sportangebote" hreflang="de" lang="de">Sportangebote</a></li>
+        <li class="breadcrumb-item current"><span aria-current="page" class="active" lang="de">Sportstätten</span></li>
+       </ul>
+      </nav>
+     </div>
+    </div>
+   </div>
+   <div class="l-main" role="main">
+    <div class="l-main-inner" role="main">
+     <div class="l-main-inner-wrapper">
+      <div class="l-content" id="inhalt"><a id="anker843779"></a> <a id="anker804107"></a>
+       <article class="composedcontent-tng_standardseite composedcontent-tng_standardseite--tng_standardseite block_804107" id="cc_804107">
+        <h1 class="c-h1 basecontent-headline--uberschrift-1" id="anker804108">Sportstätten</h1>
+        <h2 class="c-h2 basecontent-sub-heading--uberschrift-2" id="anker808714">Sportplätze</h2>
+        <div class="c-list basecontent-list--liste text-left" id="anker808716">
+         <ul>
+          <li>Voith Arena Heidenheim, Schlosshaustraße 162</li>
+          <li>Ballspielhalle Schnaitheim, In den Seewiesen 75</li>
+          <li>Fechtzentrum Heidenheim, Virchowstr. 26</li>
+          <li>Karl-Rau-Halle mit Leichtathletikhalle, Beethovenstraße 10</li>
+          <li>Motorsportgelände MSC Schnaitheim, Am Hafnerhäule, Reute 1</li>
+          <li>Sporthalle des Landkreises, Heckentalstr. 86</li>
+          <li>Sportplatz Fischerweg, Fischerweg 18, Schnaitheim</li>
+          <li>Sportplatz Waibertal, Aufhausen</li>
+          <li>Sportzentrum Albstadion, Heeräcker 16-23</li>
+          <li>Turn- und Festhalle Großkuchen, Rathausplatz 8</li>
+          <li>Turn- und Festhalle Oggenhausen, Sporthallenweg 10</li>
+         </ul>
+        </div>
+        <h2 class="c-h2 basecontent-sub-heading--uberschrift-2" id="anker808720">Bolzplätze</h2>
+        <div class="c-list basecontent-list--liste text-left" id="anker808719">
+         <ul>
+          <li>Bolzplatz am Max-Planck-Gymnasium, Basketball und Steinkletterfelsen</li>
+          <li>Bolzplatz Großkuchen, bei der Skateranlage Elchinger Straße</li>
+          <li>Bolzplatz Falkenweg</li>
+          <li>Bolzplatz Hochbergweg</li>
+          <li>Bolzplatz Kinderfestplatz Mergelstetten</li>
+          <li>Bolzplatz Kistelbergstraße</li>
+          <li>Bolzplatz Ludwig-Richter-Straße</li>
+          <li>Bolzplatz Osterholz</li>
+          <li>Bolzplatz Siebenbürgenweg</li>
+          <li>Kleinspielfeld im Brenzpark</li>
+          <li>Spielplatz Großer Bühl</li>
+          <li>Spielplatz Kleiner Bühl</li>
+          <li>Spielplatz Kleinkuchen</li>
+         </ul>
+        </div>
+       </article>
+       <div class="clear">
+        <br><a href="#pageTop" class="goPageTop noprint">Zum Seitenanfang</a>
+       </div>
+       <div class="l-contentfooter row noprint">
+        <nav class="funcnav d-print-none" aria-label="Funktionslinks">
+         <ul class="func-group">
+          <li class="func-group-item"><a aria-label="Bei Facebook teilen" class="funcnav__facebook" href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fwww.heidenheim.de%2F,Lde_DE%2Fsport-und-freizeit%2Fsportangebote%2Fsportstaetten&amp;t=Sportst%C3%A4tten" hreflang="de" lang="de" rel="nofollow noreferrer noopener" target="_blank"><i class="fab fa-facebook"></i></a></li>
+          <li class="func-group-item"><a aria-label="Bei Twitter teilen" class="funcnav__twitter" href="https://twitter.com/home?status=https%3A%2F%2Fwww.heidenheim.de%2F,Lde_DE%2Fsport-und-freizeit%2Fsportangebote%2Fsportstaetten" hreflang="de" lang="de" rel="nofollow noreferrer noopener" target="_blank"><i class="fab fa-twitter"></i></a></li>
+          <li class="func-group-item"><a aria-label="Bei whatsapp teilen" class="funcnav__whatsapp" href="whatsapp://send?text=Sportst%C3%A4tten%20:%20https%3A%2F%2Fwww.heidenheim.de%2F,Lde_DE%2Fsport-und-freizeit%2Fsportangebote%2Fsportstaetten" hreflang="de" lang="de" rel="nofollow noreferrer noopener" target="_blank"><i class="fab fa-whatsapp"></i></a></li>
+         </ul>
+        </nav>
+       </div> <!-- content-custom.vm end -->
+      </div>
+      <div class="l-side"><a id="anker800032"></a>
+       <div class="composedcontent-heidenheim_module composedcontent-heidenheim_module--heidenheim_module block_800032" id="cc_800032">
+       </div>
+      </div>
+     </div>
+     <div class="l-slot-info">
+      <div class="l-slot-info-inner"><a id="anker809703"></a>
+       <div class="composedcontent-tng_infoslot_zeile composedcontent-tng_infoslot_zeile--tng_infoslot_zeile row subcolumns" id="row_809703">
+        <div id="id809704" class="col-lg-12 double-col"><a id="anker809704"></a>
+         <div class="v-col composedcontent-tng_spalte--spalte col subrows" id="col_809704">
+          <div id="id809705">
+           <div>
+            <a id="anker809705"></a>
+            <div class="v-box composedcontent-tng_box--box boxborder block_809705" id="cc_809705">
+             <h2 class="c-h2 basecontent-sub-heading--uberschrift-2" id="anker809706">Kontakt</h2> <a id="anker809708"></a>
+             <div class="basecontent-dvv-service-bw-beh-rdendaten basecontent-dvv-service-bw-beh-rdendaten--service-bw---einzelne-behorde--inkl--sprechzeiten--leistungen-" id="id809708"><!-- sbwElementBehoerdendaten -->
+              <div>
+               <div class="kopf">
+               </div>
+               <div class="rumpf">
+                <div class="bwDat id6000513">
+                 <div class="vCard"><!-- mt-contact -->
+                  <div class="vCardLink">
+                   <a aria-label="Adresse in mein Adressbuch übernehmen" class="vCard" href="/site/Heidenheim/data/807095/cached/vcard.vcf?key=0.xpsr5hn4w2" rel="nofollow" target="_blank"><img alt="Adresse in mein Adressbuch übernehmen" class="border-0" src="/site/Heidenheim/resourceCached/10.4.2.2.0/img/links/vCard.png"></a>
+                  </div>
+                  <div class="kopf">
+                   <div class="fn"><span class="given-name"></span> <span class="family-name"></span>
+                   </div>
+                  </div>
+                  <div class="rumpf">
+                   <div class="org">
+                    Bildung, Sport und Bäder
+                   </div>
+                   <div class="adr">
+                    <div class="street-address">
+                     Grabenstraße 15
+                    </div>
+                    <div class="cityline"><span class="postal-code">89522</span> <span class="locality">Heidenheim an der Brenz</span>
+                    </div>
+                    <div class="mapsLink">
+                     <a class="httpsLink externerLink neuFensterLink" href="https://www.openstreetmap.org/search?query=Grabenstra%C3%9Fe%2015%2C%2089522%20Heidenheim%20an%20der%20Brenz" rel="external noopener" target="_blank" title="Bei OpenStreetMap anzeigen">OpenStreetMap</a>
+                    </div>
+                   </div>
+                   <div class="mail"><span class="bez">E-Mail</span> <span class="value"><a class="mailLink" href="mailto:bildung.sport@heidenheim.de">bildung.sport@heidenheim.de</a></span>
+                   </div>
+                   <div class="tel"><span class="bez">Telefon</span> <span class="value"><a class="tel" href="tel:073213275200">(0<span class="telSp"> </span>73<span class="telSp"> </span>21) 3<span class="telSp"> </span>27<span class="telSp"> </span>52<span class="telSp"> </span>00</a></span>
+                   </div>
+                  </div>
+                 </div> <!-- /mt-contact -->
+                </div>
+               </div>
+              </div> <!-- /sbwElementBehoerdendaten -->
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <footer class="l-footer noprint">
+    <div class="l-footer__bottom">
+     <div class="l-footer__inner">
+      <div class="l-footer__logo"><a href="https://www.heidenheim.de/presseservice" title="Zur Presseservice-Seite von Heidenheim" aria-label="Zur Zur Presseservice-Seite von Heidenheim"> <img src="/site/Heidenheim/resourceCached/10.4.2.2.0/img/HDH_23_Stadtkampagne_Wort_Bildmarke_hoch_HG_dunkel_gross.svg" alt="Logo - Heidenheim - Wir lieben's aktiv')"> </a>
+      </div> <a id="anker798736"></a>
+      <div class="composedcontent-heidenheim_module composedcontent-heidenheim_module--heidenheim_module block_798736" id="cc_798736">
+       <a id="anker798740"></a>
+       <div class="v-row composedcontent-tng_zeile--zeile row subcolumns footerZeile" id="row_798740">
+        <div id="id798746" class="col-lg-3 double-col"><a id="anker798746"></a>
+         <div class="v-col composedcontent-tng_spalte--spalte col subrows" id="col_798746">
+          <div id="id798747">
+           <div>
+            <a id="anker798747"></a>
+            <div class="v-box composedcontent-tng_box--box boxborder block_798747 kontakt" id="cc_798747">
+             <h2 class="c-h2 basecontent-sub-heading--uberschrift-2" id="anker838141">Kontakt</h2> <a id="anker798877"></a>
+             <div class="basecontent-dvv-kontaktdaten basecontent-dvv-kontaktdaten--kontakt" id="id798877">
+              <div class="contactDataBox">
+               <div class="rumpf">
+                <div class="vCard">
+                 <div class="vCardLink">
+                  <a aria-label="Adresse in mein Adressbuch übernehmen" class="vCard" href="/site/Heidenheim/data/798877/cached/vcard.vcf?key=0.c48yc0krz1" rel="nofollow" target="_blank"><img alt="Adresse in mein Adressbuch übernehmen" class="border-0" src="/site/Heidenheim/resourceCached/10.4.2.2.0/img/links/vCard.png"></a>
+                 </div>
+                 <div class="organization">
+                  Stadt Heidenheim an der Brenz
+                 </div>
+                 <div class="street-address">
+                  Grabenstraße 15
+                 </div>
+                 <div class="cityline">
+                  <span class="postal-code">89522</span> <span class="locality">Heidenheim</span>
+                 </div>
+                 <div class="mapsLink">
+                  <a class="httpsLink externerLink neuFensterLink" href="https://www.openstreetmap.org/search?query=Grabenstra%C3%9Fe%2015%2C%2089522%20Heidenheim" rel="external noopener" target="_blank" title="Bei OpenStreetMap anzeigen">OpenStreetMap</a>
+                 </div>
+                 <div class="mail"><span class="bez">E-Mail</span> <span class="value"><a class="email" href="mailto:rathaus@heidenheim.de">rathaus@heidenheim.de</a></span>
+                 </div>
+                 <div class="tel"><span class="bez">Telefon</span> <span class="value"><a class="tel" href="tel:073213270">(0<span class="telSp"> </span>73<span class="telSp"> </span>21) 3<span class="telSp"> </span>27-0</a></span>
+                 </div>
+                 <div class="fax"><span class="bez">Fax</span> <span class="value"><span class="fax">(0<span class="telSp"> </span>73<span class="telSp"> </span>21) 3<span class="telSp"> </span>27-10<span class="telSp"> </span>11</span></span>
+                 </div>
+                </div> <br>
+               </div>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+          <div id="id822393">
+           <div>
+            <a id="anker822393"></a>
+            <div class="v-box composedcontent-tng_box--box boxborder block_822393" id="cc_822393">
+             <p class="c-text basecontent-line-break-text--text kontaktbutton" id="anker822395"><a class="internerLink" href="/,Lde_DE/kontakt" title="Kontakt">Kontakt</a></p>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div id="id838135" class="col-lg-3 double-col">
+         <div class="subc">
+          <a id="anker838135"></a>
+          <div class="v-col composedcontent-tng_spalte--spalte col subrows" id="col_838135">
+           <div id="id838136">
+            <div>
+             <a id="anker838136"></a>
+             <div class="v-box composedcontent-tng_box--box boxborder block_838136 service" id="cc_838136">
+              <h2 class="c-h2 basecontent-sub-heading--uberschrift-2" id="anker838137">Service</h2>
+              <div class="c-list basecontent-list--liste text-left" id="anker838140">
+               <ul>
+                <li><a class="internerLink" href="/,Lde_DE/rathaus-und-verwaltung/buergerservice" title="Bürgerservice">Bürgerservice</a></li>
+                <li><a class="internerLink" href="/,Lde_DE/rathaus-und-verwaltung/oeffnungszeiten" title="Öffnungszeiten">Öffnungszeiten</a></li>
+                <li><a class="httpsLink externerLink neuFensterLink" href="https://heidenheim-sitzungsdienst.komm.one/bi" rel="external noopener" target="_blank" title="Gemeinderatsarbeit">Gemeinderatsarbeit</a></li>
+                <li><a class="internerLink" href="/,Lde_DE/news" title="Nachrichten">Nachrichten</a></li>
+                <li><a class="internerLink" href="/,Lde_DE/sonderseiten/newsletter" title="Newsletter">Newsletter</a></li>
+                <li><a class="internerLink" href="/,Lde_DE/sonderseiten/presseservice" title="Presseservice">Presseservice</a></li>
+                <li><a class="internerLink" href="/,Lde_DE/sonderseiten/stadtplan" title="Stadtplan">Stadtplan</a></li>
+                <li><a class="internerLink" href="/,Lde_DE/rathaus-und-verwaltung/karriere" title="Karriere">Karriere</a></li>
+                <li><a class="internerLink" href="/,Lde_DE/sonderseiten/formulare-anmeldungen/schaden+melden" title="Schaden melden">Schaden melden</a></li>
+                <li><a class="internerLink" href="/,Lde_DE/sonderseiten/links+_+adressen" title="Links &amp; Adressen">Links &amp; Adressen</a></li>
+                <li><a class="internerLink" href="/,Lde_DE/sonderseiten/bekanntmachungen" title="Bekanntmachungen">Öffentliche Bekanntmachungen</a></li>
+               </ul>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div id="id798751" class="col-lg-3 double-col">
+         <div class="subc">
+          <a id="anker798751"></a>
+          <div class="v-col composedcontent-tng_spalte--spalte col subrows" id="col_798751">
+           <div id="id798752">
+            <div>
+             <a id="anker798752"></a>
+             <div class="v-box composedcontent-tng_box--box boxborder block_798752 quickmenu" id="cc_798752">
+              <h2 class="c-h2 basecontent-sub-heading--uberschrift-2" id="anker798753">Rubriken</h2>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div id="id798741" class="col-lg-3 double-col"><a id="anker798741"></a>
+         <div class="v-col composedcontent-tng_spalte--spalte col subrows" id="col_798741">
+          <div id="id838151">
+           <div>
+            <a id="anker838151"></a>
+            <div class="v-box composedcontent-tng_box--box boxborder block_838151 social-media" id="cc_838151">
+             <p class="c-text basecontent-line-break-text--text headline" id="anker838153">Besuchen Sie uns auf</p>
+             <div class="c-list basecontent-list--liste text-left" id="anker843139">
+              <nav aria-label="Social Media Links">
+               <ul>
+                <li><a class="linkTyp_heidenheim/ httpsLink externerLink neuFensterLink" href="https://www.facebook.com/rathaus.heidenheim/" rel="external noopener" target="_blank" title="Die Facebook Seite der Stadt Heidenheim im neuen Fenster öffnen">Facebook</a></li>
+                <li><a class="linkTyp_de httpsLink externerLink neuFensterLink" href="https://www.instagram.com/heidenheim.de" rel="external noopener" target="_blank" title="Die Instagram Seite der Stadt Heidenheim im neuen Fenster öffnen">Instagram</a></li>
+                <li><a class="linkTyp_de httpsLink externerLink neuFensterLink" href="https://www.tiktok.com/@heidenheim.de?lang=de-DE" rel="external noopener" target="_blank" title="TikTok Stadt Heidenheim">TikTok</a></li>
+                <li><a class="httpsLink externerLink neuFensterLink" href="https://www.youtube.com/user/stadtheidenheim" rel="external noopener" target="_blank" title="Die Youtube Seite der Stadt Heidenheim im neuen Fenster öffnen">Youtube</a></li>
+                <li><a class="httpsLink externerLink neuFensterLink" href="https://www.xing.com/companies/stadtheidenheim" rel="external noopener" target="_blank" title="Die Xing Seite der Stadt Heidenheim im neuen Fenster öffnen">Xing</a></li>
+               </ul>
+              </nav>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <script type="text/javascript" src="/site/Heidenheim/resourceCached/10.4.2.2.0/js/vendors/jquery.jConveyorTicker.min.js"></script>
+    <div class="l-slot-newsticker">
+     <a id="anker1445696"></a>
+     <div class="composedcontent-heidenheim_standardseite composedcontent-heidenheim_standardseite--heidenheim_standardseite block_1445696" id="cc_1445696">
+      <p class="c-text basecontent-line-break-text--text" id="anker1686092">+++ Das Bürgeramt und die Ausländerbehörde befinden sich im ehemaligen LBBW Gebäude +++ <a class="httpsLink" href="https://www.heidenheim.de/rathaus-und-verwaltung/buergerservice/terminbuchung?pk_campaign=ticker" title="Ticker">Dienstleistungen im Bürgeramt nur nach vorheriger Terminvereinbarung</a>&nbsp;</p>
+     </div>
+    </div>
+    <div class="l-footer__copyright">
+     <div class="l-footer__inner"><span class="copyright-wrapper"> <span class="copyright-year">© 2020</span> <span class="copyright-city">Heidenheim</span> </span> <span class="poweredby-label-wrapper"><span class="poweredby-label"><a class="poweredby-login" href="https://www.heidenheim.de/auth/index.html?secure=true&amp;url=%2F,Lde_DE%2Fsport-und-freizeit%2Fsportangebote%2Fsportstaetten" title="Login" aria-label="Login" aria-hidden="true">p</a>owered by <a class="poweredby-name" href="https://www.komm.one/cms" target="_blank" title="Internetseite von Komm.ONE">Komm.ONE</a></span></span>
+      <div class="copyright-link">
+       <nav aria-label="Fußzeilennavigation">
+        <ul>
+         <li><a href="/impressum">Impressum</a></li>
+         <li><a href="/datenschutz">Datenschutz</a></li>
+         <li><a href="/barrierefreiheit">Barrierefreiheit</a></li>
+         <li></li>
+         <li><a href="#" onclick="CCM.openWidget();return false;">Cookie Einstellungen</a></li>
+        </ul>
+       </nav>
+      </div> <span class="page-to-top"><a href="#pageTop"><i class="fas fa-caret-up"></i></a></span> <!--<div class="hdh-netzwerk-logo">
+      <a href="#" title="Öffne das Menü Heidenheim Netzwerk" aria-label="Öffne das Menü Heidenheim Netzwerk">
+        <img src="/site/Heidenheim/resourceCached/10.4.2.2.0/img/logo-hdh-netzwerke.svg" alt="Logo des Heidenheim Netzwerk" title="Öffne das Menü Heidenheim Netzwerk">
+      </a>
+    </div>//-->
+     </div>
+    </div>
+   </footer>
+  </div> <!-- l-page end -->
+  <div class="mobile-menu" id="mobile-menu">
+   <ul class="mb-menu">
+    <li><a href="/rathaus-und-verwaltung" hreflang="de" lang="de">Rathaus &amp; Verwaltung</a>
+     <ul>
+      <li><a href="/rathaus-und-verwaltung/buergerservice" hreflang="de" lang="de">Bürgerservice</a>
+       <ul>
+        <li><a href="/rathaus-und-verwaltung/buergerservice/terminbuchung" hreflang="de" lang="de">Terminbuchung</a></li>
+        <li><a href="/rathaus-und-verwaltung/buergerservice/organigramm" hreflang="de" lang="de">Organigramm</a></li>
+        <li><a href="/rathaus-und-verwaltung/buergerservice/verfahrensbeschreibungen" hreflang="de" lang="de">Verfahrensbeschreibungen</a></li>
+        <li><a href="/rathaus-und-verwaltung/buergerservice/lebenslagen" hreflang="de" lang="de">Lebenslagen</a></li>
+        <li><a href="/rathaus-und-verwaltung/buergerservice/formulare" hreflang="de" lang="de">Formulare</a></li>
+        <li><a href="/rathaus-und-verwaltung/buergerservice/behoerdenwegweiser" hreflang="de" lang="de">Behördenwegweiser</a></li>
+        <li><a href="/rathaus-und-verwaltung/buergerservice/onlinedienste" hreflang="de" lang="de">Onlinedienste</a></li>
+        <li><a href="/rathaus-und-verwaltung/buergerservice/nuetzliche-infos" hreflang="de" lang="de">Nützliche Informationen</a></li>
+        <li><a href="/rathaus-und-verwaltung/buergerservice/zensus2022" hreflang="de" lang="de">Zensus 2022</a></li>
+       </ul></li>
+      <li><a href="/rathaus-und-verwaltung/stadtpolitik" hreflang="de" lang="de">Stadtpolitik</a>
+       <ul>
+        <li><a href="/rathaus-und-verwaltung/stadtpolitik/gemeinderat+online" hreflang="de" lang="de">Bürgerinfoportal</a></li>
+        <li><a href="/rathaus-und-verwaltung/stadtpolitik/haushaltsplan" hreflang="de" lang="de">Haushaltsplan </a></li>
+        <li><a href="/rathaus-und-verwaltung/stadtpolitik/stadtrecht" hreflang="de" lang="de">Stadtrecht </a></li>
+        <li><a href="/rathaus-und-verwaltung/stadtpolitik/gemeinderat" hreflang="de" lang="de">Gemeinderat</a></li>
+        <li><a href="/rathaus-und-verwaltung/stadtpolitik/ortschaftsrat" hreflang="de" lang="de">Ortschaftsrat</a></li>
+        <li><a href="/rathaus-und-verwaltung/stadtpolitik/buergerversammlung" hreflang="de" lang="de">Bürgerversammlung</a></li>
+       </ul></li>
+      <li><a href="/rathaus-und-verwaltung/karriere" hreflang="de" lang="de">Karriere</a>
+       <ul>
+        <li><a href="/rathaus-und-verwaltung/karriere/ausbildung" hreflang="de" lang="de">Ausbildung</a></li>
+        <li><a href="/rathaus-und-verwaltung/karriere/freie+stellen" hreflang="de" lang="de">Freie Stellen</a></li>
+        <li><a href="/rathaus-und-verwaltung/karriere/praktikum" hreflang="de" lang="de">Praktikum</a></li>
+        <li><a href="/rathaus-und-verwaltung/karriere/kindertageseinrichtung" hreflang="de" lang="de">Kindertageseinrichtung</a></li>
+       </ul></li>
+      <li><a href="/rathaus-und-verwaltung/wahlen" hreflang="de" lang="de">Wahlen</a>
+       <ul>
+        <li><a href="/rathaus-und-verwaltung/wahlen/wahltermine" hreflang="de" lang="de">Wahltermine</a></li>
+        <li><a href="/rathaus-und-verwaltung/wahlen/wahlergebnisse" hreflang="de" lang="de">Wahlergebnisse</a></li>
+        <li><a href="/rathaus-und-verwaltung/wahlen/wahlbezirke+_+wahllokale" hreflang="de" lang="de">Wahlbezirke &amp; Wahllokale </a></li>
+        <li><a href="/rathaus-und-verwaltung/wahlen/landtagswahl" hreflang="de" lang="de">Landtagswahl</a></li>
+        <li><a href="/rathaus-und-verwaltung/wahlen/waehlen+ohne+barrieren" hreflang="de" lang="de">Wählen ohne Barrieren</a></li>
+        <li><a href="/rathaus-und-verwaltung/wahlen/briefwahl" hreflang="de" lang="de">Briefwahl</a></li>
+       </ul></li>
+      <li><a href="/rathaus-und-verwaltung/oggenhausen" hreflang="de" lang="de">Oggenhausen</a>
+       <ul>
+        <li><a href="/rathaus-und-verwaltung/oggenhausen/ortschaftsverwaltung-oggenhausen" hreflang="de" lang="de">Ortschaftsverwaltung</a></li>
+        <li><a href="/rathaus-und-verwaltung/oggenhausen/oggenhausen+aktuell" hreflang="de" lang="de">Oggenhausen aktuell</a></li>
+        <li><a href="/rathaus-und-verwaltung/oggenhausen/fundbuero" hreflang="de" lang="de">Fundbüro</a></li>
+        <li><a href="/rathaus-und-verwaltung/oggenhausen/mitteilungsblatt-oggenhausen" hreflang="de" lang="de">Mitteilungsblatt</a></li>
+        <li><a href="/rathaus-und-verwaltung/oggenhausen/institutionen-oggenhausen" hreflang="de" lang="de">Institutionen</a></li>
+        <li><a href="/rathaus-und-verwaltung/oggenhausen/freizeit-oggenhausen" hreflang="de" lang="de">Freizeit &amp; Erholung</a></li>
+        <li><a href="/rathaus-und-verwaltung/oggenhausen/bildung-oggenhausen" hreflang="de" lang="de">Bildung &amp; Soziales</a></li>
+        <li><a href="/rathaus-und-verwaltung/oggenhausen/kirchen-oggenhausen" hreflang="de" lang="de">Kirchen </a></li>
+        <li><a href="/rathaus-und-verwaltung/oggenhausen/vereine-oggenhausen" hreflang="de" lang="de">Vereine</a></li>
+        <li><a href="/rathaus-und-verwaltung/oggenhausen/gewerbe-oggenhausen" hreflang="de" lang="de">Gewerbe</a></li>
+        <li><a href="/rathaus-und-verwaltung/oggenhausen/gastronomie" hreflang="de" lang="de">Gastronomie</a></li>
+        <li><a href="/rathaus-und-verwaltung/oggenhausen/bauplaetze+_+gewerbeflaechen" hreflang="de" lang="de">Bauplätze &amp; Gewerbeflächen</a></li>
+        <li><a href="/rathaus-und-verwaltung/oggenhausen/kontakt-ortschaftsverwaltung" hreflang="de" lang="de">Kontakt Ortschaftsverwaltung</a></li>
+       </ul></li>
+      <li><a href="/rathaus-und-verwaltung/grosskuchen" hreflang="de" lang="de">Großkuchen </a>
+       <ul>
+        <li><a href="/rathaus-und-verwaltung/grosskuchen/grosskuchen+aktuell" hreflang="de" lang="de">Großkuchen aktuell</a></li>
+        <li><a href="/rathaus-und-verwaltung/grosskuchen/ortschaftsverwaltung-grosskuchen" hreflang="de" lang="de">Ortschaftsverwaltung</a></li>
+        <li><a href="/rathaus-und-verwaltung/grosskuchen/ortsvorsteher-grosskuchen" hreflang="de" lang="de">Ortsvorsteherin</a></li>
+        <li><a href="/rathaus-und-verwaltung/grosskuchen/mitteilungsblatt-grosskuchen" hreflang="de" lang="de">Mitteilungsblatt</a></li>
+        <li><a href="/rathaus-und-verwaltung/grosskuchen/geschichte-grosskuchen" hreflang="de" lang="de">Geschichte</a></li>
+        <li><a href="/rathaus-und-verwaltung/grosskuchen/freizeit-grosskuchen" hreflang="de" lang="de">Freizeit &amp; Erholung</a></li>
+        <li><a href="/rathaus-und-verwaltung/grosskuchen/bildung-grosskuchen" hreflang="de" lang="de">Bildung &amp; Soziales</a></li>
+        <li><a href="/rathaus-und-verwaltung/grosskuchen/kirchen-grosskuchen" hreflang="de" lang="de">Kirchen</a></li>
+        <li><a href="/rathaus-und-verwaltung/grosskuchen/vereine--grosskuchen" hreflang="de" lang="de">Vereine </a></li>
+        <li><a href="/rathaus-und-verwaltung/grosskuchen/bauplaetze-grosskuchen" hreflang="de" lang="de">Bauplätze &amp; Gewerbeflächen</a></li>
+        <li><a href="/rathaus-und-verwaltung/grosskuchen/gewerbe-grosskuchen" hreflang="de" lang="de">Gewerbe</a></li>
+        <li><a href="/rathaus-und-verwaltung/grosskuchen/gastronomie-grosskuchen" hreflang="de" lang="de">Gastronomie</a></li>
+       </ul></li>
+      <li><a href="/rathaus-und-verwaltung/ausschreibungen" hreflang="de" lang="de">Ausschreibungen</a></li>
+      <li><a href="/rathaus-und-verwaltung/oeffnungszeiten" hreflang="de" lang="de">Öffnungszeiten</a></li>
+      <li><a href="/rathaus-und-verwaltung/heiraten" hreflang="de" lang="de">Heiraten</a></li>
+      <li><a href="/rathaus-und-verwaltung/oberbuergermeister" hreflang="de" lang="de">Oberbürgermeister</a></li>
+      <li><a href="/rathaus-und-verwaltung/buergermeister" hreflang="de" lang="de">Bürgermeister</a></li>
+      <li><a href="/rathaus-und-verwaltung/fundbuero+online" hreflang="de" lang="de">Fundbüro online</a></li>
+     </ul></li>
+    <li><a href="/leben" hreflang="de" lang="de">Leben</a>
+     <ul>
+      <li><a href="/leben/kinder-familie" hreflang="de" lang="de">Kinder &amp; Familie</a>
+       <ul>
+        <li><a href="/leben/kinder-familie/kindergaerten" hreflang="de" lang="de">Kindergärten</a></li>
+        <li><a href="/leben/kinder-familie/eltern-kind-gruppe" hreflang="de" lang="de">Eltern-Kind-Gruppe</a></li>
+        <li><a href="/leben/kinder-familie/ferienbetreuung" hreflang="de" lang="de">Ferienbetreuung</a></li>
+        <li><a href="/leben/kinder-familie/familienzentrum" hreflang="de" lang="de">Familienzentrum</a></li>
+        <li><a href="/leben/kinder-familie/tagespflege" hreflang="de" lang="de">Tagespflege</a></li>
+        <li><a href="/leben/kinder-familie/weltkindertag" hreflang="de" lang="de">Weltkindertag</a></li>
+        <li><a href="/leben/kinder-familie/links+_+broschueren" hreflang="de" lang="de">Links &amp; Broschüren</a></li>
+        <li><a href="/leben/kinder-familie/sprachfit" hreflang="de" lang="de">SprachFit</a></li>
+       </ul></li>
+      <li><a href="/leben/jugend" hreflang="de" lang="de">Jugend</a>
+       <ul>
+        <li><a href="/leben/jugend/jugendreferat_kinder-+und+jugendarbeit" hreflang="de" lang="de">Jugendreferat: Kinder- und Jugendarbeit</a></li>
+        <li><a href="/leben/jugend/jugendhaeuser_+offene+kinder-+und+jugendarbeit" hreflang="de" lang="de">Jugendhäuser: Offene Kinder- und Jugendarbeit</a></li>
+        <li><a href="/leben/jugend/mobile+jugendarbeit" hreflang="de" lang="de">Mobile Jugendarbeit</a></li>
+        <li><a href="/leben/jugend/jugendkulturveranstaltungen" hreflang="de" lang="de">Jugendkulturveranstaltungen</a></li>
+        <li><a href="/leben/jugend/schulsozialarbeit" hreflang="de" lang="de">Schulsozialarbeit</a></li>
+        <li><a href="/leben/jugend/rund+um+sport" hreflang="de" lang="de">Sportangebote - Jugendreferat</a></li>
+        <li><a href="/leben/jugend/jugendbeteiligung" hreflang="de" lang="de">Jugendbeteiligung</a></li>
+        <li><a href="/leben/jugend/ferienangebote" hreflang="de" lang="de">Ferienangebote</a></li>
+        <li><a href="/leben/jugend/fotogalerie+jugendarbeit" hreflang="de" lang="de">Fotogalerie Jugendarbeit</a></li>
+        <li><a href="/leben/jugend/kinder-jugendschutz" hreflang="de" lang="de">Kinder- &amp; Jugendschutz</a></li>
+       </ul></li>
+      <li><a href="/leben/senioren" hreflang="de" lang="de">Senioren</a>
+       <ul>
+        <li><a href="/leben/senioren/stadtseniorenrat" hreflang="de" lang="de">Stadtseniorenrat</a></li>
+        <li><a href="https://www.meinheidenheim.de/mitwirkung+und+engagement/das+buergerhaus" hreflang="de" lang="de" rel="external noopener">Bürgerhaus</a></li>
+       </ul></li>
+      <li><a href="/leben/bauen-wohnen" hreflang="de" lang="de">Bauen &amp; Wohnen</a>
+       <ul>
+        <li><a href="/leben/bauen-wohnen/bauplaetze" hreflang="de" lang="de">Bauplätze</a></li>
+        <li><a href="/leben/bauen-wohnen/baugenehmigung" hreflang="de" lang="de">Baugenehmigung</a></li>
+       </ul></li>
+      <li><a href="/leben/verkehr-parken" hreflang="de" lang="de">Verkehr &amp; Parken</a>
+       <ul>
+        <li><a href="/leben/verkehr-parken/verkehr+in+_+um+heidenheim" hreflang="de" lang="de">Verkehr in &amp; um Heidenheim</a></li>
+        <li><a href="/leben/verkehr-parken/parken" hreflang="de" lang="de">Parken</a></li>
+        <li><a href="/leben/verkehr-parken/laermschutzplan" hreflang="de" lang="de">Lärmschutzplan</a></li>
+        <li><a href="/leben/verkehr-parken/strassenzustandsplan" hreflang="de" lang="de">Straßenzustandsplan</a></li>
+        <li><a href="/leben/verkehr-parken/fahrrad" hreflang="de" lang="de">Radverkehr </a></li>
+        <li><a href="/leben/verkehr-parken/verkehrsentwicklungsplan+2035" hreflang="de" lang="de">Verkehrsentwicklungsplan 2035</a></li>
+       </ul></li>
+      <li><a href="/leben/einkaufen+_+maerkte" hreflang="de" lang="de">Einkaufen &amp; Märkte</a>
+       <ul>
+        <li><a href="/leben/einkaufen+_+maerkte/innenstadt" hreflang="de" lang="de">Innenstadt</a></li>
+        <li><a href="/leben/einkaufen+_+maerkte/schloss+arkaden" hreflang="de" lang="de">Schloss Arkaden</a></li>
+        <li><a href="/leben/einkaufen+_+maerkte/wochenmarkt" hreflang="de" lang="de">Wochenmarkt </a></li>
+        <li><a href="/leben/einkaufen+_+maerkte/kunsthandwerkermarkt" hreflang="de" lang="de">Kunsthandwerkermarkt</a></li>
+        <li><a href="/leben/einkaufen+_+maerkte/rosenmarkt" hreflang="de" lang="de">Rosenmarkt</a></li>
+        <li><a href="/leben/einkaufen+_+maerkte/weihnachtsmarkt" hreflang="de" lang="de">Weihnachtsmarkt</a></li>
+       </ul></li>
+      <li><a href="/leben/buergerengagement" hreflang="de" lang="de">Bürgerengagement </a>
+       <ul>
+        <li><a href="https://www.meinheidenheim.de/879681" hreflang="de" lang="de" rel="external noopener">Mitwirkung und Engagement</a></li>
+        <li><a href="https://www.meinheidenheim.de/880936" hreflang="de" lang="de" rel="external noopener">Heidenheim sagt Danke!</a></li>
+        <li><a href="https://www.meinheidenheim.de/967245" hreflang="de" lang="de" rel="external noopener">Öffentliches Bücherregal</a></li>
+       </ul></li>
+      <li><a href="/leben/stadtportrait" hreflang="de" lang="de">Stadtportrait</a>
+       <ul>
+        <li><a href="/leben/stadtportrait/zahlen-daten-fakten" hreflang="de" lang="de">Zahlen, Daten, Fakten</a></li>
+        <li><a href="/leben/stadtportrait/stadtteile" hreflang="de" lang="de">Stadtteile</a></li>
+        <li><a href="/leben/stadtportrait/ehrenbuerger" hreflang="de" lang="de">Ehrenbürger</a></li>
+        <li><a href="/leben/stadtportrait/partnerstaedte" hreflang="de" lang="de">Partnerstädte</a></li>
+        <li><a href="/leben/stadtportrait/stadtgeschichte" hreflang="de" lang="de">Stadtgeschichte</a></li>
+        <li><a href="/leben/stadtportrait/heidenkopf" hreflang="de" lang="de">Heidenheimer Stadtwappen</a></li>
+        <li><a href="/leben/stadtportrait/stadtarchiv" hreflang="de" lang="de">Stadtarchiv</a></li>
+        <li><a href="/leben/stadtportrait/sagen+rund+um+heidenheim" hreflang="de" lang="de">Sagen rund um Heidenheim</a></li>
+        <li><a href="/leben/stadtportrait/kurt-bittel-preis" hreflang="de" lang="de">Kurt-Bittel-Preis</a></li>
+        <li><a href="https://www.tourismus-heidenheim.de/stadtrundgang" hreflang="de" lang="de" rel="external noopener">Stadtrundgang</a></li>
+       </ul></li>
+      <li><a href="/leben/sanierungsgebiete" hreflang="de" lang="de">Sanierungsgebiete</a>
+       <ul>
+        <li><a href="/leben/sanierungsgebiete/oststadt" hreflang="de" lang="de">Oststadt</a></li>
+        <li><a href="/leben/sanierungsgebiete/schnaitheim-hagen" hreflang="de" lang="de">Schnaitheim-Hagen</a></li>
+        <li><a href="/leben/sanierungsgebiete/tag+der+staedtebaufoerderung" hreflang="de" lang="de">Tag der Städtebauförderung</a></li>
+        <li><a href="/leben/sanierungsgebiete/innenstadt-rathaus" hreflang="de" lang="de">Innenstadt Rathaus</a></li>
+       </ul></li>
+      <li><a href="/leben/stadtentwicklung" hreflang="de" lang="de">Stadtentwicklung</a>
+       <ul>
+        <li><a href="/leben/stadtentwicklung/integriertes+stadtentwicklungskonzept" hreflang="de" lang="de">Integriertes Stadtentwicklungskonzept</a></li>
+        <li><a href="/leben/stadtentwicklung/flaechenutzungsplan" hreflang="de" lang="de">Flächenutzungsplan </a></li>
+        <li><a href="/leben/stadtentwicklung/bebauungsplan" hreflang="de" lang="de">Bebauungsplan </a></li>
+        <li><a href="/leben/stadtentwicklung/innenstadtwettbewerb" hreflang="de" lang="de">Innenstadtwettbewerb</a></li>
+        <li><a href="/leben/stadtentwicklung/waermeplanung" hreflang="de" lang="de">Kommunale Wärmeplanung</a></li>
+       </ul></li>
+      <li><a href="/leben/fairtrade-stadt" hreflang="de" lang="de">Fairtrade-Stadt</a>
+       <ul>
+        <li><a href="/leben/fairtrade-stadt/fairer+handel" hreflang="de" lang="de">Fairer Handel</a></li>
+        <li><a href="/leben/fairtrade-stadt/einkaufsfuehrer" hreflang="de" lang="de">Einkaufsführer</a></li>
+        <li><a href="/leben/fairtrade-stadt/faire+mitbringsel" hreflang="de" lang="de">Faire Mitbringsel</a></li>
+        <li><a href="/leben/fairtrade-stadt/lenkungskreis" hreflang="de" lang="de">Lenkungskreis </a></li>
+        <li><a href="/leben/fairtrade-stadt/aktionen" hreflang="de" lang="de">Aktionen</a></li>
+        <li><a href="/leben/fairtrade-stadt/pressemitteilungen" hreflang="de" lang="de">Pressemitteilungen</a></li>
+        <li><a href="/leben/fairtrade-stadt/faire+kita+_+fairtrade+school" hreflang="de" lang="de">Faire Kita / Fairtrade School</a></li>
+        <li><a href="/leben/fairtrade-stadt/gestalte+mit" hreflang="de" lang="de">Gestalte mit</a></li>
+       </ul></li>
+      <li><a href="/leben/friedhoefe" hreflang="de" lang="de">Friedhöfe</a>
+       <ul>
+        <li><a href="/leben/friedhoefe/satzungen+der+friedhofsverwaltung" hreflang="de" lang="de">Satzungen der Friedhofsverwaltung</a></li>
+        <li><a href="/leben/friedhoefe/bestattungen" hreflang="de" lang="de">Bestattungen</a></li>
+        <li><a href="/leben/friedhoefe/die+friedhofsverwaltung" hreflang="de" lang="de">Die Friedhofsverwaltung</a></li>
+        <li><a href="/leben/friedhoefe/waldfriedhof" hreflang="de" lang="de">Waldfriedhof</a></li>
+        <li><a href="/leben/friedhoefe/totenberg-friedhof" hreflang="de" lang="de">Totenberg-Friedhof</a></li>
+        <li><a href="/leben/friedhoefe/friedhof+schnaitheim" hreflang="de" lang="de">Friedhof Schnaitheim</a></li>
+        <li><a href="/leben/friedhoefe/friedhof+mergelstetten" hreflang="de" lang="de">Friedhof Mergelstetten</a></li>
+        <li><a href="/leben/friedhoefe/friedhof+oggenhausen" hreflang="de" lang="de">Friedhof Oggenhausen</a></li>
+        <li><a href="/leben/friedhoefe/friedhof+grosskuchen" hreflang="de" lang="de">Friedhof Großkuchen</a></li>
+        <li><a href="/leben/friedhoefe/friedhof+kleinkuchen" hreflang="de" lang="de">Friedhof Kleinkuchen</a></li>
+        <li><a href="/leben/friedhoefe/gesetzliche+ruhezeiten+und+grabformen" hreflang="de" lang="de">Gesetzliche Ruhezeiten und Grabformen</a></li>
+        <li><a href="/leben/friedhoefe/verschiedene+grabarten" hreflang="de" lang="de">Verschiedene Grabarten</a></li>
+        <li><a href="/leben/friedhoefe/haeufig+gestellte+fragen" hreflang="de" lang="de">Häufig gestellte Fragen</a></li>
+        <li><a href="/leben/friedhoefe/allgemeins+vom+land+bw" hreflang="de" lang="de">Allgemeins vom Land BW</a></li>
+        <li><a href="/leben/friedhoefe/stadt-+und+kulturgeschichte" hreflang="de" lang="de">Stadt- und Kulturgeschichte</a></li>
+        <li><a href="/leben/friedhoefe/pflanzen-+und+tierschutzzone+friedhof" hreflang="de" lang="de">Pflanzen- und Tierschutzzone Friedhof</a></li>
+       </ul></li>
+      <li><a href="/leben/werkstadt" hreflang="de" lang="de">Werkstadt</a>
+       <ul>
+        <li><a href="/leben/werkstadt/bilanzen" hreflang="de" lang="de">Bilanzen </a></li>
+        <li><a href="/leben/werkstadt/fokusgruppe" hreflang="de" lang="de">Fokusgruppe</a></li>
+        <li><a href="/leben/werkstadt/ergebnisplakate" hreflang="de" lang="de">Ergebnisplakate</a></li>
+       </ul></li>
+      <li><a href="/1375022" hreflang="de" lang="de">Schaden melden</a></li>
+      <li><a href="/leben/winterdienst" hreflang="de" lang="de">Winterdienst</a></li>
+      <li><a href="/leben/notfalldienste" hreflang="de" lang="de">Notfalldienste</a></li>
+      <li><a href="/leben/17ziele" hreflang="de" lang="de">17 Ziele </a></li>
+     </ul></li>
+    <li><a href="/bildung" hreflang="de" lang="de">Bildung</a>
+     <ul>
+      <li><a href="/bildung/schulen" hreflang="de" lang="de">Schulen </a>
+       <ul>
+        <li><a href="/bildung/schulen/grundschulen" hreflang="de" lang="de">Grundschulen</a></li>
+        <li><a href="/bildung/schulen/werkreal-realschulen" hreflang="de" lang="de">Werkreal-, Real- und Gemeinschaftsschulen</a></li>
+        <li><a href="/bildung/schulen/gymnasien" hreflang="de" lang="de">Gymnasien</a></li>
+        <li><a href="/bildung/schulen/private+schulen" hreflang="de" lang="de">Private Schulen</a></li>
+        <li><a href="/bildung/schulen/vor-sonderschulen" hreflang="de" lang="de">Vor- &amp; Sonderschulen</a></li>
+        <li><a href="/bildung/schulen/berufsbildende+schulen" hreflang="de" lang="de">Berufsbildende Schulen</a></li>
+       </ul></li>
+      <li><a href="/bildung/hochschulen" hreflang="de" lang="de">Hochschulen </a></li>
+      <li><a href="https://www.vhs-heidenheim.de" hreflang="de" lang="de" rel="external noopener">Volkshochschule </a></li>
+      <li><a href="https://www.musikschule-heidenheim.de" hreflang="de" lang="de" rel="external noopener">Musikschule </a></li>
+      <li><a href="https://www.bibliothek-heidenheim.de" hreflang="de" lang="de" rel="external noopener">Stadtbibliothek</a></li>
+      <li><a href="/bildung/haus+der+familie" hreflang="de" lang="de">Haus der Familie</a></li>
+      <li><a href="/bildung/seniorenakademie" hreflang="de" lang="de">Seniorenakademie</a></li>
+      <li><a href="/bildung/gruenes+klassenzimmer" hreflang="de" lang="de">Grünes Klassenzimmer</a></li>
+      <li><a href="/bildung/aus+-+_+weiterbildung" hreflang="de" lang="de">Aus - &amp; Weiterbildung</a>
+       <ul>
+        <li><a href="/bildung/aus+-+_+weiterbildung/fruehe+bildung" hreflang="de" lang="de">Frühe Bildung</a></li>
+        <li><a href="/bildung/aus+-+_+weiterbildung/erwachsenenbildung" hreflang="de" lang="de">Erwachsenenbildung</a></li>
+        <li><a href="/bildung/aus+-+_+weiterbildung/ausbildungs-+_+studienmesse" hreflang="de" lang="de">Ausbildungs- &amp; Studienmesse</a></li>
+        <li><a href="/bildung/aus+-+_+weiterbildung/weiterbildungsangebote" hreflang="de" lang="de">Weiterbildungsangebote</a></li>
+       </ul></li>
+      <li><a href="/bildung/hector+kinderakademie" hreflang="de" lang="de">Hector Kinderakademie</a></li>
+      <li><a href="https://www.zak-heidenheim.de" hreflang="de" lang="de" rel="external noopener">Zukunftsakademie</a></li>
+      <li><a href="/bildung/_heidenheimer+modell_" hreflang="de" lang="de">"Heidenheimer Modell"</a>
+       <ul>
+        <li><a href="/bildung/_heidenheimer+modell_/regionalverbund" hreflang="de" lang="de">Regionalverbund</a></li>
+        <li><a href="/bildung/_heidenheimer+modell_/fruehe+chancen" hreflang="de" lang="de">Frühe Chancen</a></li>
+        <li><a href="/bildung/_heidenheimer+modell_/fortbildung" hreflang="de" lang="de">Fortbildung</a></li>
+        <li><a href="/bildung/_heidenheimer+modell_/elternarbeit" hreflang="de" lang="de">Elternarbeit</a></li>
+        <li><a href="/bildung/_heidenheimer+modell_/publikation" hreflang="de" lang="de">Publikation</a></li>
+        <li><a href="/bildung/_heidenheimer+modell_/netzwerk" hreflang="de" lang="de">Netzwerk</a></li>
+        <li><a href="/bildung/_heidenheimer+modell_/organisation" hreflang="de" lang="de">Organisation</a></li>
+        <li><a href="/bildung/_heidenheimer+modell_/biss+-+bildung+durch+sprache+und+schrift" hreflang="de" lang="de">BiSS - Bildung durch Sprache und Schrift</a></li>
+       </ul></li>
+     </ul></li>
+    <li><a href="/wirtschaft" hreflang="de" lang="de">Wirtschaft</a>
+     <ul>
+      <li><a href="/wirtschaft/wirtschaftsfoerderung" hreflang="de" lang="de">Wirtschaftsförderung</a>
+       <ul>
+        <li><a href="/wirtschaft/wirtschaftsfoerderung/fuer+unternehmen_" hreflang="de" lang="de">Für Unternehmen</a></li>
+        <li><a href="/wirtschaft/wirtschaftsfoerderung/fuer+investoren_" hreflang="de" lang="de">Für Investoren</a></li>
+        <li><a href="/wirtschaft/wirtschaftsfoerderung/fuer+start-ups" hreflang="de" lang="de">Für Start-Ups</a></li>
+       </ul></li>
+      <li><a href="/wirtschaft/wirtschaftsstandort" hreflang="de" lang="de">Wirtschaftsstandort</a>
+       <ul>
+        <li><a href="/wirtschaft/wirtschaftsstandort/geschichte" hreflang="de" lang="de">Geschichte</a></li>
+        <li><a href="/wirtschaft/wirtschaftsstandort/daten+und+fakten" hreflang="de" lang="de">Daten und Fakten</a></li>
+        <li><a href="/wirtschaft/wirtschaftsstandort/industrie+handel+handwerk" hreflang="de" lang="de">Industrie Handel Handwerk</a></li>
+        <li><a href="/wirtschaft/wirtschaftsstandort/groesste+unternehmen" hreflang="de" lang="de">Größte Unternehmen</a></li>
+        <li><a href="/wirtschaft/wirtschaftsstandort/bildungsangebot" hreflang="de" lang="de">Bildungsangebot</a></li>
+        <li><a href="/wirtschaft/wirtschaftsstandort/wohnen+und+freizeitangebote" hreflang="de" lang="de">Wohnen und Freizeitangebote</a></li>
+       </ul></li>
+      <li><a href="/wirtschaft/innenstadtmanagement" hreflang="de" lang="de">Innenstadtmanagement</a>
+       <ul>
+        <li><a href="/wirtschaft/innenstadtmanagement/unsere+dienstleistungen" hreflang="de" lang="de">Unsere Dienstleistungen</a></li>
+        <li><a href="/wirtschaft/innenstadtmanagement/veranstaltungsangebot" hreflang="de" lang="de">Veranstaltungsangebot</a></li>
+        <li><a href="/wirtschaft/innenstadtmanagement/einzelhandel" hreflang="de" lang="de">Einzelhandel</a></li>
+       </ul></li>
+      <li><a href="/wirtschaft/flaechenangebot" hreflang="de" lang="de">Flächenangebot</a>
+       <ul>
+        <li><a href="/wirtschaft/flaechenangebot/gewerbeflaechen_" hreflang="de" lang="de">Gewerbeflächen</a></li>
+        <li><a href="/wirtschaft/flaechenangebot/gewerbeobjekte_" hreflang="de" lang="de">Gewerbeobjekte</a></li>
+       </ul></li>
+      <li><a href="/wirtschaft/service+_+partner" hreflang="de" lang="de">Service &amp; Partner</a>
+       <ul>
+        <li><a href="/wirtschaft/service+_+partner/tagungsmoeglichkeiten_" hreflang="de" lang="de">Tagungsmöglichkeiten</a></li>
+        <li><a href="/wirtschaft/service+_+partner/staedtisches+co-working" hreflang="de" lang="de">Städtisches Co-Working</a></li>
+        <li><a href="/wirtschaft/service+_+partner/netzwerkpartner" hreflang="de" lang="de">Netzwerkpartner</a></li>
+       </ul></li>
+     </ul></li>
+    <li><a href="/kunst-und-kultur" hreflang="de" lang="de">Kunst &amp; Kultur</a>
+     <ul>
+      <li><a href="https://www.laendleevents.de/" hreflang="de" lang="de" rel="external noopener">Veranstaltungen</a></li>
+      <li><a href="https://www.opernfestspiele.de" hreflang="de" lang="de" rel="external noopener">Opernfestspiele</a></li>
+      <li><a href="/kunst-und-kultur/naturtheater" hreflang="de" lang="de">Naturtheater</a></li>
+      <li><a href="/kunst-und-kultur/kulturschiene" hreflang="de" lang="de">Kulturschiene</a></li>
+      <li><a href="/kunst-und-kultur/kultur+in+der+city" hreflang="de" lang="de">Kultur in der City</a></li>
+      <li><a href="/kunst-und-kultur/musik-konzerte" hreflang="de" lang="de">Musik &amp; Konzerte</a>
+       <ul>
+        <li><a href="/kunst-und-kultur/musik-konzerte/meisterkonzerte" hreflang="de" lang="de">Meisterkonzerte</a></li>
+        <li><a href="/kunst-und-kultur/musik-konzerte/cappella-aquileia" hreflang="de" lang="de">Cappella Aquileia</a></li>
+        <li><a href="/kunst-und-kultur/musik-konzerte/promenadenkonzerte" hreflang="de" lang="de">Promenadenkonzerte</a></li>
+       </ul></li>
+      <li><a href="/kunst-und-kultur/theater-kleinkunst" hreflang="de" lang="de">Theater &amp; Kleinkunst</a>
+       <ul>
+        <li><a href="/kunst-und-kultur/theater-kleinkunst/theaterring" hreflang="de" lang="de">Theaterring</a></li>
+        <li><a href="/kunst-und-kultur/theater-kleinkunst/naturtheater+heidenheim" hreflang="de" lang="de">Naturtheater Heidenheim</a></li>
+        <li><a href="/kunst-und-kultur/theater-kleinkunst/sasse+theater" hreflang="de" lang="de">Sasse Theater</a></li>
+       </ul></li>
+      <li><a href="/kunst-und-kultur/kunst-museen" hreflang="de" lang="de">Kunst &amp; Museen</a>
+       <ul>
+        <li><a href="/kunst-und-kultur/kunst-museen/kunstmuseum" hreflang="de" lang="de">Kunstmuseum</a></li>
+        <li><a href="/kunst-und-kultur/kunst-museen/kunstgalerien" hreflang="de" lang="de">Kunstgalerien</a></li>
+        <li><a href="/kunst-und-kultur/kunst-museen/kutschen+chaisen+karren" hreflang="de" lang="de">Kutschen Chaisen Karren</a></li>
+        <li><a href="/kunst-und-kultur/kunst-museen/museum+im+roemerbad" hreflang="de" lang="de">Museum im Römerbad</a></li>
+        <li><a href="/kunst-und-kultur/kunst-museen/museum+schloss+hellenstein" hreflang="de" lang="de">Museum Schloss Hellenstein</a></li>
+        <li><a href="/kunst-und-kultur/kunst-museen/archaeologisch-historische+sammlungen" hreflang="de" lang="de">Archäologisch-Historische Sammlungen</a></li>
+       </ul></li>
+      <li><a href="/kunst-und-kultur/heidenheimer-feste" hreflang="de" lang="de">Heidenheimer Feste</a>
+       <ul>
+        <li><a href="/kunst-und-kultur/heidenheimer-feste/kueferfest" hreflang="de" lang="de">Küferfest</a></li>
+        <li><a href="/kunst-und-kultur/heidenheimer-feste/internationales+strassenfest" hreflang="de" lang="de">Internationales Straßenfest</a></li>
+       </ul></li>
+      <li><a href="https://hz-ticketshop.de/veranstaltungen.html?s=kino&amp;from=&amp;to=&amp;location=heidenheim&amp;radius=0" hreflang="de" lang="de" rel="external noopener">Kinoprogramm</a></li>
+     </ul></li>
+    <li class="currentParent"><a href="/sport-und-freizeit" hreflang="de" lang="de">Sport &amp; Freizeit</a>
+     <ul>
+      <li><a href="/sport-und-freizeit/vereine" hreflang="de" lang="de">Vereine</a>
+       <ul>
+        <li><a href="/sport-und-freizeit/vereine/verein+eintragen" hreflang="de" lang="de">Verein eintragen</a></li>
+        <li><a href="/sport-und-freizeit/vereine/1_+fc+heidenheim" hreflang="de" lang="de">1. FC Heidenheim</a></li>
+        <li><a href="/sport-und-freizeit/vereine/fechtzentrum+heidenheim" hreflang="de" lang="de">Fechtzentrum Heidenheim</a></li>
+        <li><a href="/sport-und-freizeit/vereine/baseball" hreflang="de" lang="de">Baseball</a></li>
+        <li><a href="/sport-und-freizeit/vereine/heidenheimer+sportbund" hreflang="de" lang="de">Heidenheimer Sportbund</a></li>
+       </ul></li>
+      <li class="currentParent"><a href="/sport-und-freizeit/sportangebote" hreflang="de" lang="de">Sportangebote</a>
+       <ul>
+        <li class="current"><a aria-current="page" class="active" href="/sport-und-freizeit/sportangebote/sportstaetten" hreflang="de" lang="de">Sportstätten</a></li>
+        <li><a href="/sport-und-freizeit/sportangebote/mitternachtssport" hreflang="de" lang="de">Mitternachtssport</a></li>
+        <li><a href="/sport-und-freizeit/sportangebote/sport+fuer+kinder" hreflang="de" lang="de">Sport für Kinder</a></li>
+        <li><a href="/sport-und-freizeit/sportangebote/sport+fuer+aeltere" hreflang="de" lang="de">Sport für Ältere</a></li>
+        <li><a href="/sport-und-freizeit/sportangebote/wintersport" hreflang="de" lang="de">Wintersport</a></li>
+        <li><a href="/sport-und-freizeit/sportangebote/parcour" hreflang="de" lang="de">Parcour</a></li>
+       </ul></li>
+      <li><a href="/sport-und-freizeit/freizeitangebote" hreflang="de" lang="de">Freizeitangebote</a>
+       <ul>
+        <li><a href="/sport-und-freizeit/freizeitangebote/baeder" hreflang="de" lang="de">Bäder</a></li>
+        <li><a href="/sport-und-freizeit/freizeitangebote/bikepark" hreflang="de" lang="de">Bikepark</a></li>
+        <li><a href="https://www.brenzpark.de" hreflang="de" lang="de" rel="external noopener">Brenzpark</a></li>
+        <li><a href="/sport-und-freizeit/freizeitangebote/golf-club+hochstatt" hreflang="de" lang="de">Golf-Club Hochstatt</a></li>
+        <li><a href="/sport-und-freizeit/freizeitangebote/grillstellen" hreflang="de" lang="de">Grillstellen</a></li>
+        <li><a href="/sport-und-freizeit/freizeitangebote/kino" hreflang="de" lang="de">Kino</a></li>
+        <li><a href="/sport-und-freizeit/freizeitangebote/lalo-center" hreflang="de" lang="de">Lalo-Center</a></li>
+        <li><a href="/sport-und-freizeit/freizeitangebote/radfahren" hreflang="de" lang="de">Radfahren</a></li>
+        <li><a href="/sport-und-freizeit/freizeitangebote/skate-park" hreflang="de" lang="de">Skate-Park</a></li>
+        <li><a href="/sport-und-freizeit/freizeitangebote/spielplaetze" hreflang="de" lang="de">Spielplätze</a></li>
+        <li><a href="/sport-und-freizeit/freizeitangebote/wildpark+eichert" hreflang="de" lang="de">Wildpark Eichert</a></li>
+       </ul></li>
+      <li><a href="/sport-und-freizeit/sportehrungen" hreflang="de" lang="de">Sportehrungen</a></li>
+     </ul></li>
+    <li><a href="https://www.tourismus-heidenheim.de" hreflang="de" lang="de" rel="external noopener">Tourismus</a></li>
+    <li><a href="/news" hreflang="de" lang="de">News</a></li>
+   </ul>
+  </div>
+  <script src="/site/Heidenheim/data/804103/tracking/tracking.js"></script>
+  <script async defer src="https://statistik.komm.one/matomo/piwik.js"></script>
+  <noscript>
+   <img alt="" src="https://statistik.komm.one/matomo/piwik.php?idsite=101&amp;action_name=Sport%20%26%20Freizeit%20/%20Sportangebote%20/%20Sportstätten%20804103">
+  </noscript>
+  <script src="/site/Heidenheim/resourceCached/10.4.2.2.0/js/ada-modal.js"></script>
+  <script src="/site/Heidenheim/resourceCached/10.4.2.2.0/js/dvvSlideToggle-min.js"></script>
+  <script>iFrameResize({ log: false, checkOrigin:false  }, '#iFrameResizer0')</script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Select divs with class XYZ and iterate over them
+      var lMainElements = document.querySelectorAll('.info-kacheln, .composedcontent-heidenheim_standardseite,.composedcontent-heidenheim_kategorieseite, .l-footer, .l-header-stage, .l-header-stage ul, .searchDiv');
+
+      for (var i = 0; i < lMainElements.length; i++) {
+        var thisElement = lMainElements[i];
+        // Find all descendant elements within the current div
+        var elements = thisElement.querySelectorAll('*');
+
+        // Define regular expressions to capture the strings between *i* and *i* and between *ib* and *ib*
+        var faSolid = /\*i\*(.*?)\*i\*/g;
+        var faBrands = /\*ib\*(.*?)\*ib\*/g;
+
+        // Iterate over the descendant elements
+        for (var j = 0; j < elements.length; j++) {
+          var element = elements[j];
+
+          // Replace occurrences of *i*...*i* with corresponding font awesome solid icons
+          element.innerHTML = element.innerHTML.replace(faSolid, '<i class="fal fa-$1"></i>');
+          // Replace occurrences of *ib*...*ib* with corresponding font awesome brand icons
+          element.innerHTML = element.innerHTML.replace(faBrands, '<i class="fab fa-$1"></i>');
+        }
+      }
+    });
+
+  </script> <!-- postprocessor.groovy duration 4 ms -->
+ </body>
+</html><!--
+  copyright Komm.ONE
+  node       740921/762609/762629/804103 Sportstaetten
+  locale     de Deutsch
+  server     cms10_cms10b-n1
+  duration   935 ms
+-->

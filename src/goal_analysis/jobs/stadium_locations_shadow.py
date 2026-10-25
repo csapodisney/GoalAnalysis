@@ -21,17 +21,19 @@ from goal_analysis.normalization.training_datasets import sha
 from goal_analysis.storage.source_observations import read_source_raw
 
 VERSION = 'reviewed-stadium-coordinates-shadow-v1'
-REVIEWED_BUNDLE = '6a6ef106af3d782708df8df56aa5ce533c99302f3b7fb41eab858c21a66a9ceb'
-REVIEWED_AT = '2026-10-23T11:29:49.525605+00:00'
+REVIEWED_BUNDLE = '92d68ac3f097bf6a3cb0abef945e94ce2f49e05ef42dc5d7aa7cd480dd1e3dc7'
+REVIEWED_AT = '2026-10-23T23:36:57.988099+00:00'
 PREVIOUS_BUNDLE = 'f7bea9515387452b869b3b739f40568e2f8f51c03f865a38ea9decf4cab69e52'
 HISTORICAL_RELEASES = (
+    ('6a6ef106af3d782708df8df56aa5ce533c99302f3b7fb41eab858c21a66a9ceb',
+     56, '2026-10-23T11:29:49.525605+00:00', 80_000),
     ('57926fc865a79717e7039d82c56b90cb1efa5fef37bed4d23eb2ba11544f1011',
-     44, '2026-10-22T23:33:32.044417+00:00'),
+     44, '2026-10-22T23:33:32.044417+00:00', 64_000),
     ('191c5960d56fb76b6263b8c422584471c252d9b3e2cf8da81c99c7f12e1b67d6',
-     34, '2026-10-22T22:41:40.817079+00:00'),
+     34, '2026-10-22T22:41:40.817079+00:00', 50_000),
     ('d2deaf2a7dbd580a38e6c50c5af9526093e3171c8e0b67cff2db5bb2ba3cc5e5',
-     23, '2026-10-22T22:06:59.716819+00:00'),
-    (PREVIOUS_BUNDLE, 6, '2026-10-22T21:25:16.306109+00:00'),
+     23, '2026-10-22T22:06:59.716819+00:00', 50_000),
+    (PREVIOUS_BUNDLE, 6, '2026-10-22T21:25:16.306109+00:00', 50_000),
 )
 
 
@@ -58,11 +60,9 @@ def read_locations(root, *, as_of):
     root, cutoff = Path(root).resolve(), utc(as_of);folder = root/'data/arthur/stadium-locations'
     # Select from code-pinned availability, not whichever file happens to exist.
     # A missing/corrupt applicable release must not expose a favorable older one.
-    # Each code-pinned release retains its own measured bound. The56-record
-    # packet is71,834 bytes; its80KB cap cannot widen any historical packet.
-    releases = ((REVIEWED_BUNDLE, 56, REVIEWED_AT, 80_000),
-                *((digest, count, stamp, 64_000 if count == 44 else 50_000)
-                  for digest, count, stamp in HISTORICAL_RELEASES))
+    # The 69-record packet is 103,344 bytes. Each historical release keeps its
+    # own original byte bound, including the 71,834-byte fifth release.
+    releases = ((REVIEWED_BUNDLE, 69, REVIEWED_AT, 110_000), *HISTORICAL_RELEASES)
     release = next((r for r in releases if utc(r[2]) <= cutoff), None)
     if release is None:
         raise ValueError('STADIUM_SOURCE_NOT_KNOWN_AT_CUTOFF')

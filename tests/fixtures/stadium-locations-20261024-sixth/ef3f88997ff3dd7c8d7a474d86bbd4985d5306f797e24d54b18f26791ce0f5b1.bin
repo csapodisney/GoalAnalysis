@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<!--[if IE 9]>
+<html class="lt-ie10 ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html lang="en"> <!--<![endif]-->
+
+<head>
+    <link rel="preconnect" href="https://consent.cookiebot.com">
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="4f4dfc57-8114-4464-9aaf-fb9b7503b208" data-framework="TCFv2.2" type="text/javascript" async></script>
+    <!-- Google Tag Manager -->
+<script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://metrics.fcaugsburg.de/6nPWJboZGy?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5GBMP3RZ');
+</script>
+<script type="text/plain" data-cookieconsent="statistics">
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MQHF96Z');
+</script>
+<!-- End Google Tag Manager -->
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+
+    <title>
+        Club Information | FC Augsburg    </title>
+
+    <meta name="description"
+          content="
+                                    " />
+
+    <meta name="keywords"
+          content="" />
+
+            
+            
+            
+    <meta name="robots" content="index, follow"/>
+
+        <meta property="og:title" content="Club Information | FC Augsburg"/>
+    <meta property="og:site_name" content="FC Augsburg"/>
+    <meta property="og:locale" content="en"/>
+    <meta property="og:type" content="website"/>
+    
+                        <meta property="og:image" content="https://www.fcaugsburg.de/media/fca/page_stage/0001/66/thumb_65713_page_stage_hd.jpeg"/>
+        <meta property="og:image:width" content="1920"/>
+        <meta property="og:image:height" content="1280"/>
+        <meta property="og:image:type" content="image/jpeg"/>
+    
+            <meta property="fb:pages" content="39578076993" />
+                <meta name="google-site-verification" content="3d-jqTtQBvASVG5XyufZXulxqoo9GmJVCrHLuZjqEDs" />
+    
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="application-name" content="FC Augsburg"/>
+    <script type="text/javascript" data-cookieconsent="marketing">
+  sas_tmstp=Math.round(Math.random()*10000000000);sas_masterflag=1;
+  function SmartAdServer(sas_pageid,sas_formatid,sas_target) {
+    if (sas_masterflag==1) {sas_masterflag=0;sas_master='M';} else {sas_master='S';};
+    document.write('<scr'+'ipt src="' + sas_pageid + '/' + sas_formatid + '/' + sas_master + '/' + sas_tmstp + '/' + escape(sas_target) + '?"></scr'+'ipt>');
+  }
+</script>
+
+    <link rel="preconnect" href="https://logos.fantv.media/">
+        <link rel="canonical" href="https://www.fcaugsburg.de/en/page/information-59" />
+
+    <link href="/bundles/exozetfrontend/fca/css/styles.css?v=2.1.835763" rel="stylesheet"/>
+    <link rel="stylesheet" href="/bundles/exozetfrontend/fca/css/player.css?build=1785158280">
+    <link href="/bundles/exozetfrontend/fca/custom/css/styles.css?v=2.1.835763" rel="stylesheet"/>
+
+                            <link href="/bundles/exozetfrontend/fca/custom/css/userdefined/css-fca202607200348026829.css" rel="stylesheet" />
+                    <link href="/bundles/exozetfrontend/fca/custom/css/userdefined/tabellen202610060920512109.css" rel="stylesheet" />
+                    <link href="/bundles/exozetfrontend/fca/custom/css/userdefined/barrierefreiheit202506270106435678.css" rel="stylesheet" />
+                    <link href="/bundles/exozetfrontend/fca/custom/css/userdefined/adserver202607010148043670.css" rel="stylesheet" />
+                    <link href="/bundles/exozetfrontend/fca/custom/css/userdefined/carousel202607310638406021.css" rel="stylesheet" />
+                    <link href="/bundles/exozetfrontend/fca/custom/css/userdefined/stage202607291129352634.css" rel="stylesheet" />
+                    <link href="/bundles/exozetfrontend/fca/custom/css/userdefined/footer-sponsoren202609021152318604.css" rel="stylesheet" />
+                    <link href="/bundles/exozetfrontend/fca/custom/css/userdefined/bildergaleriethumb202609220207044435.css" rel="stylesheet" />
+            
+    <script src="/bundles/fosjsrouting/js/router.min.js"></script>
+    <script src="/js/fos_js_routes.js?v=2.1.835763"></script>
+
+        <script src="/bundles/bazingajstranslation/js/translator.min.js"></script>
+    <script src="/js/translations/config.js"></script>
+    <script src="/js/translations/fca/en.js?v=2.1.835763"></script>
+    <script id="mycrocast_base" src="https://mycrocast-webplayer.s3.eu-central-1.amazonaws.com/main.js"></script>
+
+    <script>
+        function loadJS(u) {
+            var r = document.getElementsByTagName("script")[0], s = document.createElement("script");
+            s.src = u;
+            r.parentNode.insertBefore(s, r);
+        }
+
+        if (!window.HTMLPictureElement) {
+            document.createElement('picture');
+            loadJS("//cdn.jsdelivr.net/g/respimage(respimage.min.js+plugins/mutation/ri.mutation.min.js+plugins/intrinsic-dimension/ri.intrinsic.min.js+plugins/typesupport/ri.type.min.js)");
+        }
+    </script><link rel="apple-touch-icon" sizes="180x180" href="/bundles/exozetfrontend/fca/img/appicons/apple-touch-icon.png?v=2.1.835763">
+
+<link rel="shortcut icon" href="/bundles/exozetfrontend/fca/img/appicons/favicon.ico?v=2.1.835763">
+<link rel="icon" type="image/png" sizes="32x32" href="/bundles/exozetfrontend/fca/img/appicons/favicon-32x32.png?v=2.1.835763">
+<link rel="icon" type="image/png" sizes="16x16" href="/bundles/exozetfrontend/fca/img/appicons/favicon-16x16.png?v=2.1.835763">
+
+<link rel="manifest" href="/bundles/exozetfrontend/fca/manifest.json?v=2.1.835763">
+
+<link rel="mask-icon" href="/bundles/exozetfrontend/fca/img/appicons/safari-pinned-tab.svg?v=2.1.835763" color="#000000">
+
+<meta name="msapplication-config" content="/bundles/exozetfrontend/fca/browserconfig.xml?v=2.1.835763">
+<meta name="msapplication-TileColor" content="#000000">
+
+<meta name="theme-color" content="#000000">
+
+    </head>
+
+<body class="b-page">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://metrics.fcaugsburg.de/ns.html?id=GTM-5GBMP3RZ" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MQHF96Z" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    
+    <!-- Melibo Chatbot -->
+    <script src="https://cdn.melibo.de/v2/widget.js"></script>
+    <melibo-widget key="63d2b55d-8176-4865-98e1-f31e2addc7de"></melibo-widget>
+    <!-- End Melibo Chatbot -->
+
+            
+<header class="b-pageheader" data-controller="page-header">
+    <div class="b-brand">
+        <a class="brand-inner" href="/en/" title="Homepage">
+            <img class="brand-img" src="/bundles/exozetfrontend/fca/img/logos/augsburg-logo.png" alt="FC Augsburg Logo">
+            <span class="brand-text u-visual-hidden">FC Augsburg</span>
+        </a>
+    </div>
+
+    <div class="b-menu-btn">
+        <button class="menu-btn-btn js-mobile-menu-toggle" type="button" aria-expanded="false"
+                data-action="click->page-header#toggle"
+                title="Main menu button">
+            <span class="menu-btn-inner">
+                 Click
+            </span>
+        </button>
+    </div>
+
+    <div class="b-sponser-lead">
+        <svg class="sponser-lead-svg-bg" viewBox="0 0 90 70">
+            <path fill="#D80E16" fill-rule="evenodd" d="M0 0h90L0 90H0Z"></path>
+        </svg>
+        <div class="sponser-lead-inner">
+            <a href="http://www.wwk.de/" class="" title="Main sponsor" target="_blank"
+               rel="nofollow">
+                <img class="sponser-lead-img" src="/bundles/exozetfrontend/fca/img/logos/wwk-logo.svg" alt="WWK Logo">
+                <span class="sponser-lead-text u-visual-hidden">WWK</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="pageheader-inner">
+        <nav class="b-nav-sub" aria-label="Second menu">
+            <ul class="nav-sub-list">
+                                                                                        
+                                                                                        
+                
+                                                            <li class="nav-sub-item">
+                            <a class="nav-sub-item-link" href="https://www.fcaugsburg.de/mitgliedwerden" title="Become a Member" target="_blank">
+                                Become a Member
+                            </a>
+                        </li>
+                                                                                <li class="nav-sub-item">
+                            <a class="nav-sub-item-link" href="/en/page/merchandising-116" title="Merchandising" target="_self">
+                                Merchandising
+                            </a>
+                        </li>
+                                                                                <li class="nav-sub-item">
+                            <a class="nav-sub-item-link" href="https://www.fcaugsburg.de/ticketshop" title="Tickets" target="_blank">
+                                Tickets
+                            </a>
+                        </li>
+                                                                                                                    <li class="nav-sub-item">
+                            <a class="nav-sub-item-link" href="/en/page/contact-51" title="Contact" target="_self">
+                                Contact
+                            </a>
+                        </li>
+                                    
+            </ul>
+            <svg class="nav-sub-corner-svg" viewBox="0 0 30 50">
+                <path fill-rule="evenodd" d="M0 0h50L0 50H0z" fill="#00462D"></path>
+            </svg>
+        </nav><nav class="b-nav-main" data-controller="nav-main"
+             aria-label="Main menu">
+            <ul class="nav-main-list">
+
+                                    <li class="nav-main-item js-submenu-hover" data-sub-menu-target="menu16">
+                        <a class="nav-main-item-link js-toggle-submenu-button" href="#"
+                           data-sub-menu-target="menu16"
+                           data-nav-main-target="toggleButton"
+                           data-action="click->nav-main#toggle"
+                           aria-haspopup="true" aria-expanded="false">
+                            News
+                        </a>
+
+                        <div class="b-navmain-dropdown js-sub-menu-topic js-sub-menu-overlay"
+                             data-sub-menu-id="menu16"
+                             data-nav-main-target="topic"
+                             data-action="click->nav-main#reactivateDisabledTopic">
+                            <div class="navmain-dropwdown-inner">
+                                                                    <ul class="navmain-dropdown-list">
+                                                                                                                            
+                                            
+                                                                                                                                        
+                                            <li class="navmain-dropdown-item">
+
+                                                                                            <a class="navmain-dropdown-item-inner" href="/en/news"
+                                                   target="_self">
+                                                    All News
+                                                </a>
+                                                                                        </li>
+                                                                            </ul>
+                                                                    <ul class="navmain-dropdown-list">
+                                                                                                                    </ul>
+                                                            </div>
+                        </div>
+                    </li>
+                                    <li class="nav-main-item js-submenu-hover" data-sub-menu-target="menu37">
+                        <a class="nav-main-item-link js-toggle-submenu-button" href="#"
+                           data-sub-menu-target="menu37"
+                           data-nav-main-target="toggleButton"
+                           data-action="click->nav-main#toggle"
+                           aria-haspopup="true" aria-expanded="false">
+                            First Team
+                        </a>
+
+                        <div class="b-navmain-dropdown js-sub-menu-topic js-sub-menu-overlay"
+                             data-sub-menu-id="menu37"
+                             data-nav-main-target="topic"
+                             data-action="click->nav-main#reactivateDisabledTopic">
+                            <div class="navmain-dropwdown-inner">
+                                                                    <ul class="navmain-dropdown-list">
+                                                                                    <li class="navmain-dropdown-item-header">
+                                                First Team
+                                            </li>
+                                                                                                                            
+                                            
+                                                                                                                                        
+                                            <li class="navmain-dropdown-item">
+
+                                                                                            <a class="navmain-dropdown-item-inner" href="/en/team"
+                                                   target="_self">
+                                                    Team
+                                                </a>
+                                                                                        </li>
+                                                                                    
+                                            
+                                                                                                                                        
+                                            <li class="navmain-dropdown-item">
+
+                                                                                            <a class="navmain-dropdown-item-inner" href="/en/team/people"
+                                                   target="_self">
+                                                    Coaches &amp; Performance team
+                                                </a>
+                                                                                        </li>
+                                                                                    
+                                            
+                                                                                                                                        
+                                            <li class="navmain-dropdown-item">
+
+                                                                                            <a class="navmain-dropdown-item-inner" href="/en/team/standing-table?team=profis"
+                                                   target="_self">
+                                                    Table
+                                                </a>
+                                                                                        </li>
+                                                                                    
+                                            
+                                                                                                                                        
+                                            <li class="navmain-dropdown-item">
+
+                                                                                            <a class="navmain-dropdown-item-inner" href="/en/games/"
+                                                   target="_self">
+                                                    Results &amp; Fixtures
+                                                </a>
+                                                                                        </li>
+                                                                            </ul>
+                                                            </div>
+                        </div>
+                    </li>
+                                    <li class="nav-main-item js-submenu-hover" data-sub-menu-target="menu39">
+                        <a class="nav-main-item-link js-toggle-submenu-button" href="#"
+                           data-sub-menu-target="menu39"
+                           data-nav-main-target="toggleButton"
+                           data-action="click->nav-main#toggle"
+                           aria-haspopup="true" aria-expanded="false">
+                            Tickets
+                        </a>
+
+                        <div class="b-navmain-dropdown js-sub-menu-topic js-sub-menu-overlay"
+                             data-sub-menu-id="menu39"
+                             data-nav-main-target="topic"
+                             data-action="click->nav-main#reactivateDisabledTopic">
+                            <div class="navmain-dropwdown-inner">
+                                                                    <ul class="navmain-dropdown-list">
+                                                                                    <li class="navmain-dropdown-item-header">
+                                                Information
+                                            </li>
+                                                                                                                            
+                                            
+                                                                                                                                        
+                                            <li class="navmain-dropdown-item">
+
+                                                                                            <a class="navmain-dropdown-item-inner" href="/en/page/tickets-15"
+                                                   target="_self">
+                                                    Tickets
+                                                </a>
+                                                                                        </li>
+                                                                            </ul>
+                                                            </div>
+                        </div>
+                    </li>
+                                    <li class="nav-main-item js-submenu-hover" data-sub-menu-target="menu48">
+                        <a class="nav-main-item-link js-toggle-submenu-button" href="#"
+                           data-sub-menu-target="menu48"
+                           data-nav-main-target="toggleButton"
+                           data-action="click->nav-main#toggle"
+                           aria-haspopup="true" aria-expanded="false">
+                            Club
+                        </a>
+
+                        <div class="b-navmain-dropdown js-sub-menu-topic js-sub-menu-overlay"
+                             data-sub-menu-id="menu48"
+                             data-nav-main-target="topic"
+                             data-action="click->nav-main#reactivateDisabledTopic">
+                            <div class="navmain-dropwdown-inner">
+                                                                    <ul class="navmain-dropdown-list">
+                                                                                    <li class="navmain-dropdown-item-header">
+                                                Club
+                                            </li>
+                                                                                                                            
+                                            
+                                                                                                                                        
+                                            <li class="navmain-dropdown-item">
+
+                                                                                            <a class="navmain-dropdown-item-inner" href="/en/page/07-values-guiding-principles-444"
+                                                   target="_self">
+                                                    07 values &amp; guiding principles
+                                                </a>
+                                                                                        </li>
+                                                                                    
+                                            
+                                                                                                                                        
+                                            <li class="navmain-dropdown-item">
+
+                                                                                            <a class="navmain-dropdown-item-inner" href="/en/page/information-59"
+                                                   target="_self">
+                                                    Information
+                                                </a>
+                                                                                        </li>
+                                                                                    
+                                            
+                                                                                                                                        
+                                            <li class="navmain-dropdown-item">
+
+                                                                                            <a class="navmain-dropdown-item-inner" href="/en/page/sponsors-and-partners-89"
+                                                   target="">
+                                                    Sponsors &amp; Partners
+                                                </a>
+                                                                                        </li>
+                                                                                    
+                                            
+                                                                                                                                        
+                                            <li class="navmain-dropdown-item">
+
+                                                                                            <a class="navmain-dropdown-item-inner" href="/en/page/history-5"
+                                                   target="_self">
+                                                    History
+                                                </a>
+                                                                                        </li>
+                                                                            </ul>
+                                                                    <ul class="navmain-dropdown-list">
+                                                                                    <li class="navmain-dropdown-item-header">
+                                                Fans
+                                            </li>
+                                                                                                                            
+                                            
+                                                                                                                                        
+                                            <li class="navmain-dropdown-item">
+
+                                                                                            <a class="navmain-dropdown-item-inner" href="/en/page/fca-goes-south-africa-536"
+                                                   target="_self">
+                                                    ᐅ FCA goes South Africa
+                                                </a>
+                                                                                        </li>
+                                                                            </ul>
+                                                            </div>
+                        </div>
+                    </li>
+                                    <li class="nav-main-item js-submenu-hover" data-sub-menu-target="menu42">
+                        <a class="nav-main-item-link js-toggle-submenu-button" href="#"
+                           data-sub-menu-target="menu42"
+                           data-nav-main-target="toggleButton"
+                           data-action="click->nav-main#toggle"
+                           aria-haspopup="true" aria-expanded="false">
+                            Stadium
+                        </a>
+
+                        <div class="b-navmain-dropdown js-sub-menu-topic js-sub-menu-overlay"
+                             data-sub-menu-id="menu42"
+                             data-nav-main-target="topic"
+                             data-action="click->nav-main#reactivateDisabledTopic">
+                            <div class="navmain-dropwdown-inner">
+                                                                    <ul class="navmain-dropdown-list">
+                                                                                    <li class="navmain-dropdown-item-header">
+                                                Stadium
+                                            </li>
+                                                                                                                            
+                                            
+                                                                                                                                        
+                                            <li class="navmain-dropdown-item">
+
+                                                                                            <a class="navmain-dropdown-item-inner" href="/en/page/stadium-facts-and-figures-73"
+                                                   target="_self">
+                                                    Facts &amp; Figures
+                                                </a>
+                                                                                        </li>
+                                                                                    
+                                            
+                                                                                                                                        
+                                            <li class="navmain-dropdown-item">
+
+                                                                                            <a class="navmain-dropdown-item-inner" href="/en/page/travelling-to-the-stadium-79"
+                                                   target="_self">
+                                                    Travelling to the Stadium
+                                                </a>
+                                                                                        </li>
+                                                                            </ul>
+                                                            </div>
+                        </div>
+                    </li>
+                                    <li class="nav-main-item js-submenu-hover" data-sub-menu-target="menu136">
+                        <a class="nav-main-item-link js-toggle-submenu-button" href="#"
+                           data-sub-menu-target="menu136"
+                           data-nav-main-target="toggleButton"
+                           data-action="click->nav-main#toggle"
+                           aria-haspopup="true" aria-expanded="false">
+                            Youth
+                        </a>
+
+                        <div class="b-navmain-dropdown js-sub-menu-topic js-sub-menu-overlay"
+                             data-sub-menu-id="menu136"
+                             data-nav-main-target="topic"
+                             data-action="click->nav-main#reactivateDisabledTopic">
+                            <div class="navmain-dropwdown-inner">
+                                                                    <ul class="navmain-dropdown-list">
+                                                                                    <li class="navmain-dropdown-item-header">
+                                                Youth
+                                            </li>
+                                                                                                                            
+                                            
+                                                                                                                                        
+                                            <li class="navmain-dropdown-item">
+
+                                                                                            <a class="navmain-dropdown-item-inner" href="/en/page/youth-contact-117"
+                                                   target="_self">
+                                                    Contact
+                                                </a>
+                                                                                        </li>
+                                                                                    
+                                            
+                                                                                                                                        
+                                            <li class="navmain-dropdown-item">
+
+                                                                                            <a class="navmain-dropdown-item-inner" href="/en/page/youth-teams-251"
+                                                   target="_self">
+                                                    Teams
+                                                </a>
+                                                                                        </li>
+                                                                                    
+                                            
+                                                                                                                                        
+                                            <li class="navmain-dropdown-item">
+
+                                                                                            <a class="navmain-dropdown-item-inner" href="/en/page/youth-purpose-and-policy-93"
+                                                   target="_self">
+                                                    Purpose &amp; Policy
+                                                </a>
+                                                                                        </li>
+                                                                            </ul>
+                                                                    <ul class="navmain-dropdown-list">
+                                                                                    <li class="navmain-dropdown-item-header">
+                                                FCA football school
+                                            </li>
+                                                                                                                            
+                                            
+                                                                                                                                        
+                                            <li class="navmain-dropdown-item">
+
+                                                                                            <a class="navmain-dropdown-item-inner" href="/en/page/fca-football-school-106"
+                                                   target="">
+                                                    Information
+                                                </a>
+                                                                                        </li>
+                                                                            </ul>
+                                                            </div>
+                        </div>
+                    </li>
+                                    <li class="nav-main-item js-submenu-hover" data-sub-menu-target="menu516">
+                        <a class="nav-main-item-link js-toggle-submenu-button" href="#"
+                           data-sub-menu-target="menu516"
+                           data-nav-main-target="toggleButton"
+                           data-action="click->nav-main#toggle"
+                           aria-haspopup="true" aria-expanded="false">
+                            Sustainability
+                        </a>
+
+                        <div class="b-navmain-dropdown js-sub-menu-topic js-sub-menu-overlay"
+                             data-sub-menu-id="menu516"
+                             data-nav-main-target="topic"
+                             data-action="click->nav-main#reactivateDisabledTopic">
+                            <div class="navmain-dropwdown-inner">
+                                                                    <ul class="navmain-dropdown-list">
+                                                                                    <li class="navmain-dropdown-item-header">
+                                                Reports
+                                            </li>
+                                                                                                                            
+                                            
+                                                                                                                                        
+                                            <li class="navmain-dropdown-item">
+
+                                                                                            <a class="navmain-dropdown-item-inner" href="https://fca.de/Fortschrittsbericht_2425_EN"
+                                                   target="">
+                                                    Progress report 2024/25
+                                                </a>
+                                                                                        </li>
+                                                                            </ul>
+                                                            </div>
+                        </div>
+                    </li>
+                
+            </ul>
+        </nav><div class="b-meta" data-controller="meta">
+            <ul class="meta-list">
+                <li class="meta-item">
+                    <div class="b-meta-lang" data-controller="meta-lang">
+                        <button type="button" class="meta-lang-current has-icon is-en js-lang-toggle"
+                                data-action="click->meta-lang#toggle"
+                                title="Choose Language">
+                            <abbr class="meta-lang-current-inner" title="en">
+                                en
+                            </abbr>
+                        </button>
+
+                        <div class="meta-lang-bar">
+                            <ul class="meta-lang-list">
+                                                                    <li class="meta-lang-item has-icon is-de">
+                                        <a rel="nofollow" class="meta-lang-item-inner"
+                                           href="/page/information-59"
+                                           aria-label="de">
+                                            de
+                                        </a>
+                                    </li>
+                                                            </ul>
+
+                            <div class="meta-lang-btn">
+                                <button class="b-btn is-close js-lang-close" type="button"
+                                        data-action="click->meta-lang#toggle">
+                                    <span class="btn-inner">
+                                        Close
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                                    <li class="meta-item">
+                                                        <a class="b-meta-lang-ls" title="Leichte Sprache"
+                           href="https://www.fcaugsburg.de/leichte-sprache">
+                            <span class="meta-lang-ls-inner">
+                                Leichte Sprache
+                            </span>
+                        </a>
+                        </li>
+                                <li class="meta-item"
+                    data-controller="user-info"
+                    data-user-info-locale-value="en"></li>
+                <li class="meta-item">
+                    <div class="b-meta-search" data-controller="meta-search">
+                        <a class="meta-search-btn js-search-toggle" title="Search"
+                           href="/en/search"
+                           data-action="click->meta-search#toggle">
+                            <span class="meta-search-btn-inner">
+                                Search
+                            </span>
+                        </a>
+                        <form action="/en/search" class="meta-search-form js-search-form" method="get"
+                              data-meta-search-target="form"
+                              data-action="submit->meta-search#submit">
+                            <fieldset class="meta-search-form-inner">
+                                <legend class="u-visual-hidden">
+                                    Search
+                                </legend>
+                                <div class="meta-search-bar">
+                                    <label for="metasearch" class="meta-search-label">
+                                        Search
+                                    </label>
+                                    <input type="text" class="meta-search-input js-search-input" id="metasearch"
+                                           placeholder="Enter a search term " minlength="3"
+                                           data-meta-search-target="input"
+                                           data-action="keydown->meta-search#onKeyDown"/>
+                                    <button class="b-btn is-close js-search-close" type="button"
+                                            data-action="click->meta-search#toggle">
+                                        <span class="btn-inner"></span>
+                                    </button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="b-social-list">
+    
+    <ul class="social-list-list">
+                    <li class="social-list-item is-facebook has-icon">
+                <a target="_blank" rel="nofollow" class="social-list-item-link" href="https://www.facebook.com/FCAugsburg" title="Go to Facebook">
+                </a>
+            </li>
+                    <li class="social-list-item is-twitter has-icon">
+                <a target="_blank" rel="nofollow" class="social-list-item-link" href="https://twitter.com/FCAugsburg" title="Go to X">
+                </a>
+            </li>
+                    <li class="social-list-item is-instagram has-icon">
+                <a target="_blank" rel="nofollow" class="social-list-item-link" href="https://www.instagram.com/fcaugsburg1907/" title="Go to Instagram">
+                </a>
+            </li>
+                    <li class="social-list-item is-tiktok has-icon">
+                <a target="_blank" rel="nofollow" class="social-list-item-link" href="https://www.tiktok.com/@fcaugsburg" title="Go to TikTok">
+                </a>
+            </li>
+                    <li class="social-list-item is-linkedin has-icon">
+                <a target="_blank" rel="nofollow" class="social-list-item-link" href="https://www.linkedin.com/company/fcaugsburg/" title="Go to LinkedIn">
+                </a>
+            </li>
+                    <li class="social-list-item is-youtube has-icon">
+                <a target="_blank" rel="nofollow" class="social-list-item-link" href="https://www.youtube.com/FcAugsburg" title="Go to Youtube">
+                </a>
+            </li>
+                    <li class="social-list-item is-giphy has-icon">
+                <a target="_blank" rel="nofollow" class="social-list-item-link" href="https://giphy.com/fca1907" title="Go to Giphy">
+                </a>
+            </li>
+                    <li class="social-list-item is-calovo has-icon">
+                <a target="_blank" rel="nofollow" class="social-list-item-link" href="https://calovo.de/c/fcaugsburg" title="Go to Calovo">
+                </a>
+            </li>
+                    <li class="social-list-item is-whatsapp has-icon">
+                <a target="_blank" rel="nofollow" class="social-list-item-link" href="https://www.whatsapp.com/channel/0029VadHbyA8fewo3Yzpgz1j" title="Go to Whatsapp">
+                </a>
+            </li>
+            </ul>
+</div>
+    </div>
+</header>
+    
+    <main class="page-main ">
+            
+<section class="b-stage">
+        
+                        <article class="b-item-hero u-raster-overlay">
+    <div class="item-hero-inner">
+        <div class="item-hero-media">
+            <div class="b-mediabox  is-focus-center-top">
+                <div class="mediabox-inner">
+                    <img class="mediabox-media"
+                         loading="eager"
+                         fetchpriority="high"
+                         alt="verein-fca_in_kuerze.jpg"
+                         sizes="100vw"
+                         srcset="https://www.fcaugsburg.de/media/fca/page_stage/0001/66/thumb_65713_page_stage_small.jpeg 320w, https://www.fcaugsburg.de/media/fca/page_stage/0001/66/thumb_65713_page_stage_medium.jpeg 640w, https://www.fcaugsburg.de/media/fca/page_stage/0001/66/thumb_65713_page_stage_big.jpeg 1280w, https://www.fcaugsburg.de/media/fca/page_stage/0001/66/thumb_65713_page_stage_hd.jpeg 1920w">
+                </div>
+            </div>
+                    </div>
+
+            </div>
+</article>
+            
+                                        </section>
+
+    <div class="page-wrapper has-overlay-raster u-padding-b-80">
+        <div class="page-section is-overlayed">
+            <article class="b-article">
+                <header class="article-header">
+                    <h1 class="article-title">Information</h1>
+                </header>
+                <div class="b-richtext" data-controller="lazy-load-contents">
+                    <style type="text/css">.team tr {border-top:1px dotted #000000;border-bottom:1px dotted #000000}   
+      .team td {padding-left: 10px;font-size: 1.6rem;}
+.team th {padding-left: 10px;}
+</style>
+<table border="0" cellpadding="3" cellspacing="0" class="team" style="border-collapse:collapse;width:100%;" width="100%">
+	<tbody>
+		<tr class="greybox" valign="middle">
+			<td style="width: 638px;" valign="middle"><strong>Chairman of the Board Association</strong></td>
+			<td style="width: 664px;" valign="middle">Markus Krapf</td>
+		</tr>
+		<tr class="greybox" valign="middle">
+			<td style="width: 638px;" valign="middle"><strong>Chairman of the Supervisory Board</strong></td>
+			<td style="width: 664px;" valign="middle">Thomas M&uuml;ller</td>
+		</tr>
+		<tr class="greybox" valign="middle">
+			<td style="width: 638px;" valign="middle"><strong>CEO</strong></td>
+			<td style="width: 664px;" valign="middle">Michael Str&ouml;ll</td>
+		</tr>
+		<tr valign="middle">
+			<td style="width: 638px;" valign="middle"><strong>Head of Media &amp; Public Relations</strong></td>
+			<td style="width: 664px;" valign="middle">Denise Sch&auml;fer</td>
+		</tr>
+		<tr>
+			<td style="width: 638px;" valign="middle"><strong>Sports communication</strong></td>
+			<td style="width: 664px;" valign="middle">Dominik Schmitz</td>
+		</tr>
+		<tr>
+			<td style="width: 638px;" valign="middle"><strong>Sporting Director</strong></td>
+			<td style="width: 664px;" valign="middle">Benni Weber</td>
+		</tr>
+		<tr>
+			<td style="width: 638px;" valign="middle"><strong>Head Coach</strong></td>
+			<td style="width: 664px;" valign="middle">Manuel Baum</td>
+		</tr>
+		<tr class="greybox" valign="middle">
+			<td style="width: 638px;" valign="middle"><strong>Stadium</strong></td>
+			<td style="width: 664px;" valign="middle">WWK ARENA<br />
+			B&uuml;rgermeister-Ulrich-Stra&szlig;e 90<br />
+			86199 Augsburg</td>
+		</tr>
+		<tr valign="middle">
+			<td style="width: 638px;" valign="middle"><strong>Foundation</strong></td>
+			<td style="width: 664px;" valign="middle">08.08.1907</td>
+		</tr>
+		<tr class="greybox" valign="middle">
+			<td style="width: 638px;" valign="middle"><strong>Biggest Success</strong></td>
+			<td style="width: 664px;" valign="middle">Promotion to Bundesliga 2010/2011, DFB-Pokal Semifinalist 2009/2010, Participant of UEFA Europa League 2015/2016</td>
+		</tr>
+		<tr valign="middle">
+			<td style="width: 638px;" valign="middle"><strong>Participant of Top-Level Division</strong></td>
+			<td style="width: 664px;" valign="middle">1945-1947, 1949-1951, 1953-1959, 1961-1963</td>
+		</tr>
+		<tr class="greybox" valign="middle">
+			<td style="width: 638px;" valign="middle"><strong>2nd Division Championship Winners</strong></td>
+			<td style="width: 664px;" valign="middle">1961</td>
+		</tr>
+		<tr valign="middle">
+			<td style="width: 638px;" valign="middle"><strong>Southern German Championship Winner</strong></td>
+			<td style="width: 664px;" valign="middle">1974</td>
+		</tr>
+		<tr class="greybox" valign="middle">
+			<td style="width: 638px;" valign="middle"><strong>Bavarian Championship Winners</strong></td>
+			<td style="width: 664px;" valign="middle">1948, 1966,&nbsp;1973, 1980, 1982, 1994, 2002</td>
+		</tr>
+		<tr valign="middle">
+			<td style="width: 638px;" valign="middle"><strong>Swabian Cup Winners</strong></td>
+			<td style="width: 664px;" valign="middle">1965, 1969, 1970, 1971, 1972, 1977, 1980, 1986, 1988, 1993, 1996, 1999, 2002</td>
+		</tr>
+		<tr class="greybox" valign="middle">
+			<td style="width: 638px;" valign="middle"><strong>U19 German Championship Winners</strong></td>
+			<td style="width: 664px;" valign="middle">1993</td>
+		</tr>
+		<tr valign="middle">
+			<td style="width: 638px;" valign="middle"><strong>U19 German Cup Winners</strong></td>
+			<td style="width: 664px;" valign="middle">1991, 1992, 1994, 1995</td>
+		</tr>
+		<tr class="greybox" valign="middle">
+			<td style="width: 638px;" valign="middle"><strong>U19 Bavarian Cup Winners </strong></td>
+			<td style="width: 664px;" valign="middle">2002</td>
+		</tr>
+		<tr>
+			<td style="width: 638px;" valign="middle"><strong>U15 German Futsal Championshop Winners</strong></td>
+			<td style="width: 664px;" valign="middle">2016</td>
+		</tr>
+		<tr valign="middle">
+			<td style="width: 638px;" valign="middle"><strong>Colours</strong></td>
+			<td style="width: 664px;" valign="middle">Red, Green, White</td>
+		</tr>
+		<tr class="greybox" valign="middle">
+			<td style="width: 638px;" valign="middle"><strong>Sports</strong></td>
+			<td style="width: 664px;" valign="middle">Football, Skiing</td>
+		</tr>
+		<tr valign="middle">
+			<td style="width: 638px;" valign="middle"><strong>Training Ground</strong></td>
+			<td style="width: 664px;" valign="middle">Training grounds WWK ARENA<br />
+			B&uuml;rgermeister-Ulrich-Stra&szlig;e 90<br />
+			86199 Augsburg</td>
+		</tr>
+	</tbody>
+</table>                </div>
+            </article>
+
+                <div class="b-adonis-leaderboard">
+        <div data-adonis data-id="10-superbanner" data-format="superbanner"></div>
+    </div>
+
+
+                            <div class="b-adonis-leaderboard mobile-only">
+        <div data-adonis data-id="10-superbanner-mobile" data-format="superbanner_mobile"></div>
+    </div>
+
+        </div>
+        <aside class="page-aside">
+                                
+            <div class="b-item-grid">
+            <ul class="item-grid-list">
+                <li class="item-grid-item">
+                        <div class="b-adonis-rectangle">
+        <div data-adonis data-id="10-medium-rectangle-links" data-format="special_rectangle_800_450"></div>
+    </div>
+
+                </li>
+
+                                                            <li class="item-grid-item">
+
+                            
+                            
+                            
+                                                            <article class="b-teaser is-promo"
+             data-controller="user-interaction"
+             data-user-interaction-type-value="BlockAd"
+             data-user-interaction-id-value="deaktiviert">
+        
+                    <div class="partner-wrapper">
+                <style>
+.item-grid-item:has(.results:empty) {
+  display: none;
+}</style>
+<div class="results"></div>
+            </div>
+            </article>
+
+                                                    </li>
+                                                                    <li class="item-grid-item">
+
+                            
+                            
+                            
+                                                            <article class="b-teaser is-promo"
+             data-controller="user-interaction"
+             data-user-interaction-type-value="BlockAd"
+             data-user-interaction-id-value="Facebook EN">
+                    <a href="https://www.facebook.com/fcaugsburgenglish" rel="nofollow" target="_blank" class="teaser-link" title="https://www.facebook.com/fcaugsburgenglish">
+                <div class="teaser-media">
+                    <div class="b-mediabox is-ratio-6-7">
+                        <div class="mediabox-inner">
+                            <img class="mediabox-media" loading="lazy" alt="To FC Augsburg&#039;s account on Facebook" sizes="auto"
+                                 srcset="https://www.fcaugsburg.de/media/fca/ad_block/0002/10/thumb_109203_ad_block_small.jpeg 350w, https://www.fcaugsburg.de/media/fca/ad_block/0002/10/thumb_109203_ad_block_medium.jpeg 700w">
+                        </div>
+                    </div>
+                </div>
+            </a>
+        
+            </article>
+
+                                                    </li>
+                                                    <li class="item-grid-item">
+                                    <div class="b-adonis-rectangle">
+        <div data-adonis data-id="10-large-rectangle" data-format="large_rectangle"></div>
+    </div>
+
+                            </li>
+                                                                    <li class="item-grid-item">
+
+                            
+                            
+                            
+                                                            <article class="b-teaser is-promo"
+             data-controller="user-interaction"
+             data-user-interaction-type-value="BlockAd"
+             data-user-interaction-id-value="Twitter EN">
+                    <a href="https://x.com/fca_world" rel="nofollow" target="_blank" class="teaser-link" title="https://x.com/fca_world">
+                <div class="teaser-media">
+                    <div class="b-mediabox is-ratio-6-7">
+                        <div class="mediabox-inner">
+                            <img class="mediabox-media" loading="lazy" alt="To FC Augsburg&#039;s account on X" sizes="auto"
+                                 srcset="https://www.fcaugsburg.de/media/fca/ad_block/0002/10/thumb_109205_ad_block_small.jpeg 350w, https://www.fcaugsburg.de/media/fca/ad_block/0002/10/thumb_109205_ad_block_medium.jpeg 700w">
+                        </div>
+                    </div>
+                </div>
+            </a>
+        
+            </article>
+
+                                                    </li>
+                                                            
+                
+                
+            </ul>
+        </div>
+    
+        </aside>
+    </div>
+                                    </main>
+
+            
+<div class="b-pagefooter">
+    <a class="b-btn is-cube-arrow-up" type="button" title="Go up" href="#">
+        <span class="btn-inner">
+            Go up
+        </span>
+    </a>
+
+    <div class="pagefooter-inner">
+        <div class="b-logo-listing">
+            <div class="logo-listing-box">
+                <span class="logo-listing-title">Sponsors and Partners</span>
+                <ul class="logo-listing-list">
+                    <li class="logo-listing-item">
+                        <a target="_blank" rel="nofollow" title="" href="https://www.wwk.de/" class="logo-listing-item-link">
+                            <span class="logo-listing-item-text">Main sponsor</span>
+                            <img class="logo-listing-item-img" src="/bundles/exozetfrontend/fca/img/logos/wwk.svg" alt="">
+                        </a>
+                    </li>
+                    <li class="logo-listing-item">
+                        <a target="_blank" rel="nofollow" title="" href="https://emea.mizuno.com/de/de-de/home/" class="logo-listing-item-link">
+                            <span class="logo-listing-item-text">Kit supplier</span>
+                            <img class="logo-listing-item-img" src="/bundles/exozetfrontend/fca/img/logos/mizuno.svg" alt="">
+                        </a>
+                    </li>
+                    <li class="logo-listing-item">
+                        <a target="_blank" rel="nofollow" title="" href="https://wwkarena.com/" class="logo-listing-item-link">
+                            <span class="logo-listing-item-text">Name sponsor</span>
+                            <img class="logo-listing-item-img" src="/bundles/exozetfrontend/fca/img/logos/wwk-arena.svg" alt="">
+                        </a>
+                    </li>
+                    <li class="logo-listing-item">
+                        <a target="_blank" rel="nofollow" title="" href="https://www.siegmund.com/" class="logo-listing-item-link">
+                            <span class="logo-listing-item-text">Shirt sponsor</span>
+                            <img class="logo-listing-item-img" src="/bundles/exozetfrontend/fca/img/logos/siegmund.svg" alt="">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="logo-listing-box">
+                <span class="logo-listing-subtitle">Exclusive partner</span>
+                <ul class="logo-listing-list">
+
+                    
+                                            <li class="logo-listing-item is-height-small">
+                            <a target="_blank" rel="nofollow" title="" href="https://www.gruenbeck.de/" class="logo-listing-item-link">
+                                <span class="logo-listing-item-text u-visual-hidden">Grünbeck</span>
+                                <img class="logo-listing-item-img" src="/bundles/exozetfrontend/fca/img/logos/grunbeck.svg" alt="">
+                            </a>
+                        </li>
+                                            <li class="logo-listing-item is-height-small">
+                            <a target="_blank" rel="nofollow" title="" href="https://www.vrbank-hg.de/startseite.html" class="logo-listing-item-link">
+                                <span class="logo-listing-item-text u-visual-hidden">VR-Bank</span>
+                                <img class="logo-listing-item-img" src="/bundles/exozetfrontend/fca/img/logos/vr-bank.svg" alt="">
+                            </a>
+                        </li>
+                                            <li class="logo-listing-item is-height-small">
+                            <a target="_blank" rel="nofollow" title="" href="https://www.sw-augsburg.de/index.php" class="logo-listing-item-link">
+                                <span class="logo-listing-item-text u-visual-hidden">SWA</span>
+                                <img class="logo-listing-item-img" src="/bundles/exozetfrontend/fca/img/logos/swa.svg" alt="">
+                            </a>
+                        </li>
+                                            <li class="logo-listing-item is-height-small">
+                            <a target="_blank" rel="nofollow" title="" href="https://www.lotto-bayern.de/" class="logo-listing-item-link">
+                                <span class="logo-listing-item-text u-visual-hidden">Lotto Bayern</span>
+                                <img class="logo-listing-item-img" src="/bundles/exozetfrontend/fca/img/logos/lotto.svg" alt="">
+                            </a>
+                        </li>
+                                            <li class="logo-listing-item is-height-medium">
+                            <a target="_blank" rel="nofollow" title="" href="https://krasniqi-solar.de/" class="logo-listing-item-link">
+                                <span class="logo-listing-item-text u-visual-hidden">Krasniqi</span>
+                                <img class="logo-listing-item-img" src="/bundles/exozetfrontend/fca/img/logos/krasniqi.svg" alt="">
+                            </a>
+                        </li>
+                                            <li class="logo-listing-item is-height-small">
+                            <a target="_blank" rel="nofollow" title="" href="https://www.tierhold.com/" class="logo-listing-item-link">
+                                <span class="logo-listing-item-text u-visual-hidden">Tierhold</span>
+                                <img class="logo-listing-item-img" src="/bundles/exozetfrontend/fca/img/logos/tierhold.svg" alt="">
+                            </a>
+                        </li>
+                                            <li class="logo-listing-item is-height-small">
+                            <a target="_blank" rel="nofollow" title="" href="https://verbund.edeka/s%C3%BCdbayern/" class="logo-listing-item-link">
+                                <span class="logo-listing-item-text u-visual-hidden">Edeka</span>
+                                <img class="logo-listing-item-img" src="/bundles/exozetfrontend/fca/img/logos/edeka.svg" alt="">
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="b-social-list">
+    
+    <ul class="social-list-list">
+                    <li class="social-list-item is-facebook has-icon">
+                <a target="_blank" rel="nofollow" class="social-list-item-link" href="https://www.facebook.com/FCAugsburg" title="Go to Facebook">
+                </a>
+            </li>
+                    <li class="social-list-item is-twitter has-icon">
+                <a target="_blank" rel="nofollow" class="social-list-item-link" href="https://twitter.com/FCAugsburg" title="Go to X">
+                </a>
+            </li>
+                    <li class="social-list-item is-instagram has-icon">
+                <a target="_blank" rel="nofollow" class="social-list-item-link" href="https://www.instagram.com/fcaugsburg1907/" title="Go to Instagram">
+                </a>
+            </li>
+                    <li class="social-list-item is-tiktok has-icon">
+                <a target="_blank" rel="nofollow" class="social-list-item-link" href="https://www.tiktok.com/@fcaugsburg" title="Go to TikTok">
+                </a>
+            </li>
+                    <li class="social-list-item is-linkedin has-icon">
+                <a target="_blank" rel="nofollow" class="social-list-item-link" href="https://www.linkedin.com/company/fcaugsburg/" title="Go to LinkedIn">
+                </a>
+            </li>
+                    <li class="social-list-item is-youtube has-icon">
+                <a target="_blank" rel="nofollow" class="social-list-item-link" href="https://www.youtube.com/FcAugsburg" title="Go to Youtube">
+                </a>
+            </li>
+                    <li class="social-list-item is-giphy has-icon">
+                <a target="_blank" rel="nofollow" class="social-list-item-link" href="https://giphy.com/fca1907" title="Go to Giphy">
+                </a>
+            </li>
+                    <li class="social-list-item is-calovo has-icon">
+                <a target="_blank" rel="nofollow" class="social-list-item-link" href="https://calovo.de/c/fcaugsburg" title="Go to Calovo">
+                </a>
+            </li>
+                    <li class="social-list-item is-whatsapp has-icon">
+                <a target="_blank" rel="nofollow" class="social-list-item-link" href="https://www.whatsapp.com/channel/0029VadHbyA8fewo3Yzpgz1j" title="Go to Whatsapp">
+                </a>
+            </li>
+            </ul>
+</div>
+
+        <footer class="b-site-info">
+            <ul class="site-info-list">
+                <li class="site-info-item">
+                                        <a href=/en/page/contact-51 title="Contact" class="site-info-item-inner">Contact</a>
+                </li>
+                <li class="site-info-item">
+                                        <a href="/en/page/impressum-179" title="Imprint" class="site-info-item-inner">Imprint</a>
+                </li>
+                <li class="site-info-item">
+                                        <a href="/en/page/datenschutz-176" title="Data protection" class="site-info-item-inner">Data protection</a>
+                </li>
+                <li class="site-info-item">
+                                        <a href="/en/page/barrierefreiheitserklaerung-597" title="Accessibility Statement" class="site-info-item-inner">Accessibility Statement</a>
+                </li>
+                <li class="site-info-item">
+                    <a href="/en/static/cookies" title="Cookies" class="site-info-item-inner">Cookies</a>
+                </li>
+            </ul>
+            <small class="site-info-copyright">@2026 - FC Augsburg 1907 GmbH & Co. KGaA</small>
+        </footer>
+    </div>
+</div>
+    
+        
+    <script type="module" src="/bundles/exozetfrontend/fca/js/main.js?v=1791221342"></script>
+    <script
+        src="https://dsnglmr4fihg2.cloudfront.net/init.js"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer-when-downgrade"
+    ></script>
+</body>
+</html>
