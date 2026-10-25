@@ -26,9 +26,10 @@ def test_slow_persona_selection_cannot_publish_locked_legacy_model_or_persona_pi
     original_builder = tipsters.build_tipster_recommendations
     original_guard = portfolio_job._guard_final_publication
 
-    def slow_builder(enriched, models, settings, now, *, diversity_options=None):
+    def slow_builder(enriched, models, settings, now, *, diversity_options=None,
+                     option_search_mode="SHADOW"):
         cards = original_builder(enriched, models, settings, now,
-                                 diversity_options=diversity_options)
+                                 diversity_options=diversity_options, option_search_mode=option_search_mode)
         captured["personas"] = deepcopy(cards)
         # The real selector first finds valid upcoming picks; processing then
         # crosses the publication lockout, including its exact boundary.

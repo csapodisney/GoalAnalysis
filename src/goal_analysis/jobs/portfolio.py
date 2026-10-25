@@ -312,6 +312,10 @@ def run_portfolio(
     if type(native_option_shadow) is not bool or native_option_shadow and native_history_shadow_root is None:
         raise ValueError('native_option_shadow requires a boolean and explicit native history root')
     settings = validate_settings(settings)
+    from goal_analysis.tipsters.coverage_search import policy as club_coverage_policy
+
+    club_coverage_mode = (club_coverage_policy(Path(ledger.path).resolve().parents[2])
+                          if ledger is not None and getattr(ledger, 'path', None) is not None else 'SHADOW')
     from goal_analysis.team.routing import apply_publication_policy, generation_plan, validate_plan
 
     team_plan = validate_plan(team_plan, settings["enabled_profiles"]) if team_plan is not None else generation_plan(settings["enabled_profiles"])
@@ -711,7 +715,7 @@ def run_portfolio(
         {**club_enriched, "date": target_date.isoformat(), "fixtures": fixture_records,
          "candidates": club_enriched.get("candidates", artifacts.get("candidate_input", {}).get("candidates", []))},
         model_results, settings, clock(),
-        diversity_options=diversity_options,
+        diversity_options=diversity_options, option_search_mode=club_coverage_mode,
     )
     nemotron_style = {"status": "DISABLED", "usage": {"requests": 0}, "selected": {}}
     if nemotron_stylist is not None:
@@ -737,6 +741,18 @@ def run_portfolio(
         "contrarian_review_status": contrarian_review_status,
         "contrarian_eligible_source_candidates": len(contrarian_contexts),
     }
+    if club_coverage_mode == 'ACTIVE':
+        from goal_analysis.tipsters.coverage_search import VERSION as COVERAGE_VERSION
+        from goal_analysis.tipsters.recommendations import (
+            CLUB_MAX_TICKET_OPTIONS,
+            CLUB_OPTION_BEAM_WIDTH,
+        )
+
+        report['tipster_club']['fixture_coverage_search'] = {
+            'version': COVERAGE_VERSION, 'mode': club_coverage_mode,
+            'beam_width': CLUB_OPTION_BEAM_WIDTH, 'max_options': CLUB_MAX_TICKET_OPTIONS,
+            'new_probability_or_evidence_threshold': False, 'new_live_profile_authority': False,
+        }
     from goal_analysis.engine.odds_movement import quote_snapshot
 
     report["odds_history_snapshot"] = quote_snapshot(

@@ -457,6 +457,22 @@ def _coverage_shadow(ranked, persona, preferred, options, search):
     }
 
 
+def _coverage_active(ranked, persona, preferred, options, search):
+    from .coverage_search import VERSION as COVERAGE_VERSION
+    from .coverage_search import promote
+
+    try:
+        return promote(ranked, persona, options, search,
+                       challenger=lambda: _options(ranked, persona, preferred, fixture_coverage=True),
+                       rank=lambda rows: _ticket_rank(rows, persona, preferred),
+                       maximum=CLUB_MAX_TICKET_OPTIONS)
+    except Exception as error:  # noqa: BLE001 - failed optional search keeps validated baseline.
+        return options, search, {'version': COVERAGE_VERSION, 'mode': 'ACTIVE',
+                                 'status': 'UNAVAILABLE_BASELINE_RETAINED',
+                                 'failure_class': type(error).__name__,
+                                 'publication_choices_unchanged': True}
+
+
 def _select(ranked, persona, preferred=()):
     options, search = _options(ranked, persona, preferred)
     return (list(options[0]) if options else [], search["combinations_examined"],
@@ -642,14 +658,17 @@ def build_tipster_recommendations(
 
     The guard shares the already enforced alternative rule, not a newly fitted
     probability/quality threshold. SHADOW preserves the primary card and options.
-    Coverage search is a separate SHADOW/OFF probe; its routes are not published.
+    Coverage search defaults to SHADOW; explicit ACTIVE supplies bounded routes.
+    Context review and the allocator still decide publication eligibility.
     """
     if now.tzinfo is None or now.utcoffset() is None:
         raise ValueError("now must include a timezone")
     if support_guard_mode not in {"SHADOW", "LIVE"}:
         raise ValueError("support_guard_mode must be SHADOW or LIVE")
-    if option_search_mode not in {"SHADOW", "OFF"}:
-        raise ValueError("option_search_mode must be SHADOW or OFF")
+    if option_search_mode not in {"SHADOW", "OFF", "ACTIVE"}:
+        raise ValueError("option_search_mode must be SHADOW, OFF or ACTIVE")
+    if option_search_mode == "ACTIVE" and support_guard_mode != "LIVE":
+        raise ValueError("ACTIVE coverage requires the enforced support guard")
     target = str(settings.get("date") or enriched.get("date") or now.astimezone(BERLIN).date())
     fixtures = _fixtures(enriched.get("fixtures", []), target, now)
     models = _models(model_results, fixtures, now)
@@ -674,6 +693,9 @@ def build_tipster_recommendations(
             except Exception:  # noqa: BLE001 - optional probe never destroys stable construction.
                 search_shadow = {"version": "club-fixture-coverage-search-shadow-v1", "mode": "SHADOW",
                                  "status": "UNAVAILABLE", "publication_choices_unchanged": True}
+        search_active = None
+        if option_search_mode == "ACTIVE":
+            options, search, search_active = _coverage_active(primary_pool, persona, preferred, options, search)
         chosen = list(options[0]) if options else []
         legs = [_leg(row, persona, now) for row in chosen]
         reason = (None if legs else "NO_FIXTURES" if not fixtures else "NO_VALID_QUOTES" if not quote_count
@@ -748,6 +770,8 @@ def build_tipster_recommendations(
                  [(leg["candidate_id"], leg["decimal_price"], leg["model_probability"]) for leg in legs]])[:24]
         if search_shadow is not None:
             item["selection_diagnostics"]["option_search_shadow"] = search_shadow
+        if search_active is not None:
+            item["selection_diagnostics"]["option_search_active"] = search_active
         if excluded:
             guarded_options = (_options(supported, persona, preferred)[0]
                                if support_guard_mode == "SHADOW" else options)
@@ -779,12 +803,18 @@ def build_tipster_recommendations(
                 eligible.append(row)
                 history_support[row["quote"]["candidate_id"]] = support
             eligible_options, option_search = _options(eligible, persona, preferred)
+            alternative_active = None
+            if option_search_mode == "ACTIVE":
+                eligible_options, option_search, alternative_active = _coverage_active(
+                    eligible, persona, preferred, eligible_options, option_search)
             templates = []
             for rows in eligible_options:
                 supports = [history_support[row["quote"]["candidate_id"]] for row in rows]
                 support = min((value for value in supports if value is not None), default=None)
                 recommendation = _diversity_template(item, rows, persona, target, now, support)
                 recommendation["selection_diagnostics"]["alternative_search"] = option_search
+                if alternative_active is not None:
+                    recommendation["selection_diagnostics"]["alternative_search_active"] = alternative_active
                 scoring = _scoring(rows, persona)
                 templates.append({"quality": scoring["ticket_score"], "scoring": scoring,
                                   "recommendation": recommendation})
