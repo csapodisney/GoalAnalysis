@@ -1,0 +1,46 @@
+{
+  "at": "2026-10-25T10:33:38.688176+00:00",
+  "task": "7.4.N5",
+  "status": "TESTED_SOURCE_CHECKPOINT_PUBLICATION_STILL_PENDING",
+  "full_tests_passed": 5520,
+  "targeted_tests_passed": 74,
+  "actual_numerical_replays_passed": 3,
+  "source_unchanged_during_acceptance": true,
+  "previous_ledger_rows_preserved": 3939,
+  "original_2x2x3_unchanged": true,
+  "one_bounded_quota_renewal_no_reserve_or_request_budget_increase": true,
+  "real_nonpublishing_probe": {
+    "actual_target_http_requests": 1,
+    "actual_calendar_http_requests": 2,
+    "actual_quota_bootstrap_requests": 1,
+    "verified_calendar_sources": 2,
+    "llm_requests": 0,
+    "published": false
+  },
+  "archived_pit_comparison": {
+    "actual_prior_claims_60_seconds": [
+      44,
+      27
+    ],
+    "original_denied_both": true,
+    "repaired_allowed_both": true,
+    "live_load_recreated": false
+  },
+  "source_files_sha256": {
+    "src/goal_analysis/jobs/calendar_collection_shadow.py": "d1e586fdd71cc564f81a17096621715e1c91687ff502d70485689a41d6f2b593",
+    "tests/test_calendar_quota_bootstrap.py": "a1a7fb42fbe6328390cb58d54c5b3c1e7878c85e197601c62fde25f2c0fccffb"
+  },
+  "evidence_sha256": {
+    "active-final-acceptance.json": "e26b5ea4aaed327b57e9da11e84ed34617fc240f3f4cefd03605529f62d6123b",
+    "source-under-test-active.json": "a95f0ebbe1b1fb0103310e6242a815414335b32b30cb6629ba5bd63adac5ed8d",
+    "full-active.xml": "1fcbc4db59bc8d9185cabbab5848ebb079d74b9aaaf696557509252e394fd4c3",
+    "targeted-final.xml": "9e77d997f119dbe70e5b35da5bba46d6180663a64d71a28a49994efc87fa6eba",
+    "replay-active/replay-summary.json": "bd6218f47962178f69198d8e46de724954ab40770f50f3f0a48c61c79ca05bc6",
+    "physical-calendar-proof.json": "57e63adb557aeaf159d2feaa6ff3144335598cc8511a225d7336421bef26e968",
+    "quota-pit-comparison.json": "91f01e884582cfb03a94152cc4aae915ca7d299b97af2e5da20d6ff130708be1"
+  },
+  "new_normal_publication_verified": false,
+  "runtime_restored_for_n5": false,
+  "project_complete": false,
+  "public_clone_reproduction_limit": "One pre-existing immutable third-party raw stadium HTML fixture remains local and is excluded from Git after GitHub detected a token pattern. The original raw bytes/hash remain unchanged. Full suite on a clean clone requires that private fixture; a safe public replacement remains separate work."
+}

@@ -36,7 +36,13 @@ def enabled(root):
 
 
 def _bootstrap_allowed(quota,now):
-    """One necessary GET may renew an expired minute header, never unknown quota."""
+    """One necessary GET renews an expired header from witnessed capacity.
+
+    Prior daily collection may exceed nine calls without exhausting the real
+    provider limit. Preserve both the observed remaining reserve (including
+    uncertain claims) and the witnessed rate limit minus all recent claims.
+    This authorizes only the caller's existing single renewal, not new quota.
+    """
     if not quota.path.is_file():
         return False
     with closing(sqlite3.connect(quota.path.as_uri()+'?mode=ro',uri=True)) as db:
@@ -46,7 +52,12 @@ def _bootstrap_allowed(quota,now):
         denial=quota._dimension(db,'http_status');retry=quota._dimension(db,'retry_after')
         if month is None or minute is None or denial is None or denial['http_status'] in {401,403,429}:
             return False
-        if not timedelta(0)<=now-utc(month['observed_at'])<=timedelta(hours=1):
+        policy=quota.policy or QUOTA
+        latest=db.execute('SELECT max(started_at) FROM quota_attempts').fetchone()[0]
+        if ((latest and utc(latest)>now) or utc(denial['observed_at'])>now
+                or any(not timedelta(0)<=now-utc(row['observed_at'])
+                       <=timedelta(seconds=policy['max_quota_age_seconds'])
+                       for row in (month,minute))):
             return False
         m=json.loads(month['usage_json']);p=json.loads(minute['usage_json'])
         if (m.get('monthly_reset') is None or p.get('minute_reset') is None
@@ -54,12 +65,17 @@ def _bootstrap_allowed(quota,now):
             return False
         if retry and now<utc(retry['observed_at'])+timedelta(seconds=json.loads(retry['usage_json'])['retry_after']):
             return False
-        reserve=max(QUOTA['monthly_reserve'],math.ceil((m['monthly_reset']-now.timestamp())/86400)*QUOTA['daily_reserve'])
-        if m['monthly_remaining']!=-1 and m['monthly_remaining']-quota._debit(db,month)<reserve+POLICY['max_requests']:
+        reserve=max(policy['monthly_reserve'],math.ceil((m['monthly_reset']-now.timestamp())/86400)*policy['daily_reserve'])
+        if m['monthly_remaining']!=-1 and m['monthly_remaining']-quota._debit(db,month)<reserve+policy['max_requests']:
+            return False
+        limit,remaining=p.get('minute_limit'),p.get('minute_remaining')
+        if type(limit) is not int or type(remaining) is not int or not 0<=remaining<=limit or limit<=0:
             return False
         recent=db.execute('SELECT count(*) FROM quota_attempts WHERE started_at>?',
                           ((now-timedelta(minutes=1)).isoformat(timespec='microseconds'),)).fetchone()[0]
-        return recent<10
+        observed_capacity=remaining-quota._debit(db,minute)
+        rate_capacity=limit-recent
+        return min(observed_capacity,rate_capacity)>=policy['minute_reserve']+1
 
 
 def _plan(fixtures):
