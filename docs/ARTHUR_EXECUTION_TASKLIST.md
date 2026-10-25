@@ -348,7 +348,7 @@ romló Brier/log-loss esetén az új hatás SHADOW marad.
   a döntéshez szükséges, már letöltött adatot.
 - [ ] **9.3** A csomagban minden kihagyott vagy tömörített adatkategória
   darabszámmal szerepeljen.
-  - [ ] **9.3.N1** A közös Grok-csomag változatlan korlátú, forrásazonos tömörítésének és kategóriánkénti kihagyás-/tömörítésszámlálásának javítása; méret miatti elutasítás is kapjon bizonyított számlálókat. Régi csomagok/árak/eredmények,100000karakterkorlát,modell és budget megmarad; előbb valós megőrzöttinput SHADOW, nincs új sports/LLM-kérés az auditban.
+  - [x] **9.3.N1** A közös Grok-csomag változatlan korlátú, forrásazonos tömörítésének és kategóriánkénti kihagyás-/tömörítésszámlálásának javítása; méret miatti elutasítás is kapjon bizonyított számlálókat. Régi csomagok/árak/eredmények,100000karakterkorlát,modell és budget megmarad; előbb valós megőrzöttinput SHADOW, nincs új sports/LLM-kérés az auditban.
     - 2026-10-25 23:18UTC: sajátv2full5742PASS/44warning/2601.34sec,316target/10adapter/3actualreplay×8rootPASS,1216source/5382archive/8Gitblobegyező. Egyszeri új normálCLI márfut; újpublikáció/READY/Grok/runtime még külön bizonyítandó, nemkész scope/project.
     - 2026-10-25: v2mind3újactualreplay×8PASS/97+33+1datasetrootreadback;5742fullmégfut. Sajátpublisher/closurevár,13fizikaiscopeellenpróbaPASS: UNKNOWNkülönkimutatva,nempozitívadat; nincsproductionkapulazítás vagy újpublikációs készrejelentés.
     - 2026-10-25: followup-v2 célnapjavítás2productionhely/12újregresszió,316target/10adapter/Ruff/4valósSHADOW PASS; saját5742full+3újactualreplay fut, nemelfogadás. Valódi receipt/scopekapu/régiriport változatlan; külön tesztprojekció provider97855karakter, nem újválasz.
@@ -483,3 +483,5 @@ ellenőrizve.
   - N2 scope COMPLETE: full5650/target339/3actualreplay; új `2026-10-25-f14ad05e1ce7` ACTIVE klub-lefedettségi policy és végső profilszintű forráskapcsolat igazolt. Friss elsődleges lefedettségnövekedés megfigyelve: False; ez nem 20–30 szelvény garancia. Daily helyreállítva, majd ugyanazon lock alatt OFF a következő 8.7.N1 fejlesztéshez; legacy OFF.
 
   - 8.7.N1 own scope COMPLETE: full5673/target28/adapter10/3actual replay8checks; audit-only LIVE/PAPER metadata and immutable `2026-10-25-f14ad05e1ce7` projection1LIVE/0PAPER/19shortfall. Runtime+DailyON restored then same-lockOFF9.3.N1,legacyOFF. Parent8.7 remains open for final fresh normal v2metadata release proof; no extra paid generation just for a counter.
+
+  - 9.3.N1 own followup-v2 scope COMPLETE:5742full/316target/10adapter/3actualreplay8checks/13physicalcontrols; new `2026-10-26-cc3b72cd5b81` READY DAILY exact quote/context/wire/actual answer/ledger; sourced-context-legs=2,allUNKNOWNlegs=1; actualGrok=COMPLETE,positiveReview=True. DailyON then same-lockOFF11.7,legacyOFF; parent9.3/project need final scope audit.

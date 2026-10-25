@@ -1,0 +1,195 @@
+{
+  "at": "2026-10-25T23:48:19.963773+00:00",
+  "task": "9.3.N1",
+  "attempt": "followup-v2",
+  "task_state": "COMPLETE",
+  "scope": "LOSSLESS_GROK_PACKET_AND_TARGET_DAY_SCOPE_WITH_EXACT_QUOTE_REVIEW_BINDINGS_EXPLICIT_UNKNOWNS",
+  "full_tests_passed": 5742,
+  "targeted_tests_passed": 316,
+  "adapter_tests_passed": 10,
+  "actual_replays_passed": 3,
+  "checks_per_case": 8,
+  "physical_scope_controls_passed": 13,
+  "source_files": 1216,
+  "prior_ledger_rows_audited": 4005,
+  "source_snapshot_files": 8,
+  "original_gold_and_math_unchanged": true,
+  "old_data_and_grok_cache_preserved": true,
+  "runtime_sha256": "93eb57f1587d091e94815325fa34b454ede07f834c085763152227c26c8ee2fb",
+  "publication_sha256": "301afda9840653bfc9f5f26c53e84af9e74cfdacff721b601c4065f2facbc101",
+  "acceptance_sha256": "32f6a30f35bf1cd9217e5e3cd2a942997963adec8dacf06820bee731ca20feb9",
+  "report_sha256": "f7aeaa48999fd5ccccb48326f59828b1faeb5a74841e2ddc8656f2982d940518",
+  "new_run_id": "2026-10-26-cc3b72cd5b81",
+  "background_availability": {
+    "selected_legs": [
+      {
+        "profile_id": "daily223",
+        "fixture_id": "the_stats_api:mt_150556308",
+        "sourced_cited_categories": [],
+        "explicit_unknown_categories": [
+          "players",
+          "xg",
+          "schedule",
+          "travel",
+          "rotation",
+          "weather"
+        ]
+      },
+      {
+        "profile_id": "daily223",
+        "fixture_id": "the_stats_api:mt_466492779",
+        "sourced_cited_categories": [
+          "players",
+          "xg",
+          "schedule"
+        ],
+        "explicit_unknown_categories": [
+          "travel",
+          "rotation",
+          "weather"
+        ]
+      },
+      {
+        "profile_id": "daily223",
+        "fixture_id": "the_stats_api:mt_466277794",
+        "sourced_cited_categories": [
+          "players",
+          "xg",
+          "schedule"
+        ],
+        "explicit_unknown_categories": [
+          "travel",
+          "rotation",
+          "weather"
+        ]
+      }
+    ],
+    "selected_legs_with_any_sourced_context": 2,
+    "selected_legs_with_all_unknown_context": 1,
+    "all_selected_legs_have_background_data": false,
+    "exact_quote_wire_response_binding_is_separate_from_source_availability": true,
+    "unknown_is_not_positive_data_use_or_predictive_gain": true
+  },
+  "actual_grok_status": "COMPLETE",
+  "positive_grok_provider_review": true,
+  "parent9_3_complete": false,
+  "parent8_7_complete": false,
+  "project_complete": false,
+  "worklist": {
+    "total": 167,
+    "checked": 136,
+    "open": 31
+  },
+  "daily_enabled": false,
+  "legacy_enabled": false,
+  "next_task": "11.7",
+  "root_readback": {
+    "at": "2026-10-25T23:52:52.732942+00:00",
+    "task": "9.3.N1",
+    "attempt": "followup-v2",
+    "status": "ROOT_OWN_NEW_READY_DAILY_GROK_COMPLETE_SOURCE_WIRE_REAL_ANSWER_LEDGER_RUNTIME_CHECKPOINT_PHYSICALLY_VERIFIED",
+    "run_id": "2026-10-26-cc3b72cd5b81",
+    "report_sha256": "916089cc9a91372873e6cdce61ff768d3930b1658a799cf56c1a09d373c326ce",
+    "full_tests_passed": 5742,
+    "targeted_tests_passed": 316,
+    "actual_replays_passed": 3,
+    "checks_per_case": 8,
+    "physical_scope_controls": 13,
+    "archive_exactly_equals_ledger": true,
+    "source_files_verified": 1216,
+    "prior_archive_files_verified": 5382,
+    "old_snapshot_content_changes": 0,
+    "positive_provider_review_verified": true,
+    "actual_grok_request_id": "3ad19595bb974220be4bfe9e231230ea",
+    "actual_grok_request_count_for_run": 1,
+    "producer_wire_characters": 97623,
+    "provider_canonical_wire_characters": 97696,
+    "new_normal_readable_fallback_triggered": false,
+    "fresh_capacity_gain_claimed": false,
+    "background_availability": {
+      "selected_legs": [
+        {
+          "profile_id": "daily223",
+          "fixture_id": "the_stats_api:mt_150556308",
+          "sourced_cited_categories": [],
+          "explicit_unknown_categories": [
+            "players",
+            "xg",
+            "schedule",
+            "travel",
+            "rotation",
+            "weather"
+          ]
+        },
+        {
+          "profile_id": "daily223",
+          "fixture_id": "the_stats_api:mt_466492779",
+          "sourced_cited_categories": [
+            "players",
+            "xg",
+            "schedule"
+          ],
+          "explicit_unknown_categories": [
+            "travel",
+            "rotation",
+            "weather"
+          ]
+        },
+        {
+          "profile_id": "daily223",
+          "fixture_id": "the_stats_api:mt_466277794",
+          "sourced_cited_categories": [
+            "players",
+            "xg",
+            "schedule"
+          ],
+          "explicit_unknown_categories": [
+            "travel",
+            "rotation",
+            "weather"
+          ]
+        }
+      ],
+      "selected_legs_with_any_sourced_context": 2,
+      "selected_legs_with_all_unknown_context": 1,
+      "all_selected_legs_have_background_data": false,
+      "exact_quote_wire_response_binding_is_separate_from_source_availability": true,
+      "unknown_is_not_positive_data_use_or_predictive_gain": true
+    },
+    "actual_citation_reviews_revalidated": 115,
+    "runtime_current_local_tailscale_verified": {
+      "local": {
+        "http_status": 200,
+        "runtime_idle": true,
+        "run_id": "2026-10-26-cc3b72cd5b81",
+        "report_sha256": "916089cc9a91372873e6cdce61ff768d3930b1658a799cf56c1a09d373c326ce",
+        "javascript_sha256": "17f7efca1717568410533097fdcc330257a0eadcfd7fbac289a3c9fc020825be",
+        "learning_report_hash": "aa64fd08b17a1e8be8ef07553e93ce761046069a9ed35d1bb9d374bc21f429ab",
+        "current_strategy_contracts": 20
+      },
+      "tailscale": {
+        "http_status": 200,
+        "runtime_idle": true,
+        "run_id": "2026-10-26-cc3b72cd5b81",
+        "report_sha256": "916089cc9a91372873e6cdce61ff768d3930b1658a799cf56c1a09d373c326ce",
+        "javascript_sha256": "17f7efca1717568410533097fdcc330257a0eadcfd7fbac289a3c9fc020825be",
+        "learning_report_hash": "aa64fd08b17a1e8be8ef07553e93ce761046069a9ed35d1bb9d374bc21f429ab",
+        "current_strategy_contracts": 20
+      }
+    },
+    "daily_restored_on_then_held_off_same_lock": true,
+    "daily_currently_enabled": false,
+    "legacy_enabled": false,
+    "gateway_identity_preserved": true,
+    "scope_checkpoint_sha256": "5853e1598108c1a8f0a0a0f36edfe7778fa83a58e528b071a5b8f96cbe4cc8e6",
+    "full_report_sha256": "f7aeaa48999fd5ccccb48326f59828b1faeb5a74841e2ddc8656f2982d940518",
+    "current_runtime_and_checkpoints_not_new_provider_calls": true,
+    "project_complete": false,
+    "parent9_3_complete": false,
+    "parent8_7_complete": false,
+    "next_task": "11.7"
+  },
+  "root_physical_readback_verified": true,
+  "remote_push_will_be_verified_separately": true,
+  "original_215_requirement_full_audit_complete": false
+}
