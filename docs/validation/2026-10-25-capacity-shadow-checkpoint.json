@@ -1,7 +1,7 @@
 {
-  "as_of_utc": "2026-10-25T19:07:50.426517+00:00",
+  "as_of_utc": "2026-10-25T19:17:28.406979+00:00",
   "task": "8.7.N1",
-  "status": "OWN_TARGET28_SHADOW4_PASS_FULL5673_REPLAY3_RUNNING",
+  "status": "OWN_V3_TARGET28_SHADOW4_ADAPTER10_IMPORT_PASS_FULL5673_REPLAY3_RUNNING",
   "source_files": 1212,
   "old_ledger_rows": 3995,
   "own_targeted_tests_passed": 28,
@@ -79,5 +79,19 @@
     "open": 31,
     "parent_8_7_reopened": true,
     "child_8_7_N1_added": true
-  }
+  },
+  "attempt": "followup-v3",
+  "first_attempt_full_complete": false,
+  "first_attempt_full_stopped_percent": 36,
+  "first_case_original_replay_checks_passed": 6,
+  "first_case_original_replay_checks_total": 7,
+  "first_case_numeric_fits_equal_baseline": true,
+  "first_attempt_failed_check": "Whole report capacity/shortfall metadata difference",
+  "second_attempt_import_failed_before_fit": true,
+  "production_source_changes_since_first_attempt": 0,
+  "original_gold_references_changed": false,
+  "all_original_seven_replay_check_asts_identical": true,
+  "additional_exact_capacity_check": true,
+  "own_replay_adapter_tests_passed": 10,
+  "actual_import_root_daily_guard_and_source_ledger_preflight_passed": true
 }
