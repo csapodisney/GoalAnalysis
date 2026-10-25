@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "as_of_utc": "2026-10-25T16:59:56.344464+00:00",
+  "as_of_utc": "2026-10-25T17:40:49.043186+00:00",
   "scope": "N2_V3_OWN_FULL_TARGET_THREE_ACTUAL_REPLAYS_ACCEPTED_NORMAL_PUBLICATION_PENDING",
   "previous_v2_source_remote_sha": "d69d4828b5019a44fc078c211120599b03fb3f57",
   "original_deadline_met": false,
@@ -54,5 +54,13 @@
   },
   "all_nine_source_blobs_match_committed_source": "a08541a87321a287037e6eccc978fc272fbfd917",
   "normal_generation_started_at": "2026-10-25T16:46:56.216864+00:00",
-  "normal_generation_status": "RUNNING_NOT_YET_VERIFIED"
+  "normal_generation_status": "SAVED_ONE_READY_ONE_DRAFT_WHOLE_SOURCE_USE_INCOMPLETE",
+  "normal_generation_saved_run": "2026-10-25-0bf89356c40d",
+  "normal_ready_tickets": 1,
+  "normal_draft_tickets": 1,
+  "normal_selected_legs": 9,
+  "normal_exact_source_review_bound_selected_legs": 7,
+  "unreviewed_draft_daily_legs": 2,
+  "unreviewed_ready_daily_published": false,
+  "existing_draft_safety_worked": true
 }

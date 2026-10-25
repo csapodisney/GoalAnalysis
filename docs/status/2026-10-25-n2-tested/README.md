@@ -2,6 +2,16 @@
 
 Állapot: 2026-10-25. **Ez köztes forrás-checkpoint, nem projektzárás.** Az eredeti 2026-10-24 08:00 Europe/Berlin határidő nem teljesült.
 
+## Aktuális v4: a DAILY utóellenőrzési csomagjainak lefedettsége
+
+A v3 egyszeri új futása, `2026-10-25-0bf89356c40d`, 17:05 UTC-kor egy `READY` Krónikás-szelvényt és egy `DRAFT` DAILY-összeállítást mentett. A READY szelvény mind a hat lába pontos forrás/kontextus/wire/tényleges válasz kötéssel ellenőrizhető. A DAILY három lábából egy értékelt, kettő nem szerepel egyik tényleges kérésben vagy válaszban sem. A teljes kilenclábas csomag elfogadása ezért helyesen megállt; runtime- vagy N2-lezárás nem történt. Az eredeti mentett kártyák változatlanok.
+
+**A meglévő DRAFT/READY védelem működött:** nem jelent meg nem értékelt READY DAILY. A hiányzó rész az utókérések tervezése: a három engedett kör csak az éppen hiányzó 2+1+2 ajánlatazonosítót kérte le, majd az újraválasztás két másik, még nem értékelt ajánlatra váltott. A javítás a hiányzó kiválasztásokat teszi előre, majd ugyanazon iroda/régió/deviza további jogosult, pontos forrásajánlatait is a csomagba teszi az eredeti bizonyítékszám és azonosító szerint. Legfeljebb 30 ajánlat és az eredeti három közös utókérési kísérlet marad; a sikertelen kör is beleszámít. Sikertelen kiegészítés nem írhatja felül a sikeres első értékelést, és nem indíthat profiloldali újrapróbát.
+
+A v4 saját **339 célzott tesztje és tényleges megőrzött inputon végzett SHADOW ellenőrzése sikeres**. A hálózat nélküli próbában a két hiányzó ajánlat került az első két helyre a 30 pontos forrásajánlatból álló tervben; ez nem új modellválasz vagy publikáció. Négy megőrzött input klubkeresési ellenőrzése is sikeres. A nagy szintetikus ciklusteszt igazolja a 30+30+30 felső korlátot, a negyedik hívás tilalmát és a további hiány esetén megmaradó DRAFT állapotot. Nincs garantált konvergencia, új súly, numerikus változás vagy 2×2×3-módosítás.
+
+**A v4 saját teljes 5650 tesztje és három újraszámolt numerikus replaye jelenleg fut; elfogadásuk még nincs meg.** A v3 korábbi 5627/295/3 eredménye a v3 byte-jaira érvényes, nem helyettesíti ezt. Új v4 generálás még nem indult. Daily és legacy OFF. [V4 célzott teszt-, SHADOW- és forrás-checkpoint](../../validation/2026-10-25-n2-daily-cohort-checkpoint.json).
+
 ## Frissítés: a v2 új generálása elutasítva
 
 A saját teljes teszt sikerét követő egyetlen normál futás, `2026-10-25-ec7edd1a2821`, 2026-10-25 15:43 UTC-kor `CONSTRUCTION_INCOMPLETE` állapottal végződött: **0 szelvény, 0 előnézet**. Az Astra válaszában legalább egy hivatkozás nem szerepelt az igazolt források pontos listájában; a helyi ellenőrzés elutasította az egész választ. A kutatásban négy befejezett keresés, 50 visszaadott és kilenc elfogadott webforrás volt; ez nem teszi automatikusan érvényessé a későbbi értékelés hivatkozásait. A Grok `NO_ELIGIBLE_FIXTURES` nem pozitív szelvényellenőrzés. Újrafuttatás nem indult.
@@ -12,7 +22,7 @@ Az új, külön `followup-v3` javítás **295 célzott tesztje sikeres**. Hatvan
 
 A v3 négy valós megőrzött inputjának OFF/SHADOW/ACTIVE összehasonlítása is sikeres. **A saját teljes 5627 teszt, 295 célzott teszt és három ténylegesen újraszámolt numerikus replay elfogadása 16:46 UTC-kor megtörtént.** A teljes teszt 44 figyelmeztetéssel, hiba és kihagyás nélkül, 2655,64 másodperc alatt futott le. A fizikai XML-esetek, elfogadási inputok, numerikus replayek, 1206 forráshash és a régi hibabizonyítékok külön root visszaellenőrzése sikeres. A teszt alatt a 3984 korábbi ledger-sor változatlan maradt. Mind a kilenc N2-módosítás feltöltött forrásblobja egyezik a saját elfogadott byte-okkal.
 
-**Az egyszeri új normál generálás 16:46:56 UTC-kor elindult, még folyamatban van.** Új mentett szelvényt, forrásfelhasználási publikációs bizonyítást, runtime-helyreállítást vagy N2-lezárást ez a köztes checkpoint még nem igazol. [A v3 saját teljes elfogadásának hash-ekkel kötött bizonyítéka](../../validation/2026-10-25-n2-citation-repair-checkpoint.json).
+**Az egyszeri új normál generálás 16:46:56 UTC-kor elindult és 17:05 UTC-kor mentett eredménnyel befejeződött.** A fent részletezett egy READY és egy DRAFT kártya miatt a teljes forrásfelhasználási publikációs bizonyítás nem teljes; runtime-helyreállítást vagy N2-lezárást ez a checkpoint nem igazol. [A v3 saját teljes tesztelfogadásának és részleges publikációs eredményének hash-ekkel kötött bizonyítéka](../../validation/2026-10-25-n2-citation-repair-checkpoint.json).
 
 ## Korábbi v2 eredmények — megőrzött saját forrásra vonatkozó bizonyíték
 

@@ -316,6 +316,10 @@ def run_portfolio(
 
     club_coverage_mode = (club_coverage_policy(Path(ledger.path).resolve().parents[2])
                           if ledger is not None and getattr(ledger, 'path', None) is not None else 'SHADOW')
+    from goal_analysis.jobs import daily_review_cohort
+
+    daily_cohort_mode = (daily_review_cohort.policy(Path(ledger.path).resolve().parents[2])
+                        if ledger is not None and getattr(ledger, 'path', None) is not None else 'SHADOW')
     from goal_analysis.team.routing import apply_publication_policy, generation_plan, validate_plan
 
     team_plan = validate_plan(team_plan, settings["enabled_profiles"]) if team_plan is not None else generation_plan(settings["enabled_profiles"])
@@ -579,6 +583,8 @@ def run_portfolio(
         # chosen. Close that candidate-specific review gap with bounded follow-up
         # rounds over the same immutable data snapshot.
         daily_follow_up_rounds = 0
+        daily_follow_up_attempts = 0
+        daily_follow_up_failed = False
         candidate_by_id = {item["candidate_id"]: item for item in enriched["candidates"]}
         history_by_id = {
             item["candidate_id"]: item
@@ -594,10 +600,27 @@ def run_portfolio(
                 leg["candidate_id"] for leg in (daily or {}).get("legs", [])
                 if leg["candidate_id"] not in reviewed_ids
             ]
-            if not missing_ids or daily_follow_up_rounds >= 3:
+            if not missing_ids or daily_follow_up_attempts >= 3:
                 break
+            requested_ids = missing_ids
+            if daily_cohort_mode in {'SHADOW', 'ACTIVE'}:
+                try:
+                    planned = daily_review_cohort.plan(
+                        enriched, report, reviewed_ids, missing_ids,
+                        maximum=min(30, settings['openai']['max_candidates']), now=clock())
+                    artifacts.setdefault('daily_review_cohort_plans', []).append({
+                        **planned, 'mode': daily_cohort_mode, 'round': daily_follow_up_attempts + 1,
+                        'status': 'PLANNED', 'decision_effect': 'REQUEST_COVERAGE_ONLY' if daily_cohort_mode == 'ACTIVE' else 'NONE'})
+                    if daily_cohort_mode == 'ACTIVE':
+                        requested_ids = planned['candidate_ids']
+                except (ValueError, TypeError, KeyError, OverflowError) as error:
+                    artifacts.setdefault('daily_review_cohort_plans', []).append({
+                        'mode': daily_cohort_mode, 'status': 'UNAVAILABLE_NO_NEW_REQUEST',
+                        'failure_class': type(error).__name__, 'round': daily_follow_up_attempts + 1})
+                    if daily_cohort_mode == 'ACTIVE':
+                        break
             follow_up_packets = []
-            for identifier in missing_ids:
+            for identifier in requested_ids:
                 if identifier not in candidate_by_id:
                     continue
                 packet = deepcopy(candidate_by_id[identifier])
@@ -610,6 +633,7 @@ def run_portfolio(
             if context_mode == 'ACTIVE':
                 follow_up_packets = context_job.attach(follow_up_packets, candidate_context)
             artifacts.setdefault('candidate_review_follow_up_packets', []).append(deepcopy(follow_up_packets))
+            daily_follow_up_attempts += 1
             supplement = reviewer.review(
                 follow_up_packets,
                 target_date.isoformat(),
@@ -620,6 +644,9 @@ def run_portfolio(
                     'packet_sha256': canonical_sha256(follow_up_packets),
                     'response': deepcopy(supplement)})
             if supplement.get("status") != "COMPLETE":
+                daily_follow_up_failed = True
+                if daily_cohort_mode == 'ACTIVE':
+                    review = {**review, 'usage': _merge_astra_reviews(review, supplement)['usage']}
                 break
             review = _merge_astra_reviews(review, supplement)
             daily_follow_up_rounds += 1
@@ -631,6 +658,9 @@ def run_portfolio(
                 **construction_kwargs,
             )
         review["daily223_follow_up_rounds"] = daily_follow_up_rounds
+        if daily_cohort_mode == 'ACTIVE':
+            review['daily223_follow_up_attempts'] = daily_follow_up_attempts
+            review['daily223_follow_up_failed'] = daily_follow_up_failed
         # Review latency can change event eligibility, never price eligibility.
         finished = clock()
         delivered = []
@@ -863,7 +893,8 @@ def run_portfolio(
                 mode=profile_context_mode, reviewer=reviewer,
                 target_date=target_date.isoformat(), feedback=_compact_feedback(ledger),
                 maximum=settings['openai']['max_candidates'],
-                remaining_rounds=max(0, 3 - daily_follow_up_rounds),
+                remaining_rounds=(0 if daily_follow_up_failed else max(0, 3 - daily_follow_up_attempts))
+                if daily_cohort_mode == 'ACTIVE' else max(0, 3 - daily_follow_up_rounds),
                 clock=clock, merge=_merge_astra_reviews)
             if profile_context_mode == 'ACTIVE':
                 all_context_packets = [*artifacts.get('candidate_review_actual_packets', []),
