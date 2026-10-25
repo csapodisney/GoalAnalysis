@@ -1,0 +1,60 @@
+{
+  "at": "2026-10-25T12:21:28.660385+00:00",
+  "task": "7.4.N6",
+  "status": "TESTED_SOURCE_CHECKPOINT_PUBLICATION_STILL_PENDING",
+  "full_tests_passed": 5590,
+  "targeted_tests_passed": 241,
+  "actual_numerical_replays_passed": 3,
+  "source_unchanged_during_acceptance": true,
+  "previous_ledger_rows_preserved_during_acceptance": 3967,
+  "source_files_sha256": {
+    "config/profile-context-review.json": "32f7ca1bc60ecff5c6dc4083a4d5601718d55b60bd2ce29c83b75518aa4d6d1e",
+    "src/goal_analysis/jobs/portfolio.py": "c58677255a2eb43d49fb03d0da126d5543111b441bfcb51a552d758ffc3246db",
+    "src/goal_analysis/jobs/profile_context_review.py": "5d2e69f7973de1fed0b9a89fa22630d265b40aa1d3510037fa288ab1fe19ad66",
+    "src/goal_analysis/jobs/profile_context_stage.py": "1055eb7ad1c73da822f00e712d866f1bf7580d8d627f7cbfe7ab57e8cbc99bc8",
+    "src/goal_analysis/jobs/ticket_evidence.py": "95f8279175b22926a6a02c3616aaa608d399edd823d5cbb161e3056391bd2a8a",
+    "tests/test_profile_context_evidence.py": "6863f1666764cd7846e7d23fd438208acac056bc656cf55347e3cda5eec45dc3",
+    "tests/test_profile_context_review.py": "24d03b9f360592d490f13bc0cd69ce44c16a49834d331d452884e13e520e25b2",
+    "tests/test_profile_context_stage.py": "9d5c307ae9f5243f021f9d2c8cb007fad481ddc673e3405b6086058117f6e2a7"
+  },
+  "evidence_sha256": {
+    "active-final-acceptance.json": "c10337245115f05a7be7dc5f78c75a20f6a4146fbab22d357b66195a145ee2cc",
+    "source-under-test-active.json": "79d5b446c983015bab6f3ffd762d6ac57babd75a56f455bc089b411b08cfd243",
+    "acceptance-plan.json": "17e5524f00c95904cea6b80a4a5366aaa1d9f7fff45bf56331f89699f1f34f4e",
+    "full-active.xml": "ae3126bc8d23a629339bd9345bb9df6fc406d350e30083bc3f35f15dac02ae06",
+    "targeted-final.xml": "76a2017b9c8a83878074c5590baadda141221d0725e32596f7523cff3d7fbe80",
+    "replay-active/replay-summary.json": "e75ab9fab829567edab70cd78e96ab7b71ceff230485b8e93f6acf1bd7da2115",
+    "producer-final-shadow-proof.json": "bd9e95be8ae499a4663cb763e313590e5c28e5be78f89453ab2bfd7fb091069a",
+    "policy-activation-after-shadow.json": "edf6d7b78de5f922855ec185040f0859502a5855c7b3aa73f0bf964b52ab6be6"
+  },
+  "retained_input_shadow": {
+    "prior_run": "2026-10-25-f20dd091b16b",
+    "planned_additional_quote_batches": [
+      28,
+      22
+    ],
+    "wire_bytes": [
+      239418,
+      176322
+    ],
+    "existing_wire_limit_unchanged": 360000,
+    "provider_requests": 0,
+    "llm_requests": 0,
+    "new_publication_claimed": false
+  },
+  "original_2x2x3_math_unchanged": true,
+  "new_probability_weights": false,
+  "exact_original_quote_context_response_binding_required": true,
+  "supplementary_review_shares_existing_three_followup_round_budget": true,
+  "failed_supplement_does_not_replace_successful_daily_review": true,
+  "new_normal_publication_verified_by_this_checkpoint": false,
+  "runtime_restored_by_this_checkpoint": false,
+  "project_complete": false,
+  "limitations": [
+    "A fresh normal publication and persisted final profile evidence require separate acceptance.",
+    "Raw bodies of all historical alternative cards were not reconstructed by the retained-input shadow.",
+    "This proves source correctness checks and replay invariants, not predictive or financial improvement.",
+    "The original 215-requirement status matrix is not closed by this subpoint.",
+    "One immutable third-party raw stadium HTML fixture remains private after GitHub detected a token pattern. A clean-clone full suite requires that local fixture; safe public reproduction remains separate work."
+  ]
+}

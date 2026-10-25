@@ -205,6 +205,16 @@ def _preselection_review(report, artifacts, leg, sources):
     if mode != 'ACTIVE':
         return {'mode': mode, 'status': 'SHADOW_CAPTURE_NOT_USED_BY_SELECTED_LEG', 'categories': []}
     identifier = leg.get('source_candidate_id') or leg.get('candidate_id')
+    if (report.get('profile_context_review', {}).get('mode') == 'ACTIVE'
+            and identifier != leg.get('candidate_id')):
+        from goal_analysis.jobs.profile_context_review import original_quote, quote_index
+
+        try:
+            linked, _ = original_quote(leg, quote_index(artifacts.get('candidate_input', {}).get('candidates', [])))
+        except (ValueError, KeyError, TypeError):
+            return {'mode': mode, 'status': 'NO_EXACT_ORIGINAL_QUOTE_CONTEXT_LINK', 'categories': []}
+        if linked != identifier:
+            return {'mode': mode, 'status': 'NO_EXACT_ORIGINAL_QUOTE_CONTEXT_LINK', 'categories': []}
     locations = [(('candidate_review_actual_packets', i), p)
                  for i, p in enumerate(artifacts.get('candidate_review_actual_packets', []))]
     locations += [(('candidate_review_follow_up_packets', i, j), p)

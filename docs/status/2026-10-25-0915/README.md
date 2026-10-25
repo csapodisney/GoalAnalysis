@@ -1,3 +1,5 @@
+**Frissítés — 2026-10-25: az N6 teljes tesztje 5590/5590, célzott tesztje 241/241, három tényleges numerikus replay sikeres. Az új generálás és publikációs bizonyítás még folyamatban; N6 nincs készre jelölve. [Aktuális N6 bizonyíték és maradék](../2026-10-25-n6-tested/README.md). Az alábbi 160/55 követelménymátrix korábbi pillanatkép, nem teljes projektzárás.**
+
 **Legfrissebb: az N5 naptárjavítás is igazolt új publikációval lezárt. [N5 eredmény és valódi maradék](../2026-10-25-n5-closed/README.md). A korábbi N8 és a teljes 215 tételes lista alább elérhető; ez továbbra nem teljes projektzárás.**
 
 **Frissítés: az N8 teljes tesztje és új fizikai publikációja már lezárt. [Aktuális N8 eredmény és maradék](../2026-10-25-n8-closed/README.md). Az alábbi szöveg a korábbi, futás közben kiadott pillanatkép; a 160/55 követelményszám változatlan.**

@@ -386,6 +386,7 @@ def run_portfolio(
     weather_by_fixture = {}
     candidate_context, context_attempt = {}, None
     context_mode = 'OFF'
+    profile_context_mode = 'OFF'
     # Both numerical agents see the full selected fixture calendar and shared history.
     # They never inherit Arthur's shortlist, heuristic rankings, or LLM-adjusted scores.
     enabled_models = tuple(p for p in settings["enabled_profiles"] if p in MODEL_PROFILE_IDS)
@@ -494,14 +495,18 @@ def run_portfolio(
         review_cutoff = clock()
         packets = [item for item in packets if allows_new_leg(item, review_cutoff)]
         context_root = None
-        if packets and ledger is not None and getattr(ledger, 'path', None) is not None:
+        if ledger is not None and getattr(ledger, 'path', None) is not None:
             from goal_analysis.jobs import candidate_context_review as context_job
+            from goal_analysis.jobs import profile_context_stage
 
-            context_root = Path(ledger.path).resolve().parents[2]
-            try:
-                context_mode = context_job.policy(context_root)
-            except (OSError, ValueError, TypeError):
-                context_mode = 'UNAVAILABLE'
+            proposed_context_root = Path(ledger.path).resolve().parents[2]
+            profile_context_mode = profile_context_stage.policy(proposed_context_root)
+            if packets or profile_context_mode in {'SHADOW', 'ACTIVE'}:
+                context_root = proposed_context_root
+                try:
+                    context_mode = context_job.policy(context_root)
+                except (OSError, ValueError, TypeError):
+                    context_mode = 'UNAVAILABLE'
         if weather_provider is not None and packets and context_mode != 'ACTIVE':
             from goal_analysis.providers.open_meteo import unknown, weather_context
 
@@ -829,6 +834,28 @@ def run_portfolio(
     published_at = clock()
     report["finished_at"] = published_at.isoformat()
     _guard_final_publication(report, published_at)
+    # Separate exact-source context consideration from independent model ranks.
+    # The same frozen source snapshot and original remaining follow-up budget
+    # serve all profiles. SHADOW records coverage without changing decisions.
+    if candidate_context and context_mode == 'ACTIVE' and context_root is not None:
+        from goal_analysis.jobs import profile_context_stage
+
+        if profile_context_mode in {'SHADOW', 'ACTIVE'}:
+            report, diversity_options, review = profile_context_stage.execute(
+                report, diversity_options, artifacts, candidate_context,
+                artifacts.get('candidate_input', {}).get('candidates', []), review,
+                mode=profile_context_mode, reviewer=reviewer,
+                target_date=target_date.isoformat(), feedback=_compact_feedback(ledger),
+                maximum=settings['openai']['max_candidates'],
+                remaining_rounds=max(0, 3 - daily_follow_up_rounds),
+                clock=clock, merge=_merge_astra_reviews)
+            if profile_context_mode == 'ACTIVE':
+                all_context_packets = [*artifacts.get('candidate_review_actual_packets', []),
+                    *(packet for batch in artifacts.get('candidate_review_follow_up_packets', []) for packet in batch)]
+                report['candidate_context_review']['usage'] = context_job.usage(all_context_packets, review)
+            published_at = clock()
+            report['finished_at'] = published_at.isoformat()
+            _guard_final_publication(report, published_at)
     allocate(report, diversity_options, settings, published_at, plan=team_plan)
     # Newly chosen leaf templates need the same team disclosure as their original
     # independently selected cards. This never promotes a paper profile.

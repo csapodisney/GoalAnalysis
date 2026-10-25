@@ -1,3 +1,5 @@
+**Frissítés — 2026-10-25: az N6 teljes tesztje 5590/5590, célzott tesztje 241/241, három tényleges numerikus replay sikeres. Az új generálás és publikációs bizonyítás még folyamatban; N6 nincs készre jelölve. [Aktuális N6 bizonyíték és maradék](../2026-10-25-n6-tested/README.md). Az alábbi 160/55 követelménymátrix korábbi pillanatkép, nem teljes projektzárás.**
+
 # Arthur – eredeti feladatlista és bizonyítékcsomag a Gemini összehasonlításhoz
 
 Rögzítés: 2026-10-25T08:10:25.596841+00:00. **Hatókörhöz kötött állapotjelentés; a teljes projekt nincs késznek nyilvánítva.**
