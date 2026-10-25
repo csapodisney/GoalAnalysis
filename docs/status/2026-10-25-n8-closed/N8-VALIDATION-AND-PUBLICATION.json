@@ -1,0 +1,206 @@
+{
+  "at": "2026-10-25T09:22:22.782086+00:00",
+  "scope": "N8_SCOPED_COMPLETE_NOT_WHOLE_PROJECT",
+  "project_complete": false,
+  "original_matrix_green": 160,
+  "original_matrix_red": 55,
+  "run_id": "2026-10-25-d112d6937b35",
+  "date": "2026-10-25",
+  "full_tests_passed": 5493,
+  "targeted_tests_passed": 415,
+  "actual_replays_passed": 3,
+  "tickets": [
+    {
+      "profile_id": "daily223",
+      "ticket_id": "ticket-92538bc12c8fee8261928372",
+      "status": "READY",
+      "legs": 3
+    },
+    {
+      "profile_id": "kronikas",
+      "ticket_id": "ticket-bad22e96d15778bd491a012b",
+      "status": "READY",
+      "legs": 6
+    }
+  ],
+  "selected_leg_bindings": [
+    {
+      "profile_id": "daily223",
+      "ticket_id": "ticket-92538bc12c8fee8261928372",
+      "fixture_id": "the_stats_api:mt_511385243",
+      "review_binding": "EXACT_SELECTED_LEG_REVIEW_BOUND",
+      "cited_categories": [
+        "players",
+        "weather"
+      ],
+      "home_team": "Sparta Rotterdam",
+      "away_team": "AFC Ajax",
+      "kickoff": "2026-10-25T15:45:00+00:00"
+    },
+    {
+      "profile_id": "daily223",
+      "ticket_id": "ticket-92538bc12c8fee8261928372",
+      "fixture_id": "the_stats_api:mt_022917483",
+      "review_binding": "EXACT_SELECTED_LEG_REVIEW_BOUND",
+      "cited_categories": [
+        "players",
+        "xg"
+      ],
+      "home_team": "Angers",
+      "away_team": "Lorient",
+      "kickoff": "2026-10-25T16:15:00+00:00"
+    },
+    {
+      "profile_id": "daily223",
+      "ticket_id": "ticket-92538bc12c8fee8261928372",
+      "fixture_id": "the_stats_api:mt_022032231",
+      "review_binding": "EXACT_SELECTED_LEG_REVIEW_BOUND",
+      "cited_categories": [
+        "xg"
+      ],
+      "home_team": "Rio Ave",
+      "away_team": "Famalicão",
+      "kickoff": "2026-10-25T18:00:00+00:00"
+    },
+    {
+      "profile_id": "kronikas",
+      "ticket_id": "ticket-bad22e96d15778bd491a012b",
+      "fixture_id": "the_stats_api:mt_200853650",
+      "review_binding": "EXACT_SELECTED_LEG_REVIEW_BOUND",
+      "cited_categories": [
+        "players"
+      ],
+      "home_team": "Stade Rennais",
+      "away_team": "RC Strasbourg",
+      "kickoff": "2026-10-25T16:15:00+00:00"
+    },
+    {
+      "profile_id": "kronikas",
+      "ticket_id": "ticket-bad22e96d15778bd491a012b",
+      "fixture_id": "the_stats_api:mt_466402026",
+      "review_binding": "EXACT_SELECTED_LEG_REVIEW_BOUND",
+      "cited_categories": [
+        "players"
+      ],
+      "home_team": "SC Freiburg",
+      "away_team": "FC Bayern München",
+      "kickoff": "2026-10-25T16:30:00+00:00"
+    },
+    {
+      "profile_id": "kronikas",
+      "ticket_id": "ticket-bad22e96d15778bd491a012b",
+      "fixture_id": "the_stats_api:mt_899837387",
+      "review_binding": "EXACT_SELECTED_LEG_REVIEW_BOUND",
+      "cited_categories": [
+        "players"
+      ],
+      "home_team": "TSG Hoffenheim",
+      "away_team": "Bayer 04 Leverkusen",
+      "kickoff": "2026-10-25T14:30:00+00:00"
+    },
+    {
+      "profile_id": "kronikas",
+      "ticket_id": "ticket-bad22e96d15778bd491a012b",
+      "fixture_id": "the_stats_api:mt_200852676",
+      "review_binding": "EXACT_SELECTED_LEG_REVIEW_BOUND",
+      "cited_categories": [
+        "players",
+        "xg"
+      ],
+      "home_team": "Fortuna Sittard",
+      "away_team": "Excelsior",
+      "kickoff": "2026-10-25T11:15:00+00:00"
+    },
+    {
+      "profile_id": "kronikas",
+      "ticket_id": "ticket-bad22e96d15778bd491a012b",
+      "fixture_id": "the_stats_api:mt_466255968",
+      "review_binding": "EXACT_SELECTED_LEG_REVIEW_BOUND",
+      "cited_categories": [
+        "players",
+        "xg"
+      ],
+      "home_team": "Crystal Palace",
+      "away_team": "Newcastle United",
+      "kickoff": "2026-10-25T14:00:00+00:00"
+    },
+    {
+      "profile_id": "kronikas",
+      "ticket_id": "ticket-bad22e96d15778bd491a012b",
+      "fixture_id": "the_stats_api:mt_377263820",
+      "review_binding": "EXACT_SELECTED_LEG_REVIEW_BOUND",
+      "cited_categories": [
+        "players",
+        "xg"
+      ],
+      "home_team": "NEC Nijmegen",
+      "away_team": "FC Groningen",
+      "kickoff": "2026-10-25T13:30:00+00:00"
+    }
+  ],
+  "all_selected_legs_exactly_bound": true,
+  "selected_weather_source_use_verified": true,
+  "selected_travel_source_use_verified": false,
+  "actual_itinerary_claimed": false,
+  "real_wager_placed": false,
+  "scope_category_sourced_counts": {
+    "players": 35,
+    "xg": 26,
+    "schedule": 0,
+    "travel": 0,
+    "rotation": 0,
+    "weather": 3
+  },
+  "calendar_collection_status_counts": {
+    "QUOTA_REFRESH_REQUIRED": 78
+  },
+  "grok_status": null,
+  "historical_runtime_restoration_verified": true,
+  "serving": {
+    "local": {
+      "http_status": 200,
+      "runtime_idle": true,
+      "run_id": "2026-10-25-d112d6937b35",
+      "report_sha256": "89efdcd4c94e379587b7ba8550333d5bccc7c5f6eb5195695e660f0292cb291b",
+      "javascript_sha256": "17f7efca1717568410533097fdcc330257a0eadcfd7fbac289a3c9fc020825be",
+      "learning_report_hash": "aa64fd08b17a1e8be8ef07553e93ce761046069a9ed35d1bb9d374bc21f429ab",
+      "current_strategy_contracts": 20
+    },
+    "tailscale": {
+      "http_status": 200,
+      "runtime_idle": true,
+      "run_id": "2026-10-25-d112d6937b35",
+      "report_sha256": "89efdcd4c94e379587b7ba8550333d5bccc7c5f6eb5195695e660f0292cb291b",
+      "javascript_sha256": "17f7efca1717568410533097fdcc330257a0eadcfd7fbac289a3c9fc020825be",
+      "learning_report_hash": "aa64fd08b17a1e8be8ef07553e93ce761046069a9ed35d1bb9d374bc21f429ab",
+      "current_strategy_contracts": 20
+    }
+  },
+  "daily_restored_then_held_for_next_code_change": true,
+  "current_daily_enabled": false,
+  "legacy_enabled": false,
+  "old_rows_before": 3911,
+  "pre_n35_immutable_rows": 3816,
+  "old_archives_and_snapshots_preserved": true,
+  "audit_recovery": "Exact original schedule order restored from identical verified item multisets; both ordered manifests validated, no fields ignored.",
+  "audit_recovery_checks": 18,
+  "original_failed_audit_preserved": true,
+  "additional_provider_or_model_calls_for_audit_recovery": 0,
+  "private_fixture_note": "One immutable official HTML contains third-party credential material and remains local; a clean Git clone alone does not reproduce that fixture-dependent full suite.",
+  "evidence_sha256": {
+    "active-final-acceptance.json": "8835386e04430662241a0d7a13042013b3d509a0a4049c40d6b983cb731c0ba3",
+    "full-active.xml": "1500b2f7745c3a0063fa6cbcaa423873086d66bf307148ba1fde073251060a6b",
+    "targeted.xml": "26a1858836cc709dbaa114ba7f7a70d322d0b696923cc0541342178df3ce98a0",
+    "replay-active/replay-summary.json": "8dde331daeedf44eeb4190973a4e79d1ccf42074b3e603b63e04695889008533",
+    "new-publication-proof.json": "86070453c2a4cd1fff8d538c2042ea44c986c9c4a660f7cd2e39e71830b00075",
+    "runtime-proof.json": "dc20151c1386e258202445ea4c864adec25a9f5a11e22c046309e02e023b3040",
+    "next-step-scheduler-hold.json": "3f280a881c4b4cf75d9cef646a960bda7f86dcbc2e02eea8c89056424b5581e4",
+    "protection-after.json": "739acf5c2f1aa71cafa9e2783160400c8b1d6c6b22bd569452a698a1c11be109",
+    "schedule-reconstruction-diagnosis.json": "da8ee487e2a6a425e7c77ed7980820fb7880f48f16b797317ec49bb1ebecd108",
+    "schedule-order-recovery-tests.json": "9ebb11dfa0b1a25b8948b67981e0472cbda97ae7e626b64b7679ebe3f358e44a",
+    "schedule-reconstruction-recovery-acceptance.json": "551d0e900088f1d8280ea951f1b34a4606e723ab7917b82c4a45079c14f74ee7",
+    "REPORT.md": "624e2c13d23e32d1d8c70fa82747177b532cfbd8338502cc228818a070b2c06b"
+  },
+  "grok_stage_message_from_normal_log": "PACKET_TOO_LARGE",
+  "normal_generation_log_sha256": "ec1d1aaede2d31bf96c146e65854070f5444798581580f51345b7b5777370dd7"
+}

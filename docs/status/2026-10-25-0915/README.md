@@ -1,3 +1,5 @@
+**Frissítés: az N8 teljes tesztje és új fizikai publikációja már lezárt. [Aktuális N8 eredmény és maradék](../2026-10-25-n8-closed/README.md). Az alábbi szöveg a korábbi, futás közben kiadott pillanatkép; a 160/55 követelményszám változatlan.**
+
 # Arthur – aktuális teljes státusz
 
 Rögzítés: 2026-10-25T08:11:30.652800+00:00. **A projekt még nincs kész. A 2026-10-24 08:00 Europe/Berlin határidő nem teljesült.**
