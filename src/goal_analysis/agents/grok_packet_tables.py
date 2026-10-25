@@ -219,10 +219,30 @@ def wire_packet(packet):
         return basic
     from goal_analysis.agents.grok_packet_dense import pack_dense
     dense = pack_dense(packet, _wire_packet_v1)
-    return dense if len(_json(dense)) < len(_json(basic)) else basic
+    legacy = dense if len(_json(dense)) < len(_json(basic)) else basic
+    if len(_json(legacy)) <= 100_000:
+        return legacy
+    from goal_analysis.agents.grok_packet_readable import pack_readable, restore_readable
+
+    try:
+        readable = pack_readable(packet)
+    except ValueError:
+        # Unsupported literal field namespaces retain the old representation;
+        # the caller still refuses oversize inputs, never drops their data.
+        return legacy
+    if restore_readable(readable) != packet:
+        raise RuntimeError("Readable packet round-trip mismatch")
+    return readable if len(_json(readable)) < len(_json(legacy)) else legacy
 
 
 def expand_tables(value):
+    if isinstance(value, dict) and isinstance(value.get("encoding"), str) and value["encoding"].startswith("READABLE_TABLES_"):
+        from goal_analysis.agents.grok_packet_readable import restore_readable
+
+        try:
+            return restore_readable(value)
+        except (KeyError, IndexError, TypeError, RecursionError) as exc:
+            raise ValueError("Invalid readable packet") from exc
     if isinstance(value, dict) and "dense_encoding" in value:
         from goal_analysis.agents.grok_packet_dense import restore_dense, restore_stats
         return restore_stats(_expand_tables(restore_dense(value)))

@@ -1,0 +1,146 @@
+{
+  "at": "2026-10-25T21:09:05.015528+00:00",
+  "task": "9.3.N1",
+  "status": "TARGETED_AND_REAL_RETAINED_SHADOW_PASS_OWN_FULL_AND_ACTUAL_REPLAYS_RUNNING",
+  "full_expected": 5730,
+  "full_passed": null,
+  "actual_replays_passed": null,
+  "targeted_passed": 366,
+  "new_codec_tests_passed": 57,
+  "adapter_tests_passed": 10,
+  "source_files": 1215,
+  "prior_ledger_rows": 3995,
+  "protected_archive_files": 5095,
+  "changed_source": [
+    "src/goal_analysis/agents/grok_packet_accounting.py",
+    "src/goal_analysis/agents/grok_packet_readable.py",
+    "src/goal_analysis/agents/grok_packet_tables.py",
+    "src/goal_analysis/jobs/grok_advisory.py",
+    "tests/test_grok_packet_readable.py"
+  ],
+  "source_sha256": {
+    "src/goal_analysis/agents/grok_packet_accounting.py": "d4e45e0dee44f8414292e3d6d019e0b89981bf55d62cb49c63947b9abf6a88c3",
+    "src/goal_analysis/agents/grok_packet_readable.py": "dff224ae4661bfd2bef80865636cc6593130138ad55f1dd5414d7cfbc01f21bb",
+    "src/goal_analysis/agents/grok_packet_tables.py": "70ed031c66bd3ed1a7cd3c1bba1f8816830f662acfb5285291ecc86c70021b71",
+    "src/goal_analysis/jobs/grok_advisory.py": "9a23a73fca1b37772b135a44dc1474f4da240e5a1b9cf387af367a650b944bd7",
+    "tests/test_grok_packet_readable.py": "4eca3c3846f5eba3bac79eb3b40460747990b0ab445b815c6e8f16e5749e90db"
+  },
+  "shadow_cases": [
+    {
+      "run_id": "2026-10-25-d112d6937b35",
+      "archive_sha256": "536e33dd7c90dad824a95121ac2326292a9b0b1e512ae439d6abc85859c5f07c",
+      "actual_saved_grok_status": null,
+      "legacy_after_prose_wire_characters": 112616,
+      "new_wire_characters": 89733,
+      "provider_canonical_wire_characters": 90826,
+      "exact_old_builder_before_optional_prose_compaction": true,
+      "exact_wire_and_provider_roundtrip": true,
+      "profile_count": 22,
+      "fixture_count": 26,
+      "selection_count": 76,
+      "unchanged_archive": true
+    },
+    {
+      "run_id": "2026-10-25-f20dd091b16b",
+      "archive_sha256": "c64224a4e485c20ec415c75c0d51e22d3bcedcbed4867d68c471b018693fd017",
+      "actual_saved_grok_status": null,
+      "legacy_after_prose_wire_characters": 124158,
+      "new_wire_characters": 96386,
+      "provider_canonical_wire_characters": 97431,
+      "exact_old_builder_before_optional_prose_compaction": true,
+      "exact_wire_and_provider_roundtrip": true,
+      "profile_count": 20,
+      "fixture_count": 26,
+      "selection_count": 74,
+      "unchanged_archive": true
+    },
+    {
+      "run_id": "2026-10-25-3472f0b6fb86",
+      "archive_sha256": "fc9f57027dc8e2c0a15e1cf1da654681217d7c908e16a17f23979a6c14c7b30c",
+      "actual_saved_grok_status": null,
+      "legacy_after_prose_wire_characters": 98778,
+      "new_wire_characters": 98778,
+      "provider_canonical_wire_characters": 98850,
+      "exact_old_builder_before_optional_prose_compaction": false,
+      "exact_wire_and_provider_roundtrip": true,
+      "profile_count": 9,
+      "fixture_count": 18,
+      "selection_count": 36,
+      "unchanged_archive": true
+    },
+    {
+      "run_id": "2026-10-25-f14ad05e1ce7",
+      "archive_sha256": "6f48d584cf93823ea7be560189b631d6f9131c2d5980f5b0484312073ea1e1c9",
+      "actual_saved_grok_status": null,
+      "legacy_after_prose_wire_characters": 60790,
+      "new_wire_characters": 60790,
+      "provider_canonical_wire_characters": 60866,
+      "exact_old_builder_before_optional_prose_compaction": true,
+      "exact_wire_and_provider_roundtrip": true,
+      "profile_count": 2,
+      "fixture_count": 3,
+      "selection_count": 6,
+      "unchanged_archive": true
+    }
+  ],
+  "actual_prior_status_readback": [
+    {
+      "run_id": "2026-10-25-d112d6937b35",
+      "archive_sha256": "536e33dd7c90dad824a95121ac2326292a9b0b1e512ae439d6abc85859c5f07c",
+      "actual_saved_status": "PACKET_TOO_LARGE",
+      "actual_request_id": null
+    },
+    {
+      "run_id": "2026-10-25-f20dd091b16b",
+      "archive_sha256": "c64224a4e485c20ec415c75c0d51e22d3bcedcbed4867d68c471b018693fd017",
+      "actual_saved_status": "PACKET_TOO_LARGE",
+      "actual_request_id": null
+    },
+    {
+      "run_id": "2026-10-25-3472f0b6fb86",
+      "archive_sha256": "fc9f57027dc8e2c0a15e1cf1da654681217d7c908e16a17f23979a6c14c7b30c",
+      "actual_saved_status": "UNAVAILABLE",
+      "actual_request_id": "9abaaf4badde4619a43c540358de0182"
+    },
+    {
+      "run_id": "2026-10-25-f14ad05e1ce7",
+      "archive_sha256": "6f48d584cf93823ea7be560189b631d6f9131c2d5980f5b0484312073ea1e1c9",
+      "actual_saved_status": "BUDGET",
+      "actual_request_id": null
+    }
+  ],
+  "worker": {
+    "at": "2026-10-25T21:05:15.840881+00:00",
+    "task": "9.3.N1",
+    "pid": 38084,
+    "status": "OWN_FULL5730_AND_THREE_ACTUAL_NUMERICAL_REPLAYS_RUNNING",
+    "automatic_retry": false,
+    "published": false,
+    "expected_full": 5730,
+    "targeted_passed": 366,
+    "child_pids": [
+      20160,
+      32316
+    ]
+  },
+  "project_complete": false,
+  "task_complete": false,
+  "worklist": {
+    "total": 167,
+    "checked": 135,
+    "open": 32
+  },
+  "new_live_generation": false,
+  "new_provider_review": false,
+  "hashes": {
+    "integrated-retained-shadow.json": "78bd1f4d8c717d90adffb704a730dcf1cee04ec7390d8250c9f880214389e069",
+    "integrated-retained-actual-status-readback.json": "8ec1f3de19b31b7d6c0b0eba7f94fe9d2a7687f5391dedb1f22b0e8c75def48f",
+    "targeted-final-v2.xml": "1108071019af6c55c95af91b34df2926309bf111310b739a822eb214e2cec45a",
+    "adapter-target-final.xml": "d6661916280ae9e8a219d89cb9b794b94fd5bea08bc9a41e90ac5ea3e845e502",
+    "codec-boundaries-final.xml": "8364834602a454e3ce12cdfcded9b7bd2dff9a3eea1251ac8bfe08445410c66e",
+    "source-under-test-active.json": "8fd30da8f9ed1131a0663f554b4cfafce410a1be85b613429c897dce8e549ffb",
+    "worker-helper-frozen.json": "72da0bc13253999045094df3e3a2416dd84592c91e57a3011763d24f22d1436b",
+    "replay-adapter-preflight-asts.json": "28559f2b480cc39eb9401076dc79e56d3328599e540cd447f66c7c1b1440c4a5",
+    "import-preflight-final.json": "f3ab7a8c652d598c6eb9afe1975037df363ea70ff2ef01fe998bae3c22e5ddd2"
+  }
+}

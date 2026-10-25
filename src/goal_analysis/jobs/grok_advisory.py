@@ -20,6 +20,10 @@ from pathlib import Path
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 from zoneinfo import ZoneInfo
 
+from goal_analysis.agents.grok_packet_accounting import (
+    incomplete_refusal_inventory,
+    packet_accounting,
+)
 from goal_analysis.agents.grok_packet_tables import wire_packet
 from goal_analysis.agents.grok_sports_data import form_context, history_counts, model_context
 from goal_analysis.agents.grok_stats_data import stats_contexts
@@ -28,7 +32,7 @@ from goal_analysis.config.portfolio import PROFILE_IDS
 from goal_analysis.jobs.sports_context_archive import archive_grok_result
 
 MODEL = "grok-4.7"
-POLICY_VERSION = "grok-all-ticket-shadow-v6-weather-motivation-stats-evidence"
+POLICY_VERSION = "grok-all-ticket-shadow-v7-lossless-readable-packet-accounting"
 BERLIN = ZoneInfo("Europe/Berlin")
 CACHE_MINUTES = 60
 LEASE_SECONDS = 210
@@ -37,6 +41,14 @@ _SECRET = re.compile(r"(?:xai-|nvapi-|sk-)[A-Za-z0-9_-]{12,}|Bearer\s+\S+", re.I
 _REVIEWABLE = {"READY", "REVIEWED", "DRAFT", "MODEL_READY"}
 _RESULT_KEYS = {"status", "model", "claims", "critiques", "citations", "usage",
                 "diagnostics", "error_code"}
+
+
+class PacketTooLarge(OverflowError):
+    """A refused, fully assembled packet keeps its honest category inventory."""
+
+    def __init__(self, coverage):
+        super().__init__("PACKET_TOO_LARGE")
+        self.coverage = coverage
 
 
 def _json(value):
@@ -53,7 +65,7 @@ def _provider_version():
     agents = Path(__file__).parents[1] / "agents"
     return hashlib.sha256(b"\0".join((agents / name).read_bytes() for name in (
         "grok_research.py", "grok_sports_data.py", "grok_packet_tables.py", "grok_packet_dense.py",
-        "grok_stats_data.py", "motivation_expert.py", "weather_expert.py"))).hexdigest()
+        "grok_stats_data.py", "motivation_expert.py", "weather_expert.py", "grok_packet_readable.py", "grok_packet_accounting.py"))).hexdigest()
 
 
 def _time(value):
@@ -607,12 +619,12 @@ def _packet(report, now):
     packet = _short_references(deepcopy(packet))
     # The provider validator canonicalizes a few strings after this stage.
     # Reserve a small margin inside the unchanged 100k input ceiling.
+    assembled = deepcopy(packet)
     compaction = _compact_prose(packet, target=99_000)
-    wire_characters = len(_json(wire_packet(packet)))
+    wire = wire_packet(packet)
+    wire_characters = len(_json(wire))
     compaction.update(expanded_characters=len(_json(packet)), input_characters=wire_characters,
                       lossless_column_tables=wire_characters < len(_json(packet)))
-    if wire_characters > 100_000:
-        raise OverflowError("PACKET_TOO_LARGE")
     coverage = {"profile_ids": [row["profile_id"] for row in selected],
                 "fixture_ids": sorted(fixture_ids), "profile_count": len(selected),
                 "fixture_count": len(fixture_ids), "selection_count": len(selected_ids),
@@ -626,7 +638,11 @@ def _packet(report, now):
                     "quote_source_count": len(packet["quote_sources"]),
                     "fresh_sports_requests": 0,
                     "policy": "USE_EXISTING_DATA_NO_SPORTS_REFETCH"},
-                "compaction": compaction}
+                "compaction": compaction,
+                "packet_accounting": packet_accounting(
+                    assembled, packet, wire, excluded, refused=wire_characters > 100_000)}
+    if wire_characters > 100_000:
+        raise PacketTooLarge(coverage)
     return packet, coverage, run_id, _digest(report)
 
 
@@ -801,8 +817,10 @@ def _analyze(root, report, *, advisor=None, now=None, completion_clock=None, man
         return _base("UNAVAILABLE", error_code="INVALID_CLOCK")
     try:
         packet, coverage, run_id, report_hash = _packet(report, clock)
-    except OverflowError:
-        return _base("PACKET_TOO_LARGE", error_code="INPUT_LIMIT_EXCEEDED")
+    except OverflowError as exc:
+        coverage = getattr(exc, "coverage", {"packet_accounting":
+                           incomplete_refusal_inventory(report)})
+        return _base("PACKET_TOO_LARGE", error_code="INPUT_LIMIT_EXCEEDED", coverage=coverage)
     except (ValueError, TypeError):
         return _base("UNAVAILABLE", error_code="INVALID_REPORT")
     if not packet["recommendations"]:
