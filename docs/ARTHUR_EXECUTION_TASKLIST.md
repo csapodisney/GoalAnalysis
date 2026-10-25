@@ -462,3 +462,7 @@ ellenőrizve.
 
   - [x] **5.2.N8** Separately review missing exact daily stadium coordinates and original previous-match venue sources; bounded genuine free/TheStats receipts, no home-ground assumption or fuzzy alias, immutable earlier releases, SHADOW/full/three actual replays, then fresh weather/travel context use proof.
   - N8 lezárt saját scope: full5493/target415/3actual replay, új `2026-10-25-d112d6937b35` selected-weather igazolt. Selected-travel: DATA_PENDING; parent5.2 és profilkör nyitott. Dashboard újraindítva/exactrun helyi+Tailscale; Daily helyreállítás után ugyanazon lock alatt OFF a következő7.4 fejlesztéshez, legacyOFF. Riport: `C:/AI-Work/GoalAnalysis/artifacts/roadmap-execution-20261020/5.2.N8/REPORT.md`.
+
+  - [x] **7.4.N5** Repair bounded daily calendar quota renewal from witnessed actual provider capacity; preserve monthly/player reserves, denial/Retry-After fences, one bootstrap and existing20-request/45-second limits. First PIT diagnosis and nonpublishing source proof; full tests, three actual replays and new normal publication before closure.
+
+  - N5 scope COMPLETE: full5520/target74/3actualreplay, új `2026-10-25-f20dd091b16b` kiválasztott naptárforrás igazolt; Dashboard+Dailyhelyreállítás majd ugyanazonlockOFF a következő7.4fejlesztéshez; legacyOFF.

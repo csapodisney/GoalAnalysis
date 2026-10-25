@@ -1,0 +1,217 @@
+{
+  "at": "2026-10-25T10:49:12.465006+00:00",
+  "scope": "N5_SCOPED_COMPLETE_NOT_WHOLE_PROJECT",
+  "project_complete": false,
+  "original_matrix_green": 160,
+  "original_matrix_red": 55,
+  "run_id": "2026-10-25-f20dd091b16b",
+  "date": "2026-10-25",
+  "full_tests_passed": 5520,
+  "targeted_tests_passed": 74,
+  "actual_replays_passed": 3,
+  "tickets": [
+    {
+      "profile_id": "daily223",
+      "ticket_id": "ticket-c97e22a1cce3cb0877abbd99",
+      "status": "READY",
+      "legs": 3
+    },
+    {
+      "profile_id": "kronikas",
+      "ticket_id": "ticket-084c4ae08126ecfbecf4b56a",
+      "status": "READY",
+      "legs": 6
+    }
+  ],
+  "selected_leg_bindings": [
+    {
+      "profile_id": "daily223",
+      "ticket_id": "ticket-c97e22a1cce3cb0877abbd99",
+      "fixture_id": "the_stats_api:mt_022357074",
+      "cited_categories": [
+        "players",
+        "xg"
+      ],
+      "home_team": "Lecce",
+      "away_team": "Juventus",
+      "kickoff": "2026-10-25T17:00:00+00:00"
+    },
+    {
+      "profile_id": "daily223",
+      "ticket_id": "ticket-c97e22a1cce3cb0877abbd99",
+      "fixture_id": "the_stats_api:mt_022917483",
+      "cited_categories": [
+        "players",
+        "xg"
+      ],
+      "home_team": "Angers",
+      "away_team": "Lorient",
+      "kickoff": "2026-10-25T16:15:00+00:00"
+    },
+    {
+      "profile_id": "daily223",
+      "ticket_id": "ticket-c97e22a1cce3cb0877abbd99",
+      "fixture_id": "the_stats_api:mt_022032231",
+      "cited_categories": [
+        "players",
+        "xg"
+      ],
+      "home_team": "Rio Ave",
+      "away_team": "Famalicão",
+      "kickoff": "2026-10-25T18:00:00+00:00"
+    },
+    {
+      "profile_id": "kronikas",
+      "ticket_id": "ticket-084c4ae08126ecfbecf4b56a",
+      "fixture_id": "the_stats_api:mt_200853650",
+      "cited_categories": [
+        "players",
+        "xg"
+      ],
+      "home_team": "Stade Rennais",
+      "away_team": "RC Strasbourg",
+      "kickoff": "2026-10-25T16:15:00+00:00"
+    },
+    {
+      "profile_id": "kronikas",
+      "ticket_id": "ticket-084c4ae08126ecfbecf4b56a",
+      "fixture_id": "the_stats_api:mt_466402026",
+      "cited_categories": [
+        "players",
+        "xg"
+      ],
+      "home_team": "SC Freiburg",
+      "away_team": "FC Bayern München",
+      "kickoff": "2026-10-25T16:30:00+00:00"
+    },
+    {
+      "profile_id": "kronikas",
+      "ticket_id": "ticket-084c4ae08126ecfbecf4b56a",
+      "fixture_id": "the_stats_api:mt_899837387",
+      "cited_categories": [
+        "players",
+        "xg",
+        "schedule"
+      ],
+      "home_team": "TSG Hoffenheim",
+      "away_team": "Bayer 04 Leverkusen",
+      "kickoff": "2026-10-25T14:30:00+00:00"
+    },
+    {
+      "profile_id": "kronikas",
+      "ticket_id": "ticket-084c4ae08126ecfbecf4b56a",
+      "fixture_id": "the_stats_api:mt_200852676",
+      "cited_categories": [
+        "players",
+        "xg",
+        "schedule"
+      ],
+      "home_team": "Fortuna Sittard",
+      "away_team": "Excelsior",
+      "kickoff": "2026-10-25T11:15:00+00:00"
+    },
+    {
+      "profile_id": "kronikas",
+      "ticket_id": "ticket-084c4ae08126ecfbecf4b56a",
+      "fixture_id": "the_stats_api:mt_466255968",
+      "cited_categories": [
+        "players",
+        "xg",
+        "schedule"
+      ],
+      "home_team": "Crystal Palace",
+      "away_team": "Newcastle United",
+      "kickoff": "2026-10-25T14:00:00+00:00"
+    },
+    {
+      "profile_id": "kronikas",
+      "ticket_id": "ticket-084c4ae08126ecfbecf4b56a",
+      "fixture_id": "the_stats_api:mt_377263820",
+      "cited_categories": [
+        "players",
+        "xg",
+        "schedule"
+      ],
+      "home_team": "NEC Nijmegen",
+      "away_team": "FC Groningen",
+      "kickoff": "2026-10-25T13:30:00+00:00"
+    }
+  ],
+  "all_selected_legs_exactly_bound": true,
+  "selected_schedule_source_use_verified": true,
+  "selected_schedule_fixture_ids": [
+    "the_stats_api:mt_899837387",
+    "the_stats_api:mt_200852676",
+    "the_stats_api:mt_466255968",
+    "the_stats_api:mt_377263820"
+  ],
+  "selected_weather_fixture_ids": [],
+  "selected_travel_fixture_ids": [],
+  "actual_itinerary_claimed": false,
+  "real_wager_placed": false,
+  "scope_category_sourced_counts": {
+    "players": 38,
+    "xg": 39,
+    "schedule": 21,
+    "travel": 1,
+    "rotation": 0,
+    "weather": 3
+  },
+  "actual_review_category_usage_counts": {
+    "players": 30,
+    "xg": 30,
+    "schedule": 11,
+    "weather": 1
+  },
+  "calendar_collection_counts": {
+    "VERIFIED_CALENDAR_SOURCE": 20,
+    "REQUEST_BUDGET": 58
+  },
+  "calendar_http_requests": 20,
+  "calendar_quota_bootstrap_requests": 0,
+  "grok_status": null,
+  "old_rows_before": 3939,
+  "strict_pre_n35_rows": 3816,
+  "old_snapshots_and_archives_preserved": true,
+  "lifecycle_rules_and_events_verified": true,
+  "historical_daily_restoration_verified": true,
+  "current_daily_enabled": false,
+  "legacy_enabled": false,
+  "same_lock_hold_for_next_code_change": true,
+  "serving": {
+    "local": {
+      "http_status": 200,
+      "runtime_idle": true,
+      "run_id": "2026-10-25-f20dd091b16b",
+      "report_sha256": "91accd8da44011de43f4c292cf6d25c928ee9ea0748b51c4c2258b10a2f1b8e0",
+      "javascript_sha256": "17f7efca1717568410533097fdcc330257a0eadcfd7fbac289a3c9fc020825be",
+      "learning_report_hash": "aa64fd08b17a1e8be8ef07553e93ce761046069a9ed35d1bb9d374bc21f429ab",
+      "current_strategy_contracts": 20
+    },
+    "tailscale": {
+      "http_status": 200,
+      "runtime_idle": true,
+      "run_id": "2026-10-25-f20dd091b16b",
+      "report_sha256": "91accd8da44011de43f4c292cf6d25c928ee9ea0748b51c4c2258b10a2f1b8e0",
+      "javascript_sha256": "17f7efca1717568410533097fdcc330257a0eadcfd7fbac289a3c9fc020825be",
+      "learning_report_hash": "aa64fd08b17a1e8be8ef07553e93ce761046069a9ed35d1bb9d374bc21f429ab",
+      "current_strategy_contracts": 20
+    }
+  },
+  "predictive_gain_proven": false,
+  "private_fixture_reproduction_limit": "One pre-existing official raw HTML fixture remains immutable and local after GitHub detected third-party token material. It is excluded from Git; clean-clone full-suite reproduction still requires that local fixture. Safe public fixture handling remains separate work.",
+  "tested_source_commit": "8b71d5d2adb44c3aa97e6621d02d59e960cee43f",
+  "evidence_sha256": {
+    "active-final-acceptance.json": "e26b5ea4aaed327b57e9da11e84ed34617fc240f3f4cefd03605529f62d6123b",
+    "full-active.xml": "1fcbc4db59bc8d9185cabbab5848ebb079d74b9aaaf696557509252e394fd4c3",
+    "targeted-final.xml": "9e77d997f119dbe70e5b35da5bba46d6180663a64d71a28a49994efc87fa6eba",
+    "replay-active/replay-summary.json": "bd6218f47962178f69198d8e46de724954ab40770f50f3f0a48c61c79ca05bc6",
+    "quota-pit-comparison.json": "91f01e884582cfb03a94152cc4aae915ca7d299b97af2e5da20d6ff130708be1",
+    "physical-calendar-proof.json": "57e63adb557aeaf159d2feaa6ff3144335598cc8511a225d7336421bef26e968",
+    "new-publication-proof.json": "98ea12e907700ae554654f3799f7b7a666e20ec634ff5c579988879f3b7cac9b",
+    "runtime-proof.json": "2e90a5a375764a3da768b06d6f5f40ed3d3beca4bbdb6989a79a20ea95f85f1d",
+    "next-step-scheduler-hold.json": "559292603d3361e3598b0283444fba5ed3ded0c7863def8250715e18888e5482",
+    "protection-after.json": "c4b09a1d505c90be1258273dce136242a0b4a3ebc7025d4eced6e967b7da538f",
+    "REPORT.md": "d692f9c538f916a6bc3dcb204f32993ae29274c5fd57cbead3c580ba179a153e"
+  }
+}
