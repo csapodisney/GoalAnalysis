@@ -332,7 +332,7 @@ romló Brier/log-loss esetén az új hatás SHADOW marad.
   - [x] **8.6.N2** Explicit activation of bounded club fixture-coverage alternatives under unchanged source/profile/128-beam/512-option gates; preserve baseline best, source-bound context review and original DAILY/numeric mathematics. Own retained-input SHADOW/ACTIVE, full suite, three actual replays and new publication/runtime proof before closure.
 - [ ] **8.7** Ha nincs húsz bizonyított szelvény, a rendszer kevesebbet ad és
   `CAPACITY_SHORTFALL` jelentést készít a hiány okáról.
-  - [ ] **8.7.N1** Javított, döntést nem módosító LIVE/PAPER kapacitáselszámolás: READY DAILY pontos REVIEWED→mentett ticket hídja, külön PAPER és tényleges LIVE ticket darabszám; nincs töltelék, kapulazítás vagy régi snapshotátírás. Saját valós SHADOW/teszt/replay és adatmegőrző runtime-bizonyítás.
+  - [x] **8.7.N1** Javított, döntést nem módosító LIVE/PAPER kapacitáselszámolás: READY DAILY pontos REVIEWED→mentett ticket hídja, külön PAPER és tényleges LIVE ticket darabszám; nincs töltelék, kapulazítás vagy régi snapshotátírás. Saját valós SHADOW/teszt/replay és adatmegőrző runtime-bizonyítás.
     - 2026-10-25: a szülő újranyitva a pontos számlálási hiba miatt. A friss egy READY DAILY az ajánlásnézetben REVIEWED, ezért a régi számláló0; a PAPER és LIVE összemosódott. Négy megőrzött valós riport SHADOW-projekciója és28célzott teszt/Ruff PASS. Saját teljes5673+3tényleges numerikus replay fut, nem kész. Csak allokáció utáni diagnosztika változik,0új sport/LLM/fit/ledgerírás a próbában.
 - [x] **8.8** Minden szelvényhez géppel ellenőrizhető bizonyítékcsomag:
   odds, modell, forma, xG, játékos, kontextus és forráshiányok.
@@ -475,3 +475,5 @@ ellenőrizve.
   - N6 scope COMPLETE: full5590/target241/3actualreplay, új `2026-10-25-3472f0b6fb86` profilszintű forrás/válaszkapu igazolt; Dashboard+Dailyhelyreállítás majd ugyanazonlockOFF a következő8.6fejlesztéshez; legacyOFF.
 
   - N2 scope COMPLETE: full5650/target339/3actualreplay; új `2026-10-25-f14ad05e1ce7` ACTIVE klub-lefedettségi policy és végső profilszintű forráskapcsolat igazolt. Friss elsődleges lefedettségnövekedés megfigyelve: False; ez nem 20–30 szelvény garancia. Daily helyreállítva, majd ugyanazon lock alatt OFF a következő 8.7.N1 fejlesztéshez; legacy OFF.
+
+  - 8.7.N1 own scope COMPLETE: full5673/target28/adapter10/3actual replay8checks; audit-only LIVE/PAPER metadata and immutable `2026-10-25-f14ad05e1ce7` projection1LIVE/0PAPER/19shortfall. Runtime+DailyON restored then same-lockOFF9.3.N1,legacyOFF. Parent8.7 remains open for final fresh normal v2metadata release proof; no extra paid generation just for a counter.
