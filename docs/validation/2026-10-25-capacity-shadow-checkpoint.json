@@ -1,14 +1,14 @@
 {
-  "as_of_utc": "2026-10-25T19:17:28.406979+00:00",
+  "as_of_utc": "2026-10-25T19:42:43.714729+00:00",
   "task": "8.7.N1",
-  "status": "OWN_V3_TARGET28_SHADOW4_ADAPTER10_IMPORT_PASS_FULL5673_REPLAY3_RUNNING",
+  "status": "OWN_V3_TARGET28_ADAPTER10_THREE_ACTUAL_REPLAYS_PASS_FULL5673_RUNNING",
   "source_files": 1212,
   "old_ledger_rows": 3995,
   "own_targeted_tests_passed": 28,
   "own_full_expected": 5673,
   "own_full_passed": false,
   "own_actual_replays_required": 3,
-  "own_actual_replays_passed": false,
+  "own_actual_replays_passed": 3,
   "ruff_passed": true,
   "source_sha256": {
     "src/goal_analysis/jobs/portfolio.py": "e731b91db588a2b5655988ee48d4d6d7a2f9d6d187ab1cfd200363bc14c565df",
@@ -93,5 +93,11 @@
   "all_original_seven_replay_check_asts_identical": true,
   "additional_exact_capacity_check": true,
   "own_replay_adapter_tests_passed": 10,
-  "actual_import_root_daily_guard_and_source_ledger_preflight_passed": true
+  "actual_import_root_daily_guard_and_source_ledger_preflight_passed": true,
+  "own_replay_checks_per_case": 8,
+  "own_replay_independent_readback_sha256": "11f095f39613d861a490d924691bd2edf152f5b31d71d8a440adf12fa29ccab4",
+  "own_replay_summary_sha256": "c6ba59238be02bcc094b5028d5d79c0ed604087a24c580f02920b9ae8bfecbf9",
+  "own_projection_runtime_helpers_prepared": true,
+  "pending_full_blocks_helpers_before_http_runtime": true,
+  "new_provider_llm_generation_for_helper_preflight": 0
 }
