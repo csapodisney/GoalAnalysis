@@ -8,9 +8,15 @@ A saját teljes teszt sikerét követő egyetlen normál futás, `2026-10-25-ec7
 
 A régi adapter ideiglenes nyers válaszát a hibakezelés nem őrizte meg. Ezért a konkrét hibás URL és az esetleges átirányítási/írásmódbeli eltérés nem rekonstruálható; nem állítunk bizonyítatlan URL-normalizálási hibát. A forráskaput nem lazítjuk. A javítás már a válasz szerkezetében az igazolt URL-ekre korlátozza mindhárom hivatkozási mezőt, és megőrzi a szigorú utóellenőrzést. Újabb elutasításnál titkos adatot vagy nyers választ nem tartalmazó ujjlenyomat segíti a pontos diagnózist.
 
-Az új, külön `followup-v3` javítás **295 célzott tesztje sikeres**. Hatvan korábban elfogadott, tényleges N6 modellválasz változatlan elfogadása és minden meglévő hivatkozás engedélyezettsége külön, új modellhívás nélkül ellenőrzött. Ez nem új modellreplay vagy publikáció. A v3 saját teljes tesztje, három újraszámolt numerikus replaye, új normál publikációja és runtime-lezárása még szükséges; a lent következő 5617/201/3 eredmények kizárólag a v2 rögzített forrására vonatkoznak. Az összes régi hibabizonyíték és a sikertelen futás két új ledger-sora megmarad. A teljes projekt nincs kész.
+Az új, külön `followup-v3` javítás **295 célzott tesztje sikeres**. Hatvan korábban elfogadott, tényleges N6 modellválasz változatlan elfogadása és minden meglévő hivatkozás engedélyezettsége külön, új modellhívás nélkül ellenőrzött. Ez önmagában nem új modellreplay vagy publikáció. Az összes régi hibabizonyíték és a sikertelen futás két új ledger-sora megmarad. A teljes projekt nincs kész.
 
-A v3 négy valós megőrzött inputjának OFF/SHADOW/ACTIVE összehasonlítása is sikeres. A saját teljes 5627 teszt és három új numerikus replay külön véges folyamatban fut; elfogadásuk még nincs meg. A validáló folyamat nem indít publikációt. [Új javítás célzott teszt- és SHADOW-bizonyítéka, a még hiányzó elfogadásokkal](../../validation/2026-10-25-n2-citation-repair-checkpoint.json).
+A v3 négy valós megőrzött inputjának OFF/SHADOW/ACTIVE összehasonlítása is sikeres. **A saját teljes 5627 teszt, 295 célzott teszt és három ténylegesen újraszámolt numerikus replay elfogadása 16:46 UTC-kor megtörtént.** A teljes teszt 44 figyelmeztetéssel, hiba és kihagyás nélkül, 2655,64 másodperc alatt futott le. A fizikai XML-esetek, elfogadási inputok, numerikus replayek, 1206 forráshash és a régi hibabizonyítékok külön root visszaellenőrzése sikeres. A teszt alatt a 3984 korábbi ledger-sor változatlan maradt. Mind a kilenc N2-módosítás feltöltött forrásblobja egyezik a saját elfogadott byte-okkal.
+
+**Az egyszeri új normál generálás 16:46:56 UTC-kor elindult, még folyamatban van.** Új mentett szelvényt, forrásfelhasználási publikációs bizonyítást, runtime-helyreállítást vagy N2-lezárást ez a köztes checkpoint még nem igazol. [A v3 saját teljes elfogadásának hash-ekkel kötött bizonyítéka](../../validation/2026-10-25-n2-citation-repair-checkpoint.json).
+
+## Korábbi v2 eredmények — megőrzött saját forrásra vonatkozó bizonyíték
+
+A következő 5617/201/3 eredmények kizárólag a v2 rögzített forrására vonatkoznak; a v3 új ellenőrzése külön történt.
 
 | Állapot | Bizonyított eredmény vagy valódi maradék |
 |---|---|

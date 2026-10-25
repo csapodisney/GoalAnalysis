@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "as_of_utc": "2026-10-25T16:03:10.048595+00:00",
-  "scope": "N2_V3_TESTED_CITATION_REPAIR_FULL_AND_PUBLICATION_PENDING",
+  "as_of_utc": "2026-10-25T16:59:56.344464+00:00",
+  "scope": "N2_V3_OWN_FULL_TARGET_THREE_ACTUAL_REPLAYS_ACCEPTED_NORMAL_PUBLICATION_PENDING",
   "previous_v2_source_remote_sha": "d69d4828b5019a44fc078c211120599b03fb3f57",
   "original_deadline_met": false,
   "failed_v2_new_run": "2026-10-25-ec7edd1a2821",
@@ -23,9 +23,9 @@
   "retained_input_proof_sha256": "1b9711ecb2e9d678e2768cff5c9a4d1a13ace6096c38347f1ae51411a1d7875d",
   "retained_probe_new_api_or_llm_requests": 0,
   "new_full_expected": 5627,
-  "new_full_status": "RUNNING_NOT_ACCEPTED",
+  "new_full_status": "PASS",
   "new_actual_numerical_replay_count_required": 3,
-  "new_actual_replays_status": "RUNNING_NOT_ACCEPTED",
+  "new_actual_replays_status": "PASS",
   "source_files_frozen": 1206,
   "ledger_rows_preserved_by_recovery_baseline": 3984,
   "new_publication_verified": false,
@@ -34,5 +34,25 @@
   "legacy_daily_223_enabled": false,
   "project_complete": false,
   "original_215_final_audit_complete": false,
-  "public_clean_clone_full_suite_reproducible": false
+  "public_clean_clone_full_suite_reproducible": false,
+  "new_full_tests_passed": 5627,
+  "new_actual_replays_passed": 3,
+  "own_acceptance_sha256": "46a35656ac2575b3ef46696edbffcbd67c8508aca2cb269f43067564d0da1308",
+  "own_full_xml_sha256": "38606b644b5095d73f3e48a8ba6224528adc6f38756f42de45bc3dee69b21170",
+  "own_replay_summary_sha256": "afb2157513a5e6bec5b10b1ecd745af1c05e0979de846e082b92f3f86c0f614c",
+  "own_acceptance_independent_readback_sha256": "5703590916e58bf3026f9af8c5d4b8dc74b9eb1d8a8f0bea2b06e2a8ff611d6f",
+  "all_n2_changed_source_sha256": {
+    "config/club-fixture-coverage.json": "03efd07564d69a064f18d2a8330e6cdeaa1e8ff3aec76f4280a737926a367c2a",
+    "src/goal_analysis/agents/astra_review.py": "1f7e59aabf381c44b2f9ad0ec04a1e3639206148af21f0023516b882117fe163",
+    "src/goal_analysis/jobs/portfolio.py": "0c983bd1a1f330cc3bafc90c63a625ec905cf1b38725aa256046a65ead9000e5",
+    "src/goal_analysis/tipsters/__init__.py": "ab7273deb0ced554f6e0da58fb4fa60a1479eefd33ed5b6cc0fd7c18156f1306",
+    "src/goal_analysis/tipsters/coverage_search.py": "658ea6668f066393d9909d2e288ee2d650148a708191216a48d2b8d71d337bb4",
+    "src/goal_analysis/tipsters/recommendations.py": "8e83642df5b2066b8185e0ee62f4e06a548e85960e533eca9da317a65c6cdb0e",
+    "tests/test_club_coverage_activation.py": "834ee878c02196c2e3e389974e911770c334807c9a2a68906b83d7fe78329ed3",
+    "tests/test_review_citation_contract.py": "a36002990a76f7d41c9d6030f6fa3c175a752edee0574748517c2b38c5efbf40",
+    "tests/test_tipster_cutoff.py": "dd0489cea85086d97c82debe08790fb791108321b454141773d61815f6bf953b"
+  },
+  "all_nine_source_blobs_match_committed_source": "a08541a87321a287037e6eccc978fc272fbfd917",
+  "normal_generation_started_at": "2026-10-25T16:46:56.216864+00:00",
+  "normal_generation_status": "RUNNING_NOT_YET_VERIFIED"
 }
