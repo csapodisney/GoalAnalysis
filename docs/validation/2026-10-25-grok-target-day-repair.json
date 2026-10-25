@@ -1,8 +1,8 @@
 {
-  "at": "2026-10-25T22:36:20.876075+00:00",
+  "at": "2026-10-25T22:48:28.507889+00:00",
   "task": "9.3.N1",
   "attempt": "followup-v2",
-  "status": "TARGET_DAY_REPAIR_TARGETS_SHADOW_PASS_OWN_FULL5742_AND_THREE_ACTUAL_REPLAYS_RUNNING",
+  "status": "TARGET_DAY_REPAIR_THREE_ACTUAL_REPLAYS_PASS_FULL5742_RUNNING_OWN_FOLLOWERS_WAITING",
   "targeted_tests_passed": 316,
   "new_target_day_tests": 12,
   "before_regression_failed": 11,
@@ -11,7 +11,7 @@
   "ruff": "PASS",
   "expected_full": 5742,
   "own_full_passed": false,
-  "own_actual_replays_passed": false,
+  "own_actual_replays_passed": 3,
   "frozen_source_files": 1216,
   "prior_ledger_rows": 4005,
   "protected_archive_files": 5382,
@@ -28,5 +28,53 @@
     "total": 167,
     "checked": 135,
     "open": 32
-  }
+  },
+  "checks_per_replay": 8,
+  "root_replay_readback": {
+    "at": "2026-10-25T22:40:18.527515+00:00",
+    "status": "THREE_OWN_V2_ACTUAL_REPLAYS_PHYSICALLY_READ_BACK",
+    "actual_replays_passed": 3,
+    "checks_per_case": 8,
+    "cases": [
+      {
+        "case": "busy-weekend-2026-10-17",
+        "all_eight_checks_passed": true,
+        "model_sha256": "89f8710b51cbc06a12f93f7825d8d128e5cbe998c1eb0dfd77a57e3042e5e4b9",
+        "actual_training_dataset_manifests_verified": 97,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      },
+      {
+        "case": "sparse-weekday-2026-10-12",
+        "all_eight_checks_passed": true,
+        "model_sha256": "3007451ce1f4823e6daa8a36a0bed44dba4f920efa6d08f8336b55dc7d1bf465",
+        "actual_training_dataset_manifests_verified": 33,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      },
+      {
+        "case": "cup-national-2026-10-03",
+        "all_eight_checks_passed": true,
+        "model_sha256": "277af116059667496fe198782acef444949a76afaca1c9cef0b8649fe6fea9af",
+        "actual_training_dataset_manifests_verified": 1,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      }
+    ],
+    "summary_sha256": "0ec6fd1e68b725916bded6ca9c291703ca4f2c3027a9f44e3e1275846ab1e4ee",
+    "frozen_source_files_verified": 1216,
+    "original_eight_check_asts_and_require_conditions_unchanged": true
+  },
+  "publication_follower": "WAITING_FOR_EXISTING_FULL_ACCEPTANCE_NO_RETRY",
+  "closure_follower": "WAITING_FOR_EXISTING_VALIDATION_AND_SINGLE_PUBLICATION",
+  "selected_context_controls_passed": 13,
+  "all_prior_ledger_snapshots_equal_archives_verified": 90,
+  "actual_retained_citation_reviews_revalidated": 115,
+  "new_source_scope_distinguishes_unknown_from_positive_use": true,
+  "original_reader_identity_quote_wire_response_citation_and_ledger_guards_unchanged": true,
+  "original_nonempty_background_category_predicate_separately_scoped": true,
+  "source_github_commit": "07f0df2cb03a527b62ff8bda7d5fda1b2aebc4f5"
 }
