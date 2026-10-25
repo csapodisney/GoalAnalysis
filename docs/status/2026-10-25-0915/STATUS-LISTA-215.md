@@ -1,3 +1,5 @@
+**Frissítés — 2026-10-25: az N6 saját hatókörében lezárt. 5590 teljes teszt, 241 célzott teszt, három tényleges replay; új 2026-10-25-3472f0b6fb86 run, két mentett szelvény kilenc igazolt lábbal. [N6 végleges eredmény és valódi maradék](../2026-10-25-n6-closed/README.md). A teljes projekt és a 7.4 szülő nincs kész; az alábbi régebbi pillanatképek dátumhoz kötöttek.**
+
 **Frissítés — 2026-10-25: az N6 teljes tesztje 5590/5590, célzott tesztje 241/241, három tényleges numerikus replay sikeres. Az új generálás és publikációs bizonyítás még folyamatban; N6 nincs készre jelölve. [Aktuális N6 bizonyíték és maradék](../2026-10-25-n6-tested/README.md). Az alábbi 160/55 követelménymátrix korábbi pillanatkép, nem teljes projektzárás.**
 
 # Arthur – teljes zöld/piros státuszlista, 215 tétel

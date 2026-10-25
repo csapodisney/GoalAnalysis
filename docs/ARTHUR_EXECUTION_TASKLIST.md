@@ -466,3 +466,7 @@ ellenőrizve.
   - [x] **7.4.N5** Repair bounded daily calendar quota renewal from witnessed actual provider capacity; preserve monthly/player reserves, denial/Retry-After fences, one bootstrap and existing20-request/45-second limits. First PIT diagnosis and nonpublishing source proof; full tests, three actual replays and new normal publication before closure.
 
   - N5 scope COMPLETE: full5520/target74/3actualreplay, új `2026-10-25-f20dd091b16b` kiválasztott naptárforrás igazolt; Dashboard+Dailyhelyreállítás majd ugyanazonlockOFF a következő7.4fejlesztéshez; legacyOFF.
+
+  - [x] **7.4.N6** Bind every available non-DAILY profile option to its exact original quote, frozen sourced context and actual bounded reviewer response before publication eligibility. First SHADOW; preserve independent numerical rankings/probabilities, profile thresholds, original DAILY math and request limits; explicit unavailable/budget gaps, full tests, three actual replays and new publication proof.
+
+  - N6 scope COMPLETE: full5590/target241/3actualreplay, új `2026-10-25-3472f0b6fb86` profilszintű forrás/válaszkapu igazolt; Dashboard+Dailyhelyreállítás majd ugyanazonlockOFF a következő8.6fejlesztéshez; legacyOFF.

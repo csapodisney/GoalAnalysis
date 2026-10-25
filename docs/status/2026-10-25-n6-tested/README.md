@@ -1,3 +1,5 @@
+**Későbbi frissítés: [az N6 új publikációja és runtime-ja már igazoltan lezárt](../2026-10-25-n6-closed/README.md). Az alábbi korábbi teszteltforrás-pillanatképet megőriztük.**
+
 # Arthur — N6 tesztelt forrás, az új publikáció még ellenőrzés alatt
 
 Állapot: 2026-10-25 13:21 Europe/Berlin. **Ez köztes forrás-checkpoint, nem teljes projektzárás.** A 2026-10-24 08:00 határidő nem teljesült.

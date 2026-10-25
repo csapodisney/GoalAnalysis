@@ -1,0 +1,180 @@
+{
+  "at": "2026-10-25T13:14:48.395293+00:00",
+  "task": "7.4.N6",
+  "status": "SCOPED_COMPLETE",
+  "full_tests_passed": 5590,
+  "targeted_tests_passed": 241,
+  "actual_numerical_replays_passed": 3,
+  "run_id": "2026-10-25-3472f0b6fb86",
+  "report_sha256": "d5b99070e24ae178d37edc7fbfcb7db243b8aff612ecc952bda81c70bfa8d0c1",
+  "archive_report_bytes_sha256": "fc9f57027dc8e2c0a15e1cf1da654681217d7c908e16a17f23979a6c14c7b30c",
+  "saved_tickets": 2,
+  "selected_legs": 9,
+  "selected_leg_source_bindings": [
+    {
+      "profile_id": "daily223",
+      "ticket_id": "ticket-acc1c9c9de8e0a978534aef6",
+      "fixture_id": "the_stats_api:mt_022357074",
+      "cited_categories": [
+        "players",
+        "xg"
+      ]
+    },
+    {
+      "profile_id": "daily223",
+      "ticket_id": "ticket-acc1c9c9de8e0a978534aef6",
+      "fixture_id": "the_stats_api:mt_022917483",
+      "cited_categories": [
+        "players",
+        "xg",
+        "schedule"
+      ]
+    },
+    {
+      "profile_id": "daily223",
+      "ticket_id": "ticket-acc1c9c9de8e0a978534aef6",
+      "fixture_id": "the_stats_api:mt_022032231",
+      "cited_categories": [
+        "players",
+        "xg"
+      ]
+    },
+    {
+      "profile_id": "kronikas",
+      "ticket_id": "ticket-b1aed7bd74935424b8fad886",
+      "fixture_id": "the_stats_api:mt_200853650",
+      "cited_categories": [
+        "players",
+        "xg",
+        "schedule"
+      ]
+    },
+    {
+      "profile_id": "kronikas",
+      "ticket_id": "ticket-b1aed7bd74935424b8fad886",
+      "fixture_id": "the_stats_api:mt_466402026",
+      "cited_categories": [
+        "players",
+        "xg"
+      ]
+    },
+    {
+      "profile_id": "kronikas",
+      "ticket_id": "ticket-b1aed7bd74935424b8fad886",
+      "fixture_id": "the_stats_api:mt_899837387",
+      "cited_categories": [
+        "players",
+        "xg",
+        "schedule"
+      ]
+    },
+    {
+      "profile_id": "kronikas",
+      "ticket_id": "ticket-b1aed7bd74935424b8fad886",
+      "fixture_id": "the_stats_api:mt_466255968",
+      "cited_categories": [
+        "players",
+        "xg",
+        "schedule"
+      ]
+    },
+    {
+      "profile_id": "kronikas",
+      "ticket_id": "ticket-b1aed7bd74935424b8fad886",
+      "fixture_id": "the_stats_api:mt_155791065",
+      "cited_categories": [
+        "players",
+        "xg",
+        "schedule"
+      ]
+    },
+    {
+      "profile_id": "kronikas",
+      "ticket_id": "ticket-b1aed7bd74935424b8fad886",
+      "fixture_id": "the_stats_api:mt_733716933",
+      "cited_categories": [
+        "players",
+        "xg",
+        "schedule",
+        "weather"
+      ]
+    }
+  ],
+  "selected_category_use_counts": {
+    "players": 9,
+    "xg": 9,
+    "schedule": 6,
+    "weather": 1
+  },
+  "selected_legs_all_bound": true,
+  "all_eligible_final_profile_legs_bound": true,
+  "non_daily_recommendations": 29,
+  "non_daily_recommendations_with_all_legs_source_bound": 8,
+  "bound_actual_original_quotes": 60,
+  "derived_final_source_bound_profiles": [
+    "gauss",
+    "kepler",
+    "laplace",
+    "tipster_vandor_zora"
+  ],
+  "completed_supplementary_batches": 1,
+  "actual_response_batch_status_counts": {
+    "COMPLETE": 2,
+    "FAILED": 1
+  },
+  "rejected_response_messages": [
+    "OpenAI cited a source that was not retrieved or supplied."
+  ],
+  "failed_response_is_not_accepted_source_evidence": true,
+  "original_all_alternative_bodies_reconstructed": false,
+  "primary_independent_cards_hashes_verified": true,
+  "prior_rows_preserved": 3967,
+  "strict_original_rows_unchanged": 3816,
+  "prior_snapshot_content_or_hash_changes": 0,
+  "archive_exactly_equals_ledger": true,
+  "original_2x2x3_unchanged": true,
+  "intrinsic_numeric_probabilities_or_order_edits_by_gate": false,
+  "source_files_sha256": {
+    "config/profile-context-review.json": "32f7ca1bc60ecff5c6dc4083a4d5601718d55b60bd2ce29c83b75518aa4d6d1e",
+    "src/goal_analysis/jobs/portfolio.py": "c58677255a2eb43d49fb03d0da126d5543111b441bfcb51a552d758ffc3246db",
+    "src/goal_analysis/jobs/profile_context_review.py": "5d2e69f7973de1fed0b9a89fa22630d265b40aa1d3510037fa288ab1fe19ad66",
+    "src/goal_analysis/jobs/profile_context_stage.py": "1055eb7ad1c73da822f00e712d866f1bf7580d8d627f7cbfe7ab57e8cbc99bc8",
+    "src/goal_analysis/jobs/ticket_evidence.py": "95f8279175b22926a6a02c3616aaa608d399edd823d5cbb161e3056391bd2a8a",
+    "tests/test_profile_context_evidence.py": "6863f1666764cd7846e7d23fd438208acac056bc656cf55347e3cda5eec45dc3",
+    "tests/test_profile_context_review.py": "24d03b9f360592d490f13bc0cd69ce44c16a49834d331d452884e13e520e25b2",
+    "tests/test_profile_context_stage.py": "9d5c307ae9f5243f021f9d2c8cb007fad481ddc673e3405b6086058117f6e2a7"
+  },
+  "evidence_sha256": {
+    "active-final-acceptance.json": "c10337245115f05a7be7dc5f78c75a20f6a4146fbab22d357b66195a145ee2cc",
+    "new-publication-proof.json": "9cc6232091109486fe1ef8e06435b905ff047f9fc4f3ce36da0cf7eb8a24748e",
+    "runtime-proof.json": "65aa618d0a7d3a116099b6a8922d904a2d93fa2477411f4622b748138b0799f2",
+    "protection-after.json": "c0c93d9c0a9e0a38a72f825b230a6e75345f8f0019c48376dc22ffb1ff1e3190",
+    "closure-complete.json": "48db4db18f0b2f7936505a4aee01f797eb7a295e13a701daf74cc9c47a43b174",
+    "REPORT.md": "da2560ebff1cb38f4e329758cd6b96cc696ca5411a72d9a31efc75997ee7efa7",
+    "next-step-scheduler-hold.json": "137275e9c17ee1892b060a114b7ac1ebf18706ce7b3ff2160352b251dd7f567c"
+  },
+  "runtime": {
+    "dashboard_new_source_loaded": true,
+    "local_and_tailscale_exact_run_and_report_verified": true,
+    "gateway_identity_preserved": true,
+    "normal_daily_restored_and_verified": true,
+    "daily_currently_held_for_next_task": true,
+    "same_run_lock_hold": true,
+    "legacy_enabled": false,
+    "next_task": "8.6"
+  },
+  "grok_review_status": "UNAVAILABLE",
+  "selected_weather_fixture_ids": [
+    "the_stats_api:mt_733716933"
+  ],
+  "selected_travel_fixture_ids": [],
+  "actual_itinerary_claimed": false,
+  "predictive_gain_proven": false,
+  "real_wager_placed": false,
+  "project_complete": false,
+  "all_profiles_complete": false,
+  "deadline_2026_10_24_0800_berlin_met": false,
+  "scope": "Exact source/context/actual review binding and publication eligibility; not whole-project or all-profile completion.",
+  "next_sequential_task": "8.6",
+  "public_clone_reproduction_limit": "One immutable third-party raw stadium HTML fixture remains private after GitHub detected a token pattern. A clean-clone full suite requires that local fixture; safe public reproduction remains separate work."
+}
