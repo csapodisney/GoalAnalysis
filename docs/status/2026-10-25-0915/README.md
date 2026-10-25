@@ -2,6 +2,8 @@
 
 Rögzítés: 2026-10-25T08:11:30.652800+00:00. **A projekt még nincs kész. A 2026-10-24 08:00 Europe/Berlin határidő nem teljesült.**
 
+[Tömör, teljes 215 tételes zöld/piros lista](STATUS-LISTA-215.md).
+
 [Teljes eredeti 215 követelmény, zöld/piros jelöléssel, bizonyítékokkal és maradékkal](ARTHUR_GEMINI_COMPARISON_2026_10_24.md).
 
 - 🟩 160 követelmény bizonyítottan teljesült a saját hatókörében.
