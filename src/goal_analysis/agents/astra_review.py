@@ -152,6 +152,22 @@ class _ReviewError(Exception):
     """An error whose message is safe to expose to the dashboard."""
 
 
+class _CitationError(_ReviewError):
+    """Keep bounded fingerprints of a rejected citation, never the raw reply."""
+
+    def __init__(self, candidate_id, url, payload, allowed_urls):
+        super().__init__("OpenAI cited a source that was not retrieved or supplied.")
+        self.diagnostics = {
+            "status": "EXACT_SOURCE_ALLOWLIST_MISMATCH",
+            "candidate_id_sha256": hashlib.sha256(candidate_id.encode()).hexdigest(),
+            "rejected_url_sha256": hashlib.sha256(url.encode()).hexdigest(),
+            "response_sha256": hashlib.sha256(_wire_json(payload).encode()).hexdigest(),
+            "allowed_source_count": len(allowed_urls),
+            "allowed_urls_sha256": hashlib.sha256(_wire_json(sorted(allowed_urls)).encode()).hexdigest(),
+            "raw_reply_retained": False,
+        }
+
+
 def _default_transport(url: str, headers: Mapping[str, str], body: bytes) -> Mapping[str, Any]:
     request = urllib.request.Request(url, data=body, headers=dict(headers), method="POST")
     try:
@@ -365,15 +381,21 @@ def _sources(response: Mapping[str, Any]) -> list[dict[str, str]]:
 
 
 def _schema(candidate_ids: list[str], *, contrarian: bool = False,
-            veto_overrides: bool = False, context_review: bool = False) -> dict[str, Any]:
+            veto_overrides: bool = False, context_review: bool = False,
+            allowed_source_urls: list[str] | None = None) -> dict[str, Any]:
     string_list = {"type": "array", "items": {"type": "string"}}
+    source_list = string_list
+    if allowed_source_urls is not None:
+        urls = sorted({_public_url(url) for url in allowed_source_urls})
+        source_list = ({"type": "array", "items": {"type": "string", "enum": urls}}
+                       if urls else {"type": "array", "items": {"type": "string"}, "maxItems": 0})
     fields = {
         "candidate_id": {"type": "string", "enum": candidate_ids},
         "assessment": {"type": "string", "enum": ["support", "neutral", "caution"]},
         "support_arguments": string_list,
         "risk_notes": string_list,
         "evidence_ids": string_list,
-        "source_urls": string_list,
+        "source_urls": source_list,
     }
     if context_review:
         context_fields = {
@@ -391,7 +413,7 @@ def _schema(candidate_ids: list[str], *, contrarian: bool = False,
             "price_case": {"type": "string"},
             "math_case": {"type": "string"},
             "cause_status": {"type": "string", "enum": ["SOURCED", "UNKNOWN"]},
-            "cause_source_urls": string_list,
+            "cause_source_urls": source_list,
         }
         fields["contrarian_rationale"] = {
             "anyOf": [{"type": "null"}, {
@@ -404,7 +426,7 @@ def _schema(candidate_ids: list[str], *, contrarian: bool = False,
             "enabled": {"type": "boolean"},
             "gates": {"type": "array", "items": {"type": "string", "enum": ["HIGH_ODDS", "LEAGUE_BASE_RATE"]}},
             "justification": {"type": "string"},
-            "source_urls": string_list, "evidence_ids": string_list,
+            "source_urls": source_list, "evidence_ids": string_list,
         }
         fields["veto_override"] = {
             "anyOf": [{"type": "null"}, {
@@ -650,7 +672,7 @@ def _validate_reviews(
             raise _ReviewError("OpenAI cited evidence that does not belong to the candidate.")
         for url in review["source_urls"]:
             if _public_url(url) not in allowed_urls:
-                raise _ReviewError("OpenAI cited a source that was not retrieved or supplied.")
+                raise _CitationError(identity, url, payload, allowed_urls)
         if review["assessment"] == "support" and (
             not review["support_arguments"] or not (review["evidence_ids"] or review["source_urls"])
         ):
@@ -884,6 +906,7 @@ class AstraReviewer:
                         "effort": self.reasoning_effort,
                         "web_search": self.web_search,
                         "max_output_tokens": self.max_output_tokens,
+                        "source_citation_contract": "exact-allowlist-v1",
                     },
                     sort_keys=True,
                     ensure_ascii=False,
@@ -962,6 +985,7 @@ class AstraReviewer:
                                 veto_overrides=any(isinstance(item.get("veto_override_context"), dict)
                                                    for item in packed["candidates"]),
                                 context_review=bool(packed.get('decision_contexts')),
+                                allowed_source_urls=[source['url'] for source in sources],
                             ),
                         }
                     },
@@ -1013,6 +1037,7 @@ class AstraReviewer:
                 usage,
                 sources=sources,
                 research_status=research_status,
+                **({"citation_diagnostics": error.diagnostics} if isinstance(error, _CitationError) else {}),
                 **({"research_diagnostics": research_diagnostics} if research_diagnostics else {}),
                 **{
                     k: research_details[k]

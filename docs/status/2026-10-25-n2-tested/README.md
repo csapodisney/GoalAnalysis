@@ -2,6 +2,16 @@
 
 Állapot: 2026-10-25. **Ez köztes forrás-checkpoint, nem projektzárás.** Az eredeti 2026-10-24 08:00 Europe/Berlin határidő nem teljesült.
 
+## Frissítés: a v2 új generálása elutasítva
+
+A saját teljes teszt sikerét követő egyetlen normál futás, `2026-10-25-ec7edd1a2821`, 2026-10-25 15:43 UTC-kor `CONSTRUCTION_INCOMPLETE` állapottal végződött: **0 szelvény, 0 előnézet**. Az Astra válaszában legalább egy hivatkozás nem szerepelt az igazolt források pontos listájában; a helyi ellenőrzés elutasította az egész választ. A kutatásban négy befejezett keresés, 50 visszaadott és kilenc elfogadott webforrás volt; ez nem teszi automatikusan érvényessé a későbbi értékelés hivatkozásait. A Grok `NO_ELIGIBLE_FIXTURES` nem pozitív szelvényellenőrzés. Újrafuttatás nem indult.
+
+A régi adapter ideiglenes nyers válaszát a hibakezelés nem őrizte meg. Ezért a konkrét hibás URL és az esetleges átirányítási/írásmódbeli eltérés nem rekonstruálható; nem állítunk bizonyítatlan URL-normalizálási hibát. A forráskaput nem lazítjuk. A javítás már a válasz szerkezetében az igazolt URL-ekre korlátozza mindhárom hivatkozási mezőt, és megőrzi a szigorú utóellenőrzést. Újabb elutasításnál titkos adatot vagy nyers választ nem tartalmazó ujjlenyomat segíti a pontos diagnózist.
+
+Az új, külön `followup-v3` javítás **295 célzott tesztje sikeres**. Hatvan korábban elfogadott, tényleges N6 modellválasz változatlan elfogadása és minden meglévő hivatkozás engedélyezettsége külön, új modellhívás nélkül ellenőrzött. Ez nem új modellreplay vagy publikáció. A v3 saját teljes tesztje, három újraszámolt numerikus replaye, új normál publikációja és runtime-lezárása még szükséges; a lent következő 5617/201/3 eredmények kizárólag a v2 rögzített forrására vonatkoznak. Az összes régi hibabizonyíték és a sikertelen futás két új ledger-sora megmarad. A teljes projekt nincs kész.
+
+A v3 négy valós megőrzött inputjának OFF/SHADOW/ACTIVE összehasonlítása is sikeres. A saját teljes 5627 teszt és három új numerikus replay külön véges folyamatban fut; elfogadásuk még nincs meg. A validáló folyamat nem indít publikációt. [Új javítás célzott teszt- és SHADOW-bizonyítéka, a még hiányzó elfogadásokkal](../../validation/2026-10-25-n2-citation-repair-checkpoint.json).
+
 | Állapot | Bizonyított eredmény vagy valódi maradék |
 |---|---|
 | 🟩 | Saját végleges forráson 5617 teljes teszt, 201 célzott teszt és három ténylegesen újraszámolt numerikus modellreplay sikeres. |
