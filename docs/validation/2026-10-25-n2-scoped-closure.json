@@ -1,0 +1,91 @@
+{
+  "at": "2026-10-25T18:53:51.729332+00:00",
+  "task": "8.6.N2",
+  "status": "OWN_SCOPED_PUBLICATION_RUNTIME_AND_CHECKPOINT_INDEPENDENTLY_VERIFIED",
+  "run_id": "2026-10-25-f14ad05e1ce7",
+  "full_tests_passed": 5650,
+  "targeted_tests_passed": 339,
+  "actual_numerical_replays_passed": 3,
+  "scope_counter_tests_passed": 11,
+  "ready_daily_tickets": 1,
+  "ready_daily_legs": 3,
+  "all_selected_legs_source_wire_actual_answer_and_ledger_bound": true,
+  "selected_categories": [
+    "players",
+    "xg",
+    "schedule"
+  ],
+  "unknown_selected_categories": [
+    "weather",
+    "travel",
+    "rotation"
+  ],
+  "derived_positive_profile_count": 0,
+  "report_construction_still_partial": true,
+  "original_partial_verifier_and_stopped_followers_preserved": true,
+  "all_1210_source_hashes_unchanged": true,
+  "old_3990_rows_and_original_3816_rows_preserved": true,
+  "parent_bridge_bytes_equal": true,
+  "local_and_tailscale_exact_run_and_hash_verified": true,
+  "gateway_identity_preserved": true,
+  "dashboard_new_code_verified": true,
+  "daily_restored_then_same_lock_off_for_next_development": true,
+  "legacy_enabled": false,
+  "project_complete": false,
+  "parent_8_6_complete": false,
+  "fresh_coverage_capacity_gain": false,
+  "next_task": "8.7.N1",
+  "task_counts": {
+    "numbered_items": 165,
+    "checked": 136,
+    "open": 29,
+    "includes_parents_and_children": true
+  },
+  "hashes": {
+    "active-final-acceptance.json": "375fccb600c2f628480d7e286e8ee7b44cf4fc91fe4504c849249307275a6c08",
+    "new-publication-proof.json": "0647624eead068f15bbc8b0363b9a5de8c8c643966538be2ee039a880fa3a718",
+    "runtime-proof.json": "af1d36220042c6c78102ee9028703cd3a6c3f2b6103961528647eb59d259f53b",
+    "protection-after.json": "2167ddcba15934456d36d934b7f3cb8ad6f73192a94bee1d7be7749fea7ce1fb",
+    "closure-complete.json": "c40d7fc92ce0f2e9387b132aa24cb6a9b856cbd2e2cddd19f6a014e74577c6ea",
+    "REPORT.md": "74b227846b66a77449875c438ec79b4e4091977efdbfa1684c5c7cd08fd602d4",
+    "validator-delta-proof.json": "bfaec1a4080fdbdf838ea248d3d231d610e1c63fa7c34e06da9903b37a728ec5",
+    "scope-target.xml": "1658ec63d1f038c1bc654e5100e3424fa039b8e78bc76acd80e0d0c0d09bde8e"
+  },
+  "scope_correction": {
+    "at": "2026-10-25T18:51:48.100444+00:00",
+    "original_stopped_proof_sha256": "8310acc3da23eb7f379c2be068505de1fdc8c0dc09eb4de2ca4d9d2555a48cbd",
+    "original_proof_status": "PARTIAL_PROFILE_CONSUMPTION_NOT_PROVEN",
+    "original_v4_failed_proof_is_not_relabelled": true,
+    "scoped_proof_sha256": "0647624eead068f15bbc8b0363b9a5de8c8c643966538be2ee039a880fa3a718",
+    "scoped_status": "NEW_PUBLICATION_SCOPED_DAILY_AND_ALL_AVAILABLE_PROFILE_SOURCE_USE_VERIFIED",
+    "original_selected_bindings_and_profile_audit_unchanged": true,
+    "cause": "Additional success predicate required nonempty final Gauss/Kepler/Laplace/character recommendation, absent from original N2 scope which explicitly permits honest no-trigger/abstention. All original physical asserts retained.",
+    "actual_run_id": "2026-10-25-f14ad05e1ce7",
+    "actual_ready_daily_tickets": 1,
+    "actual_ready_daily_legs": 3,
+    "actual_draft_orszem_preserved": true,
+    "actual_derived_positive_profiles": [],
+    "fresh_primary_capacity_gain": false,
+    "production_source_changes": 0,
+    "new_generations": 0,
+    "new_api_llm_calls": 0,
+    "construction_status_still_partial": true,
+    "full_project_or_parent_completed": false,
+    "scope_counter_tests_passed": 11
+  },
+  "validator_delta": {
+    "at": "2026-10-25T18:48:50.126851+00:00",
+    "original_verifier_sha256": "eb1672b83dba36f86b2c8c17c45449da16c3e9f428976a2cf2423c554b79d3da",
+    "scoped_verifier_sha256": "2a7333afcc1de7f1ac963f89c8a3b3c9b431fdefef2e8ea852ee9e68a883aa7d",
+    "unchanged_function_bodies_except_main": 10,
+    "all_original_main_assert_asts_identical": 28,
+    "production_source_changes": 0,
+    "existing_failed_proof_preserved_sha256": "8310acc3da23eb7f379c2be068505de1fdc8c0dc09eb4de2ca4d9d2555a48cbd"
+  },
+  "original_requirement_audit": {
+    "total": 215,
+    "green": 160,
+    "red_or_partial": 55,
+    "older_snapshot_not_refreshed_full_audit": true
+  }
+}

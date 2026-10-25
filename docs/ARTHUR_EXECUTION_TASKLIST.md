@@ -329,7 +329,7 @@ romló Brier/log-loss esetén az új hatás SHADOW marad.
   vizsgáljon, ne ugyanazt a három mérkőzést kombinálja át.
   - [x] **8.6.N1** Rögzített profilkapuk melletti, korlátos újmeccs-lefedettségi keresés SHADOW összevetése; változatlan éles opciók és forráskötött bizonyíték.
     - 2026-10-22:N1SHADOW kész;8.6LIVE nyitott.20/40meccses kontrollban12→20/40lefedettség változatlan128/512kerettel, szabálylazítás nélkül.4valós mentett input/80klubkártya és minden alternatíva OFF/SHADOW döntése pontosan egyezik;7profil/18régi meccs 27új próba-megjelenése,0elveszett.21új/281célzott/3758teljesPASS+3újvalósreplayPASS. DAILY/3745ledger stabil,API/LLM0. Riport:`C:/AI-Work/GoalAnalysis/artifacts/roadmap-execution-20261020/8.6.N1/REPORT.md`.
-  - [ ] **8.6.N2** Explicit activation of bounded club fixture-coverage alternatives under unchanged source/profile/128-beam/512-option gates; preserve baseline best, source-bound context review and original DAILY/numeric mathematics. Own retained-input SHADOW/ACTIVE, full suite, three actual replays and new publication/runtime proof before closure.
+  - [x] **8.6.N2** Explicit activation of bounded club fixture-coverage alternatives under unchanged source/profile/128-beam/512-option gates; preserve baseline best, source-bound context review and original DAILY/numeric mathematics. Own retained-input SHADOW/ACTIVE, full suite, three actual replays and new publication/runtime proof before closure.
 - [x] **8.7** Ha nincs húsz bizonyított szelvény, a rendszer kevesebbet ad és
   `CAPACITY_SHORTFALL` jelentést készít a hiány okáról.
 - [x] **8.8** Minden szelvényhez géppel ellenőrizhető bizonyítékcsomag:
@@ -471,3 +471,5 @@ ellenőrizve.
   - [x] **7.4.N6** Bind every available non-DAILY profile option to its exact original quote, frozen sourced context and actual bounded reviewer response before publication eligibility. First SHADOW; preserve independent numerical rankings/probabilities, profile thresholds, original DAILY math and request limits; explicit unavailable/budget gaps, full tests, three actual replays and new publication proof.
 
   - N6 scope COMPLETE: full5590/target241/3actualreplay, új `2026-10-25-3472f0b6fb86` profilszintű forrás/válaszkapu igazolt; Dashboard+Dailyhelyreállítás majd ugyanazonlockOFF a következő8.6fejlesztéshez; legacyOFF.
+
+  - N2 scope COMPLETE: full5650/target339/3actualreplay; új `2026-10-25-f14ad05e1ce7` ACTIVE klub-lefedettségi policy és végső profilszintű forráskapcsolat igazolt. Friss elsődleges lefedettségnövekedés megfigyelve: False; ez nem 20–30 szelvény garancia. Daily helyreállítva, majd ugyanazon lock alatt OFF a következő 8.7.N1 fejlesztéshez; legacy OFF.

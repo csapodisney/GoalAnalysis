@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "as_of_utc": "2026-10-25T18:31:05.375854+00:00",
-  "scope": "V4_OWN_FULL5650_TARGET339_THREE_ACTUAL_REPLAYS_ACCEPTED_NEW_PUBLICATION_PENDING",
+  "as_of_utc": "2026-10-25T18:53:51.729332+00:00",
+  "scope": "N2_OWN_SCOPED_PUBLICATION_RUNTIME_CLOSED_PARENTS_AND_PROJECT_OPEN",
   "previous_source_commit": "a08541a87321a287037e6eccc978fc272fbfd917",
   "previous_v3_full_report_commit": "f459a13f273f339abe9fe1ad34c1ab5827a457b4",
   "previous_v3_saved_run": "2026-10-25-0bf89356c40d",
@@ -11,7 +11,6 @@
   "previous_draft_legs_exact_review_bound": 1,
   "previous_draft_legs_not_reviewed": 2,
   "unreviewed_ready_ticket_published": false,
-  "strict_whole_saved_package_acceptance_passed": false,
   "fix": "Missing selected IDs first, then exact same-cohort eligible source quotes ordered by existing evidence score and ID. Max30/call and original3 shared followup attempts. Failed attempts counted; no retry through profile stage. Existing solver and DRAFT safety unchanged.",
   "changed_v4_source_sha256": {
     "src/goal_analysis/jobs/portfolio.py": "4b6a66f5fc5190ebca9445ce6c0e07e51a1ce559ac2597e4ab53b9c6b79208ad",
@@ -34,8 +33,8 @@
   "own_actual_numerical_replays_required": 3,
   "own_replays_status": "PASS",
   "new_normal_generation_started": true,
-  "new_publication_verified": false,
-  "runtime_restored": false,
+  "new_publication_verified": true,
+  "runtime_restored": true,
   "new_weights_or_probability_edits": false,
   "original_2x2x3_unchanged": true,
   "convergence_or_predictive_gain_guaranteed": false,
@@ -52,5 +51,45 @@
   "own_acceptance_independent_readback_sha256": "0fb8c1fda0b263d0977092f4aa7d5dec154f7e8a791179feaea946bfa95d81f3",
   "all_thirteen_source_blobs_match_commit": "1c36a42d00cac1a01f3d61189bdd8ec81741943a",
   "normal_generation_started_at": "2026-10-25T18:26:19.736887+00:00",
-  "new_normal_generation_status": "RUNNING_NOT_YET_VERIFIED"
+  "new_normal_generation_status": "FINISHED_PARTIAL_ONE_READY_DAILY_AND_ONE_DRAFT_ORSZEM",
+  "previous_v3_strict_whole_saved_package_acceptance_passed": false,
+  "new_normal_run_id": "2026-10-25-f14ad05e1ce7",
+  "new_normal_generation_finished_at": "2026-10-25T18:43:03.536679+00:00",
+  "n2_scoped_complete": true,
+  "original_v4_verifier_status": "PARTIAL_PROFILE_CONSUMPTION_NOT_PROVEN",
+  "original_v4_failed_proof_unchanged": true,
+  "scope_correction_tests_passed": 11,
+  "new_derived_positive_profile_count": 0,
+  "new_ready_daily_tickets": 1,
+  "new_ready_daily_legs": 3,
+  "new_selected_source_categories": [
+    "players",
+    "xg",
+    "schedule"
+  ],
+  "new_selected_unknown_categories": [
+    "weather",
+    "travel",
+    "rotation"
+  ],
+  "new_cohort_quotes_requested": 25,
+  "new_cohort_extra_exact_quotes_reviewed": 24,
+  "all_new_ready_daily_legs_source_wire_actual_answer_ledger_bound": true,
+  "local_tailscale_exact_new_run_verified": true,
+  "daily_restored_then_same_lock_off_for_next_development": true,
+  "fresh_primary_coverage_capacity_gain": false,
+  "parent_8_6_complete": false,
+  "all_profiles_complete": false,
+  "scope_cardinality_correction": "Original N2 contract permits honest no-trigger/abstention; require every actual selected profile leg, not manufactured nonempty derived recommendations. All original physical validator assertions preserved; production gates unchanged.",
+  "new_scoped_proof_sha256": "0647624eead068f15bbc8b0363b9a5de8c8c643966538be2ee039a880fa3a718",
+  "new_runtime_proof_sha256": "af1d36220042c6c78102ee9028703cd3a6c3f2b6103961528647eb59d259f53b",
+  "new_closure_proof_sha256": "c40d7fc92ce0f2e9387b132aa24cb6a9b856cbd2e2cddd19f6a014e74577c6ea",
+  "new_report_sha256": "74b227846b66a77449875c438ec79b4e4091977efdbfa1684c5c7cd08fd602d4",
+  "task_counts": {
+    "numbered_items": 165,
+    "checked": 136,
+    "open": 29,
+    "includes_parents_and_children": true
+  },
+  "next_task": "8.7.N1"
 }
