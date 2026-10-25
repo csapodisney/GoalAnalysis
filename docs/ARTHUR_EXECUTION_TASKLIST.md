@@ -346,8 +346,9 @@ romló Brier/log-loss esetén az új hatás SHADOW marad.
 - [x] **9.1** Astra/Codex a jelölteket a szelvényképzés előtt ellenőrzi.
 - [x] **9.2** Grok egyetlen közös csomagban kapja az összes READY szelvényt és
   a döntéshez szükséges, már letöltött adatot.
-- [x] **9.3** A csomagban minden kihagyott vagy tömörített adatkategória
+- [ ] **9.3** A csomagban minden kihagyott vagy tömörített adatkategória
   darabszámmal szerepeljen.
+  - [ ] **9.3.N1** A közös Grok-csomag változatlan korlátú, forrásazonos tömörítésének és kategóriánkénti kihagyás-/tömörítésszámlálásának javítása; méret miatti elutasítás is kapjon bizonyított számlálókat. Régi csomagok/árak/eredmények,100000karakterkorlát,modell és budget megmarad; előbb valós megőrzöttinput SHADOW, nincs új sports/LLM-kérés az auditban.
 - [x] **9.4** Grok minden szelvényhez pro, kontra és kérdéses láb listát adjon.
 - [x] **9.5** Codex csak konkrét, forrásolt kifogással érthet egyet.
 - [x] **9.6** Javítás kizárólag ugyanazon futás már ellenőrzött alternatívájából.

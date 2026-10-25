@@ -1,0 +1,216 @@
+{
+  "as_of_utc": "2026-10-25T20:31:40.022331+00:00",
+  "task": "9.3.N1",
+  "status": "READ_ONLY_AUDIT_COMPLETE_REPAIR_NOT_YET_IMPLEMENTED",
+  "baseline_source_files": 1212,
+  "baseline_ledger_rows": 3995,
+  "application_source_changes": 0,
+  "new_provider_llm_fit_or_ledger_writes": 0,
+  "original_reports_preserved": 8,
+  "reconstruction_basis": "IMMUTABLE_FINAL_REPORT_AT_ITS_REAL_FINISHED_AT_NOT_ORIGINAL_NETWORK_REQUEST",
+  "original_n8_n5_saved_status": "PACKET_TOO_LARGE",
+  "unchanged_maximum_characters": 100000,
+  "size_cases": [
+    {
+      "run_id": "2026-10-25-d112d6937b35",
+      "basis": "IMMUTABLE_REPORT_RECONSTRUCTION_AT_REAL_FINISHED_AT_NOT_OLD_NETWORK_REQUEST",
+      "unchanged_limit_characters": 100000,
+      "wire_characters": 112616,
+      "wire_utf8_bytes": 112966,
+      "expanded_characters": 300156,
+      "recommendations": 22,
+      "fixtures": 26,
+      "selections": 76,
+      "wire_top_level_character_breakdown": {
+        "date": 12,
+        "cutoff": 34,
+        "objective": 174,
+        "fixtures": 38009,
+        "selections": 8412,
+        "evidence": 6620,
+        "evidence_sources": 583,
+        "quote_sources": 5519,
+        "recommendations": 3136,
+        "stats_sources": 18367,
+        "stats_fact_groups": 22346,
+        "shared_text": 4965,
+        "shared_url_prefixes": 73,
+        "table_encoding": 740,
+        "shared_values": 1587,
+        "field_names": 1238,
+        "dense_encoding": 531
+      },
+      "expanded_top_level_character_breakdown": {
+        "date": 12,
+        "cutoff": 34,
+        "objective": 174,
+        "fixtures": 217347,
+        "selections": 24581,
+        "evidence": 22627,
+        "evidence_sources": 2449,
+        "quote_sources": 26608,
+        "recommendations": 6198
+      },
+      "potential_repeated_string_characters": 1262,
+      "top_repeat_lengths_counts_hashes": [
+        [
+          32,
+          32,
+          2,
+          "fb14186115c7dd6b76f7698513b55a72f538f038da06ee9bdfe8079915b8ef9b"
+        ],
+        [
+          32,
+          32,
+          2,
+          "f93b2ce44fd2ab04e2af2a849e3dc936f3280f176fa3b47ad8fb01545a31d6ee"
+        ],
+        [
+          32,
+          32,
+          2,
+          "d52af3a5ae520c251ed1b6a2edebbda1f942434ae573ee9c34aa6c26e2a74e67"
+        ],
+        [
+          32,
+          32,
+          2,
+          "abd8c81c5efc725fda20544f0510ce89ca0789ff75f17b951334e269cacfd43b"
+        ],
+        [
+          32,
+          32,
+          2,
+          "a594fbb6df4c8cabc4cddc78a35fe04008ccbd74913fc2e880dbe3c7aae1322b"
+        ],
+        [
+          32,
+          32,
+          2,
+          "a526a6b488897ae9537082d09edebcf452796fa3e2d72bdfdc151f397f2914b5"
+        ],
+        [
+          32,
+          32,
+          2,
+          "9b608553f568d9bf185ecd2c58ede333dc814c32d253d7b4f6949328466bd823"
+        ],
+        [
+          32,
+          32,
+          2,
+          "840f818e3c8f78bf16f71fe07fb68ed8c33f65ac92bddc0d6ca3d4e30a571b3d"
+        ]
+      ]
+    },
+    {
+      "run_id": "2026-10-25-f20dd091b16b",
+      "basis": "IMMUTABLE_REPORT_RECONSTRUCTION_AT_REAL_FINISHED_AT_NOT_OLD_NETWORK_REQUEST",
+      "unchanged_limit_characters": 100000,
+      "wire_characters": 124158,
+      "wire_utf8_bytes": 124455,
+      "expanded_characters": 331902,
+      "recommendations": 20,
+      "fixtures": 26,
+      "selections": 74,
+      "wire_top_level_character_breakdown": {
+        "date": 12,
+        "cutoff": 34,
+        "objective": 174,
+        "fixtures": 41082,
+        "selections": 8235,
+        "evidence": 6624,
+        "evidence_sources": 600,
+        "quote_sources": 5658,
+        "recommendations": 2846,
+        "stats_sources": 22785,
+        "stats_fact_groups": 25069,
+        "shared_text": 6302,
+        "shared_url_prefixes": 73,
+        "table_encoding": 740,
+        "shared_values": 1810,
+        "field_names": 1313,
+        "dense_encoding": 531
+      },
+      "expanded_top_level_character_breakdown": {
+        "date": 12,
+        "cutoff": 34,
+        "objective": 174,
+        "fixtures": 248140,
+        "selections": 23564,
+        "evidence": 22631,
+        "evidence_sources": 2638,
+        "quote_sources": 29029,
+        "recommendations": 5554
+      },
+      "potential_repeated_string_characters": 1214,
+      "top_repeat_lengths_counts_hashes": [
+        [
+          32,
+          32,
+          2,
+          "fb14186115c7dd6b76f7698513b55a72f538f038da06ee9bdfe8079915b8ef9b"
+        ],
+        [
+          32,
+          32,
+          2,
+          "faf2ec503a35e02a590b08f2e5330dd576928ebef99d1032d35195c0b5510bbe"
+        ],
+        [
+          32,
+          32,
+          2,
+          "f4f1ab1384011a2b0802b34184c579834c83a1c5958e9a0ea7ba2769fd56d809"
+        ],
+        [
+          32,
+          32,
+          2,
+          "d2a351ca67ca413009f7bc53f9328adac775d1d95bf560d01a074ee19cc05b72"
+        ],
+        [
+          32,
+          32,
+          2,
+          "cc37c5211ce360064c41522382a47092728a0828fb0fb1d490b4873277974c7b"
+        ],
+        [
+          32,
+          32,
+          2,
+          "c6693bda9ec8397474bdbb15c2cc27a7ce7ebfe9d79754e3e71184a82d01f6ce"
+        ],
+        [
+          32,
+          32,
+          2,
+          "b07f12901e27739e23cdff5b944c2efb838d9cf25157860f0525724d08aaa584"
+        ],
+        [
+          32,
+          32,
+          2,
+          "acb3ecee6a376e6dbe115f8196cef791561204c19af5784b01f6ebf8fa146eac"
+        ]
+      ]
+    }
+  ],
+  "audit_file_sha256": "9aa0b36262975f51bdc20a2ea17b96f8383eae73884456f31b65301c772510f8",
+  "contract_sha256": "ad83b7eec7b9594d8def61dd99f874067dcf0c9a6f94ffda5da46ce515378db3",
+  "prior_capacity_closed_remote_sha": "0e4abf38dda94334b360daa90e5889e5f605a3b3",
+  "positive_new_grok_response": false,
+  "grok_n6_actual_transport_unavailable_not_positive": true,
+  "grok_f14_budget_not_positive": true,
+  "old_report_scope_compatibility_is_not_original_failure_cause_proof": true,
+  "task_counts": {
+    "numbered_items": 167,
+    "checked": 135,
+    "open": 32,
+    "includes_parents_and_children": true,
+    "reopened_parent": "9.3",
+    "new_child": "9.3.N1"
+  },
+  "project_complete": false,
+  "original_deadline_met": false
+}
