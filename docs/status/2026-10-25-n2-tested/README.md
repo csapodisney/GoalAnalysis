@@ -10,7 +10,9 @@ A v3 egyszeri új futása, `2026-10-25-0bf89356c40d`, 17:05 UTC-kor egy `READY` 
 
 A v4 saját **339 célzott tesztje és tényleges megőrzött inputon végzett SHADOW ellenőrzése sikeres**. A hálózat nélküli próbában a két hiányzó ajánlat került az első két helyre a 30 pontos forrásajánlatból álló tervben; ez nem új modellválasz vagy publikáció. Négy megőrzött input klubkeresési ellenőrzése is sikeres. A nagy szintetikus ciklusteszt igazolja a 30+30+30 felső korlátot, a negyedik hívás tilalmát és a további hiány esetén megmaradó DRAFT állapotot. Nincs garantált konvergencia, új súly, numerikus változás vagy 2×2×3-módosítás.
 
-**A v4 saját teljes 5650 tesztje és három újraszámolt numerikus replaye jelenleg fut; elfogadásuk még nincs meg.** A v3 korábbi 5627/295/3 eredménye a v3 byte-jaira érvényes, nem helyettesíti ezt. Új v4 generálás még nem indult. Daily és legacy OFF. [V4 célzott teszt-, SHADOW- és forrás-checkpoint](../../validation/2026-10-25-n2-daily-cohort-checkpoint.json).
+**A v4 saját teljes 5650 tesztje, 339 célzott tesztje és három ténylegesen újraszámolt numerikus replaye sikeres.** A teljes teszt 44 figyelmeztetéssel, hiba és kihagyás nélkül, 2739,66 másodperc alatt futott le. A fizikai XML-esetek, saját elfogadási inputok, a 1210 forráshash és a korábbi hibás/részleges/tervezet állapotok megőrzése külön root visszaellenőrzött. A teljes N2-módosítás mind a 13 feltöltött forrásblobja egyezik a saját elfogadott byte-okkal. A v3 korábbi 5627/295/3 eredménye külön, a v3 byte-jaira érvényes.
+
+Az egyetlen új v4 normál generálás **2026-10-25 19:26:19 Europe/Berlin idő szerint** elindult, még folyamatban van. Új READY DAILY-t, teljes publikációs adatkapcsolatot, runtime-helyreállítást vagy N2-lezárást még nem igazolunk. Daily és legacy OFF. [V4 saját teljes teszt-, SHADOW- és forráselfogadási checkpoint](../../validation/2026-10-25-n2-daily-cohort-checkpoint.json).
 
 ## Frissítés: a v2 új generálása elutasítva
 
