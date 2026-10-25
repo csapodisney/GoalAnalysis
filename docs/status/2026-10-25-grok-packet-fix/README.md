@@ -1,6 +1,6 @@
 # Grok közös csomag — veszteségmentes javítás, elfogadás folyamatban
 
-A két korábban túlméretes csomag a bekötött helyi adatúton és a változatlan szigorú szolgáltatói ellenőrzésen is átmegy. A saját teljes teszt és három új numerikus replay még fut; ez még nem éles lezárás vagy új Grok-válasz.
+A két korábban túlméretes csomag a bekötött helyi adatúton és a változatlan szigorú szolgáltatói ellenőrzésen is átmegy. A saját teljes **5730 teszt és mindhárom új numerikus replay már PASS**, külön root visszaolvasással. Az egyszeri, holnapi célú normál futás véget ért: egy READY DAILY készült, de a teljes háttéradat-felhasználási ellenőrzés és a Grok csomagépítése megállt. Saját helyreállítás nincs. Ez még nem új pozitív Grok-válasz vagy projektlezárás.
 
 | Megőrzött valódi futás | Régi csomag | Új csomag | Szolgáltatói ellenőrzés után | Profil / meccs / választás |
 |---|---:|---:|---:|---:|
@@ -28,15 +28,25 @@ Minden összeállított adatkategória külön mezőszámlálást kap, beleértv
 | 🟩 | 366 célzott Grok-teszt, köztük 57 új codec/határ/számlálóteszt; 10 külön replay-adapter ellenpróba; Ruff PASS. |
 | 🟩 | Az eredeti nyolc numerikus replay-ellenőrzés és require-feltétel AST-je változatlan. Nem engedtünk új általános riporteltérést. |
 | 🟩 | A worker és a tényleges replay-modul importja, könyvtárfeloldása, eredeti Daily-guardja indítás előtt PASS. |
-| 🟥 | A saját **5730 teljes teszt + három újraszámolt numerikus replay** még fut; nincs még saját teljes elfogadás. |
-| 🟥 | Új normál publikáció, új tényleges Grok-válasz és saját helyreállítás/lezárás még nincs. Régi siker ezt nem helyettesíti. |
+| 🟩 | Saját **5730 teljes teszt PASS**,44warning,2815.54sec; **3 újraszámolt replay × 8 check PASS**, új valódi97/33/1datasetmanifest visszaellenőrzéssel. FullXML/case/input/source/5095archívfájl külön root olvasása PASS. |
+| 🟥 | Az új normál futás egy READY DAILY három lábából kettőn igazolt a játékos/xG/naptár-adatok használata, egyen ismeretlen. Teljes pozitív publikációs elfogadás, pozitív Grok és saját helyreállítás nincs. |
 | 🟥 | A 9.3 szülő, a 9.3.N1 alpont és a teljes projekt nyitott. A végleges 215 követelményes audit még hátravan. |
 | 🟥 | A biztonságos publikus fixture miatt a teljes, privát történeti tanúsítványú tesztkör tiszta klónból még nem reprodukálható; a mostani új codec-tesztek szintetikus, nyilvános kontrollok. |
 
-A worker egyetlen véges körben fut, automatikus újrapróba nélkül, a fagyasztott 1215 forrásfájlon és 3995 megőrzött ledger-sor mellett. A korábbi archívumokból és N1-bizonyítékokból 5095 fájl védett. Új sports/LLM-kérés, normál generálás és produkciós ledger-írás a helyi próba alatt 0. A teljes kör offline numerikus fitjei külön, ténylegesen újraszámolt replayek.
+A validáció egyetlen véges körben sikeresen lezárt, automatikus újrapróba nélkül, a fagyasztott1215forrásfájlon és3995megőrzött ledger-sor mellett. A végleges forrás bájtjain a négy valódi input SHADOW-ja is külön ismét igazolt, változatlan archívumokon,0API/LLM/fit mellett. A korábbi archívumokból és N1-bizonyítékokból 5095 fájl védett. Új sports/LLM-kérés, normál generálás és produkciós ledger-írás a helyi próba alatt 0. A teljes kör offline numerikus fitjei külön, ténylegesen újraszámolt replayek.
 
 A tényleges régi Grok-eredmények: N8/N5 `PACKET_TOO_LARGE`, N6 `UNAVAILABLE/TRANSPORT_UNAVAILABLE`, N2 `BUDGET`. A sikeres helyi parser nem pozitív Grok-review; az N6 pontos transzportoka továbbra sem bizonyított. Az eredeti privát helyi próba egyik null státusz-annotációját külön archívumhashhez kötött visszaolvasás helyesbítette; a régi bizonyíték nem lett átírva.
 
 A modell `grok-4.7`, a költségkeret, az egy csomag/egy független ellenőrzés/eredeti javítási kör, a natív SHADOW és Daily-védelem változatlan. Nincs automatikus retry, keretemelés, adatelhagyás vagy korlátemelés. Daily a validálás alatt OFF, legacyDaily223 mindig OFF; elfogadott saját adatút után igazolt helyreállítás szükséges.
 
 A munkalista változatlanul **167 fő-/alpont: 135 kipipált, 32 nyitott**. Ez végrehajtási bontás, nem az eredeti 215 követelmény új teljes auditja. [Teljes számozott munkalista](../2026-10-25-grok-packet-audit/STATUS-WORKLIST.md). A további rollback, sensitivity_note, biztonságos publikus fixture és minden valódi adat-/optimalizálási maradék a jelen pont után következik. Az eredeti határidő nem teljesült.
+
+A saját teljes elfogadás után egyetlen normál CLI futása indult2026-10-26célra, a szokásos engedett0–7napos dátumtartományon belül. Valódi forrás-/quote-receipt órák maradnak, nincs időbélyegátírás. A passzív Grok-megfigyelő önmagában nem küld kérést és nem ír át választ.89régi riport=ledger snapshot,régiN1elfogadás újfullként elutasítva és félkész sajátfull/publikáció runtimeelőtt tiltva: helperpreflightPASS.
+
+A külön publikációs és lezáró követők az ellenőrzési hibánál megálltak; a régi feladatokat nem indítjuk újra. Nincs automatikus retry vagy saját runtime/checkpoint. [Teljes saját tesztelfogadás checkpoint](../../validation/2026-10-25-grok-packet-fix-accepted.json). Új felhasználói munkacél2026-10-26 17:00Europe/Berlin; nem előre garantált készültség.
+
+## Az egyszeri új normál futás megőrzött hibája
+
+`2026-10-26-912b18b94ee3`: PARTIAL, egy READY DAILY, három láb. Kettőn játékos/xG/naptár-adat tényleges hivatkozása igazolt; a harmadiknál mindhárom kategória UNKNOWN volt a befagyasztott kontextusban. Ez nem teljes háromlábas háttéradat-használati bizonyítás. A szigorú fizikai ellenőrző megállt, a szelvényt nem írtuk át.
+
+A Grok-csomagot ettől külön dátumátadási hiba akadályozta: a futás célja október 26., de a közös sportadatcsomag a gyűjtés október 25-i UTC-napját kapta. A megőrzött riport ugyanazon valódi záróidőn végzett tiszta helyi építése `Invalid sports supplement scope` hibával megáll. A tényleges mentett Grok UNAVAILABLE, request_id nélkül; nem pozitív ellenőrzés. A javítás a célnap továbbadása lesz, nem a forrásellenőrzés lazítása vagy a valódi gyűjtési idő átírása. Új, verziózott javítási bizonyíték következik; változatlan fizetős újrapróba nem indul.

@@ -349,6 +349,7 @@ romló Brier/log-loss esetén az új hatás SHADOW marad.
 - [ ] **9.3** A csomagban minden kihagyott vagy tömörített adatkategória
   darabszámmal szerepeljen.
   - [ ] **9.3.N1** A közös Grok-csomag változatlan korlátú, forrásazonos tömörítésének és kategóriánkénti kihagyás-/tömörítésszámlálásának javítása; méret miatti elutasítás is kapjon bizonyított számlálókat. Régi csomagok/árak/eredmények,100000karakterkorlát,modell és budget megmarad; előbb valós megőrzöttinput SHADOW, nincs új sports/LLM-kérés az auditban.
+    - 2026-10-25: saját5730full/366target/57újcodec/10adapter/3actualreplay×8PASS; rootXML/hash/source/5095archívfájl és finalsource4valósSHADOWPASS. Egyszeri2026-10-26-912b18b94ee3 normál PARTIAL,1READY DAILY3láb,2lábon újadat igazolt/1UNKNOWN; szigorú verifierSTOPPED. Grokdate25/target26 scopehiba helyben reprodukált, UNAVAILABLE/nincsrequest; saját runtime/checkpointnincs, followerekSTOPPED,nincsretry.
     - 2026-10-25: adatvesztésmentes bekötött SHADOW PASS: két régi túlméretes csomag 112616/124158 → 89733/96386 karakter, szigorú provider után90826/97431; összes eredeti összeállított mező/szám/szöveg megmarad.366target/57új/10adapter/RuffPASS; saját5730full+3actualreplay fut, újpublikáció/runtime/lezárás még nincs. Riport: docs/status/2026-10-25-grok-packet-fix/README.md.
 - [x] **9.4** Grok minden szelvényhez pro, kontra és kérdéses láb listát adjon.
 - [x] **9.5** Codex csak konkrét, forrásolt kifogással érthet egyet.
