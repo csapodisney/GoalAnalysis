@@ -1,0 +1,67 @@
+{
+  "captured_at": "2026-10-25T08:10:25.596841+00:00",
+  "files": [
+    {
+      "bytes": 344175,
+      "path": "docs/ARTHUR_GEMINI_COMPARISON_2026_10_24.md",
+      "sha256": "482cbecc508091166c0fe24bd221da8382f07fd0fd2a1514f067c6ff1dde0da4"
+    },
+    {
+      "bytes": 539662,
+      "path": "docs/validation/2026-10-24-final/evidence-index.md",
+      "sha256": "794287b736eae1c77f30faa6148bc94e393880034d394961c4f691fab064d18d"
+    },
+    {
+      "bytes": 685576,
+      "path": "docs/validation/2026-10-24-final/evidence-manifest.json",
+      "sha256": "2329a7040fbdd073f1f7ab404d44345f81471370095df4ab348e8095a4cdf428"
+    },
+    {
+      "bytes": 1352,
+      "path": "docs/validation/2026-10-24-final/historical-data-limits.json",
+      "sha256": "848159ae294d605de3f94a5d5d26f590256b8af428f85d30087d4e57fa0fbd94"
+    },
+    {
+      "bytes": 759,
+      "path": "docs/validation/2026-10-24-final/interruption-and-runner-summary.json",
+      "sha256": "b00e1e698b1244e38e6b6d7da557e1a5f8e322d4b0d072f8a623df0fe5eeb100"
+    },
+    {
+      "bytes": 44044,
+      "path": "docs/validation/2026-10-24-final/publication-integrity-summary.json",
+      "sha256": "b846bc3c5fce22d3cfc691b36a14aed490f48ee36f5ca5afadc23de9c8a6c053"
+    },
+    {
+      "bytes": 2001,
+      "path": "docs/validation/2026-10-24-final/reference-publication-review.json",
+      "sha256": "a81decf09a18219def47ac2a08427e48b8d47cfbd6390d8ca5e3ca26d7966447"
+    },
+    {
+      "bytes": 458,
+      "path": "docs/validation/2026-10-24-final/release-push-summary.json",
+      "sha256": "9b65ac3e4ee7232aa4f97e057c7c29ac334e880f6f1e1c96582153874c75bd37"
+    },
+    {
+      "bytes": 72930,
+      "path": "docs/validation/2026-10-24-final/requested-tasklist-reference.md",
+      "sha256": "ff12c999c352dd492b8e223f689f905cfa66a7c4f728528a941afa274bed991d"
+    },
+    {
+      "bytes": 599475,
+      "path": "docs/validation/2026-10-24-final/requirements-215.json",
+      "sha256": "e7864c994204bfdf261a682a8b753c9514b3b57986f8d65e17e798c640db3bfa"
+    },
+    {
+      "bytes": 15232,
+      "path": "docs/validation/2026-10-24-final/source-use-summary.json",
+      "sha256": "1a9a16879c16374521a4ec5ddbe246e767dc3d270a4d310f436c55b57b624e2d"
+    },
+    {
+      "bytes": 6680,
+      "path": "docs/validation/2026-10-24-final/validation-summary.json",
+      "sha256": "7b9431d6cacf19d8ef13e67deafed12b4613c8c2159d5f81fab9d5bb94b2f6ba"
+    }
+  ],
+  "manifest_self_excluded": true,
+  "schema": "arthur-public-package-hashes-v1"
+}

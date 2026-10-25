@@ -1,0 +1,156 @@
+{
+  "accepted_at": "2026-10-23T23:08:28.548053+00:00",
+  "accepted_frozen_release_commit": "593e82bdeda28b386e1c5ea13958ea8606d8600d",
+  "accepted_frozen_release_remote_hash_bound": true,
+  "accepted_source_matches_export_time_files": false,
+  "accepted_suite_covers_subsequent_working_tree_edits": false,
+  "attempt": "followup-v6",
+  "changed_since_n35_acceptance": [
+    "src/goal_analysis/agents/astra_review.py",
+    "src/goal_analysis/jobs/candidate_context_review.py",
+    "src/goal_analysis/jobs/expert_advisory.py",
+    "src/goal_analysis/jobs/portfolio.py",
+    "src/goal_analysis/jobs/sports_context_archive.py",
+    "src/goal_analysis/jobs/stadium_locations_shadow.py",
+    "src/goal_analysis/jobs/the_stats_venue.py",
+    "src/goal_analysis/jobs/ticket_evidence.py",
+    "src/goal_analysis/providers/open_meteo.py",
+    "tests/test_stadium_fifth_release.py",
+    "tests/test_stadium_locations_shadow.py",
+    "tests/test_stadium_location_releases.py"
+  ],
+  "complete_current_acceptance_parsed": true,
+  "expected_full_count_is_not_passed_count": true,
+  "frozen_source_file_count": 1051,
+  "frozen_source_manifest_evidence_id": "E-dbe84df6a98fc6",
+  "full": {
+    "duration_seconds": 2003.605,
+    "errors": 0,
+    "failures": 0,
+    "junit_cases": 5402,
+    "skipped": 0,
+    "state": "PARSED_PASS"
+  },
+  "full_execution_state": "COMPLETED_PASS",
+  "historical_test_runs_not_added_together": true,
+  "replay": {
+    "cases": [
+      {
+        "all_recorded_checks_pass": true,
+        "case": "busy-weekend-2026-10-17",
+        "checks": {
+          "actual_training_snapshots_verified": true,
+          "all_new_shadow_metadata_bound_to_actual_eligible_source_rows_and_fixed_contracts": true,
+          "full_report_only_verified_provenance_dataset_shadow_and_evidence_scenario_sidecars_differ": true,
+          "no_external_requests": true,
+          "no_forbidden_attempts": true,
+          "numeric_fits_equal_validated_baseline": true,
+          "strategy_sources_stable_during_run": true
+        }
+      },
+      {
+        "all_recorded_checks_pass": true,
+        "case": "sparse-weekday-2026-10-12",
+        "checks": {
+          "actual_training_snapshots_verified": true,
+          "all_new_shadow_metadata_bound_to_actual_eligible_source_rows_and_fixed_contracts": true,
+          "full_report_only_verified_provenance_dataset_shadow_and_evidence_scenario_sidecars_differ": true,
+          "no_external_requests": true,
+          "no_forbidden_attempts": true,
+          "numeric_fits_equal_validated_baseline": true,
+          "strategy_sources_stable_during_run": true
+        }
+      },
+      {
+        "all_recorded_checks_pass": true,
+        "case": "cup-national-2026-10-03",
+        "checks": {
+          "actual_training_snapshots_verified": true,
+          "all_new_shadow_metadata_bound_to_actual_eligible_source_rows_and_fixed_contracts": true,
+          "full_report_only_verified_provenance_dataset_shadow_and_evidence_scenario_sidecars_differ": true,
+          "no_external_requests": true,
+          "no_forbidden_attempts": true,
+          "numeric_fits_equal_validated_baseline": true,
+          "strategy_sources_stable_during_run": true
+        }
+      }
+    ],
+    "limit": "Korábbi konkrét újraszámolás megőrzött eredménye; az export nem futtat új replayt.",
+    "numeric_mode": "RECOMPUTED_ACTUAL_NUMERICAL_MODELS",
+    "original_math_engine_unchanged": true,
+    "original_math_sha256": "d7a25d3d3ba0035918d8760935f3df49d9dfbbb31c7173af285d7e25d2c5100c",
+    "state": "RECORDED_PASS"
+  },
+  "retained_cache_shadow_evidence_id": "E-2903735f7152d2",
+  "retained_cache_shadow_hash_bound": true,
+  "retained_cache_shadow_publication_hash_bound": true,
+  "retained_cache_shadow_source_attempt": "followup-v5",
+  "selected_source_files_sha256": {
+    "src/goal_analysis/agents/astra_review.py": "05ee7ef4a1197886039fe23910cd461e2093700a2c9f390d0b33a5cc92ed8395",
+    "src/goal_analysis/config/daily_223_live.py": "609f94e998dbc904e7379df532fb746e48b30837e0fe195cd976dcdd30072a50",
+    "src/goal_analysis/engine/daily_223.py": "d7a25d3d3ba0035918d8760935f3df49d9dfbbb31c7173af285d7e25d2c5100c",
+    "tests/test_astra_compact_wire.py": "046a37ae5dcdfb3215445556729bc519d7796ae6a0dbd9172ba9818ba243fcee"
+  },
+  "source_change_limit": "Későbbi jóváhagyott fejlesztés eltérhet az N35-forrástól; a régi teszt nem az új forrás tesztje.",
+  "targeted": {
+    "duration_seconds": 15.298,
+    "errors": 0,
+    "failures": 0,
+    "junit_cases": 178,
+    "skipped": 0,
+    "state": "PARSED_PASS"
+  },
+  "wire_compaction": {
+    "acceptance_hash_bound": true,
+    "at": "2026-10-23T22:29:22.652559+00:00",
+    "candidate_count": 30,
+    "canonical_content_sha256": "bc62a5a75b3e6cccf7745bc1a33e3ae8b6cad7c700f6db4d49093016607d7519",
+    "compact_bytes": 353816,
+    "compact_wire_sha256": "08fcf667bcd023f3447fbc5c690f440ffdefb9e6a8b4f109c7575073c62e8453",
+    "context_count": 16,
+    "default_bytes": 372320,
+    "evidence_id": "E-d1b4bbec3296ab",
+    "historical_feedback_rows": 3863,
+    "ledger_mutations": 0,
+    "ledger_unchanged_rows": 3887,
+    "limit": "A veszteségmentes offline javítás és a V5 FAILED megőrzése önmagában nem új publikáció.",
+    "model_requests": 0,
+    "new_successful_publication_proven": false,
+    "proof_sha256": "aa8e3bb5f483f24c9ee1413822db16b32182c38b4a531e9779dc533320a78112",
+    "provider_requests": 0,
+    "publication_hash_bound": true,
+    "recorded_checks": {
+      "failed_archive_files_unchanged": true,
+      "failed_v5_history_verified": true,
+      "failure_reproduced": true,
+      "lossless_roundtrip": true,
+      "not_a_new_publication": true,
+      "recorded_status": true,
+      "same_actual_candidates": true,
+      "same_actual_contexts": true,
+      "same_budget": true,
+      "same_canonical_content": true,
+      "same_compact_wire": true,
+      "same_failed_input_bytes": true,
+      "same_historical_rows": true,
+      "same_lossless_wire_bytes": true,
+      "same_retained_ledger_rows": true,
+      "source_after_frozen_bound": true,
+      "source_before_bound": true,
+      "source_changed_only_as_recorded": true,
+      "specific_failed_run": true,
+      "zero_requests_and_mutations": true
+    },
+    "recorded_repair_verified": true,
+    "required_for_attempt": true,
+    "run_id": "2026-10-24-104c8070ef82",
+    "state": "RECORDED_REPAIR_VERIFIED",
+    "status": "ACTUAL_RETAINED_INPUT_LOSSLESS_WIRE_REPAIR_VERIFIED",
+    "unchanged_budget_bytes": 360000
+  },
+  "worker_last_recorded_state": {
+    "at": "2026-10-23T23:25:00.006982+00:00",
+    "automatic_retry": false,
+    "status": "PUBLICATION_VERIFIED_RUNTIME_RESTORE_AND_REVIEW_REQUIRED"
+  }
+}

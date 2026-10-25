@@ -1,0 +1,492 @@
+{
+  "consumer_scope_limit": "A report.tickets kötése nem igazolja automatikusan a 7.4/8.6 minden profilját.",
+  "new_publication": {
+    "accepted_source_unchanged": true,
+    "actual_context_sources_reconstructed": true,
+    "actual_model_usage": {
+      "cached_tokens": 654464,
+      "cost_amount": null,
+      "cost_currency": "USD",
+      "elapsed_seconds": 510.43,
+      "input_tokens": 1019956,
+      "output_tokens": 32861,
+      "reasoning_tokens": 692,
+      "requests": 4,
+      "total_tokens": 1052817,
+      "web_search_calls": 7
+    },
+    "archive_bytes_match_physical_proof": true,
+    "archive_evidence_id": "E-a84e25723c45e4",
+    "archive_exactly_equals_ledger": true,
+    "at": "2026-10-23T23:24:59.712506+00:00",
+    "construction_status": "PARTIAL",
+    "context_scope": {
+      "as_of": "2026-10-23T23:13:09.362076+00:00",
+      "category_counts": [
+        {
+          "category": "players",
+          "count": 40,
+          "status": "SOURCED"
+        },
+        {
+          "category": "rotation",
+          "count": 40,
+          "status": "UNKNOWN"
+        },
+        {
+          "category": "schedule",
+          "count": 22,
+          "status": "SOURCED"
+        },
+        {
+          "category": "schedule",
+          "count": 18,
+          "status": "UNKNOWN"
+        },
+        {
+          "category": "travel",
+          "count": 1,
+          "status": "SOURCED"
+        },
+        {
+          "category": "travel",
+          "count": 39,
+          "status": "UNKNOWN"
+        },
+        {
+          "category": "weather",
+          "count": 4,
+          "status": "SOURCED"
+        },
+        {
+          "category": "weather",
+          "count": 36,
+          "status": "UNKNOWN"
+        },
+        {
+          "category": "xg",
+          "count": 40,
+          "status": "SOURCED"
+        }
+      ],
+      "fixture_count": 40,
+      "limits": [
+        "Üres sérüléslista nem teljes egészséges keret.",
+        "Egyoldali xG nem teljes kétcsapatos fedés.",
+        "Predicted XI nem confirmed XI.",
+        "SOURCED nem automatikus döntési használat vagy prediktív javulás."
+      ],
+      "semantics": {
+        "confirmed_xi": 0,
+        "players_empty_only": 7,
+        "players_nonempty": 33,
+        "predicted_xi": 29,
+        "xg_bilateral": 28,
+        "xg_unilateral": 12
+      }
+    },
+    "cost_unknown": true,
+    "date": "2026-10-24",
+    "evidence_id": "E-5b9610c849a4e4",
+    "lifecycle_rules_and_events_verified": true,
+    "lossless_wire_compaction_verified": true,
+    "pre_n35_row_count": 3816,
+    "pre_n35_rows_removed_or_changed": 0,
+    "prior_failed_attempt_is_successful_publication": false,
+    "prior_failed_attempt_preserved": "2026-10-24-104c8070ef82",
+    "prior_proof_files_unchanged": true,
+    "prior_row_count": 3887,
+    "prior_snapshot_content_or_hash_changes": 0,
+    "proof_scope": "report.tickets; not blanket acceptance of all recommendation/model/DRAFT/club consumers",
+    "quote_receipts_are_not_provider_quote_clocks": true,
+    "real_wager_placed": false,
+    "recommendation_scope": [
+      {
+        "declared_exact_source_cited_review_legs": 3,
+        "legs": 3,
+        "playable": false,
+        "profile_id": "daily223",
+        "publication_scope": "LIVE",
+        "status": "REVIEWED"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 6,
+        "legs": 6,
+        "playable": false,
+        "profile_id": "kronikas",
+        "publication_scope": "LIVE",
+        "status": "REVIEWED"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 6,
+        "playable": false,
+        "profile_id": "ritmusor",
+        "publication_scope": "LIVE",
+        "status": "DRAFT"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 6,
+        "playable": false,
+        "profile_id": "parharcmester",
+        "publication_scope": "LIVE",
+        "status": "DRAFT"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 6,
+        "playable": false,
+        "profile_id": "orszem",
+        "publication_scope": "LIVE",
+        "status": "DRAFT"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 3,
+        "playable": false,
+        "profile_id": "merlin",
+        "publication_scope": "LIVE",
+        "status": "DRAFT"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 0,
+        "playable": false,
+        "profile_id": "h1_over05",
+        "publication_scope": "LIVE",
+        "status": "ABSTAINED"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 3,
+        "playable": false,
+        "profile_id": "gauss",
+        "publication_scope": "LIVE",
+        "status": "MODEL_READY"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 3,
+        "playable": false,
+        "profile_id": "kepler",
+        "publication_scope": "LIVE",
+        "status": "MODEL_READY"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 3,
+        "playable": false,
+        "profile_id": "laplace",
+        "publication_scope": "PAPER_AUDITION",
+        "status": "MODEL_READY"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 0,
+        "playable": false,
+        "profile_id": "tipster_bastya_bence",
+        "publication_scope": "PAPER_AUDITION",
+        "status": "ABSTAINED"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 0,
+        "playable": false,
+        "profile_id": "tipster_golvadasz_lili",
+        "publication_scope": "PAPER_AUDITION",
+        "status": "ABSTAINED"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 4,
+        "playable": false,
+        "profile_id": "tipster_hazai_mark",
+        "publication_scope": "PAPER_AUDITION",
+        "status": "READY"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 0,
+        "playable": false,
+        "profile_id": "tipster_vandor_zora",
+        "publication_scope": "PAPER_AUDITION",
+        "status": "ABSTAINED"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 0,
+        "playable": false,
+        "profile_id": "tipster_remi_doma",
+        "publication_scope": "PAPER_AUDITION",
+        "status": "ABSTAINED"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 3,
+        "playable": false,
+        "profile_id": "tipster_csendes_mira",
+        "publication_scope": "PAPER_AUDITION",
+        "status": "READY"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 0,
+        "playable": false,
+        "profile_id": "tipster_dupla_aron",
+        "publication_scope": "PAPER_AUDITION",
+        "status": "ABSTAINED"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 4,
+        "playable": false,
+        "profile_id": "tipster_archiv_nora",
+        "publication_scope": "PAPER_AUDITION",
+        "status": "READY"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 4,
+        "playable": false,
+        "profile_id": "tipster_forma_soma",
+        "publication_scope": "PAPER_AUDITION",
+        "status": "READY"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 0,
+        "playable": false,
+        "profile_id": "tipster_konszenzus_vera",
+        "publication_scope": "PAPER_AUDITION",
+        "status": "ABSTAINED"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 0,
+        "playable": false,
+        "profile_id": "tipster_ertek_milan",
+        "publication_scope": "PAPER_AUDITION",
+        "status": "ABSTAINED"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 3,
+        "playable": false,
+        "profile_id": "tipster_rovid_lotti",
+        "publication_scope": "PAPER_AUDITION",
+        "status": "READY"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 5,
+        "playable": false,
+        "profile_id": "tipster_fuzo_oszkar",
+        "publication_scope": "PAPER_AUDITION",
+        "status": "READY"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 4,
+        "playable": false,
+        "profile_id": "tipster_szines_reka",
+        "publication_scope": "PAPER_AUDITION",
+        "status": "READY"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 0,
+        "playable": false,
+        "profile_id": "tipster_fek_tade",
+        "publication_scope": "PAPER_AUDITION",
+        "status": "ABSTAINED"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 4,
+        "playable": false,
+        "profile_id": "tipster_golterkep_emese",
+        "publication_scope": "PAPER_AUDITION",
+        "status": "READY"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 0,
+        "playable": false,
+        "profile_id": "tipster_meresz_hunor",
+        "publication_scope": "PAPER_AUDITION",
+        "status": "ABSTAINED"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 4,
+        "playable": false,
+        "profile_id": "tipster_pajzs_dorka",
+        "publication_scope": "PAPER_AUDITION",
+        "status": "READY"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 0,
+        "playable": false,
+        "profile_id": "tipster_roham_levi",
+        "publication_scope": "PAPER_AUDITION",
+        "status": "ABSTAINED"
+      },
+      {
+        "declared_exact_source_cited_review_legs": 0,
+        "legs": 4,
+        "playable": false,
+        "profile_id": "tipster_stabil_irma",
+        "publication_scope": "PAPER_AUDITION",
+        "status": "READY"
+      }
+    ],
+    "report_sha256": "d6eddcdea597a5267c99d8d14c318d35ebb14faabd0f095f46fe049e2c761a72",
+    "retained_cache_shadow_sha256": "4061d080caa10b92f9f3487595f963c66ffc0514a84d2106332c20e0e5648d01",
+    "run_id": "2026-10-24-449dc2b4c80d",
+    "selected_leg_bindings": [
+      {
+        "cited_categories": [
+          "players",
+          "xg",
+          "schedule"
+        ],
+        "fixture_id": "the_stats_api:mt_155865446",
+        "profile_id": "daily223",
+        "review_binding": "EXACT_SELECTED_LEG_REVIEW_BOUND"
+      },
+      {
+        "cited_categories": [
+          "players",
+          "xg",
+          "schedule"
+        ],
+        "fixture_id": "the_stats_api:mt_733746321",
+        "profile_id": "daily223",
+        "review_binding": "EXACT_SELECTED_LEG_REVIEW_BOUND"
+      },
+      {
+        "cited_categories": [
+          "players",
+          "xg",
+          "schedule"
+        ],
+        "fixture_id": "the_stats_api:mt_466286955",
+        "profile_id": "daily223",
+        "review_binding": "EXACT_SELECTED_LEG_REVIEW_BOUND"
+      }
+    ],
+    "selected_leg_count": 3,
+    "selected_legs_all_bound": true,
+    "selected_legs_all_have_cited_sources": true,
+    "source_cited_leg_count": 3,
+    "state": "RETAINED_PHYSICAL_PROOF_ARCHIVE_MATCH",
+    "ticket_snapshot_hashes_verified": true,
+    "ticket_snapshots_exactly_equal_archive": true,
+    "tickets": 1,
+    "wire_compaction_proof_sha256": "aa8e3bb5f483f24c9ee1413822db16b32182c38b4a531e9779dc533320a78112",
+    "xg_cache_repair_verified": true
+  },
+  "predictive_gain_proven": false,
+  "prior_v4_shadow": {
+    "at": "2026-10-23T20:21:12.620457+00:00",
+    "mode": "SHADOW_NONPUBLISHING",
+    "new_probability_weights": false,
+    "predictive_gain_proven": false,
+    "published": false,
+    "same_base_candidates_prices_history_feedback_model_effort": true,
+    "source_context_only_addition": true,
+    "sourced_category_assessments_considered_and_cited": 90
+  },
+  "prior_v4_shadow_usage": {
+    "context": {
+      "cached_tokens": 0,
+      "cost_amount": null,
+      "cost_currency": "USD",
+      "elapsed_seconds": 251.47,
+      "input_tokens": 144622,
+      "output_tokens": 20560,
+      "reasoning_tokens": 173,
+      "requests": 1,
+      "total_tokens": 165182,
+      "web_search_calls": 0
+    },
+    "control": {
+      "cached_tokens": 0,
+      "cost_amount": null,
+      "cost_currency": "USD",
+      "elapsed_seconds": 142.91,
+      "input_tokens": 64362,
+      "output_tokens": 8099,
+      "reasoning_tokens": 108,
+      "requests": 1,
+      "total_tokens": 72461,
+      "web_search_calls": 0
+    }
+  },
+  "retained_cache_shadow": {
+    "actual_original_sources_reconstructed": true,
+    "both_team_xg_attached_before_review": true,
+    "cache_raw_observation_witness_receipt_rows_unchanged": true,
+    "mode": "SHADOW_OFFLINE_RECONSTRUCTION",
+    "model_requests": 0,
+    "new_receipts_created": 0,
+    "old_ledger_rows_unchanged": 3863,
+    "original_recorded_cutoff": "2026-10-23T21:11:30.464250+00:00",
+    "original_run_id": "2026-10-24-40705b1ef804",
+    "provider_requests": 0,
+    "published": false,
+    "same_actual_fixture_mapping_prices_and_cutoff": true,
+    "verified_at": "2026-10-23T21:36:12.278698+00:00"
+  },
+  "scope": "separate prior v4 shadow and actual per-publication scopes",
+  "wire_compaction": {
+    "acceptance_hash_bound": true,
+    "at": "2026-10-23T22:29:22.652559+00:00",
+    "candidate_count": 30,
+    "canonical_content_sha256": "bc62a5a75b3e6cccf7745bc1a33e3ae8b6cad7c700f6db4d49093016607d7519",
+    "compact_bytes": 353816,
+    "compact_wire_sha256": "08fcf667bcd023f3447fbc5c690f440ffdefb9e6a8b4f109c7575073c62e8453",
+    "context_count": 16,
+    "default_bytes": 372320,
+    "evidence_id": "E-d1b4bbec3296ab",
+    "historical_feedback_rows": 3863,
+    "ledger_mutations": 0,
+    "ledger_unchanged_rows": 3887,
+    "limit": "A veszteségmentes offline javítás és a V5 FAILED megőrzése önmagában nem új publikáció.",
+    "model_requests": 0,
+    "new_successful_publication_proven": false,
+    "proof_sha256": "aa8e3bb5f483f24c9ee1413822db16b32182c38b4a531e9779dc533320a78112",
+    "provider_requests": 0,
+    "publication_hash_bound": true,
+    "recorded_checks": {
+      "failed_archive_files_unchanged": true,
+      "failed_v5_history_verified": true,
+      "failure_reproduced": true,
+      "lossless_roundtrip": true,
+      "not_a_new_publication": true,
+      "recorded_status": true,
+      "same_actual_candidates": true,
+      "same_actual_contexts": true,
+      "same_budget": true,
+      "same_canonical_content": true,
+      "same_compact_wire": true,
+      "same_failed_input_bytes": true,
+      "same_historical_rows": true,
+      "same_lossless_wire_bytes": true,
+      "same_retained_ledger_rows": true,
+      "source_after_frozen_bound": true,
+      "source_before_bound": true,
+      "source_changed_only_as_recorded": true,
+      "specific_failed_run": true,
+      "zero_requests_and_mutations": true
+    },
+    "recorded_repair_verified": true,
+    "required_for_attempt": true,
+    "run_id": "2026-10-24-104c8070ef82",
+    "state": "RECORDED_REPAIR_VERIFIED",
+    "status": "ACTUAL_RETAINED_INPUT_LOSSLESS_WIRE_REPAIR_VERIFIED",
+    "unchanged_budget_bytes": 360000
+  }
+}
