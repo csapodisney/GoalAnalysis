@@ -1,6 +1,6 @@
 # Grok közös csomag — veszteségmentes javítás, elfogadás folyamatban
 
-A két korábban túlméretes csomag a bekötött helyi adatúton és a változatlan szigorú szolgáltatói ellenőrzésen is átmegy. A saját teljes **5730 teszt és mindhárom új numerikus replay már PASS**, külön root visszaolvasással. Az egyszeri, holnapi célú normál futás véget ért: egy READY DAILY készült, de a teljes háttéradat-felhasználási ellenőrzés és a Grok csomagépítése megállt. Saját helyreállítás nincs. Ez még nem új pozitív Grok-válasz vagy projektlezárás.
+A veszteségmentes csomag- és célnapjavítás saját **5742 teljes tesztje és mindhárom új numerikus replay PASS**, külön fizikai root visszaolvasással. A javított forrás egyszeri új normál futása már fut; új mentett READY DAILY, pozitív Grok és saját helyreállítás ebből még nincs igazolva. A korábbi5730-as kör és annak megállt publikációs bizonyítéka változatlanul megmarad.
 
 | Megőrzött valódi futás | Régi csomag | Új csomag | Szolgáltatói ellenőrzés után | Profil / meccs / választás |
 |---|---:|---:|---:|---:|
@@ -62,3 +62,9 @@ Az új forráson már fut a saját **5742 teljes teszt + 3 új tényleges numeri
 A saját új **három tényleges replay mindhárom×8ellenőrzése PASS**, a modellhash-ek és97/33/1tanítási adatmanifeszt külön fizikai visszaolvasásával. Az5742-es teljes kör még fut. A már meglévő külön követők csak saját pozitív teljes elfogadás és külön fizikai visszaolvasás után indíthatnak egyszer új normál futást, majd kizárólag pozitív saját publikáció után helyreállítást; automatikus retry nincs.
 
 A Grok-scope publikációs ellenőrzése13külön megőrzöttinput/tamper kontrollal tesztelt: minden láb eredeti quote-, kontextus-, tényleges kérés/válasz- és ledgerkötése kötelező. A korábbi N2-reader mindenlábon legalább1forrásolt háttérkategóriát megkövetelő feltétele külön rendelkezésreállási ellenőrzéssé válik: mind6kategória pontosan egyszer, a SOURCED ténylegesen considered+cited, az UNKNOWN mindkettőre false. Minden más eredeti reader AST/assert megmarad, a productionREADY-kapu változatlan. Az új riport lábanként külön közli a valóban felhasznált és az ismeretlen adatokat. Ez nem az eredeti megállt publikációs proof átírása vagy teljes háttéradat-lefedettség állítása.
+
+## Saját új teljes tesztelfogadás — 2026-10-25 23:18 UTC
+
+**5742 PASS,44warning,2601,34másodperc;316célzott/10adapter/3újreplay×8ellenőrzés PASS.** A külön root visszaolvasás5742fizikai XML-esetet, a tanúsítvány/input/SHA-egyezést,1216forrásfájlt,5382régi archívum-/proof-fájlt és mind8feltöltött módosított forrás/testblobot ellenőrzött. Nincs új általános numerikus riporteltérés vagy aranyreferencia-módosítás.
+
+A meglévő követő23:18UTCután egyszer elindította a szokásos normál CLI-t2026-10-26célra. Az új publikáció, actualGrok-válasz és runtime még külön fizikai bizonyítást igényel. A publikációs és lezáró követők egyszeri, véges keretben dolgoznak, újrapróba nélkül; új teljes tesztet vagy második generálást nem indítunk. A135kész/32nyitott munkalistaszám ettől nem változott, a projekt nem kész.
