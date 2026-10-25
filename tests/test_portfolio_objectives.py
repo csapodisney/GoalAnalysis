@@ -2,7 +2,7 @@ from goal_analysis.portfolio_objectives import assess_objectives
 
 
 def rec(profile, price, legs=True):
-    return {"profile_id": profile, "combined_price": price, "status": "READY",
+    return {"profile_id": profile, "combined_price": price, "status": "READY", "publication_scope": "LIVE",
             "legs": [{"fixture_id": profile}] if legs else []}
 
 

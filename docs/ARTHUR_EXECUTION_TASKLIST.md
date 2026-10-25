@@ -330,8 +330,10 @@ romló Brier/log-loss esetén az új hatás SHADOW marad.
   - [x] **8.6.N1** Rögzített profilkapuk melletti, korlátos újmeccs-lefedettségi keresés SHADOW összevetése; változatlan éles opciók és forráskötött bizonyíték.
     - 2026-10-22:N1SHADOW kész;8.6LIVE nyitott.20/40meccses kontrollban12→20/40lefedettség változatlan128/512kerettel, szabálylazítás nélkül.4valós mentett input/80klubkártya és minden alternatíva OFF/SHADOW döntése pontosan egyezik;7profil/18régi meccs 27új próba-megjelenése,0elveszett.21új/281célzott/3758teljesPASS+3újvalósreplayPASS. DAILY/3745ledger stabil,API/LLM0. Riport:`C:/AI-Work/GoalAnalysis/artifacts/roadmap-execution-20261020/8.6.N1/REPORT.md`.
   - [x] **8.6.N2** Explicit activation of bounded club fixture-coverage alternatives under unchanged source/profile/128-beam/512-option gates; preserve baseline best, source-bound context review and original DAILY/numeric mathematics. Own retained-input SHADOW/ACTIVE, full suite, three actual replays and new publication/runtime proof before closure.
-- [x] **8.7** Ha nincs húsz bizonyított szelvény, a rendszer kevesebbet ad és
+- [ ] **8.7** Ha nincs húsz bizonyított szelvény, a rendszer kevesebbet ad és
   `CAPACITY_SHORTFALL` jelentést készít a hiány okáról.
+  - [ ] **8.7.N1** Javított, döntést nem módosító LIVE/PAPER kapacitáselszámolás: READY DAILY pontos REVIEWED→mentett ticket hídja, külön PAPER és tényleges LIVE ticket darabszám; nincs töltelék, kapulazítás vagy régi snapshotátírás. Saját valós SHADOW/teszt/replay és adatmegőrző runtime-bizonyítás.
+    - 2026-10-25: a szülő újranyitva a pontos számlálási hiba miatt. A friss egy READY DAILY az ajánlásnézetben REVIEWED, ezért a régi számláló0; a PAPER és LIVE összemosódott. Négy megőrzött valós riport SHADOW-projekciója és28célzott teszt/Ruff PASS. Saját teljes5673+3tényleges numerikus replay fut, nem kész. Csak allokáció utáni diagnosztika változik,0új sport/LLM/fit/ledgerírás a próbában.
 - [x] **8.8** Minden szelvényhez géppel ellenőrizhető bizonyítékcsomag:
   odds, modell, forma, xG, játékos, kontextus és forráshiányok.
 - [ ] **8.9** Portfólió-szintű becsült találati eloszlás és várható napi

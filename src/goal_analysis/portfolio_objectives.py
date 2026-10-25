@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import math
 
-VERSION = "arthur-portfolio-objectives-v1"
+from goal_analysis.portfolio_capacity import classify
+
+VERSION = "arthur-portfolio-objectives-v2-live-paper"
 MIN_READY = 20
 MAX_READY = 30
 MIN_NON_DAILY_PRICE = 10.0
@@ -21,9 +23,9 @@ def _price(item):
 
 def assess_objectives(report):
     """Measure final recommendations without inventing future outcomes."""
-    recommendations = [item for item in report.get("recommendations", [])
-                       if isinstance(item, dict) and item.get("legs")]
-    ready = [item for item in recommendations if item.get("status") == "READY"]
+    capacity = classify(report)
+    ready = capacity["live_cards"]
+    paper = capacity["paper_cards"]
     non_daily = [item for item in ready if item.get("profile_id") != "daily223"]
     below, above, missing = [], [], []
     for item in non_daily:
@@ -39,7 +41,20 @@ def assess_objectives(report):
     return {
         "version": VERSION,
         "ready_recommendations": count,
-        "non_ready_recommendations_with_legs": len(recommendations) - count,
+        "ready_live_recommendations": count,
+        "ready_paper_recommendations": len(paper),
+        "ready_recommendations_all_scopes": count + len(paper),
+        "ready_live_profile_ids": sorted(item["profile_id"] for item in ready),
+        "ready_paper_profile_ids": sorted(item["profile_id"] for item in paper),
+        "non_ready_recommendations_with_legs": capacity["nonempty_recommendations"] - count - len(paper),
+        "capacity_count_scope": capacity["capacity_count_scope"],
+        "published_ready_live_tickets": capacity["published_ready_live_tickets"],
+        "published_ready_live_ticket_ids": capacity["published_ready_live_ticket_ids"],
+        "excluded_nonempty_recommendations": capacity["excluded_nonempty_recommendations"],
+        "ambiguous_ticket_ids": capacity["ambiguous_ticket_ids"],
+        "paper_contributes_to_live_target": False,
+        "readiness_or_publication_rights_changed": False,
+        "decision_effect": "NONE",
         "target_ready_range": {"minimum": MIN_READY, "maximum": MAX_READY},
         "capacity_status": ("BELOW_TARGET" if count < MIN_READY else
                             "ABOVE_TARGET" if count > MAX_READY else "IN_TARGET"),

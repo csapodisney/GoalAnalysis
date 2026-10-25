@@ -988,9 +988,12 @@ def run_portfolio(
     if report["portfolio_objectives"]["capacity_shortfall"]:
         report.setdefault("diagnostics", []).append({
             "code": "CAPACITY_SHORTFALL",
-            "message": "Kevesebb mint 20 bizonyított READY ajánlás készült; "
-                       "a rendszer nem adott gyenge töltelékszelvényt.",
+            "message": "Kevesebb mint 20 READY LIVE ajánlás készült; "
+                       "a PAPER ajánlatok külön szerepelnek, nem töltik ki az éles hiányt. "
+                       "A rendszer nem adott gyenge töltelékszelvényt.",
             "missing_recommendations": report["portfolio_objectives"]["capacity_shortfall"],
+            "ready_live_recommendations": report["portfolio_objectives"]["ready_live_recommendations"],
+            "ready_paper_recommendations": report["portfolio_objectives"]["ready_paper_recommendations"],
         })
     from goal_analysis.strategy_provenance import attach_strategy_provenance
 

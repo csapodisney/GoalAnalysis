@@ -1,0 +1,83 @@
+{
+  "as_of_utc": "2026-10-25T19:07:50.426517+00:00",
+  "task": "8.7.N1",
+  "status": "OWN_TARGET28_SHADOW4_PASS_FULL5673_REPLAY3_RUNNING",
+  "source_files": 1212,
+  "old_ledger_rows": 3995,
+  "own_targeted_tests_passed": 28,
+  "own_full_expected": 5673,
+  "own_full_passed": false,
+  "own_actual_replays_required": 3,
+  "own_actual_replays_passed": false,
+  "ruff_passed": true,
+  "source_sha256": {
+    "src/goal_analysis/jobs/portfolio.py": "e731b91db588a2b5655988ee48d4d6d7a2f9d6d187ab1cfd200363bc14c565df",
+    "src/goal_analysis/portfolio_capacity.py": "dad6aef29fd57e84e3dc3793412ed7fa5bc5bd650923ac5b4ecb60a3edfe87c2",
+    "src/goal_analysis/portfolio_objectives.py": "d7426ddf0a83442781052599d6f101565f0723edfa89a856e7cdfa97e4a98a70",
+    "tests/test_portfolio_capacity.py": "3abedbe4d37eb0a551165912e8941dced40ca8dddb1698da3a121470a547e2f2",
+    "tests/test_portfolio_objectives.py": "bacdb80d8ce55f7b19918c6e26b04495822614ea2db05852b91fae71ec72a343"
+  },
+  "retained_shadow_cases": [
+    {
+      "run_id": "2026-10-25-f20dd091b16b",
+      "archive_sha256": "c64224a4e485c20ec415c75c0d51e22d3bcedcbed4867d68c471b018693fd017",
+      "old_literal_READY_count": 11,
+      "shadow_live_ready_recommendations": 4,
+      "shadow_paper_ready_recommendations": 12,
+      "shadow_published_ready_live_tickets": 2,
+      "source_tickets_and_recommendations_unchanged": true,
+      "new_actual_model_responses_claimed": false
+    },
+    {
+      "run_id": "2026-10-25-3472f0b6fb86",
+      "archive_sha256": "fc9f57027dc8e2c0a15e1cf1da654681217d7c908e16a17f23979a6c14c7b30c",
+      "old_literal_READY_count": 1,
+      "shadow_live_ready_recommendations": 4,
+      "shadow_paper_ready_recommendations": 2,
+      "shadow_published_ready_live_tickets": 2,
+      "source_tickets_and_recommendations_unchanged": true,
+      "new_actual_model_responses_claimed": false
+    },
+    {
+      "run_id": "2026-10-25-0bf89356c40d",
+      "archive_sha256": "4d11747249892a7adc88f4ee4452691c558fd8ebe8281fc50e011620c24c8a8f",
+      "old_literal_READY_count": 0,
+      "shadow_live_ready_recommendations": 1,
+      "shadow_paper_ready_recommendations": 0,
+      "shadow_published_ready_live_tickets": 1,
+      "source_tickets_and_recommendations_unchanged": true,
+      "new_actual_model_responses_claimed": false
+    },
+    {
+      "run_id": "2026-10-25-f14ad05e1ce7",
+      "archive_sha256": "6f48d584cf93823ea7be560189b631d6f9131c2d5980f5b0484312073ea1e1c9",
+      "old_literal_READY_count": 0,
+      "shadow_live_ready_recommendations": 1,
+      "shadow_paper_ready_recommendations": 0,
+      "shadow_published_ready_live_tickets": 1,
+      "source_tickets_and_recommendations_unchanged": true,
+      "new_actual_model_responses_claimed": false
+    }
+  ],
+  "shadow_proof_sha256": "b20e2edefc7d467a2d920b617834405afaf724aea1e6911f12d70b9927a3f32c",
+  "integration_proof_sha256": "2a57ad473a6a021a52ef049b26f3f91ed5c96fb926428543a396d26700e72205",
+  "target_xml_sha256": "194638770d036186b9ab388e6a54cdad12b80d5079d4b08d226dd7a848ec40b2",
+  "pipeline_ast_unchanged_except_final_diagnostic": true,
+  "decision_effect": "NONE",
+  "new_provider_llm_fit_ledger_writes_in_probe": 0,
+  "original_snapshots_unchanged": true,
+  "new_normal_generation_started": false,
+  "runtime_restored_on_this_new_source": false,
+  "n2_scoped_closure_remote_sha": "3137e0ac55a7be185b5a555ce8df6f66669c2795",
+  "project_complete": false,
+  "original_deadline_met": false,
+  "daily_enabled": false,
+  "legacy_enabled": false,
+  "task_counts": {
+    "numbered_items": 166,
+    "checked": 135,
+    "open": 31,
+    "parent_8_7_reopened": true,
+    "child_8_7_N1_added": true
+  }
+}
