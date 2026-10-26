@@ -20,7 +20,9 @@ A külön row-budget jelölt 11 595 forrásborítékot veszteségmentesen megőr
 [Aktuális forrás és folyamatban lévő ellenőrzés](status/2026-10-26-native-history-row-budget/SOURCE-VALIDATION-PENDING.md).
 Saját natív row-budget scope: 5894 teljes / 89 célzott / 10 adapter / 3 új actual replay ×8 PASS; root/runtime/Daily ON/legacy OFF igazolt. Nem teljes 5 éves/PIT-fedés vagy LIVE-promóció.
 [Lezárt saját bizonyíték és aktuális 215](status/2026-10-26-native-history-row-budget/REPORT-CLOSED.md).
-Következő egyetlen pont: historical-availability-producer-contract, először csak olvasó/artifact kontraktus; nincs új capture/importbatch/HTTP-claim.
+A producer kontraktusának RO/pure előpróbája kész: 19 oldal/271 verzió pontos; 22 kontroll PASS. A bizonylatok továbbra is hiányoznak, új írás nem történt; generikus kurzor 88 idegen verziót is bevonna.
+[Köztes producerbizonyíték](status/2026-10-26-historical-availability-producer/REPORT-INTERIM.md).
+Következő egyetlen pont: historical-availability-producer-contract pontos-oldal/kulcslista íróhatára és minimális sink-integrációja; új éles befogadás még nem igazolt/engedélyezett.
 
 Cél: a rendelkezésre álló, mérkőzés előtt ismert adatok tényleges és
 ellenőrizhető felhasználása a szelvényképzésben, a meglévő működő logikák

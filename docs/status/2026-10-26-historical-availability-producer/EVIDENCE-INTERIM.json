@@ -1,0 +1,100 @@
+{
+  "at": "2026-10-26T13:56:15.582721+00:00",
+  "task": "historical-availability-producer-contract",
+  "status": "INTERIM_READONLY_CONTRACT_AND_PURE_PLANNER_ROOT_VERIFIED_PRODUCER_NOT_IMPLEMENTED",
+  "snapshot_cutoff": "2026-10-26T13:43:07.563665+00:00",
+  "native_canonical_versions": 16525,
+  "native_ids": 16129,
+  "versions_without_result_receipt": 14769,
+  "current_strict_result_reader": {
+    "as_of": "2026-10-26T13:43:07.563665+00:00",
+    "matches": 1655,
+    "matches_sha256": "38149878b001aa02c25baaad10a1e692af4d626d8ff479ee12cc9a0b678f7ef7",
+    "lineage_sha256": "74249a6bb14bc871806d341636bfc3b833674b51b8619846eb2c973d675c0e93",
+    "versions_scanned": 16525,
+    "gaps": {
+      "RESULT:MISSING_AVAILABILITY_RECEIPT": 14474,
+      "MISSING_EXPLICIT_HALF_SCORE": 1655
+    },
+    "halfscore_unknown": 1655
+  },
+  "retained_pages": 19,
+  "retained_canonical_versions": 271,
+  "missing_raw_receipts": 19,
+  "missing_result_receipts": 271,
+  "physical_raw_bytes": 205390,
+  "old_cutoff_results_and_lineage_exact": 1143,
+  "all181old_alias_mismatches_preserved_rejected_receipt_free": true,
+  "pure_controls_passed": 22,
+  "actual_generic_cursor_counterexample": {
+    "first_page_versions": 12,
+    "generic_limit100_rowid_after": 122948,
+    "generic_candidate_versions": 100,
+    "unrelated_extra_versions": 88,
+    "extra_keyset_sha256": "ee5e7cd547d2ca5fbe6561730cc31e069cbb4ed58e641193fdd9e008f99b3ebe",
+    "capture_performed": false,
+    "result": "GENERIC_ROWID_CAPTURE_IS_NOT_EXACT_ONE_PAGE_KEYSET"
+  },
+  "normal_queue_runs_bounded_legacy_sync_before_new_pages": true,
+  "normal_sink_still_has_no_result_availability_admission": true,
+  "producer_no_physical_provenance_bypass_via_blind_result_capture": true,
+  "existing_receipts_before_after_multiset": {
+    "rows": 115729,
+    "namespace_counts": {
+      "result": 109657,
+      "weather": 509,
+      "raw": 5563
+    },
+    "typed_rows_multiset_sha256": "82e08e1014d8ca0ac8cc3e6920273d6cab038aa34099c8c7f1ef3c388d0ab0fa"
+  },
+  "all1233application_source_files_byte_exact": true,
+  "source_bytes_streamed": 244836531,
+  "ledger_rows_before_after_exact": 4087,
+  "production_capture_receipt_import_http_llm_fit_generation_source_test_changes": 0,
+  "new_full_or_actual_replay_runs_for_this_scope": 0,
+  "last_accepted_application_full5894_is_not_new_producer_acceptance": true,
+  "daily_enabled": true,
+  "legacy_enabled": false,
+  "producer_implemented_or_actual_admission_proven": false,
+  "new_receipt_id_or_availability_clock_assigned": false,
+  "five_year_pit_or_model_live_promotion": false,
+  "original215_counts": {
+    "GREEN": 176,
+    "RED": 39
+  },
+  "separate167_worklist": {
+    "closed": 136,
+    "open": 31
+  },
+  "private_physical_evidence": [
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/producer-preflight-proof.json",
+      "sha256": "858baa55ae4d8a3f5018d3c6721f0d463425bf6c8fc775f619f87eb0aeb04dc5"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/independent-readback.json",
+      "sha256": "c90b4239529e4f028eeb8d4533abad59ed4b7ea8e74f0801f3461d1e364c02cd"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/retained-page-plans.json",
+      "sha256": "cf3a24856278c0195dc7bae91065e0fe2a1a8691214f6f5af1204898bf6c895e"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/planner-controls.xml",
+      "sha256": "637a4e40184e58ff1eb218af937b2efabce66db68bcd698f0832d36938736209"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/generic-cursor-keyset-counterexample.json",
+      "sha256": "855b4b72e7996f47471f6e9a501742a5fce02ad2a0e254a5ccaca208e973ef49"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/CONTRACT-ADDENDUM.md",
+      "sha256": "c42edf2e75c8feaacf43fea71e64f9655c23f752c30e50f4d423cd09ae852ee6"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/initial-readonly-helper-failure.json",
+      "sha256": "4455209df79c9bcb8b720d95b0e7614ec18c1d47205a6722fa3799c91eaa49d6"
+    }
+  ],
+  "next_single_point": "Minimum EXACT_PAGE_KEYSET writer/normal_sink implementation design; any production sourceedit needs RootLockOFF and ownnewfull+3actual/runtimeON; no retained capture/import/manualHTTPbatch authorization"
+}
