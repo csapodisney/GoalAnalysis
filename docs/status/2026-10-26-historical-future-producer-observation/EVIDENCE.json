@@ -1,0 +1,178 @@
+{
+  "at": "2026-10-26T16:01:58.240898+00:00",
+  "task": "historical-future-producer-observation-readonly",
+  "status": "READONLY_NORMAL_PRODUCER_SIX_PAGES_VERIFIED_EMPTY_ALIAS_FRONTIER_DIAGNOSED",
+  "snapshot_at": "2026-10-26T15:57:33.683520+00:00",
+  "normal_batch_started_at": "2026-10-26T15:39:08.732204+00:00",
+  "normal_batch_state": "STARTED",
+  "normal_batch_next_attempt_at": "2026-10-26T16:09:08.732204+00:00",
+  "normal_history_authenticated_http200_quota_receipts": 7,
+  "completed_source_exact_pages": 6,
+  "completed_canonical_versions": 308,
+  "completed_raw_availability_witnesses": 6,
+  "completed_result_availability_witnesses": 308,
+  "total_completed_witness_rows": 314,
+  "strict_current_result_reader": {
+    "as_of": "2026-10-26T15:57:33.683520+00:00",
+    "matches": 1963,
+    "matches_sha256": "f8bfe8de61734e98926b0539060c1f0434bbe08dfcb44c235737f54762e35920",
+    "lineage_sha256": "c22cf2f943ee48da33548e92ae1f234da68df59e67cc2df69109fc0a3c178565",
+    "gaps": {
+      "RESULT:MISSING_AVAILABILITY_RECEIPT": 15409,
+      "MISSING_EXPLICIT_HALF_SCORE": 1963
+    },
+    "versions_scanned": 17768,
+    "halfscore_unknown": 1963
+  },
+  "dedicated_http_observation_inventory": [
+    {
+      "content_hash": "bb252eb83b4c32e97e02c02330a5eaf115b01f27637128c4118415a423627208",
+      "exact_dedicated_http_observations": 0,
+      "quota_http200_receipt_is_a_different_contract": true
+    },
+    {
+      "content_hash": "a816b06624f4b090a93b3741cb971a6df7aaaabb130b92ce609fdbe240e5d81f",
+      "exact_dedicated_http_observations": 0,
+      "quota_http200_receipt_is_a_different_contract": true
+    },
+    {
+      "content_hash": "1a78632192c4d8b15b5221302ca70d4bf940a92b794673c7599d2248cc974796",
+      "exact_dedicated_http_observations": 0,
+      "quota_http200_receipt_is_a_different_contract": true
+    },
+    {
+      "content_hash": "141fd41851060f85da0ed8253fa4e309cd1b323431240ebc16b5ed34719af315",
+      "exact_dedicated_http_observations": 0,
+      "quota_http200_receipt_is_a_different_contract": true
+    },
+    {
+      "content_hash": "e7e121099b2b2bdbb9335cd11c42b1b67d8c2d48c7cbfa3e38868b5023b7a162",
+      "exact_dedicated_http_observations": 0,
+      "quota_http200_receipt_is_a_different_contract": true
+    },
+    {
+      "content_hash": "b77fcc8982d55c9ce59ee97f188d65516e665c9cfa15086077dd15e34dffaf79",
+      "exact_dedicated_http_observations": 0,
+      "quota_http200_receipt_is_a_different_contract": true
+    },
+    {
+      "content_hash": "7ba4a5cac5a8056f7e30fc521ec15a5bce445bab7136241c0dee9123f9034834",
+      "exact_dedicated_http_observations": 0,
+      "quota_http200_receipt_is_a_different_contract": true
+    }
+  ],
+  "quota_receipt_not_dedicated_http_or_raw_result_availability": true,
+  "current_gate": "COOLDOWN",
+  "secondary_allowance_not_request_authorization": {
+    "status": "QUOTA_REFRESH_REQUIRED",
+    "requests": 0
+  },
+  "publication_gate": "AVAILABLE",
+  "both_source_activations_current": true,
+  "queue_cursors": {
+    "recent_delta_plan": {
+      "plan_sha256": "c5ef89033f096ae9be15bd01e7539311b227d752b6c53901316e2f86d92947df",
+      "total_query_windows": 20,
+      "cursor": {
+        "page": 1,
+        "plan_sha256": "c5ef89033f096ae9be15bd01e7539311b227d752b6c53901316e2f86d92947df",
+        "query_index": 20,
+        "total_pages": null
+      },
+      "remaining_query_windows_not_fixed_requests": 0
+    },
+    "retained_main_plan": {
+      "plan_sha256": "0a6c448137e20951e4f4b513c33a0758f4075ba433954799b73e4df5a4f5474b",
+      "total_query_windows": 1220,
+      "cursor": {
+        "page": 1,
+        "plan_sha256": "0a6c448137e20951e4f4b513c33a0758f4075ba433954799b73e4df5a4f5474b",
+        "query_index": 617,
+        "total_pages": null
+      },
+      "remaining_query_windows_not_fixed_requests": 603
+    }
+  },
+  "blocked_empty_page": {
+    "physical_bytes": 70,
+    "raw_sha256": "7ba4a5cac5a8056f7e30fc521ec15a5bce445bab7136241c0dee9123f9034834",
+    "data_rows": 0,
+    "total_pages": 0,
+    "actual_pure_preflight_error": "RAW_SOURCE_ALIAS_URL_OR_CLOCK_MISMATCH",
+    "old_first_source_url": "https://api.thestatsapi.com/api/football/matches?competition_id=comp_0406&date_from=2026-07-01&date_to=2026-07-31&sort=-utc_date&status=finished&utc_offset=%2B00%3A00&page=1&per_page=100",
+    "old_first_observed_at": "2026-10-21T22:20:19.056573+00:00",
+    "new_page_url": "https://api.thestatsapi.com/api/football/matches?competition_id=comp_451101&date_from=2024-04-01&date_to=2024-04-30&sort=-utc_date&status=finished&utc_offset=%2B00%3A00&page=1&per_page=100",
+    "new_page_observed_at": "2026-10-26T15:39:19.034814+00:00",
+    "old_raw_receipt_available_at": "2026-10-22T20:14:20.644348+00:00",
+    "old_raw_body_receipt_not_current_page_provenance": true,
+    "canonical_versions_for_current_page": 0,
+    "current_page_once_intent": false,
+    "current_page_witness_operation": false
+  },
+  "cause": "Exact raw alias URL/clock gate runs before empty-page NO_ADMISSION branch; content-addressed common empty body binds old first metadata. Correct witness rejection, but zero-record cursor cannot advance.",
+  "wrapper_observation": "Scheduled wrapper keeps nightly exit code and discards background stdout/exit; LastTaskResult0 is not successful background-batch proof.",
+  "old_cutoff1143_and_prior1655_matches_lineage_exact": true,
+  "retained19raw271result_still_missing": true,
+  "old181alias_mismatches_preserved_rejected_receipt_free": true,
+  "old_receipt_prefix_physically_preserved": 115736,
+  "old_native_version_prefix_physically_preserved": 16832,
+  "source1235_and_ledger4087_before_after_exact": true,
+  "normal_daily_on": true,
+  "legacy_off": true,
+  "own_api_http_llm_fit_gen_receipt_import_app_or_original_test_changes": 0,
+  "not_pit_forecast_training_weather_pair_or_live_promotion": true,
+  "initial_readonly_wrong_global_raw_absence_assert_preserved": true,
+  "original215": {
+    "GREEN": 176,
+    "RED": 39
+  },
+  "separate167": {
+    "closed": 136,
+    "open": 31
+  },
+  "private_physical_evidence": [
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-future-producer-observation-readonly/observation-proof.json",
+      "sha256": "784be183c1dd46f0682ccf086d0f292df0dfacc07d1d94a4a9edc37695366e80"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-future-producer-observation-readonly/independent-readback.json",
+      "sha256": "2f3606edae3a34cc8852d9355d00ef8e85ec2e74793bb3e871a9e734c2a44d31"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-future-producer-observation-readonly/audit_readonly_v2.py",
+      "sha256": "83ebb49a0b1f4c23c15bee29711c2188322dfa468fe8078f08aa842393eb5e84"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-future-producer-observation-readonly/independent_readback.py",
+      "sha256": "fdc1380ade6fc555b8d6099d91af028de30758abb49fe3eec7065e6a45e11bdd"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-future-producer-observation-readonly/baseline-before-v2.json",
+      "sha256": "26ea319ddfebf131fa7f23b69fd05b44e4ef38c3f2b655b18933e10599218df5"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-future-producer-observation-readonly/baseline-after-v2.json",
+      "sha256": "c221a77a752dcc48270c6fe612c9885d4c77fe969c75eed6364b8a9adc583158"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-future-producer-observation-readonly/initial-readonly-raw-receipt-assumption-failure.json",
+      "sha256": "ea4902e9b45393cbf70477a1ca82747d3fc6c6b7e58e0d34cfc12a5e0a623019"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-future-producer-observation-readonly/report-and-identity-readback.json",
+      "sha256": "b19752fc63442b5ed58847264e158d50cd51fe0903c2f7c09731fc0fec63c6d4"
+    }
+  ],
+  "next_single_point": "historical-empty-page-no-admission-contract; ARTIFACT/PURE FIRST, no backfill or HTTP/cached operation retry",
+  "original_report_hash_kinds_freshly_verified": {
+    "at": "2026-10-26T16:03:01.306001+00:00",
+    "run_id": "2026-10-26-cc3b72cd5b81",
+    "physical_report_sha256": "5592bf755cdc07c56969073d711b9c253107877bf53409e2dbe2dce06b7433be",
+    "embedded_report_sha256": "916089cc9a91372873e6cdce61ff768d3930b1658a799cf56c1a09d373c326ce",
+    "full_ledger_json_sha256": "49f87b0c9bba26f497e494c5757500aef0231683d6564a537446ffabb8c99252",
+    "physical_json_equals_original_ledger_snapshot": true,
+    "different_hash_kinds_not_interchanged": true,
+    "production_writes": 0
+  }
+}

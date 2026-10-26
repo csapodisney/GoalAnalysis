@@ -28,7 +28,9 @@ A producer minimális5source/test forrása elkészült:84target/21új/10adapter/
 [Új forrás és folyamatban lévő saját ellenőrzés](status/2026-10-26-historical-availability-producer/REPORT-SOURCE-PENDING.md).
 Saját producer5915full/84target21új/10adapter/Ruff/3NEWactual×8/root/runtime/DailyONlegacyOFF elfogadva. Retained19raw271result nem befogadási batch; öt év/PIT tovább nyitott.
 [Lezárt saját producer-scope](status/2026-10-26-historical-availability-producer/REPORT-CLOSED.md).
-Következő egyetlen pont: historical-future-producer-observation-readonly; csak a normál timer tényleges előrehaladásának leltára, kézi HTTP/receipt/import nélkül.
+A normál producer RO megfigyelése kész:6 teljes oldal308result+6raw witness exact,strict1963; a7. üres oldalon régi raw URL/óra alias miatt megállt. Main617/1220,603windowhátra; nem kézi HTTP-engedély.
+[Normál üzemi bizonyíték és pontos üresoldal-diagnózis](status/2026-10-26-historical-future-producer-observation/REPORT.md).
+Következő egyetlen pont: historical-empty-page-no-admission-contract; artifact/pure üresoldal-kurzor kontraktus, új witness vagy HTTP/retry nélkül.
 
 Cél: a rendelkezésre álló, mérkőzés előtt ismert adatok tényleges és
 ellenőrizhető felhasználása a szelvényképzésben, a meglévő működő logikák
