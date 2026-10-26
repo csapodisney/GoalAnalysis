@@ -1,0 +1,74 @@
+{
+  "at": "2026-10-26T12:04:55.520555+00:00",
+  "task": "native-history-row-budget-contract",
+  "status": "INTERIM_ARTIFACT_CONTRACT_PROVEN_PRODUCTION_IMPLEMENTATION_AND_ACCEPTANCE_PENDING",
+  "retained_cutoff": "2026-10-26T11:13:23.439834+00:00",
+  "raw_occurrences": 11595,
+  "distinct_truth_envelopes": 2622,
+  "selected_mathematical_inputs_exact": 2613,
+  "every_original_alias_reconstructed": 11595,
+  "verified_actual_targets": 5,
+  "unknown_actual_targets_preserved": 2,
+  "original_tests_unchanged_passed": 69,
+  "new_synthetic_controls_passed": 13,
+  "first_candidate_control_failure_preserved": "Hidden nonrepresentative same-record-ID/different-content collision; V2 global identity guard rejects it",
+  "first_reference_helper_failure_preserved": "Missing provider in reconstructed HTTP alias; strict source reader rejected it; V2 supplies the actual explicit provider",
+  "source_files_byte_exact": 1231,
+  "source_bytes_streamed": 244824916,
+  "current_ledger_rows_exact": 4087,
+  "normal_daily_enabled": true,
+  "legacy_daily_enabled": false,
+  "numeric_literals": {
+    "MAX_METADATA": 2000,
+    "MAX_SOURCES": 200,
+    "MAX_ROWS": 10000,
+    "MAX_SOURCE_BYTES": 5000000
+  },
+  "proposed_scan_unit_change_explicit": "10000 distinct truth envelopes plus source200 times page100 raw-work bound; old10000-raw-occurrence policy differs",
+  "sixtyfour_MiB_outer_guard_is_json_file_output_not_RAM": true,
+  "unproven_history_source_gaps_in_retained_combined_candidate": 62,
+  "historical_current_or_past_availability_not_created": true,
+  "production_source_config_tests_changes": 0,
+  "new_own_full_or_three_actual_replays": 0,
+  "production_api_llm_model_fit_capture_normal_generation_business_writes": 0,
+  "temporary_synthetic_test_receipts_are_not_production_receipts": true,
+  "availability_producer_gap_and_N9_untouched": true,
+  "full_five_year_pit_or_live_model_promotion_proven": false,
+  "production_scope_complete": false,
+  "next_single_point": "Minimal bounded lossless implementation only after maintenanceOFF; canonical identity digest storage with explicit collision rejection; own final-byte acceptance required",
+  "private_physical_evidence": [
+    {
+      "path": "artifacts/roadmap-execution-20261020/native-history-row-budget-contract/IMPLEMENTATION-CONTRACT.md",
+      "sha256": "974e31d260dbe18b246556540e0f5905c7d19979a0179b172e8f8f1c7f4b4da9"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/native-history-row-budget-contract/DESIGN-REVIEW.md",
+      "sha256": "6524c1387e687e401fc34b292a930b22d4bd82db9429f7d599b3f27f03d0fa34"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/native-history-row-budget-contract/actual-candidate-proof-v2.json",
+      "sha256": "b1d616c770f9cd5940d045c3d39996aa3bd8343f339d753f6ae365ef2ef2fa8f"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/native-history-row-budget-contract/independent-readback.json",
+      "sha256": "ae30c7f9567dd724c682b3a8e27834647371c1c4811e537ac79cf51f0de77383"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/native-history-row-budget-contract/candidate-original-controls-v2.xml",
+      "sha256": "750b70fb40baa9aa0ee9a4a58cc60b8f07df1af630c260acdb797c3f46d827b8"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/native-history-row-budget-contract/initial-collision-diagnosis.json",
+      "sha256": "4db49142a5b013ab5924ec68dd09be00f2cc3c4102ea74f98bca3122a17f862a"
+    }
+  ],
+  "original_215_counts": {
+    "GREEN": 176,
+    "RED": 39
+  },
+  "numbered_worklist": {
+    "total": 167,
+    "checked": 136,
+    "open": 31
+  }
+}
