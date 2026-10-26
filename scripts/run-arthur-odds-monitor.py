@@ -39,6 +39,13 @@ def main(root=ROOT):
         return {"status": "MONITOR_UNAVAILABLE", "provider_calls": None, "astra_calls": 0}
 
 
+def process_exit_code(result):
+    """Operational failure only; optional shadow and legitimate no-ops stay separate."""
+    return 0 if isinstance(result, dict) and isinstance(result.get("status"), str) and result.get("status") in {
+        "UPDATED", "NO_CHANGE", "NO_UNLOCKED_FIXTURES",
+    } else 1
+
+
 if __name__ == "__main__":
     result = main()
     try:
@@ -48,3 +55,4 @@ if __name__ == "__main__":
     except Exception:  # noqa: BLE001 - optional first observations cannot veto daily monitoring
         result['prospective_shadow'] = {'status':'PROSPECTIVE_UNAVAILABLE','llm_calls':0}
     print(json.dumps(result, ensure_ascii=False, allow_nan=False))
+    sys.exit(process_exit_code(result))

@@ -1,0 +1,50 @@
+{
+  "at": "2026-10-26T19:17:04.670365+00:00",
+  "task": "scheduled-odds-outcome-contract",
+  "status": "SOURCE_TARGET91_PASS_OWN_FULL5960_THREE_NEW_ACTUAL_RUNNING_NOT_ACCEPTED",
+  "artifact_controls": 38,
+  "targeted": 91,
+  "new_behavior_cases": 24,
+  "adapter": 10,
+  "source_files": 1238,
+  "unchanged_prior_source_files": 1235,
+  "old_ledger_rows": 4087,
+  "old_archive_files": 8787,
+  "ruff_native_powershell_ast_original_eight_replay_guards": true,
+  "source": {
+    "changed": [
+      "scripts/run-arthur-odds-monitor.py",
+      "scripts/run-arthur-scheduled.ps1"
+    ],
+    "added": [
+      "tests/test_arthur_odds_outcome.py"
+    ],
+    "unchanged_original_source_files": 1235,
+    "all_original_tests_byte_exact": true,
+    "all_existing_python_function_asts_exact_except_new_exit_helper": true,
+    "checkonly_secret_setup_stage_order_and_outer_failure_handler_unchanged": true,
+    "math_rank_profiles_ready_gold_quotes_reports_clocks_unchanged": true,
+    "source_sha256": {
+      "scripts/run-arthur-odds-monitor.py": "1abe6fa12d0627743a9e50499ca0e51a5ffaffd1a3e12e77acdb4cf6e651fcf4",
+      "scripts/run-arthur-scheduled.ps1": "aec225504a14897e49375a383aaf18d04e3fb06de515162f17b1950045224e05",
+      "tests/test_arthur_odds_outcome.py": "a7e31ddad271ab60abc556a1d369f1929aea9fd5899c1854bfa46cf44e1f3946"
+    }
+  },
+  "primary_operational_error_exit1_while_noop_and_optional_error0": true,
+  "nightly_then_odds_then_background_error_precedence": true,
+  "once_order_and_fixed_stage_integer_log_no_secret": true,
+  "primary_main_import_ast_unchanged": true,
+  "daily_enabled": false,
+  "legacy_enabled": false,
+  "authorized_package_maintenance": true,
+  "actual_business_stage_provider_api_http_llm_gen_receipt_import": 0,
+  "offline_fit_only_three_new_actual_replays": true,
+  "own_full_runtime_activation_scope_acceptance_pending": true,
+  "private_proofs": {
+    "artifact-independent-readback.json": "8e51d981878874a8629fda559966b84289bf583cd3310af21287ecbefcb6971a",
+    "production-wrapper-shadow-final.json": "e44a8764574bd65d8b262fe434f344a1894d6ad5fdf4823edb8a50b5245df4ee",
+    "import-preflight-final.json": "e3f28980c4b1fb41f5b9309d365f68b64c614c874ba295341718d6a020ae7be9",
+    "source-edit-proof.json": "4bc9dcf60b4ce8c9fc26a8f9e03191cbcd627e863e3a4320eb5c1fca3724d5ca",
+    "worker-helper-frozen.json": "218301fc5fd4b5d03365bd2b39f8eb7aabb167fb59374fa5c73d260729b7d7ad"
+  }
+}

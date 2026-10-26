@@ -47,9 +47,21 @@ try {
         $ErrorActionPreference = 'Continue'
         # Prices refresh independently of the once-nightly Astra generation.
         # Python enforces per-query 30-minute TTL, quotas and the 15-minute lockout.
-        & $Python (Join-Path $PSScriptRoot 'run-arthur-odds-monitor.py') *> $null
+        $OddsExitCode = 0
+        $OddsRunner = Join-Path $PSScriptRoot 'run-arthur-odds-monitor.py'
+        $OddsActivation = Join-Path $ProjectRoot 'data\arthur\prospective-odds\activation.json'
+        if (Test-Path -LiteralPath $OddsRunner -PathType Leaf) {
+            $global:LASTEXITCODE = $null
+            & $Python $OddsRunner *> $null
+            $OddsExitCode = $LASTEXITCODE
+            if ($null -eq $OddsExitCode) { $OddsExitCode = 1 }
+        } elseif (Test-Path -LiteralPath $OddsActivation -PathType Leaf) {
+            $OddsExitCode = 1
+        }
+        $global:LASTEXITCODE = $null
         & $Python $Runner --scheduled *> $null
         $RunExitCode = $LASTEXITCODE
+        if ($null -eq $RunExitCode) { $RunExitCode = 1 }
         # This optional bounded tick independently proves the saved daily freeze
         # and shared quota. It is disarmed until its validated runtime activation.
         $BackgroundExitCode = 0
@@ -73,12 +85,17 @@ try {
         New-Item -ItemType Directory -Path (Split-Path -Parent $LogPath) -Force | Out-Null
         Add-Content -LiteralPath $LogPath -Encoding UTF8 -Value ("[{0}] Arthur nightly check failed; exit code {1}. See the dashboard night-job status." -f [DateTime]::UtcNow.ToString("o"), $RunExitCode)
     }
+    if ($OddsExitCode -ne 0) {
+        New-Item -ItemType Directory -Path (Split-Path -Parent $LogPath) -Force | Out-Null
+        Add-Content -LiteralPath $LogPath -Encoding UTF8 -Value ("[{0}] Arthur odds monitor check failed; exit code {1}. See the dashboard odds-monitor status." -f [DateTime]::UtcNow.ToString("o"), $OddsExitCode)
+    }
     if ($BackgroundExitCode -ne 0) {
         New-Item -ItemType Directory -Path (Split-Path -Parent $LogPath) -Force | Out-Null
         Add-Content -LiteralPath $LogPath -Encoding UTF8 -Value ("[{0}] Arthur background history check failed; exit code {1}. See the dashboard background-history status." -f [DateTime]::UtcNow.ToString("o"), $BackgroundExitCode)
     }
-    # Keep the primary nightly error; otherwise report the background failure.
+    # Keep the primary nightly error; otherwise report odds, then background failure.
     if ($RunExitCode -ne 0) { exit $RunExitCode }
+    if ($OddsExitCode -ne 0) { exit $OddsExitCode }
     exit $BackgroundExitCode
 } catch {
     New-Item -ItemType Directory -Path (Split-Path -Parent $LogPath) -Force | Out-Null
