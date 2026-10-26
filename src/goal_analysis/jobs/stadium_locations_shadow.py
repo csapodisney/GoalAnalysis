@@ -23,6 +23,7 @@ from goal_analysis.storage.source_observations import read_source_raw
 VERSION = 'reviewed-stadium-coordinates-shadow-v1'
 REVIEWED_BUNDLE = '92d68ac3f097bf6a3cb0abef945e94ce2f49e05ef42dc5d7aa7cd480dd1e3dc7'
 REVIEWED_AT = '2026-10-23T23:36:57.988099+00:00'
+ADDITIONAL_REVIEWED_RELEASES = (('b6131527dc3e35e1e6980205b563fefa4b629892cc47e2e84665555ce1bb4fef', 74, '2026-10-26T23:17:33.559600+00:00', 110_000),)
 PREVIOUS_BUNDLE = 'f7bea9515387452b869b3b739f40568e2f8f51c03f865a38ea9decf4cab69e52'
 HISTORICAL_RELEASES = (
     ('6a6ef106af3d782708df8df56aa5ce533c99302f3b7fb41eab858c21a66a9ceb',
@@ -62,7 +63,7 @@ def read_locations(root, *, as_of):
     # A missing/corrupt applicable release must not expose a favorable older one.
     # The 69-record packet is 103,344 bytes. Each historical release keeps its
     # own original byte bound, including the 71,834-byte fifth release.
-    releases = ((REVIEWED_BUNDLE, 69, REVIEWED_AT, 110_000), *HISTORICAL_RELEASES)
+    releases = (*ADDITIONAL_REVIEWED_RELEASES, (REVIEWED_BUNDLE, 69, REVIEWED_AT, 110_000), *HISTORICAL_RELEASES)
     release = next((r for r in releases if utc(r[2]) <= cutoff), None)
     if release is None:
         raise ValueError('STADIUM_SOURCE_NOT_KNOWN_AT_CUTOFF')

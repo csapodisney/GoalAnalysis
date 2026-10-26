@@ -1,0 +1,50 @@
+{
+  "at": "2026-10-26T23:36:28.339279+00:00",
+  "task": "weather-context-data-use-contract",
+  "status": "SOURCE_PENDING_OWN_FULL_RUNTIME_ACCEPTANCE",
+  "target": 139,
+  "new_tests": 18,
+  "adapter": 10,
+  "collection": 6006,
+  "own_full_accepted": false,
+  "own_runtime_accepted": false,
+  "daily": "OFF_REQUIRED",
+  "source_files": {
+    "src/goal_analysis/jobs/stadium_locations_shadow.py": "289b45d13fd16d6e31190d24d5714a52b3cc14c38ee68a80d66b64efefc82277",
+    "src/goal_analysis/jobs/candidate_context_review.py": "cc85f3fe38fcdddb95bad6606654480d19d63c59149560234d0cd42bcdd4c307",
+    "tests/test_weather_context_facility_release.py": "a0025fcf4870cf8d310dc5cc308b269774e6609524764b116f355e2e315fa2d6"
+  },
+  "real_local_facility_release": {
+    "at": "2026-10-26T23:35:29.283576+00:00",
+    "current_records": 74,
+    "previous_cutoff_records": 69,
+    "new_exact_facilities": 5,
+    "old_files_physically_preserved": 144,
+    "new_local_registry_files": 11,
+    "source_install_sha256": "c2b7c825e2152066e2cea05b08d0d6f93c0edaf5c3f69f2efdc84dd0347e2927",
+    "release_sha256": "d5b8fd9d53fd8fca3f3b76ac4648e283da2331ccac74919ebddc609a6c2799f4",
+    "bundle_sha256": "b6131527dc3e35e1e6980205b563fefa4b629892cc47e2e84665555ce1bb4fef",
+    "actual_release_availability": "2026-10-26T23:17:33.559600+00:00",
+    "production_db_receipt_provider_operations": 0,
+    "no_actual_new_forecast_or_ticket_claim": true
+  },
+  "final_production_functions_TESTONLY_consumer": {
+    "status": "FINAL_APP_TESTONLY_NORMAL_WEATHER_AND_LOCAL_IDENTITY_FALLBACK_PASS_NOT_FULL_ACCEPTANCE",
+    "synthetic_matches_and_http_receipts": true,
+    "actual_geographic_bytes_and_clocks_preserved": true,
+    "normal_exact_stadium_forecasts": 5,
+    "mock_weather_transport_calls": 5,
+    "actual_review_mock_wire_sourced_weather_considered_and_cited": 5,
+    "cached_forecast_original_clock_and_hash_preserved": true,
+    "foreign_cached_forecast_identity_rejected": true,
+    "final_production_functions_passed_in_TESTONLY": true,
+    "normal_four_other_weather_contexts_continue": true,
+    "wrong_kickoff_local_unknown_no_extra_http": true,
+    "production_provider_http_llm_registry_database_receipt_operations": 0,
+    "new_probability_weights_or_publication": false
+  },
+  "local_registry_files_created": 11,
+  "production_db_receipt_weather_sports_odds_provider_operations": 0,
+  "actual_new_forecast_ticket_or_profit_claim": false,
+  "parent_closed_remote_sha": "907615091557d69ad77df920d9a541244decbdf4"
+}

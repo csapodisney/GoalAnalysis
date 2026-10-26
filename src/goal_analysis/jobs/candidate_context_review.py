@@ -137,6 +137,20 @@ def context_scope_packets(fixtures, packets, eligible_candidates, cutoff):
     return list(scope.values())
 
 
+def _weather_fixture_binding(forecast, fixture):
+    """An optional forecast belongs only to its exact fixture and known kickoff."""
+    if not isinstance(forecast, dict) or not isinstance(fixture, dict):
+        return False
+    if forecast.get('fixture_id') != fixture.get('fixture_id'):
+        return False
+    if forecast.get('kickoff') is not None:
+        try:
+            return utc(forecast['kickoff']) == utc(fixture['kickoff'])
+        except (ValueError, TypeError, KeyError):
+            return False
+    return True  # Legacy missing event time remains subject to existing compose checks.
+
+
 def _forecast_scope(fixtures, scope_packets, provider, clock):
     """One lookup per eligible fixture; preserve original receipts on reuse."""
     from goal_analysis.engine.publication_window import allows_new_leg
@@ -152,13 +166,23 @@ def _forecast_scope(fixtures, scope_packets, provider, clock):
             skipped.append(fid)
             continue
         if isinstance(packet.get('weather_forecast'), dict):
-            forecasts[fid] = deepcopy(packet['weather_forecast'])
+            previous = packet['weather_forecast']
+            if _weather_fixture_binding(previous, fixture):
+                forecasts[fid] = deepcopy(previous)
+            else:
+                rejected = unknown(fixture, 'A tárolt előrejelzés más mérkőzéshez vagy kezdéshez tartozik; az időjárás ismeretlen.')
+                rejected.update(weather_kind='FORECAST', provider_issue_time=None,
+                    observed_at=started.isoformat(), kickoff=fixture.get('kickoff'),
+                    time_basis='LOOKUP_ATTEMPT_AT', reuse_issue='WEATHER_FIXTURE_OR_KICKOFF_MISMATCH',
+                    rejected_original_observed_at=previous.get('observed_at'))
+                forecasts[fid] = deepcopy(rejected)
+                packet['weather_forecast'] = deepcopy(rejected)
             continue
         attempted.append(fid)
         try:
             lookup = getattr(provider, 'forecast_for_candidate_context', provider.forecast)
             forecast = lookup(deepcopy(fixture))
-            if not isinstance(forecast, dict) or forecast.get('fixture_id') != fid:
+            if not _weather_fixture_binding(forecast, fixture):
                 raise ValueError('WEATHER_FIXTURE_IDENTITY_MISMATCH')
         except Exception:  # noqa: BLE001 - isolate each optional forecast, never retry
             forecast = unknown(fixture, 'Az Open-Meteo lekérés nem sikerült; az időjárás ismeretlen.')
@@ -312,7 +336,7 @@ def compose(root, fixtures, packets, collection, *, as_of):
             reason='CONFIRMED_STARTER_CHANGES_NOT_CAUSE_OR_STRENGTH' if comparisons else 'NO_CONFIRMED_CURRENT_AND_PREVIOUS_XI_PAIR', **args))
         forecast = weather.get(fid)
         try:
-            valid_weather = (isinstance(forecast, dict) and forecast.get('status') == 'SOURCED'
+            valid_weather = (_weather_fixture_binding(forecast, by_id.get(fid)) and forecast.get('status') == 'SOURCED'
                 and forecast.get('weather_kind') == 'FORECAST'
                 and timedelta(0) <= cutoff-utc(forecast['observed_at']) <= timedelta(hours=6))
         except (ValueError, TypeError, KeyError):
