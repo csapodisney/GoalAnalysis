@@ -290,6 +290,7 @@ def runner(root):
 
 def test_normal_cli_reloads_model_and_data_settings_after_configuration_lock(environment, monkeypatch):
     root, _current, _previous, _old, protected = environment
+    monkeypatch.chdir(root)
     cli=runner(root);seen=[]
     settings_loader=cli.load_settings
 
@@ -319,6 +320,7 @@ def test_normal_cli_reloads_model_and_data_settings_after_configuration_lock(env
 
 def test_normal_cli_pending_restore_stops_before_provider_or_ledger_initialization(environment, monkeypatch):
     root, _current, _previous, _old, protected = environment
+    monkeypatch.chdir(root)
     interrupted(environment,monkeypatch);cli=runner(root)
 
     def forbidden(*_a,**_k):

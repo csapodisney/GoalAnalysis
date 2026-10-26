@@ -1,0 +1,90 @@
+{
+  "at": "2026-10-26T01:27:32.675521+00:00",
+  "task": "11.7",
+  "attempt": "followup-v2",
+  "status": "TEST_ONLY_CWD_CLEANUP_TARGET75_REGRESSION15_SHADOW_THREE_ACTUAL_REPLAYS_PASS_OWN_FULL5776_RUNNING",
+  "initial_preserved_result": {
+    "passed": 5763,
+    "failed": 13,
+    "warnings": 44,
+    "seconds": 2597.8,
+    "full_xml_sha256": "cf728648e8df5a16ab4b6a7da4c63edb377abb914c598994702c97d7bd5361ad",
+    "full_log_sha256": "3c327d4e15484d092fe096830ffbc9ef594f93f0700e3a98f41cea1b6b93b373"
+  },
+  "test_only_delta": {
+    "at": "2026-10-26T01:17:37.404908+00:00",
+    "task": "11.7",
+    "attempt": "followup-v2",
+    "status": "ONLY_TWO_TEST_CWD_CLEANUP_STATEMENTS_APPLIED_ALL_OTHER_AST_AND37_ASSERTS_UNCHANGED",
+    "changed_from_initial_source": [
+      "tests/test_configuration_rollback.py"
+    ],
+    "production_code_unchanged": true,
+    "original_assert_count": 37,
+    "original_assert_asts_unchanged": true,
+    "module_ast_unchanged_after_removing_two_cleanup_statements": true,
+    "original_sha256": "8ab7bb40d7ff39470232d2b7061ccb5cf5539d0faed2811283b1000803e0f0a6",
+    "fixed_sha256": "6a126e913a943fa4cf4e2948bf1c9404cdeecb30d0f4bb319bbd1d261aa9a6ff",
+    "production_config_writes": 0
+  },
+  "targeted_tests_passed": 75,
+  "original_cwd_regressions_passed": 15,
+  "adapter_tests_passed": 10,
+  "ruff": "PASS",
+  "own_actual_replays": {
+    "at": "2026-10-26T01:26:22.896068+00:00",
+    "status": "THREE_OWN_11_7_V2_ACTUAL_REPLAYS_PHYSICALLY_READ_BACK",
+    "actual_replays_passed": 3,
+    "checks_per_case": 8,
+    "cases": [
+      {
+        "case": "busy-weekend-2026-10-17",
+        "all_eight_checks_passed": true,
+        "model_sha256": "89f8710b51cbc06a12f93f7825d8d128e5cbe998c1eb0dfd77a57e3042e5e4b9",
+        "actual_training_dataset_manifests_verified": 97,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      },
+      {
+        "case": "sparse-weekday-2026-10-12",
+        "all_eight_checks_passed": true,
+        "model_sha256": "3007451ce1f4823e6daa8a36a0bed44dba4f920efa6d08f8336b55dc7d1bf465",
+        "actual_training_dataset_manifests_verified": 33,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      },
+      {
+        "case": "cup-national-2026-10-03",
+        "all_eight_checks_passed": true,
+        "model_sha256": "277af116059667496fe198782acef444949a76afaca1c9cef0b8649fe6fea9af",
+        "actual_training_dataset_manifests_verified": 1,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      }
+    ],
+    "summary_sha256": "95be212acaaf537b64bd1a726be2aa2425b1d1be2df8560020cd62f4f4dfacfe",
+    "frozen_source_files_verified": 1219,
+    "original_eight_check_asts_and_require_conditions_unchanged": true
+  },
+  "expected_full": 5776,
+  "full_accepted": false,
+  "frozen_source_files": 1219,
+  "prior_ledger_rows": 4016,
+  "protected_prior_archive_files": 5964,
+  "worker_helper_pins": 28,
+  "closure_helper_pins": 16,
+  "closure_admission_preflight": "PASS; no HTTP/runtime/config write",
+  "production_config_restore_executed": false,
+  "runtime_restored": false,
+  "task_complete": false,
+  "project_complete": false,
+  "new_provider_or_llm_or_generation": 0,
+  "worklist": {
+    "total": 167,
+    "checked": 136,
+    "open": 31
+  }
+}

@@ -1,4 +1,4 @@
-# Adatvesztés nélküli konfigurációs rollback — tesztelkülönítési hiba, még nincs saját elfogadás
+# Adatvesztés nélküli konfigurációs rollback — tesztelkülönítés javítva, saját új teljes kör fut
 
 Az előző, valóban elfogadott7.4.N6konfigurációt az akkori fizikai source-manifesthez kötöttük. A mostani és korábbi modell-/livebeállítások és7policyfájl bájtjai megegyeznek; két később hozzáadott ACTIVEpolicy korábbi hiánya bizonyított. A visszaállítás ezeknél a meglévő SHADOW alapértelmezést adja, nem kitalált korábbi modellt vagy kivezetett élőprovidert.
 
@@ -10,8 +10,11 @@ Az előző, valóban elfogadott7.4.N6konfigurációt az akkori fizikai source-ma
 | 🟩 |Félbeszakadt restore a normál közös lockon belépés előtt blokkol; helyreállítás külön visszaellenőrzi az ismert before/targetbájtokat. Külső,oda nem tartozó szerkesztést nem ír felül. |
 | 🟩 |A normálCLI a lock megszerzése után újraolvas modell-éslivebeállítást; a dashboardsettingsíró is ugyanazt a keresztfolyamat-lockot használja.0újmodell/súly/rang/választási képlet. |
 | 🟩 |A saját három ténylegesen újraszámolt numerikus replay mind8ellenőrzése PASS;97/33/1tényleges DatasetStore-manifeszt és3modellhash külön root-visszaolvasva. Ez nem teljes suite-elfogadás. |
-| 🟥 |A saját5776teljes kör még fut, de a megőrzött részlogban már13hiba látszik. A végleges XML és teljes eredmény még nincs meg; ezért sem teljes elfogadás, sem üzemi rollback nem állítható. |
-| 🟩 |A két új CLI-teszt által továbbadott munkakönyvtár-hiba külön sorrendi ellenpróbában reprodukált:2új teszt után4eredeti promptteszt hibázik. A két cleanup-sort kizárólag memóriabeli jelöltként hozzáadva2jelölt+13eredeti regresszió PASS;mind37eredeti assert és minden egyéb AST változatlan. A fagyasztott forrás még nincs módosítva. |
+| 🟥 |Az első teljes kör lezárult:5763PASS/13FAIL/44warning/2597.80s. A végleges XML a két újCLItesztből megmaradt munkakönyvtárra mutató fájlhiányokat igazolja. Eredeti XML/log/source/proof megőrzött; ez nem sikeres teljes elfogadás. |
+| 🟩 |Kizárólag két monkeypatch.chdir(root) cleanupregisztráció a TESZTadapterben. A termelési kód és mind37eredeti assert/minden más AST változatlan. A tényleges javítás után saját75target/15eredeti sorrendi regresszió/10adapter/Ruff/valósprior-currentSHADOW PASS. |
+| 🟩 |A javított végleges byteokon három saját ÚJ numerikus replay×8 PASS,97/33/1DatasetStore-manifeszt és3modellhash root-visszaolvasva; nem az első kör eredményeinek másolata. |
+| 🟥 |Sajátfollowup-v2 teljes5776 mégfut;28workerhelper/input és1219forrás fagyasztva. A külön16pines véges follower csak saját teljes siker és független readback után végezhet egy konfigurációsdrill/runtime/checkpoint műveletet. Még nincs új teljeselfogadás vagy üzemi restore. |
+| 🟩 |A két új CLI-teszt által továbbadott munkakönyvtár-hiba külön sorrendi ellenpróbában reprodukált:2új teszt után4eredeti promptteszt hibázik. A két cleanup-sort kizárólag memóriabeli jelöltként hozzáadva2jelölt+13eredeti regresszió PASS;mind37eredeti assert és minden egyéb AST változatlan. Az első futó kör alatt a fagyasztott forrást nem módosítottuk; a mostani különfollowup-v2 csak annak lezárása után kapta meg a két tesztsort. |
 | 🟩 |Külön artifact-adatmegőrzési reader13ellenpróba PASS:valódi SQLite/WAL committedadat,typedérték/duplikátum/rowid/schema és nyersriport megőrzése,határértékek és változáselutasítás. Ez nem üzemi adatmegőrzési drill. |
 | 🟥 |A valódi üzemi prior→currentkonfigurációsdrill,adatmegőrzés/runtime/checkpoint/11.7lezárás még hátravan; csak saját teljeselfogadás után. Műveleti rollbackhez nem indítunk fizetős sports/LLMgenerálást. |
 | 🟥 |A teljesprojekt és az eredeti215követelményfrisszöld/pirosauditja külön nyitott. Munkalista136lezárt/31nyitott/167nem teljeskészség. |
@@ -24,4 +27,4 @@ Az első izolált helper indokolatlan whole-fingerprint összehasonlítása saj�
 
 Daily jelenleg a fejlesztéshezOFF,legacyDaily223mindigOFF. Saját elfogadott forráson üzemi próba és igazoltDailyONhelyreállítás szükséges,majd a következő engedélyezett forrásponthoz sameRunLockOFF. Eredeti2026-10-24határidő nem teljesült;2026-10-26 17:00Berlin munkacél,nem előre garantált készültség.
 
-A futó5776kört és22rögzített worker-inputot nem módosítottuk, új teljes teszt vagy fit nem indult. A külön diagnosztika és a még nem alkalmazott két soros javítás nem helyettesíti az új változat saját teljes elfogadását. Következő: az eredeti kör végleges XML/log megőrzése és ellenőrzése; csak utána a tesztadapter javítása, új verziózott validálás. Az üzemi visszaállítás továbbra blokkolt. A részletes pillanatkép: `docs/validation/2026-10-26-configuration-rollback-cwd-diagnosis.json`.
+Az első5776kör és22rögzített input történeti maradt; a javítás csak a véglegesSTOPPED állapot és XML ellenőrzése után történt. A diagnózis: `docs/validation/2026-10-26-configuration-rollback-cwd-diagnosis.json`; a saját új változat aktuális target/replay pillanatképe: `docs/validation/2026-10-26-configuration-rollback-v2-targets-replays.json`. Az üzemi visszaállítás továbbra saját teljeselfogadáshoz kötött; nincs fizetős új generálás vagy automatikus retry.
