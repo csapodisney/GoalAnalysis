@@ -1,0 +1,128 @@
+{
+  "at": "2026-10-26T14:35:01.189026+00:00",
+  "task": "historical-availability-producer-contract",
+  "status": "INTERIM_ISOLATED_WRITER_AND_NORMAL_SINK_SHADOW_ROOT_VERIFIED_PRODUCTION_PENDING",
+  "scope_complete": false,
+  "production_app_implementation_complete": false,
+  "controls": {
+    "planner-controls.xml": {
+      "passed": 22,
+      "sha256": "637a4e40184e58ff1eb218af937b2efabce66db68bcd698f0832d36938736209"
+    },
+    "isolated-writer-controls-v2.xml": {
+      "passed": 12,
+      "sha256": "2a02cc06c0a99071992a6efddcbf99399a8d82e154669f55a47c80863bea6fb1"
+    },
+    "normal-sink-isolated-controls-v2.xml": {
+      "passed": 4,
+      "sha256": "34096a36e43f9f6b2f7cc9820cf83f03e077a9f38f2a11a3ea6cc5aef089c132"
+    }
+  },
+  "new_controls_passed_in_this_phase": 16,
+  "total_pure_and_isolated_controls_passed": 38,
+  "new_application_full_or_actual_replay_runs": 0,
+  "last_accepted5894_is_prior_scope_only": true,
+  "isolated_retained_actual_receipts": 13,
+  "isolated_strict_results_before": 1655,
+  "isolated_strict_results_after": 1667,
+  "isolated_earlier_cutoff_matches_lineage_exact": 1655,
+  "original_earlier_cutoff_matches_lineage_exact": 1143,
+  "halfscore_unknown_preserved": true,
+  "production_snapshot": {
+    "as_of": "2026-10-26T14:32:33.419799+00:00",
+    "matches": 1655,
+    "matches_sha256": "38149878b001aa02c25baaad10a1e692af4d626d8ff479ee12cc9a0b678f7ef7",
+    "lineage_sha256": "74249a6bb14bc871806d341636bfc3b833674b51b8619846eb2c973d675c0e93",
+    "gaps": {
+      "RESULT:MISSING_AVAILABILITY_RECEIPT": 15409,
+      "MISSING_EXPLICIT_HALF_SCORE": 1655
+    },
+    "versions_scanned": 17460,
+    "halfscore_unknown": 1655
+  },
+  "production_retained_pages": 19,
+  "production_missing_raw_receipts": 19,
+  "production_retained_versions": 271,
+  "production_missing_result_receipts": 271,
+  "production_source_files_exact": 1233,
+  "production_source_bytes_exact": 244836531,
+  "production_ledger_rows_exact": 4087,
+  "production_old_receipt_rows_preserved": 115736,
+  "production_receipts_at_readback_snapshot": 115741,
+  "production_old_native_versions_preserved": 16832,
+  "normal_global_activity_can_append_not_this_scope_writing": true,
+  "production_source_receipt_import_http_llm_fit_generation_operations": 0,
+  "normal_daily_on": true,
+  "legacy_off": true,
+  "keyset_and_commit_contract": {
+    "whole_page_exact_keys_not_generic_rowid_cursor": true,
+    "committed_ro_read_before_writer_and_repeat_under_immediate_transaction": true,
+    "raw_metadata_body_and_interleaved_version_cas_controls_passed": true,
+    "actual_now_after_committed_read_and_physical_bytes": true,
+    "availability_kind": "SOURCE_PRESENCE_UPPER_BOUND_NOT_PAST_PUBLICATION_OR_PIT",
+    "exact_prior_receipt_reuse_without_overwrite": true,
+    "precommit_receipt_failure_rolls_back_all_receipts": true,
+    "postcommit_failure_preserves13_and_stopped_no_retry": true,
+    "actual_normal_sink_commits_canonical_before_exact_receipt_stage": true,
+    "actual_checkpoint_advances_only_after_both_stages_return_success": true,
+    "partial_canonical_commits_are_not_faked_as_rolled_back": true,
+    "initial_failed_controls_and_adapter_files_preserved": true,
+    "artifact_hook_not_installed_or_claimed_as_production_code": true
+  },
+  "original215": {
+    "GREEN": 176,
+    "RED": 39
+  },
+  "separate167_worklist": {
+    "closed": 136,
+    "open": 31
+  },
+  "five_year_pit_or_live_model_capacity_claim": false,
+  "private_physical_evidence": [
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/isolated-independent-readback.json",
+      "sha256": "3fa6c2463680e4ee8df846d1d9121ecf53a11fc32e01c093464ab9637d153430"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/isolated-retained-proof.json",
+      "sha256": "f36ee4cc8507858111f71677239d4bd5a6184a7b7993d4ce73b8ab756012b36e"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/isolated-fixture-proof.json",
+      "sha256": "a9ad465fd57c21f99a3a8074a36345f78b214700de065c1a66171a69bf4503e2"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/isolated_writer_candidate.py",
+      "sha256": "e2a91d8d873d8f96c6807e47c372d4f50d190dea15f4f7c705ec814b5c36e5bf"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/isolated_normal_sink_candidate_v2.py",
+      "sha256": "b00440e964543de686f4d507429f6c1f884ae556faad52682c5d01cb001befdf"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/planner-controls.xml",
+      "sha256": "637a4e40184e58ff1eb218af937b2efabce66db68bcd698f0832d36938736209"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/isolated-writer-controls-v2.xml",
+      "sha256": "2a02cc06c0a99071992a6efddcbf99399a8d82e154669f55a47c80863bea6fb1"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/normal-sink-isolated-controls-v2.xml",
+      "sha256": "34096a36e43f9f6b2f7cc9820cf83f03e077a9f38f2a11a3ea6cc5aef089c132"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/initial-isolated-fixture-path-diagnosis.json",
+      "sha256": "385d17f1617119a5cf30bdde1fff551a6079ed6e20230495274b17b9380ec607"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/initial-normal-adapter-recursion-diagnosis.json",
+      "sha256": "2c4117134aae6eb5eea57b22c5ae904aa0c2ba52fd2294ddfe33125a2d73f749"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/ISOLATED-WRITER-AND-INTEGRATION.md",
+      "sha256": "c741f7a5c8c69d99d008adf76d486ac7b67ce4e341f4a8b896d6c2f6f120f57f"
+    }
+  ],
+  "next_single_point": "MINIMAL_FIRST_CLASS_PRODUCTION_EXACT_PAGE_KEYSET_WRITER_NORMAL_SINK_INTEGRATION; BEFORE_SOURCE_EDIT_ROOT_LOCK_MAINTENANCE_OFF_THEN_OWN_FULL3NEWACTUAL_RUNTIME_ON; NO_RETAINED_PRODUCTION_CAPTURE_BACKFILL_MANUAL_HTTP_OR_N9_AUTHORIZATION"
+}

@@ -22,7 +22,9 @@ Saját natív row-budget scope: 5894 teljes / 89 célzott / 10 adapter / 3 új a
 [Lezárt saját bizonyíték és aktuális 215](status/2026-10-26-native-history-row-budget/REPORT-CLOSED.md).
 A producer kontraktusának RO/pure előpróbája kész: 19 oldal/271 verzió pontos; 22 kontroll PASS. A bizonylatok továbbra is hiányoznak, új írás nem történt; generikus kurzor 88 idegen verziót is bevonna.
 [Köztes producerbizonyíték](status/2026-10-26-historical-availability-producer/REPORT-INTERIM.md).
-Következő egyetlen pont: historical-availability-producer-contract pontos-oldal/kulcslista íróhatára és minimális sink-integrációja; új éles befogadás még nem igazolt/engedélyezett.
+Az elkülönített exact-page/keyset író és tényleges normál cached-page/Sink próba 22+12+4 kontrollja PASS; éles forrásváltozás vagy befogadás nincs. A TESTONLY1655→1667 nem éles kapacitásnövekedés; Daily ON.
+[Új elkülönített bizonyíték és215-delta](status/2026-10-26-historical-availability-producer/REPORT-ISOLATED.md).
+Következő egyetlen pont: minimális elsőosztályú production exact-page/keyset író és normál Sink-integráció, előtte RootLock maintenance OFF, utána saját új full/3actual/runtimeON; nincs régi batch vagy kézi HTTP/befogadási felhatalmazás.
 
 Cél: a rendelkezésre álló, mérkőzés előtt ismert adatok tényleges és
 ellenőrizhető felhasználása a szelvényképzésben, a meglévő működő logikák
