@@ -1,0 +1,64 @@
+{
+  "at": "2026-10-26T02:40:08.046403+00:00",
+  "task": "11.7",
+  "source_acceptance_attempt": "followup-v2",
+  "operation_attempt": "operations-v4",
+  "scope": "Exact reference copies for review. Operational entry points require their original private artifact root, own acceptance and preserved evidence; never relabeled as a public full-suite reproduction.",
+  "accepted_source_commit": "af80d91038ba4293199362e682121dbca7a5e62b",
+  "files": [
+    {
+      "name": "preservation_reader_v4.py",
+      "original_path": "artifacts/roadmap-execution-20261020/11.7/followup-v2/preservation_reader_v4.py",
+      "sha256": "aef7e66c88e8ed13537e4bea3d6359feeaad8227e4545cc1cf794bb09b8730d2",
+      "bytes": 6948
+    },
+    {
+      "name": "test_physical_preservation_artifact.py",
+      "original_path": "artifacts/roadmap-execution-20261020/11.7/followup-v2/test_physical_preservation_artifact.py",
+      "sha256": "d994de94475f7d0064ae46a723028acb347b17e4818855f266ffddb09a137a48",
+      "bytes": 3404
+    },
+    {
+      "name": "production_drill_v4.py",
+      "original_path": "artifacts/roadmap-execution-20261020/11.7/followup-v2/production_drill_v4.py",
+      "sha256": "500603e13eb13ce4c376896c0408d87c22dd9b563ea540fdfbc81f800b2da125",
+      "bytes": 11079
+    },
+    {
+      "name": "runtime_restore_v4.py",
+      "original_path": "artifacts/roadmap-execution-20261020/11.7/followup-v2/runtime_restore_v4.py",
+      "sha256": "1023f06f80de80d1d012e75ac977cb9991cc2ec31ababe94088b3487f2aa5cfb",
+      "bytes": 8380
+    },
+    {
+      "name": "close_checkpoint_v4.py",
+      "original_path": "artifacts/roadmap-execution-20261020/11.7/followup-v2/close_checkpoint_v4.py",
+      "sha256": "3c28cfe10fbd0613e406578ec647c1634c48c5a93c1819ee77f07ca82c15671f",
+      "bytes": 7323
+    },
+    {
+      "name": "operations_v4_once.py",
+      "original_path": "artifacts/roadmap-execution-20261020/11.7/followup-v2/operations_v4_once.py",
+      "sha256": "8f2a3dcf398690bb098e2b26db83173a64edb2d3634a5ec33cf1be537dbb1631",
+      "bytes": 4651
+    },
+    {
+      "name": "root_readback_v4.py",
+      "original_path": "artifacts/roadmap-execution-20261020/11.7/followup-v2/root_readback_v4.py",
+      "sha256": "bd9ababdcd34d415bc18f5816210052f72f9ee6dfaf56699a4e4eae9c7b0967d",
+      "bytes": 11190
+    },
+    {
+      "name": "finalize_scope_v4.py",
+      "original_path": "artifacts/roadmap-execution-20261020/11.7/followup-v2/finalize_scope_v4.py",
+      "sha256": "1fc1dadb2b666dd7bbdd450fb5b2ab084c1491a7059369ab15676047ae8ae606",
+      "bytes": 14904
+    },
+    {
+      "name": "independent-operations-v4.ps1",
+      "original_path": "artifacts/roadmap-execution-20261020/11.7/followup-v2/independent-operations-v4.ps1",
+      "sha256": "ebc7b152c4847895bb711ece2f7acfcf934eeecd20c2eba6cfc4fd2d24cc0c99",
+      "bytes": 2931
+    }
+  ]
+}

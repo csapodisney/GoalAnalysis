@@ -1,0 +1,10 @@
+{
+  "scope": "Generic complete physical main/WAL preservation helper in its public reference location; not full project clean-clone certification",
+  "tests_passed": 13,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "xml_sha256": "772dc81ad5422d0b3ecde9c8315af54824bc670c4707e487d882f750b324a935",
+  "reference_manifest_sha256": "22afbe3bde0bec968c12088cb99946656cc61082f5fe2c21d510fc9c48402eb5",
+  "no_provider_llm_fit_or_generation": true
+}

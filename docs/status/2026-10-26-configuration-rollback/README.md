@@ -1,39 +1,17 @@
-# Adatvesztés nélküli konfigurációs rollback — saját teljes teszt sikeres, üzemi próba folyamatban
+# 11.7 — konfigurációs rollback saját hatóköre igazolt
 
-Az előző, valóban elfogadott7.4.N6konfigurációt az akkori fizikai source-manifesthez kötöttük. A mostani és korábbi modell-/livebeállítások és7policyfájl bájtjai megegyeznek; két később hozzáadott ACTIVEpolicy korábbi hiánya bizonyított. A visszaállítás ezeknél a meglévő SHADOW alapértelmezést adja, nem kitalált korábbi modellt vagy kivezetett élőprovidert.
+A saját5776teljes/75célzott/15regresszió/10adapter/3új numerikus replay×8 sikeres. A tényleges korábbi konfiguráció visszaállítása, majd az aktuális kilenc konfiguráció exact helyreállítása egy közös RootRunLock alatt történt. Minden korábbi nyersdata/report és committedSQLite-adat megőrzését előtte/utána/runtime után és külön root-visszaolvasás igazolja.
 
-| Státusz | Bizonyíték / valódi maradék |
+| Státusz | Eredmény vagy valódi maradék |
 |---|---|
-| 🟩 |75célzott teszt,köztük34újrollback/atomic/crash/admission/CLI-kontroll,10különeredeti replay-adapter ellenpróba,RuffPASS. |
-| 🟩 |Valódi korábbi/currentconfig izolált másolatának oda-vissza SHADOW-ja PASS:9aktuálisconfig exactbytehelyreállítva,2priorabsence→SHADOW→currentACTIVE,régi valósriport és3modellfájl változatlan.0API/LLM/fit/generálás/productionconfig-írás. |
-| 🟩 |Újadmineszköz:szűk9configallowlist,hashkötöttimmutablebundle,exactbyte+absence,CASésközösRunLock,atomikusexkluzívnapló/preparedintent,hibás/megszakadtműveletre recovery,idempotensismétlés. Adat/report/SQLite/raw/source/secretfájlnemírhatómanifestből. |
-| 🟩 |Félbeszakadt restore a normál közös lockon belépés előtt blokkol; helyreállítás külön visszaellenőrzi az ismert before/targetbájtokat. Külső,oda nem tartozó szerkesztést nem ír felül. |
-| 🟩 |A normálCLI a lock megszerzése után újraolvas modell-éslivebeállítást; a dashboardsettingsíró is ugyanazt a keresztfolyamat-lockot használja.0újmodell/súly/rang/választási képlet. |
-| 🟩 |A saját három ténylegesen újraszámolt numerikus replay mind8ellenőrzése PASS;97/33/1tényleges DatasetStore-manifeszt és3modellhash külön root-visszaolvasva. Ez nem teljes suite-elfogadás. |
-| 🟥 |Az első teljes kör lezárult:5763PASS/13FAIL/44warning/2597.80s. A végleges XML a két újCLItesztből megmaradt munkakönyvtárra mutató fájlhiányokat igazolja. Eredeti XML/log/source/proof megőrzött; ez nem sikeres teljes elfogadás. |
-| 🟩 |Kizárólag két monkeypatch.chdir(root) cleanupregisztráció a TESZTadapterben. A termelési kód és mind37eredeti assert/minden más AST változatlan. A tényleges javítás után saját75target/15eredeti sorrendi regresszió/10adapter/Ruff/valósprior-currentSHADOW PASS. |
-| 🟩 |A javított végleges byteokon három saját ÚJ numerikus replay×8 PASS,97/33/1DatasetStore-manifeszt és3modellhash root-visszaolvasva; nem az első kör eredményeinek másolata. |
-| 🟩 |Sajátfollowup-v2 teljes5776PASS/44warning/2594.38s,75target/15regresszió/10adapter/3ÚJactualreplay×8. Saját XML/source/input/replay/5964régiarchívum független fizikai visszaolvasása PASS. Ez saját teljes tesztelfogadás. |
-| 🟥 |Az üzemi segéd első előellenőrzése a tartalmi riportazonosító és fizikai fájlhash felcserélése miatt, a következő a megőrzött naplónév ütközése miatt megállt; mindkettő configcsere/bundleírás ELŐTT. Eredeti STOPPED/log/hash/pin megőrzött. |
-| 🟩 |Külön helperverzió mindkét hash-t önállóan ellenőrzi;4hash-ellenpróba PASS. Elkülönített naplókönyvtár valódi2csakolvasóWindows-hívással PASS,régi naplók változatlanok. Alkalmazás/config/test nem változott; nincs fölösleges új full/fit/generálás. |
-| 🟥 |Az operations-v3 kezdeti kétmillió soros kerete még minden config/bundleírás előtt megállt. A teljes sajátelfogadott kód változatlan; a tényleges read-only leltár26adatbázist és18,148,065committedsort talált,beleértve a megőrzött DBbackupokat. Ez nem ennyi egyedi meccs vagy modellhez alkalmas tanítóadat. |
-| 🟩 |A saját új fizikai reader13ellenpróbája PASS. Minden nyersfájl/SQLite-main/teljesWAL byteSHA-val védett, teljes schema/COUNT tranzakciósan ellenőrzött. Nincs adatsorkihagyás vagy mintavétel, és nincs nemvégzett per-rowhashszámítás-állítás. Checkpoint miatti byteeltérés külön szemantikai felülvizsgálatot igényel,nem néma elfogadást vagy automatikus adatvesztés-állítást. |
-| 🟥 |Az egyetlen operations-v4 művelet ezen az elfogadott forráson fut;1800s/snapshot,32GiB/20kfile/25mCOUNTrow,120minTaskhatár. A tényleges konfigurációsdrill/runtime/checkpoint/root/GitHublezárás még nincs késznek igazolva. |
-| 🟩 |A két új CLI-teszt által továbbadott munkakönyvtár-hiba külön sorrendi ellenpróbában reprodukált:2új teszt után4eredeti promptteszt hibázik. A két cleanup-sort kizárólag memóriabeli jelöltként hozzáadva2jelölt+13eredeti regresszió PASS;mind37eredeti assert és minden egyéb AST változatlan. Az első futó kör alatt a fagyasztott forrást nem módosítottuk; a mostani különfollowup-v2 csak annak lezárása után kapta meg a két tesztsort. |
-| 🟩 |Külön artifact-adatmegőrzési reader13ellenpróba PASS:valódi SQLite/WAL committedadat,typedérték/duplikátum/rowid/schema és nyersriport megőrzése,határértékek és változáselutasítás. Ez nem üzemi adatmegőrzési drill. |
-| 🟥 |A valódi üzemi prior→currentkonfigurációsdrill,adatmegőrzés/runtime/checkpoint/11.7lezárás még hátravan; csak saját teljeselfogadás után. Műveleti rollbackhez nem indítunk fizetős sports/LLMgenerálást. |
-| 🟥 |A teljesprojekt és az eredeti215követelményfrisszöld/pirosauditja külön nyitott. Munkalista136lezárt/31nyitott/167nem teljeskészség. |
+| 🟩 | ValódiN6manifest:7azonos configbyte és2korábbi absence→SHADOW→currentACTIVE. A model/livebeállítások azonosak; nincs kitalált modellváltás. |
+| 🟩 | Allowlist/hashbundle/exactbyte+absence/CAS/atomicjournal/crashrecovery/idempotencia; pendingrestore blokkolja a normáljobot,CLIlockutánreload,dashboardsettingssharedlock. |
+| 🟩 | Fizikai configbundle/naplóreceipt/előtte-utána nyershash/SQLite main+teljesWAL exactbytehash és tranzakciós schema/COUNT és WALcommitted-adat egyezés; SHM/runtime-lock koordinációsbájtok változatlanságát és per-rowhashszámítást nem állítjuk. |
+| 🟩 | Dashboard elfogadottkód/exactMEGLÉVŐcc3brun/hash helyi+Tailscale,gateway/learning/team megőrzött. DailyONigazolt,majd sameRootLockOFFsensitivity_note-hoz;legacyOFF.0újpaidAPI/LLM/generálás/fit a művelethez. |
+| 🟩 | Az első5763PASS/13FAIL XML/log/source megmaradt. Csak2TESZTcleanup-sor javult; mind37assert és a productionimplementáció változatlan. Az új5776sajátelfogadás külön bizonyíték. |
+| 🟥 | A teljes projekt és szülőfeladatok nem készültek el. A számozott munkalista137lezárt/30nyitott/167 fő-/alpont; ez nem az eredeti215követelmény friss teljes auditja. A régi160/55audit nem friss készültség. |
+| 🟥 | Következő sensitivity_note/biztonságos publikus fixture és az eredeti lista valódi maradékai. Időjárás/utazás/rotáció hiányok,1LIVE/0PAPER/19hiány a korábbi cc3bcsomagban,7/30napos későbbi mérés és történeti adat/PITkorlátok külön nyitottak. Nincs kapulazítás vagy garantált20–30szelvény-állítás. |
 
-A módosítás6forrás/testfájlt érint; fagyasztott1219forrás/4016korábbi ledger-sor/5735védettarchívum. A meglévőworker tényleges importja,könyvtárfeloldása,eredetiDaily-guardja,5776tesztgyűjtése és mind8numerikus ellenőrzés/require AST-egyezése indítás előtt PASS. Nincs új általános jelentéseltérési engedmény vagy aranyreferencia-átírás. A teljeskör állapotát az aktuális bizonyítékból kell olvasni; duplikált teszt,fit,worker vagy automatikusretry nem indul.
+CsakTheStatsélősport/odds;archívparserek megmaradtak. Eredeti2×2×3/math/rang/súly/küszöb/aranyhash/régiszelvény változatlan. Quoted_atnull valódi szolgáltatói idő nélkül,saját receipt külön. Eredeti2026-10-24határidő nemteljesült;2026-10-26 17:00Berlin munkacél,nemgarancia.
 
-A visszaállítható csomag megőrzi a kötelező exactquote-review ACTIVEkapukat,nativeGrokSHADOW-t,egyeztetettgpt-6-astra/grok-4.7modelleket és eredetiGrokkeretet. A snapshot nem kalibrációs promotion-jóváhagyás. KizárólagTheStatsélősport/odds; eredeti2×2×3/numerikusrang/súly/aranyhash/régiszelvény/quoted_atnull-policy változatlan.
-
-Az első izolált helper indokolatlan whole-fingerprint összehasonlítása saját capture-idő miatt megállt; az eredeti log/script megmaradt, a végleges próba külön mentett before/afterforrás-ésledgerrészeket exactmódon ellenőriz. Egy korai atomikus-tempfájlnév a mély Windows-tesztgyökérben túl hosszú volt,33setuphiba bizonyítéka megmaradt; a végleges rövid exkluzív tempnevekkel mindeneredetiellenőrzés és75célzott teszt PASS. Ezek nem tényleges üzemi restore-kísérletek vagy adatvesztési hibák.
-
-Daily jelenleg a fejlesztéshezOFF,legacyDaily223mindigOFF. Saját elfogadott forráson üzemi próba és igazoltDailyONhelyreállítás szükséges,majd a következő engedélyezett forrásponthoz sameRunLockOFF. Eredeti2026-10-24határidő nem teljesült;2026-10-26 17:00Berlin munkacél,nem előre garantált készültség.
-
-Az első5776kör és22rögzített input történeti maradt; a javítás csak a véglegesSTOPPED állapot és XML ellenőrzése után történt. A diagnózis: `docs/validation/2026-10-26-configuration-rollback-cwd-diagnosis.json`; a saját új változat aktuális target/replay pillanatképe: `docs/validation/2026-10-26-configuration-rollback-v2-targets-replays.json`. Az üzemi visszaállítás továbbra saját teljeselfogadáshoz kötött; nincs fizetős új generálás vagy automatikus retry.
-
-A saját teljes elfogadás részletes bizonyítéka: `docs/validation/2026-10-26-configuration-rollback-full.json`. Az üzemi helper hibái nem írják át a sikeres5776tesztet és nem jelentenek végrehajtott konfigurációs visszaállítást. A működő alkalmazáskód változatlan; a művelet önálló fizikai adatmegőrzési és runtime-bizonyítása továbbra kötelező.
-
-A műveleti adatleltár és az új teljesbyte-ellenőrző pontos hatóköre: `docs/validation/2026-10-26-configuration-rollback-operations-v4.json`. A törzsadatok fizikai megőrzését különválasztjuk a történeti/ár/időforrások tanítási alkalmasságától; a leltározás nem új sportgyűjtés, árfrissítés, modellezés vagy generálás.
+A végleges forrás- és riportcommit távoliSHA-ját a push után külön visszaellenőrizzük. A JSON-bizonyíték minden zöld állítást a saját fizikai root-readbackhez köt.

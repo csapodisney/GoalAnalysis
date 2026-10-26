@@ -432,9 +432,9 @@ romló Brier/log-loss esetén az új hatás SHADOW marad.
 - [ ] **11.4 SHADOW:** legalább hét egymást követő élő nap publikálás nélkül.
 - [ ] **11.5 PAPER:** legalább 30 nap 1 EUR egységtétes papírmérés.
 - [ ] **11.6 CANARY:** egyszerre csak egy új feature-család LIVE módba emelése.
-- [ ] **11.7 ROLLBACK:** konfigurációs visszaállítás az előző modell- és
+- [x] **11.7 ROLLBACK:** konfigurációs visszaállítás az előző modell- és
   adatútvonalra adatvesztés nélkül.
-  - 2026-10-26: configrollback6source/34újteszt;75target/10adapter/Ruff/valósprior-currentizoláltSHADOWPASS. Saját5776full+3actualreplayfut,üzemidrill/runtime/lezárásmégNINCS. Strictquote/nativeSHADOW/model/budget/datapreservationkapukmaradnak;riportdocs/status/2026-10-26-configuration-rollback/README.md.
+  - 2026-10-26: saját5776full/75target/15cwdregresszió/10adapter/3ÚJactualreplay×8 és valós9configprior→currentdrill/rootreadbackPASS.10612nyersfájl+26SQLiteDB/18,148,065committedsor main/teljesWAL exactbytehash-sel megőrzött;nemmintavétel/per-rowhashállítás. Dashboardexistingcc3b local+Tailscale/DailyONthen sameRootLockOFFsensitivity_note,legacyOFF. Első5763PASS/13FAIL és előműveleti helperhibák megőrzöttek;matematika/súly/quote/idő/goldváltozatlan. Riport:docs/status/2026-10-26-configuration-rollback/REPORT.md;projekt/szülőknyitottak.
 - [ ] **11.8 PROMOTION:** csak dokumentált lefedettség-, kalibráció-,
   stabilitás- és portfólióminőség-javulás után.
 
@@ -486,3 +486,5 @@ ellenőrizve.
   - 8.7.N1 own scope COMPLETE: full5673/target28/adapter10/3actual replay8checks; audit-only LIVE/PAPER metadata and immutable `2026-10-25-f14ad05e1ce7` projection1LIVE/0PAPER/19shortfall. Runtime+DailyON restored then same-lockOFF9.3.N1,legacyOFF. Parent8.7 remains open for final fresh normal v2metadata release proof; no extra paid generation just for a counter.
 
   - 9.3.N1 own followup-v2 scope COMPLETE:5742full/316target/10adapter/3actualreplay8checks/13physicalcontrols; new `2026-10-26-cc3b72cd5b81` READY DAILY exact quote/context/wire/actual answer/ledger; sourced-context-legs=2,allUNKNOWNlegs=1; actualGrok=COMPLETE,positiveReview=True. DailyON then same-lockOFF11.7,legacyOFF; parent9.3/project need final scope audit.
+
+  - 11.7 own followup-v2 verified:5776full/75target/15cwdregressions/10adapter/3actualreplay8checks; real prior/current nine-config restore under one RootRunLock, raw files and committed SQLite data preserved; existing cc3b dashboard local+Tailscale/DailyON then same-lockOFF next sensitivity_note,legacyOFF. Original5763PASS/13FAIL evidence retained; no paid generation or math change.
