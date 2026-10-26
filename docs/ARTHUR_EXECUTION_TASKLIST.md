@@ -8,7 +8,11 @@ lezárt: Daily ON, legacy Daily223 OFF, 0 új normál generálás. A 74 függő 
 a részleges generálási csomag és az eredeti ellenőrzősegéd exit1 hibája megmaradt;
 külön csak olvasó egyeztetés és első runtime-visszaállítás igazolta a tényleges állapotot.
 [Részletes riport és aktuális teljes 215-ös leltár](status/2026-10-26-daily-workflow-recovery/REPORT-CLOSED.md).
-Következő egyetlen pont: a háttérfolyamat jelenlegi engedélyezhetőségének csak olvasó leltára.
+A háttérkapu leltára elkészült: a normál időzítő 19 friss deltaoldalt feldolgozott;
+a régi ötéves kurzor 496/1220 maradt. Az audit óráján COOLDOWN, a másodlagos kvóta
+QUOTA_REFRESH_REQUIRED; ebből nem következik új kézi HTTP-engedély.
+[Friss csak olvasó bizonyíték](status/2026-10-26-historical-background-current-allowance/REPORT.md).
+Következő egyetlen pont: a történeti adatok fogyasztónkénti source/availability/PIT-alkalmasságának csak olvasó leltára.
 
 Cél: a rendelkezésre álló, mérkőzés előtt ismert adatok tényleges és
 ellenőrizhető felhasználása a szelvényképzésben, a meglévő működő logikák
