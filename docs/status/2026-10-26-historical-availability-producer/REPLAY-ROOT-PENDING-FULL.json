@@ -1,0 +1,49 @@
+{
+  "at": "2026-10-26T15:04:35.832710+00:00",
+  "status": "THREE_OWN_NEW_ACTUAL_REPLAYS_ROOT_PHYSICAL_PASS_FULL5915_RUNTIME_AND_SCOPE_STILL_PENDING",
+  "task": "historical-availability-producer-contract",
+  "actual_replay_physical_readback": {
+    "at": "2026-10-26T14:58:46.677323+00:00",
+    "status": "THREE_OWN_AVAILABILITY_PRODUCER_ACTUAL_REPLAYS_PHYSICALLY_READ_BACK",
+    "actual_replays_passed": 3,
+    "checks_per_case": 8,
+    "cases": [
+      {
+        "case": "busy-weekend-2026-10-17",
+        "all_eight_checks_passed": true,
+        "model_sha256": "89f8710b51cbc06a12f93f7825d8d128e5cbe998c1eb0dfd77a57e3042e5e4b9",
+        "actual_training_dataset_manifests_verified": 97,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      },
+      {
+        "case": "sparse-weekday-2026-10-12",
+        "all_eight_checks_passed": true,
+        "model_sha256": "3007451ce1f4823e6daa8a36a0bed44dba4f920efa6d08f8336b55dc7d1bf465",
+        "actual_training_dataset_manifests_verified": 33,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      },
+      {
+        "case": "cup-national-2026-10-03",
+        "all_eight_checks_passed": true,
+        "model_sha256": "277af116059667496fe198782acef444949a76afaca1c9cef0b8649fe6fea9af",
+        "actual_training_dataset_manifests_verified": 1,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      }
+    ],
+    "summary_sha256": "4d9aba6fbe466c8f114af1ae645cacbee3333a122e2024a67b3059cfedb10f54",
+    "frozen_source_files_verified": 1235,
+    "original_eight_check_asts_and_require_conditions_unchanged": true
+  },
+  "private_proof_sha256": "372350e27ec9962d7fbd3f2c735766d46071548977d865246b54b64bcf47f686",
+  "full5915_passed": false,
+  "runtime_activation_revalidation_done": false,
+  "daily_off": true,
+  "scope_complete": false,
+  "new_production_receipt_import_api_llm_normal_generation": 0
+}
