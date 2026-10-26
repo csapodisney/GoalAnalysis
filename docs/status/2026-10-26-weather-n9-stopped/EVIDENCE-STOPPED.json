@@ -1,0 +1,163 @@
+{
+  "at": "2026-10-26T06:28:29.815458+00:00",
+  "task": "6.4.N9",
+  "status": "STOPPED_NO_NEW_ADMITTED_PAIRS_NO_RETRY",
+  "actual_free_gets": 4,
+  "actual_provider_sourced_downloads": 3,
+  "actual_new_strictly_admitted_pairs": 0,
+  "total_admitted_native_pairs_unchanged": 9,
+  "provider_error": {
+    "received_at": "2026-10-26T06:24:07.302137+00:00",
+    "status": "FAILED_STOP_NO_RETRY",
+    "error_type": "URLError"
+  },
+  "own_artifact_error": "Prepared exact current venue identities/coordinates were checked, but collector persisted prior N7 release object rather than current full provenance. Native reader correctly rejects all three new SOURCED rows.",
+  "not_production_reader_bug": true,
+  "initial_attest_failure": {
+    "error_type": "KeyError",
+    "field": "weather",
+    "source_line": 174
+  },
+  "strict_source_contract_not_relaxed": true,
+  "old_and_new_stored_rows_not_rewritten": true,
+  "no_fake_new_observed_clock_to_escape_equal_time_candidates": true,
+  "new_source_details": [
+    {
+      "fixture_id": "the_stats_api:mt_899744237",
+      "snapshot_id": "4ef64dc6c9ccbdba64d93b068941b3cefc933759105c78fd0b5ede48bd6ec37c",
+      "stored_status": "SOURCED",
+      "strict_reader_admitted": false,
+      "strict_error_type": "ValueError",
+      "strict_error": "REANALYSIS_ACTUAL_EVENT_STADIUM_UNPROVEN",
+      "location_different_top_keys": [
+        "payload",
+        "source_receipts",
+        "times",
+        "record_id",
+        "payload_sha256"
+      ],
+      "location_different_payload_keys": [
+        "bundle_sha256"
+      ],
+      "same_event_and_coordinates": true,
+      "actual_current_location_sha256": "d1e462666d613716ab8b0b9668da876d648eae0baadb5f33a3b1a7e34f1ef3ed",
+      "recorded_prior_location_sha256": "7298aca07f27f6a1f6de89c57ccb0eac10fd0df1de6aeb823ecb4b166a8b6ad8"
+    },
+    {
+      "fixture_id": "the_stats_api:mt_988908286",
+      "snapshot_id": "9a981b027fbec6722b089e6211ff02f75f296fa7fbba775b4575244e6aacc062",
+      "stored_status": "SOURCED",
+      "strict_reader_admitted": false,
+      "strict_error_type": "ValueError",
+      "strict_error": "REANALYSIS_ACTUAL_EVENT_STADIUM_UNPROVEN",
+      "location_different_top_keys": [
+        "payload",
+        "source_receipts",
+        "times",
+        "record_id",
+        "payload_sha256"
+      ],
+      "location_different_payload_keys": [
+        "bundle_sha256"
+      ],
+      "same_event_and_coordinates": true,
+      "actual_current_location_sha256": "9f3d9886af90593beac8c4bebff6d7ed4473519ccb91c3fdd730c377e2804519",
+      "recorded_prior_location_sha256": "c95c1ce25843be1fb27bab0be45e6de6d84f7ec11997191d9843a0ffaaeb1c10"
+    },
+    {
+      "fixture_id": "the_stats_api:mt_988973729",
+      "snapshot_id": "fabbe4c108bc5057629756d727be1fea97d512e2dc0a2508e760355f30745c8e",
+      "stored_status": "SOURCED",
+      "strict_reader_admitted": false,
+      "strict_error_type": "ValueError",
+      "strict_error": "REANALYSIS_ACTUAL_EVENT_STADIUM_UNPROVEN",
+      "location_different_top_keys": [
+        "payload",
+        "source_receipts",
+        "times",
+        "record_id",
+        "payload_sha256"
+      ],
+      "location_different_payload_keys": [
+        "bundle_sha256"
+      ],
+      "same_event_and_coordinates": true,
+      "actual_current_location_sha256": "a630a4f8d8b96c5d26ab8bf4c346ed8c0b84abf0be6f8ab3f944931c28343877",
+      "recorded_prior_location_sha256": "ebab058e7ff9363da8114c6a3aac93174b318e31d201ff26b2835078ff20cc48"
+    },
+    {
+      "fixture_id": "the_stats_api:mt_644690349",
+      "snapshot_id": "898f77c02e3d550c483ccdcc7d4d8946d4e302b6ab456483dd280166a1bf55ac",
+      "stored_status": "UNKNOWN",
+      "strict_reader_admitted": false
+    }
+  ],
+  "six_missing_weather_ids_still_unresolved": [
+    "the_stats_api:mt_899744237",
+    "the_stats_api:mt_988908286",
+    "the_stats_api:mt_988973729",
+    "the_stats_api:mt_644690349",
+    "the_stats_api:mt_733561666",
+    "the_stats_api:mt_206555059"
+  ],
+  "unattempted_after_stop": [
+    "the_stats_api:mt_733561666",
+    "the_stats_api:mt_206555059"
+  ],
+  "N7_all_twelve_complete": false,
+  "earlier_prefix_exact": true,
+  "old_nine_pairs_exact": true,
+  "all492_preclaim_native_weather_rows_receipts_raw_links_exact": true,
+  "original_feature_rows": {
+    "rows": 203,
+    "sha256": "cf0576dcae78ef6533ca539b1a738bde53926e4c61dd535df3ea85e364b7a3df",
+    "original_cutoff": "2026-10-23T11:05:05.240204+00:00"
+  },
+  "original_N7_95_weather_archive_and_failed_proofs_preserved": true,
+  "app_source_count_unchanged": 1227,
+  "old_ledger_rows_unchanged": 4016,
+  "sports_web_llm_fit_generation_calls": 0,
+  "http_retries": 0,
+  "new_full_or_replay_runs": 0,
+  "no_relabelled_or_renamed_followup_request_batch_authorized": true,
+  "artifact_hashes": {
+    "collection-claim.json": "c55afe8e7229218d42a9d3f5d312c517ac864245dc18013ffd4ddc29565d199a",
+    "collection-proof.json": "656fb68bc2941251dfe576a98593a7a5b874c3cf7c3743afc310a35c79a48232",
+    "dataset-after-stopped.json": "2ff28f9054b4b37c5b929abef18a1e710a760e687740ae92ae8ff0ae199fe126",
+    "dataset-before.json": "2fd94c563aedebc22ca4cc9979cc4a8c88ea0daf419f664b125754b9e53e2674",
+    "diagnose_readonly.py": "025e2d2e4cc73b21f0696289548cdba480b0ad859d2c05747ebabaa38a767922",
+    "fingerprints-after-stopped.json": "bd0946e9c39a57a1a4e5d93233f17e642b99db3ebd57cef404f7afdc08032ecc",
+    "fingerprints-before.json": "333d5cb45570addaf6eb2386b859b504a19948bf0db4a5f90f45662808eb8cdf",
+    "free-request-01.json": "55114e66510432d4adfd5777486d6640cdbc80d5005e00973ed93cdd177503ed",
+    "free-request-02.json": "2818c21f5c485b1027e3dc2b736b9485e3ce673c98b901a7fc3d371093b4cb5e",
+    "free-request-03.json": "fb0f0898baf556b490923d51872486b8150be7ba54144cf11b6a0ee16357ba93",
+    "free-request-04.json": "c4f731cb1055a264ea067423eb4f295418c1b3a38df5ec148801a8518e391baf",
+    "free-response-01.json": "e304cd183dd1ff82da52715def38c5aff86e8c9334e40d7e8ef53d22250762ac",
+    "free-response-02.json": "82cd6f3e8bd83581d928ebfdbe2b9eee17742f00f9dd648052f0aa8b8b23e51b",
+    "free-response-03.json": "07f167641a0161aa625ee77b6e6743baf7c82bc1a84fb352c83707a695f9dd2e",
+    "free-response-04.json": "2446009387b7be7535ba8a01a29911ededd08fae09d755970ad890037a9cbb5e",
+    "old-archive-pins.json": "01b04bd52c0cdb1853ad6b3702917279a1d4d654bc1bbba0972d7af680ffbe05",
+    "old-weather-before.json": "2d6b0c5ed49c1df159b7f851531162f0765068fe0a0049885f43b860f48e0d7a",
+    "one_claim.py": "03a674051fa0edf3f763fb497b83df5cb32e0282ed053936cebf219500e4b8ee",
+    "original-feature-guard.json": "9ddd26e440a305ccae601a1afd598f61fbb7da15639409c0bdae1d35ca16d891",
+    "scheduler-after-stopped.json": "c8636ad86ab08bbbdf7e5dfb006450bf9f191ad33beeac5099368daf597fee66",
+    "selection.json": "9d9534f28a2d8003f51af20f8f9347ac0edcde27516753154f2e90b77d3b627d",
+    "stopped-independent-readback.json": "3a506c825d9854b635cae3a4e9cde056c032f2c3b91443a6c0c9a8923822d089",
+    "weather-mt_644690349.json": "466495e1222ff78d16f9a26c7c7d78ae916fc86011edfb0827df8b5b557e8e77",
+    "weather-mt_899744237.json": "ddb8588acc3afd48267a511f4381d8a246dc713ae0b0e37b348083399c65a90e",
+    "weather-mt_988908286.json": "96b6d42d5c7755271d2b3dff4e248f651b289a492dd2770da787a25085e6ffc9",
+    "weather-mt_988973729.json": "ec46dc61613e2e9197b113865c8bf6478636115c2a05b83b0d6e6cbf43042127"
+  },
+  "daily_enabled": true,
+  "legacy_enabled": false,
+  "original215_counts_unchanged": {
+    "GREEN": 175,
+    "RED": 40
+  },
+  "numbered_worklist_counts_unchanged": {
+    "total": 167,
+    "checked": 136,
+    "open": 31
+  },
+  "project_complete": false
+}
