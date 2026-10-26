@@ -1,6 +1,6 @@
 # Arthur tényleges szelvény-előállítási útvonala — 2026-10-26
 
-Ez a leírás a `build/token-efficient-pipeline` ág `671c5451a3c1c527f6bad77b24c3ab85034ba48a` alkalmazásforrását és a lezárt saját bizonyítékokat írja le. A dokumentálás nem indított új generálást, modellillesztést vagy szolgáltatói hívást. A jelentés időpontjában a normál napi automata engedélyezett, a külön régi Daily223 tiltott. Egy korábbi szelvény READY állapota nem igazol mostani megjátszhatóságot vagy friss árat.
+Ez a leírás a `build/token-efficient-pipeline` ág `be795d743909e77cbc460ff30a65ad16d1f9396a` alkalmazásforrását és a lezárt saját bizonyítékokat írja le. A dokumentálás nem indított új generálást, modellillesztést vagy szolgáltatói hívást. A jelentés időpontjában a normál napi automata engedélyezett, a külön régi Daily223 tiltott. Egy korábbi szelvény READY állapota nem igazol mostani megjátszhatóságot vagy friss árat.
 
 ## Belépés és egyetlen koherens futás
 
@@ -38,7 +38,7 @@ Játékos/xG/naptár, időjárás, utazás, rotáció és humán kontextus kül�
 
 A portfólió az önálló profilopciókból dolgozik, egzakt teljes szelvényhalmaz-duplikációt szűr, és a szabály szerinti részleges átfedési büntetést alkalmazza. A DRAFT/READY kapu nem változik a darabszámcél miatt. Nincs gyenge töltelékláb vagy PAPER-rel feltöltött LIVE nevező.
 
-A `portfolio_capacity.py` és `portfolio_objectives.py` v2 számláló az allokáció után külön számít LIVE és PAPER szelvényeket. REVIEWED ajánlás csak a már mentett READY LIVE ticket pontos profil/ticket/quote azonosságával számít. Ismeretlen, üres, duplikált vagy suspended sor nem növeli a kész darabszámot. Az aktuális dashboard fejléc még általános READY feliratot használ; az explicit LIVE/PAPER bontás megjelenítése külön kis prezentációs maradék, nem új számlálási képlet.
+A `portfolio_capacity.py` és `portfolio_objectives.py` v2 számláló az allokáció után külön számít LIVE és PAPER szelvényeket. REVIEWED ajánlás csak a már mentett READY LIVE ticket pontos profil/ticket/quote azonosságával számít. Ismeretlen, üres, duplikált vagy suspended sor nem növeli a kész darabszámot. A dashboard fejléc az eredeti v2 LIVE/PAPER értékeket külön, explicit LIVE céllal és hiánnyal mutatja. Hiányzó/érvénytelen vagy csak általános legacy READY mező esetén a bontás ismeretlen; nem feltételezett nulla vagy LIVE darabszám. Ez prezentáció, nem új számlálási képlet.
 
 Egyetlen háromlábas DAILY mellett mindhárom meccs a teljes LIVE csomag 100%-ában szerepel. Ez az abszolút 40–50%-os kitettségszöveggel nem fér össze. A számlálást nem javítjuk látszólagos papírszelvények vagy a DAILY törlése útján.
 
@@ -74,7 +74,7 @@ A `2026-10-26-cc3b72cd5b81` körben egy READY DAILY készült három lábbal; a 
 
 Egy tényleges Grok-kérés `3ad19595bb974220be4bfe9e231230ea` COMPLETE, producer wire 97623, provider wire 97696 karakter. A független ellenőrzés COMPLETE, nulla igazolt egyetértéssel és nulla javítással. A két régi túlméretes bemenet 90826/97431 karakteres veszteségmentes rekonstrukciója külön retained-input bizonyíték, nem e régi kérések új hálózati elküldése.
 
-A legutóbbi saját teljes suite 5848 PASS, 44 warning, 2669.83 másodperc; három új, ténylegesen újraszámolt numerikus replay mind a nyolc ellenőrzése PASS. Ez helyi teljes teszt a védett eredeti archívummal. A nyilvános, titokmentes TESTONLY stadionfixture 26 kontrollja a privát HTML nélkül is PASS; két változatlan eredeti raw-integrity teszt a privát archívumot igényli. A teljes önellátó publikus clone fullsuite nincs bizonyítva.
+A legutóbbi saját teljes suite 5851 PASS, 44 warning, 2693.00 másodperc; három új, ténylegesen újraszámolt numerikus replay mind a nyolc ellenőrzése PASS. Ez helyi teljes teszt a védett eredeti archívummal. A nyilvános, titokmentes TESTONLY stadionfixture 26 kontrollja a privát HTML nélkül is PASS; két változatlan eredeti raw-integrity teszt a privát archívumot igényli. A teljes önellátó publikus clone fullsuite nincs bizonyítva.
 
 Az ötéves adatfedés, a minden fogyasztóra kiterjedő 30 napos PIT-visszajátszás, a teljes kalibráció/promóció, a 7/30 napos új kohorszok teljesítménye és a 20–30 jogosult LIVE szelvény nincs késznek jelentve. A későbbi mérés külön optimalizálás; a konkrét végrehajtható kód-/dokumentációs-/adatmaradékot az eredeti 215 követelmény friss auditja tételesen különíti el.
 
@@ -83,7 +83,7 @@ Az ötéves adatfedés, a minden fogyasztóra kiterjedő 30 napos PIT-visszaját
 | Hatókör | Végleges, GitHubon ellenőrzött riport |
 |---|---|
 | N2 exactquote/context és forráshasználat | `3137e0ac55a7be185b5a555ce8df6f66669c2795` |
-| LIVE/PAPER kapacitásszámláló | `0e4abf38dda94334b360daa90e5889e5f605a3b3` |
+| LIVE/PAPER kapacitásszámláló (az új felirat külön saját5851/runtime/root bizonyítékkal) | `0e4abf38dda94334b360daa90e5889e5f605a3b3` |
 | Grok codec, cél napja és valódi review | `ecefd529a5ce777718ef1cec720e562388f87d91` |
 | Adatmegőrző konfigurációs rollback | `264852e0b97d551bbabe29f67e3c1c327f7ddfd4` |
 | Forráskötött sensitivity export | `f7d2b9ce2861a562ea1fb30edf58fea91a2e49fe` |

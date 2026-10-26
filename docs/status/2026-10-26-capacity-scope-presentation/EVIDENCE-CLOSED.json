@@ -1,0 +1,174 @@
+{
+  "at": "2026-10-26T07:34:57.102088+00:00",
+  "task": "capacity-scope-presentation",
+  "status": "OWN_SCOPE_ROOT_VERIFIED_GITHUB_PENDING",
+  "full_tests_passed": 5851,
+  "targeted_tests_passed": 87,
+  "adapter_tests_passed": 10,
+  "actual_new_replays_passed": 3,
+  "checks_per_case": 8,
+  "retained_reports": 4,
+  "source_files_frozen": 1229,
+  "old_ledger_rows_unchanged": 4016,
+  "original215_counts": {
+    "GREEN": 176,
+    "RED": 39
+  },
+  "original215_only_status_changed_reference_line": 374,
+  "numbered_worklist": {
+    "total": 167,
+    "checked": 136,
+    "open": 31
+  },
+  "daily_enabled": true,
+  "legacy_enabled": false,
+  "production_model_fit_or_paid_provider_llm_generation_for_ui": 0,
+  "new_offline_actual_replay_cases": 3,
+  "n9_remains_stopped_no_new_admitted_pairs_no_retry": true,
+  "whole_public_clone_full_suite_proven": false,
+  "project_complete": false,
+  "next_task": "historical-coverage-inventory",
+  "own_runtime": {
+    "at": "2026-10-26T07:33:52.712109+00:00",
+    "task": "capacity-scope-presentation",
+    "status": "OWN_ACCEPTED_CAPACITY_UI_AND_EXISTING_EXACT_REPORT_RUNTIME_RESTORED",
+    "own_acceptance_sha256": "db1bf7f2353931b89474d28be5099685696ef847bd1f2c4d6d63715fe081cff6",
+    "own_presentation_readback_sha256": "3b64dc070969203100822f31d5a9b77cf796565cd79233c3c1e8578693c6c9bd",
+    "serving": {
+      "local": {
+        "http_status": 200,
+        "runtime_idle": true,
+        "run_id": "2026-10-26-cc3b72cd5b81",
+        "report_sha256": "916089cc9a91372873e6cdce61ff768d3930b1658a799cf56c1a09d373c326ce",
+        "javascript_sha256": "d68c82e7be4449d09fa9d5428b62fecf1822c2ac65209868eb92ec66af6d1030",
+        "learning_report_hash": "aa64fd08b17a1e8be8ef07553e93ce761046069a9ed35d1bb9d374bc21f429ab",
+        "current_strategy_contracts": 20
+      },
+      "tailscale": {
+        "http_status": 200,
+        "runtime_idle": true,
+        "run_id": "2026-10-26-cc3b72cd5b81",
+        "report_sha256": "916089cc9a91372873e6cdce61ff768d3930b1658a799cf56c1a09d373c326ce",
+        "javascript_sha256": "d68c82e7be4449d09fa9d5428b62fecf1822c2ac65209868eb92ec66af6d1030",
+        "learning_report_hash": "aa64fd08b17a1e8be8ef07553e93ce761046069a9ed35d1bb9d374bc21f429ab",
+        "current_strategy_contracts": 20
+      }
+    },
+    "serving_run_id": "2026-10-26-cc3b72cd5b81",
+    "serving_report_sha256": "916089cc9a91372873e6cdce61ff768d3930b1658a799cf56c1a09d373c326ce",
+    "before": {
+      "dashboard": {
+        "created_at": "2026-10-26T05:19:13.1454320Z",
+        "pid": 34724,
+        "verified_owner": true
+      },
+      "tasks": {
+        "daily": {
+          "state": "Disabled",
+          "verified_action": true,
+          "name": "Arthur Goal Analysis Daily",
+          "enabled": false
+        },
+        "dashboard": {
+          "verified_action": true,
+          "enabled": true
+        },
+        "legacy": [
+          {
+            "state": "Disabled",
+            "name": "Arthur Goal Analysis Daily 223",
+            "enabled": false
+          }
+        ]
+      },
+      "gateway": {
+        "created_at": "2026-10-16T21:53:14.2493770Z",
+        "pid": 21916,
+        "verified_owner": true
+      }
+    },
+    "after": {
+      "dashboard": {
+        "created_at": "2026-10-26T07:33:28.5364640Z",
+        "pid": 8064,
+        "verified_owner": true
+      },
+      "tasks": {
+        "daily": {
+          "state": "Ready",
+          "verified_action": true,
+          "name": "Arthur Goal Analysis Daily",
+          "enabled": true
+        },
+        "dashboard": {
+          "verified_action": true,
+          "enabled": true
+        },
+        "legacy": [
+          {
+            "state": "Disabled",
+            "name": "Arthur Goal Analysis Daily 223",
+            "enabled": false
+          }
+        ]
+      },
+      "gateway": {
+        "created_at": "2026-10-16T21:53:14.2493770Z",
+        "pid": 21916,
+        "verified_owner": true
+      }
+    },
+    "operation": {
+      "reused_hidden_task": true,
+      "verified_owner": true,
+      "gateway_restarted": false,
+      "previous_pid": 34724
+    },
+    "daily_enabled": true,
+    "legacy_enabled": false,
+    "same_root_runlock": true,
+    "source_and_4016_prior_ledger_rows_unchanged": true,
+    "learning_team_databases_and_gateway_unchanged": true,
+    "new_generation_or_model_fit_or_sports_request": 0,
+    "not_a_new_quote_or_current_bettability_claim": true
+  },
+  "root_readback_sha256": "7a4b122ac11f4e98faf1de1ec6d6e6a55382cb4328e6878501e1430990170096",
+  "own_replay_readback": {
+    "at": "2026-10-26T06:52:00.646458+00:00",
+    "status": "THREE_OWN_CAPACITY_UI_ACTUAL_REPLAYS_PHYSICALLY_READ_BACK",
+    "actual_replays_passed": 3,
+    "checks_per_case": 8,
+    "cases": [
+      {
+        "case": "busy-weekend-2026-10-17",
+        "all_eight_checks_passed": true,
+        "model_sha256": "89f8710b51cbc06a12f93f7825d8d128e5cbe998c1eb0dfd77a57e3042e5e4b9",
+        "actual_training_dataset_manifests_verified": 97,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      },
+      {
+        "case": "sparse-weekday-2026-10-12",
+        "all_eight_checks_passed": true,
+        "model_sha256": "3007451ce1f4823e6daa8a36a0bed44dba4f920efa6d08f8336b55dc7d1bf465",
+        "actual_training_dataset_manifests_verified": 33,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      },
+      {
+        "case": "cup-national-2026-10-03",
+        "all_eight_checks_passed": true,
+        "model_sha256": "277af116059667496fe198782acef444949a76afaca1c9cef0b8649fe6fea9af",
+        "actual_training_dataset_manifests_verified": 1,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      }
+    ],
+    "summary_sha256": "84244c512cdde55900e68108345e90781424853f3d92dde32a8fa35c11bc3ffc",
+    "frozen_source_files_verified": 1229,
+    "original_eight_check_asts_and_require_conditions_unchanged": true
+  }
+}
