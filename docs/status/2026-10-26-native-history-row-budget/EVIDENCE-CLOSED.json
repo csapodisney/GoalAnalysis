@@ -1,0 +1,84 @@
+{
+  "at": "2026-10-26T13:20:25.823889+00:00",
+  "task": "native-history-row-budget-contract",
+  "status": "ROOT_INDEPENDENT_ACCEPTED_INPUT_OLD_DATA_EXACT_RUNTIME_OBSERVATION_PASS_GITHUB_PENDING",
+  "own_full_tests_passed": 5894,
+  "targeted_tests_passed": 89,
+  "new_tests": 20,
+  "adapter_tests_passed": 10,
+  "own_actual_replay_cases": 3,
+  "checks_per_case": 8,
+  "replay_cases": [
+    {
+      "case": "busy-weekend-2026-10-17",
+      "all_eight_checks_passed": true,
+      "model_sha256": "89f8710b51cbc06a12f93f7825d8d128e5cbe998c1eb0dfd77a57e3042e5e4b9",
+      "actual_training_dataset_manifests_verified": 97,
+      "numeric_outputs_equal_original_validated_baseline": true,
+      "external_requests": 0,
+      "forbidden_attempts": 0
+    },
+    {
+      "case": "sparse-weekday-2026-10-12",
+      "all_eight_checks_passed": true,
+      "model_sha256": "3007451ce1f4823e6daa8a36a0bed44dba4f920efa6d08f8336b55dc7d1bf465",
+      "actual_training_dataset_manifests_verified": 33,
+      "numeric_outputs_equal_original_validated_baseline": true,
+      "external_requests": 0,
+      "forbidden_attempts": 0
+    },
+    {
+      "case": "cup-national-2026-10-03",
+      "all_eight_checks_passed": true,
+      "model_sha256": "277af116059667496fe198782acef444949a76afaca1c9cef0b8649fe6fea9af",
+      "actual_training_dataset_manifests_verified": 1,
+      "numeric_outputs_equal_original_validated_baseline": true,
+      "external_requests": 0,
+      "forbidden_attempts": 0
+    }
+  ],
+  "source_files_exact": 1233,
+  "original_source_files_unchanged": 1230,
+  "ledger_rows_exact": 4087,
+  "raw_aliases_exact": 11595,
+  "distinct_truth_envelopes": 2622,
+  "selected_mathematical_inputs_exact": 2613,
+  "verified_targets": 5,
+  "unknown_targets_preserved": 2,
+  "row_work_unit_change_explicit": true,
+  "archives_physically_verified": 7197,
+  "full_xml_sha256": "ae3caccf25b5783ec113e5dface9902e19bbd0f01ed90079406d38b7668d2338",
+  "acceptance_sha256": "622fe51ff7324810d50468d61ae6bf27cc462c9f269af2b67b0b306559a434ab",
+  "input_readback_sha256": "e0993a69f2056abfc43a584fb8586dfe1661b9408f9da03c667a05a7a88c7a02",
+  "runtime_proof_sha256": "0f69d3db460baf3e106747810f7b72d517414797ffce1eb5c7156c4dc622060c",
+  "serving": {
+    "local": {
+      "http_status": 200,
+      "runtime_idle": true,
+      "run_id": "2026-10-26-cc3b72cd5b81",
+      "report_sha256": "916089cc9a91372873e6cdce61ff768d3930b1658a799cf56c1a09d373c326ce",
+      "javascript_sha256": "d68c82e7be4449d09fa9d5428b62fecf1822c2ac65209868eb92ec66af6d1030",
+      "learning_report_hash": "0581efc3b1d891fd157c18d12e24c1433115308b826914e0547e17520abe7cdb",
+      "current_strategy_contracts": 20
+    },
+    "tailscale": {
+      "http_status": 200,
+      "runtime_idle": true,
+      "run_id": "2026-10-26-cc3b72cd5b81",
+      "report_sha256": "916089cc9a91372873e6cdce61ff768d3930b1658a799cf56c1a09d373c326ce",
+      "javascript_sha256": "d68c82e7be4449d09fa9d5428b62fecf1822c2ac65209868eb92ec66af6d1030",
+      "learning_report_hash": "0581efc3b1d891fd157c18d12e24c1433115308b826914e0547e17520abe7cdb",
+      "current_strategy_contracts": 20
+    }
+  },
+  "daily_enabled": true,
+  "legacy_enabled": false,
+  "existing_report_preserved": "2026-10-26-cc3b72cd5b81",
+  "old_report_hash_kinds_full_ledger_embedded_physical_not_interchanged": true,
+  "new_operations_in_root_readback": {
+    "runtime_restart": 0,
+    "api_llm_model_fit_capture_normal_generation": 0
+  },
+  "five_year_pit_complete_or_live_promotion": false,
+  "parent_or_project_complete": false
+}
