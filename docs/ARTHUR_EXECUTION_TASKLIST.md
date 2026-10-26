@@ -531,3 +531,5 @@ Friss maradékROtriage6actualCLI kontrollal igazolta a hiányzó TheStatskulcsn�
 Credentialpreflight1runner+13újteszt104target/13artifact/10adapter/RuffPASS;own5973full+3NEWactualFUT,nemelfogadás. DailyOFF. [Saját forrás és215](status/2026-10-26-scheduled-odds-credential-preflight/REPORT-SOURCE-PENDING.md).
 
 B02 adatfogyasztás: [végső exact review forrásellenőrzés](status/2026-10-26-final-review-consumption/REPORT-SOURCE-PENDING.md), own91target15new/5988full+3NEWactual folyamatban; nem lezárt scope. Első adatcsomag következő része weather és retained history normál modellinput. Daily OFF.
+
+B02 final-review-consumption saját5988/91target15új/3NEWactual/root/runtimeOFF igazolt: [lezárt bizonyíték](status/2026-10-26-final-review-consumption/REPORT-CLOSED.md). Következő B03weather, B04retainedDB tényleges fogyasztás; DailyOFF.

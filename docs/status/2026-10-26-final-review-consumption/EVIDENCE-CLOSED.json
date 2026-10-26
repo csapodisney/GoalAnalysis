@@ -1,0 +1,149 @@
+{
+  "at": "2026-10-26T23:14:32.182706+00:00",
+  "task": "final-review-consumption-contract",
+  "status": "OWN_ROOT_INDEPENDENT_PHYSICAL_RUNTIME_PASS",
+  "full": 5988,
+  "target": 91,
+  "new_tests": 15,
+  "adapter": 10,
+  "actual_replays": 3,
+  "source_files": 1241,
+  "old_ledger_rows": 4087,
+  "old_archives": 10118,
+  "protected_stores": 4,
+  "report_physical": "5592bf755cdc07c56969073d711b9c253107877bf53409e2dbe2dce06b7433be",
+  "report_embedded": "916089cc9a91372873e6cdce61ff768d3930b1658a799cf56c1a09d373c326ce",
+  "report_full_ledger": "49f87b0c9bba26f497e494c5757500aef0231683d6564a537446ffabb8c99252",
+  "daily_enabled": false,
+  "legacy_enabled": false,
+  "root_provider_capture_import_llm_normal_generation": 0,
+  "old_credential_closure_restarted": false,
+  "new_live_ticket_or_profit_claim": false,
+  "original_follower_exit_code": 1,
+  "separate_readonly_reconciliation_complete": true,
+  "first_runtime_exit_code": 1,
+  "runtime_completion_exit_code": 0,
+  "retained_shadow": {
+    "at": "2026-10-26T22:07:12.831176+00:00",
+    "task": "final-review-consumption-contract",
+    "changes": [
+      {
+        "profile_id": "kronikas",
+        "legs": 6,
+        "old_status": "DRAFT",
+        "new_status": "DRAFT",
+        "review_completion": {
+          "status": "COMPLETE_EXACT_SOURCE_CONTEXT_BOUND",
+          "reviewed_legs": 6,
+          "unknown_categories": [
+            "players",
+            "rotation",
+            "schedule",
+            "travel",
+            "weather",
+            "xg"
+          ],
+          "publication_eligibility": "REQUIRES_EXISTING_FINAL_CALLER_GUARDS",
+          "automatically_made_playable": false
+        }
+      },
+      {
+        "profile_id": "ritmusor",
+        "legs": 6,
+        "old_status": "DRAFT",
+        "new_status": "REVIEWED",
+        "review_completion": {
+          "status": "COMPLETE_EXACT_SOURCE_CONTEXT_BOUND",
+          "reviewed_legs": 6,
+          "unknown_categories": [
+            "players",
+            "rotation",
+            "schedule",
+            "travel",
+            "weather",
+            "xg"
+          ],
+          "publication_eligibility": "REQUIRES_EXISTING_FINAL_CALLER_GUARDS",
+          "automatically_made_playable": false
+        }
+      },
+      {
+        "profile_id": "parharcmester",
+        "legs": 5,
+        "old_status": "DRAFT",
+        "new_status": "REVIEWED",
+        "review_completion": {
+          "status": "COMPLETE_EXACT_SOURCE_CONTEXT_BOUND",
+          "reviewed_legs": 5,
+          "unknown_categories": [
+            "players",
+            "rotation",
+            "schedule",
+            "travel",
+            "weather",
+            "xg"
+          ],
+          "publication_eligibility": "REQUIRES_EXISTING_FINAL_CALLER_GUARDS",
+          "automatically_made_playable": false
+        }
+      },
+      {
+        "profile_id": "orszem",
+        "legs": 5,
+        "old_status": "DRAFT",
+        "new_status": "REVIEWED",
+        "review_completion": {
+          "status": "COMPLETE_EXACT_SOURCE_CONTEXT_BOUND",
+          "reviewed_legs": 5,
+          "unknown_categories": [
+            "players",
+            "rotation",
+            "schedule",
+            "travel",
+            "weather",
+            "xg"
+          ],
+          "publication_eligibility": "REQUIRES_EXISTING_FINAL_CALLER_GUARDS",
+          "automatically_made_playable": false
+        }
+      },
+      {
+        "profile_id": "merlin",
+        "legs": 2,
+        "old_status": "DRAFT",
+        "new_status": "REVIEWED",
+        "review_completion": {
+          "status": "COMPLETE_EXACT_SOURCE_CONTEXT_BOUND",
+          "reviewed_legs": 2,
+          "unknown_categories": [
+            "players",
+            "rotation",
+            "schedule",
+            "travel",
+            "weather",
+            "xg"
+          ],
+          "publication_eligibility": "REQUIRES_EXISTING_FINAL_CALLER_GUARDS",
+          "automatically_made_playable": false
+        }
+      }
+    ],
+    "exact_bound_original_quotes": 115,
+    "saved_report_and_inputs_unchanged": {
+      "report.json": "5592bf755cdc07c56969073d711b9c253107877bf53409e2dbe2dce06b7433be",
+      "profile_context_independent_cards.json": "eec225de2d925fbe71379a488e6bd5c7eaf459e07491f66982c426d2f053a2d1",
+      "candidate_context_inputs.json": "0bb9b5eecaf3d705be17c6eef374403c36bbf59205ec280618426eb4d3f2e32c",
+      "candidate_input.json": "b36ad3a64eb5abfee7e54e863967828cd30c16df131d0ff71f1910b8b5b9802f",
+      "candidate_review_actual_packets.json": "806fec1bc614f371e3b193734b1e40cd7772a70b8a2fd5aa8c06482031578b9b",
+      "candidate_review_follow_up_packets.json": "eb911b60ff6fedc4137e34c5f126c04e37bd79dd12e9e956e0180f609924ae98",
+      "candidate_review_response_batches.json": "56110bc8ec5edf9c8d11f1730263ba64dc26d4a1ad0b0f64abfea75c8664ac53"
+    },
+    "old_report_not_republished": true,
+    "new_ready_or_playable_tickets": 0,
+    "provider_llm_fit_capture_import": 0
+  },
+  "physical_proof": {
+    "path": "artifacts/roadmap-execution-20261020/final-review-consumption-contract/root-independent-readback.json",
+    "sha256": "393463aaeef4954a5e3acd7f51a305b0bffad2b0854aeb0ca1fb74cecf5f28c9"
+  }
+}
