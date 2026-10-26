@@ -1,0 +1,80 @@
+{
+  "at": "2026-10-26T02:17:24.213921+00:00",
+  "task": "11.7",
+  "source_attempt": "followup-v2",
+  "status": "OWN_FULL5776_TARGET75_REGRESSION15_ADAPTER10_THREE_ACTUAL_REPLAYS_PHYSICAL_READBACK_PASS_OPERATIONS_NOT_YET_COMPLETE",
+  "full_tests_passed": 5776,
+  "warnings": 44,
+  "seconds": 2594.38,
+  "targeted_tests_passed": 75,
+  "original_cwd_regressions_passed": 15,
+  "adapter_tests_passed": 10,
+  "actual_replays": {
+    "at": "2026-10-26T01:26:22.896068+00:00",
+    "status": "THREE_OWN_11_7_V2_ACTUAL_REPLAYS_PHYSICALLY_READ_BACK",
+    "actual_replays_passed": 3,
+    "checks_per_case": 8,
+    "cases": [
+      {
+        "case": "busy-weekend-2026-10-17",
+        "all_eight_checks_passed": true,
+        "model_sha256": "89f8710b51cbc06a12f93f7825d8d128e5cbe998c1eb0dfd77a57e3042e5e4b9",
+        "actual_training_dataset_manifests_verified": 97,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      },
+      {
+        "case": "sparse-weekday-2026-10-12",
+        "all_eight_checks_passed": true,
+        "model_sha256": "3007451ce1f4823e6daa8a36a0bed44dba4f920efa6d08f8336b55dc7d1bf465",
+        "actual_training_dataset_manifests_verified": 33,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      },
+      {
+        "case": "cup-national-2026-10-03",
+        "all_eight_checks_passed": true,
+        "model_sha256": "277af116059667496fe198782acef444949a76afaca1c9cef0b8649fe6fea9af",
+        "actual_training_dataset_manifests_verified": 1,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      }
+    ],
+    "summary_sha256": "95be212acaaf537b64bd1a726be2aa2425b1d1be2df8560020cd62f4f4dfacfe",
+    "frozen_source_files_verified": 1219,
+    "original_eight_check_asts_and_require_conditions_unchanged": true
+  },
+  "frozen_source_files": 1219,
+  "prior_ledger_rows": 4016,
+  "preserved_prior_archive_files": 5964,
+  "full_xml_sha256": "40a1710c37b51f2ea513ca7a156da72cf0f355d86484689082ced9643df1509f",
+  "acceptance_sha256": "bed1bfb9c5933be40ab7f662e83500cf83f3bdf9faff8f7b4ecadb9fd2d986c7",
+  "physical_acceptance_readback_sha256": "124e193dd1a8a31259831fb508104dc5bb33dfc3d84c929c002a7cf11effb239",
+  "application_config_test_code_changes_after_accepted_full": 0,
+  "operation_helper_failures_preserved": [
+    {
+      "cause": "Raw byte SHA compared with logical report ID; before any config/bundle write",
+      "proof_sha256": "e37f80c6a65489482edeccba906554443cff9502bc56f8b11d6e5a2654730961"
+    },
+    {
+      "cause": "Exclusive operation log name collided with preserved previous operation; before any config/bundle write",
+      "proof_sha256": "ba3cfce6d6251f45e1762346b624051995b9259cb58c616b25696683bc3c970b"
+    }
+  ],
+  "new_hash_controls_passed": 4,
+  "positive_read_only_isolated_journal_preflight_calls": 2,
+  "active_operation_version": "operations-v3",
+  "operations_not_yet_complete": true,
+  "runtime_restored": false,
+  "task_complete": false,
+  "project_complete": false,
+  "new_provider_llm_fit_or_generation_for_operations": 0,
+  "worklist": {
+    "total": 167,
+    "checked": 136,
+    "open": 31
+  }
+}

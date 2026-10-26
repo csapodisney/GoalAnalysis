@@ -1,4 +1,4 @@
-# Adatvesztés nélküli konfigurációs rollback — tesztelkülönítés javítva, saját új teljes kör fut
+# Adatvesztés nélküli konfigurációs rollback — saját teljes teszt sikeres, üzemi próba folyamatban
 
 Az előző, valóban elfogadott7.4.N6konfigurációt az akkori fizikai source-manifesthez kötöttük. A mostani és korábbi modell-/livebeállítások és7policyfájl bájtjai megegyeznek; két később hozzáadott ACTIVEpolicy korábbi hiánya bizonyított. A visszaállítás ezeknél a meglévő SHADOW alapértelmezést adja, nem kitalált korábbi modellt vagy kivezetett élőprovidert.
 
@@ -13,7 +13,10 @@ Az előző, valóban elfogadott7.4.N6konfigurációt az akkori fizikai source-ma
 | 🟥 |Az első teljes kör lezárult:5763PASS/13FAIL/44warning/2597.80s. A végleges XML a két újCLItesztből megmaradt munkakönyvtárra mutató fájlhiányokat igazolja. Eredeti XML/log/source/proof megőrzött; ez nem sikeres teljes elfogadás. |
 | 🟩 |Kizárólag két monkeypatch.chdir(root) cleanupregisztráció a TESZTadapterben. A termelési kód és mind37eredeti assert/minden más AST változatlan. A tényleges javítás után saját75target/15eredeti sorrendi regresszió/10adapter/Ruff/valósprior-currentSHADOW PASS. |
 | 🟩 |A javított végleges byteokon három saját ÚJ numerikus replay×8 PASS,97/33/1DatasetStore-manifeszt és3modellhash root-visszaolvasva; nem az első kör eredményeinek másolata. |
-| 🟥 |Sajátfollowup-v2 teljes5776 mégfut;28workerhelper/input és1219forrás fagyasztva. A külön16pines véges follower csak saját teljes siker és független readback után végezhet egy konfigurációsdrill/runtime/checkpoint műveletet. Még nincs új teljeselfogadás vagy üzemi restore. |
+| 🟩 |Sajátfollowup-v2 teljes5776PASS/44warning/2594.38s,75target/15regresszió/10adapter/3ÚJactualreplay×8. Saját XML/source/input/replay/5964régiarchívum független fizikai visszaolvasása PASS. Ez saját teljes tesztelfogadás. |
+| 🟥 |Az üzemi segéd első előellenőrzése a tartalmi riportazonosító és fizikai fájlhash felcserélése miatt, a következő a megőrzött naplónév ütközése miatt megállt; mindkettő configcsere/bundleírás ELŐTT. Eredeti STOPPED/log/hash/pin megőrzött. |
+| 🟩 |Külön helperverzió mindkét hash-t önállóan ellenőrzi;4hash-ellenpróba PASS. Elkülönített naplókönyvtár valódi2csakolvasóWindows-hívással PASS,régi naplók változatlanok. Alkalmazás/config/test nem változott; nincs fölösleges új full/fit/generálás. |
+| 🟥 |Az egyetlen új operations-v3 művelet a sajátelfogadott forráson fut. Konfigurációsdrill/runtime/checkpoint/root/GitHublezárás még nincs késznek igazolva. |
 | 🟩 |A két új CLI-teszt által továbbadott munkakönyvtár-hiba külön sorrendi ellenpróbában reprodukált:2új teszt után4eredeti promptteszt hibázik. A két cleanup-sort kizárólag memóriabeli jelöltként hozzáadva2jelölt+13eredeti regresszió PASS;mind37eredeti assert és minden egyéb AST változatlan. Az első futó kör alatt a fagyasztott forrást nem módosítottuk; a mostani különfollowup-v2 csak annak lezárása után kapta meg a két tesztsort. |
 | 🟩 |Külön artifact-adatmegőrzési reader13ellenpróba PASS:valódi SQLite/WAL committedadat,typedérték/duplikátum/rowid/schema és nyersriport megőrzése,határértékek és változáselutasítás. Ez nem üzemi adatmegőrzési drill. |
 | 🟥 |A valódi üzemi prior→currentkonfigurációsdrill,adatmegőrzés/runtime/checkpoint/11.7lezárás még hátravan; csak saját teljeselfogadás után. Műveleti rollbackhez nem indítunk fizetős sports/LLMgenerálást. |
@@ -28,3 +31,5 @@ Az első izolált helper indokolatlan whole-fingerprint összehasonlítása saj�
 Daily jelenleg a fejlesztéshezOFF,legacyDaily223mindigOFF. Saját elfogadott forráson üzemi próba és igazoltDailyONhelyreállítás szükséges,majd a következő engedélyezett forrásponthoz sameRunLockOFF. Eredeti2026-10-24határidő nem teljesült;2026-10-26 17:00Berlin munkacél,nem előre garantált készültség.
 
 Az első5776kör és22rögzített input történeti maradt; a javítás csak a véglegesSTOPPED állapot és XML ellenőrzése után történt. A diagnózis: `docs/validation/2026-10-26-configuration-rollback-cwd-diagnosis.json`; a saját új változat aktuális target/replay pillanatképe: `docs/validation/2026-10-26-configuration-rollback-v2-targets-replays.json`. Az üzemi visszaállítás továbbra saját teljeselfogadáshoz kötött; nincs fizetős új generálás vagy automatikus retry.
+
+A saját teljes elfogadás részletes bizonyítéka: `docs/validation/2026-10-26-configuration-rollback-full.json`. Az üzemi helper hibái nem írják át a sikeres5776tesztet és nem jelentenek végrehajtott konfigurációs visszaállítást. A működő alkalmazáskód változatlan; a művelet önálló fizikai adatmegőrzési és runtime-bizonyítása továbbra kötelező.
