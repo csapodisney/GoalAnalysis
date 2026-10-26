@@ -1,0 +1,129 @@
+{
+  "task": "historical-result-availability-audit",
+  "status": "SOURCE_AUDIT_AND_ISOLATED_SHADOW_VALIDATED",
+  "production_receipt_admission_complete": false,
+  "project_complete": false,
+  "source_audit": {
+    "task": "historical-result-availability-audit",
+    "at": "2026-10-26T08:11:19.496594+00:00",
+    "status": "READONLY_EXACT_SOURCE_AUDIT_COMPLETE_GAPS_EXPLICIT",
+    "sql": "SELECT v.rowid AS _sequence,v.* FROM historical_result_versions v\n        JOIN historical_result_matches m USING(match_id) WHERE m.provider='the_stats_api'\n        AND NOT EXISTS (SELECT 1 FROM temporal_receipts t WHERE t.namespace='result'\n                        AND t.source_key=v.version_id) ORDER BY v.rowid LIMIT 20001",
+    "scanned_missing_native_versions": 13803,
+    "canonical_json_bytes_read": 20981124,
+    "checks": {
+      "canonical_record_and_identity_hash": 13803,
+      "exact_raw_response_reviewed_clock_and_canonical_roundtrip": 424
+    },
+    "rejections": {
+      "UNWITNESSED_SOURCE": 13198,
+      "RAW_SOURCE_ALIAS_URL_OR_CLOCK_MISMATCH": 181
+    },
+    "bounded_first512_source_preflight_pass": false,
+    "prefix_selection_policy": "FIRST512MISSING_NATIVE_SOURCE_ROWIDS_NO_OUTCOME_FILTER_NO_SKIPPING_FAILED_ROWS",
+    "hypothetical_projection_at_audit_time_is_not_written_or_future_receipt_clock": true,
+    "receipt_capture_authorized_by_this_artifact": false,
+    "future_receipt_clock_policy": "ACTUAL_AFTER_COMMITTED_READ_SOURCE_PRESENCE_UPPER_BOUND_NOT_BACKDATED",
+    "legacy_observed_ingested_record_clocks_rewritten": false,
+    "production_writes": 0,
+    "receipt_writes": 0,
+    "external_requests": 0,
+    "fits": 0,
+    "generations": 0,
+    "source_files_preserved": 1229,
+    "old_ledger_rows_preserved": 4016,
+    "strict_reader_gates_changed": false,
+    "numeric_model_capacity_gain_claimed": false,
+    "elapsed_seconds": 8.891
+  },
+  "first512_status_counts": {
+    "PASS": 321,
+    "UNWITNESSED_SOURCE": 191
+  },
+  "all_source_proofs_count": 32,
+  "isolated_actual_writer_shadow": {
+    "task": "historical-result-availability-audit",
+    "at": "2026-10-26T08:14:21.968589+00:00",
+    "status": "ACTUAL_ISOLATED_FIRST512_RAW_THEN_RESULT_RECEIPT_SHADOW_PASS",
+    "production_receipt_writes": 0,
+    "production_source_or_metadata_writes": 0,
+    "external_requests": 0,
+    "fits": 0,
+    "generations": 0,
+    "source_audit_sha256": "62b434d626069fc006e908ff6aee4e59c4d25bc0b3be186a1cc9b27b4c9434c5",
+    "selected_versions": 512,
+    "selected_unique_native_ids": 512,
+    "selected_raw_sources": 19,
+    "source_preservation": {
+      "historical_result_matches": {
+        "old_rows": 512,
+        "current_rows": 512,
+        "old_exact": true
+      },
+      "historical_result_versions": {
+        "old_rows": 512,
+        "current_rows": 512,
+        "old_exact": true
+      },
+      "raw_snapshots": {
+        "old_rows": 19,
+        "current_rows": 19,
+        "old_exact": true
+      },
+      "temporal_receipts": {
+        "old_rows": 12,
+        "current_rows": 531,
+        "old_exact": true
+      },
+      "the_stats_http_observations": {
+        "old_rows": 0,
+        "current_rows": 0,
+        "old_exact": true
+      },
+      "the_stats_http_witnesses": {
+        "old_rows": 0,
+        "current_rows": 0,
+        "old_exact": true
+      }
+    },
+    "before_strict_results": 0,
+    "after_strict_results": 512,
+    "same_earlier_cutoff_after_operation_strict_results": 0,
+    "actual_result_versions_scanned": 512,
+    "after_gaps": {
+      "MISSING_EXPLICIT_HALF_SCORE": 512
+    },
+    "raw_receipts_created_isolated": 7,
+    "result_receipts_created_isolated": 512,
+    "repeat_result_receipts_created_isolated": 0,
+    "first_actual_witness_clock": "2026-10-26T08:14:22.129672+00:00",
+    "last_actual_witness_clock": "2026-10-26T08:14:29.755620+00:00",
+    "hypothetical_clock_never_written_to_production": true,
+    "unknown_half_score_remains_unknown": true,
+    "not_new_downloads_or_live_model_capacity_or_prospective_training_claim": true,
+    "production_admission_authorized_or_completed": false
+  },
+  "private_physical_artifact_sha256": {
+    "audit_readonly.py": "49f496d1ec9e9db6f89d74eec85676d19547240d07a70be29f4ae21b65cc661d",
+    "baseline-after.json": "5dd8b07182f6f258fd5694f901102ac1f6f944b275965d2371ff1100d915f5dd",
+    "baseline-before.json": "ad2faedd4b3f771a66b1c0e014fec25cb1c2fbdbfbc5255614833e114fb303a2",
+    "finalize_audit.py": "d98b023a8ebad9c5536ae8fb701bcdb30329d0eab26668e6d705c9406208e4b7",
+    "isolated-shadow-proof.json": "fb97a3be90f21ae503658b7c7600d9669dca58f280cbb0ef3a7ab98bc5902adc",
+    "isolated_first512_shadow.py": "994afad03760741a1a6a6532d23834d5e008bdf0565cd615cc6c96dd4c3b466c",
+    "source-audit.json": "62b434d626069fc006e908ff6aee4e59c4d25bc0b3be186a1cc9b27b4c9434c5"
+  },
+  "next_bounded_prefix": {
+    "missing_result_versions": 512,
+    "native_ids": 512,
+    "raw_sources": 19,
+    "new_raw_receipts_if_current_state_exactly_same": 7,
+    "selection": "FIRST512MISSING_NATIVE_ROWIDS_NO_OUTCOME_FILTER_NO_SKIPPING",
+    "production_execution_yet": false,
+    "requirements": [
+      "Same RootRunLock; fresh physical source/rowid/hash/clock checks before append.",
+      "First witness7rawsources then strict exact source-read all512 before any resultreceipt.",
+      "Real wall clock after each actual committed read; no backdating or immutable source edits.",
+      "Old receipts preserved, earlier cutoffs unchanged, source/ledger/report/gold hashes unchanged.",
+      "No HTTP, N9 claim, fit, generation, selection, weight or LIVE promotion. Failure STOP no auto retry."
+    ]
+  }
+}
