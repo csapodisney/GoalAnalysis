@@ -1,0 +1,43 @@
+{
+  "at": "2026-10-26T00:59:38.716757+00:00",
+  "task": "11.7",
+  "status": "FULL_IN_PROGRESS_FAILURES_OBSERVED_TEST_CWD_LEAK_REPRODUCED_NO_PATCH_WHILE_FROZEN",
+  "full_is_finished": false,
+  "observed_failures_so_far": 13,
+  "observed_case_symbols": 4764,
+  "log_prefix_bytes": 5358,
+  "log_prefix_sha256": "2ec55ff0d3c07ab0140b8c9685cb56c8f7734720d4dddd3e1f1145f7aa39f1d4",
+  "candidate_xml_sha256": "f133e6367872d171a8b98cad1427815ce20cc21188621f9b279484365c5ebb45",
+  "preservation_reader_controls": 13,
+  "preservation_reader_controls_xml_sha256": "4df9be03167f994cee03c37c37ab1ceb5f82c6de8bd8b813cee5e0d51a7158d1",
+  "production_config_writes": 0,
+  "runtime_restored": false,
+  "full_accepted": false,
+  "task_complete": false,
+  "next": "Let existing finite full finish; inspect final XML before applying only two test cleanup lines in a new versioned attempt. No automatic retry, no production source change now.",
+  "candidate": {
+    "task": "11.7",
+    "status": "PROPOSED_TEST_CWD_CLEANUP_CANDIDATE_CONTROLS",
+    "patch_applied": false,
+    "source_unchanged": true,
+    "source_sha256": "8ab7bb40d7ff39470232d2b7061ccb5cf5539d0faed2811283b1000803e0f0a6",
+    "only_ast_delta": "two monkeypatch.chdir(root) statements in the two CLI tests",
+    "original_asserts_unchanged": true,
+    "original_assert_count": 37,
+    "diagnostic_before": {
+      "passed": 2,
+      "failed": 4,
+      "xml_sha256": "1260b2f1e93272575bcbb33ac86d141a1a563cff389716d041d066dbe8bff0c3"
+    },
+    "candidate_and_original_regression_controls_exit_code": 0,
+    "not_own_full_acceptance": true,
+    "production_rollback_executed": false
+  },
+  "worklist": {
+    "total": 167,
+    "checked": 136,
+    "open": 31
+  },
+  "actual_replays_passed_on_current_frozen_source": 3,
+  "full_final_xml_diagnosis_pending": true
+}
