@@ -20,10 +20,11 @@ from goal_analysis.normalization.live_identity import fixture_identity
 from goal_analysis.normalization.training_datasets import sha, snapshot
 from goal_analysis.storage.source_observations import read_source_raw, source_key
 
+from .native_history_compaction import HistoryCompactor
 from .point_in_time import require_chronological_availability
 from .the_stats_live import _identity, normalize_history
 
-VERSION = 'witnessed-native-raw-history-shadow-v1'
+VERSION = 'witnessed-native-raw-history-lossless-shadow-v2'
 MAX_METADATA = 2000
 MAX_SOURCES = 200
 MAX_ROWS = 10000
@@ -209,6 +210,7 @@ def native_history_view(root, fixtures, *, as_of):
         if truncated:
             counts['SOURCE_LIMIT'] += 1
         scanned = 0
+        compactor = HistoryCompactor()
         for source, query in applicable[:MAX_SOURCES]:
             try:
                 rows, proof = read(source)
@@ -222,9 +224,11 @@ def native_history_view(root, fixtures, *, as_of):
                     raise ValueError('INVALID_HISTORY_WINDOW')
                 for row in rows:
                     scanned += 1
-                    if scanned > MAX_ROWS:
+                    # Raw work remains bounded by strict source_count and page100.
+                    # MAX_ROWS now counts distinct truth; all aliases stay in lineage.
+                    if scanned > MAX_SOURCES * 100:
                         truncated = True
-                        counts['ROW_LIMIT'] += 1
+                        counts['RAW_OCCURRENCE_LIMIT'] += 1
                         break
                     try:
                         native_id(field_id(row, 'season'), 'sn')
@@ -244,13 +248,18 @@ def native_history_view(root, fixtures, *, as_of):
                         if any(type(record['full_time_' + side]) is not int
                                or not 0 <= record['full_time_' + side] <= 50 for side in ('home', 'away')):
                             raise ValueError('INVALID_REGULATION_SCORE')
-                        history_envelopes.append(_envelope(record, proof, 'history'))
+                        compactor.add(_envelope(record, proof, 'history'))
+                        if len(compactor) > MAX_ROWS:
+                            truncated = True
+                            counts['ROW_LIMIT'] += 1
+                            break
                     except (KeyError, TypeError, ValueError, OverflowError):
                         counts['INVALID_OR_UNCLOSED_HISTORY_ROW'] += 1
             except (KeyError, TypeError, ValueError, OSError, OverflowError):
                 counts['UNPROVEN_HISTORY_SOURCE'] += 1
             if truncated:
                 break
+        history_envelopes = compactor.envelopes()
         # Incomplete bounds cannot silently hide a contradictory version.
         if truncated:
             history_envelopes = []
@@ -275,12 +284,16 @@ def native_history_view(root, fixtures, *, as_of):
         lineage={'sources': sorted(proofs.values(), key=lambda p: (p['source_key'], p.get('observation_id', ''))),
                  'history_envelopes': [{k:v for k,v in e.items() if k != 'payload'}
                                        for e in history_envelopes],
-                 'fixture_envelopes': fixture_envelopes})
+                 'fixture_envelopes': fixture_envelopes,
+                 'lossless_history_aliases': compactor.aliases()})
     return {**base, 'status': 'LIMIT_REACHED' if truncated else 'GAPS' if counts else 'AVAILABLE',
         'fixtures': selection['fixtures'], 'history': selected, 'dataset': dataset,
         'selection': {k:v for k,v in selection.items() if k not in {'fixtures', 'history'}},
         'gaps': dict(counts), 'scanned_history_rows': scanned, 'source_count': len(proofs),
         'verified_target_count': len(targets), 'history_source_candidates': len(applicable),
+        'materialized_history_observations': len(compactor),
+        'raw_occurrence_budget': MAX_SOURCES * 100,
+        'row_budget_unit': 'DISTINCT_EXACT_NORMALIZED_TRUTH_ENVELOPES',
         'history_coverage_scope': 'OBSERVED_PAGES_ONLY_NOT_COMPLETE_PROVIDER_HISTORY',
         'historical_feature_availability_certified': False}
 

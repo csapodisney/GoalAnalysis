@@ -1,0 +1,73 @@
+{
+  "at": "2026-10-26T12:38:00.751149+00:00",
+  "status": "OWN_NEW_FULL5894_RUNNING_NO_ACCEPTANCE_OR_RUNTIME_RESTORATION",
+  "task": "native-history-row-budget-contract",
+  "full_expected": 5894,
+  "targeted_passed": 89,
+  "new_tests": 20,
+  "original_tests_unchanged": true,
+  "adapter_passed": 10,
+  "ruff": "PASS",
+  "source_files_frozen": 1233,
+  "worker_inputs_pinned": 31,
+  "closure_inputs_pinned": 16,
+  "closure_preflight": "PASS_NOT_LAUNCHED_YET",
+  "preserved_archives": 7197,
+  "ledger_rows_frozen": 4087,
+  "source_delta": {
+    "changed": [
+      "src/goal_analysis/jobs/native_history_shadow.py"
+    ],
+    "added": [
+      "src/goal_analysis/jobs/native_history_compaction.py",
+      "tests/test_native_history_compaction.py"
+    ],
+    "unchanged_original_source_files": 1230,
+    "all_original_tests_byte_exact": true,
+    "all_other_reader_function_asts_exact": true,
+    "numeric_limits_exact_but_raw_scan_unit_change_explicit": {
+      "MAX_METADATA": 2000,
+      "MAX_SOURCES": 200,
+      "MAX_ROWS": 10000,
+      "MAX_SOURCE_BYTES": 5000000
+    },
+    "source_helper_and_test_sha256": {
+      "src/goal_analysis/jobs/native_history_shadow.py": "7b020f492c2486a3d44319fd9cba62b6d90dd0a276e7d150bb8857ac1623acae",
+      "src/goal_analysis/jobs/native_history_compaction.py": "b265fbf56c51d34d14b2c354698d925ee8ecf4a0aa6f132ba20479d778fb773d",
+      "tests/test_native_history_compaction.py": "15c1d7a39b4a82ab2168a3d2eb324cdd5b0b81b451e598b886176c8de1a4960d"
+    },
+    "all_original_math_rank_weight_profile_threshold_ready_quote_gold_unchanged": true
+  },
+  "production_retained_shadow": {
+    "at": "2026-10-26T12:29:08.881297+00:00",
+    "status": "PRODUCTION_READER_RETAINED_PURE_SHADOW_PASS_NOT_FULL_ACCEPTANCE",
+    "as_of": "2026-10-26T11:13:23.439834+00:00",
+    "reader_status": "GAPS",
+    "actual_raw_occurrences_scanned": 11595,
+    "materialized_truth_envelopes_before_venue_isolation": 2622,
+    "lossless_original_alias_envelopes": 11595,
+    "selected_reference_row_occurrences": 11560,
+    "selected_candidate_rows": 2613,
+    "selected_mathematical_inputs_exact": 2613,
+    "source_count": 135,
+    "history_source_candidates": 197,
+    "gaps": {
+      "UNPROVEN_TARGET": 2,
+      "UNPROVEN_HISTORY_SOURCE": 63
+    },
+    "unknown_two_original_targets_preserved": true,
+    "numeric_limit_literals_unchanged_but_row_unit_proposal_is_explicit": true,
+    "production_reader_changed": true,
+    "new_receipt_fit_api_generation": 0,
+    "not_own_full_acceptance_or_live_promotion": true,
+    "source_candidate_sha256": "7b020f492c2486a3d44319fd9cba62b6d90dd0a276e7d150bb8857ac1623acae"
+  },
+  "daily_enabled": false,
+  "legacy_enabled": false,
+  "own_full_accepted": false,
+  "new_paid_api_llm_normal_generation_receipt_operations": 0,
+  "work_unit_changed_explicitly": true,
+  "64MiB_is_JSON_output_not_RAM_limit": true,
+  "old_5874_not_this_own_acceptance": true,
+  "project_complete": false
+}

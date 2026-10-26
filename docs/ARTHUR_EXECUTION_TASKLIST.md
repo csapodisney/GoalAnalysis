@@ -16,8 +16,8 @@ A fogyasztói leltár elkészült: az új 19 oldal 271 kanonikus rekordja fizika
 de raw/result availability-receipt nélkül maradt; a strict eredményolvasó 1655-öt fogad el.
 A kombinált natív SHADOW olvasó a 10001. sornál fail-closed; külön csoportleltár nem modellpromóció.
 [Friss fogyasztói bizonyíték](status/2026-10-26-historical-admission-consumer-coverage/REPORT.md).
-A külön row-budget jelölt 11 595 forrásborítékot veszteségmentesen megőrzött; 2 613 kiválasztott matematikai input egyezik. 69 eredeti + 13 új kontroll PASS. Éles forrásváltozás és új teljes/replay-elfogadás még nincs; Daily ON maradt.
-[Új köztes kontraktus és nyitott éles elfogadás](status/2026-10-26-native-history-row-budget/REPORT-INTERIM.md).
+A külön row-budget jelölt 11 595 forrásborítékot veszteségmentesen megőrzött; 2 613 kiválasztott matematikai input egyezik. 69 eredeti + 13 új kontroll PASS. A minimális új forrás elkészült; saját 5894-es teljes és három új replay fut, még nincs elfogadás. Daily maintenance OFF.
+[Aktuális forrás és folyamatban lévő ellenőrzés](status/2026-10-26-native-history-row-budget/SOURCE-VALIDATION-PENDING.md).
 Következő egyetlen pont: native-history-row-budget-contract minimális éles megvalósítása, előzetes RootLock OFF és saját új elfogadás mellett.
 
 Cél: a rendelkezésre álló, mérkőzés előtt ismert adatok tényleges és
