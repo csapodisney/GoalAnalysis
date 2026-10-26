@@ -1,0 +1,92 @@
+{
+  "at": "2026-10-26T03:24:51.227726+00:00",
+  "task": "sensitivity_note",
+  "status": "OWN_THREE_NEW_ACTUAL_REPLAYS_ROOT_PASS_FULL5822_STILL_PENDING",
+  "replay_independent_readback": {
+    "at": "2026-10-26T03:21:26.780302+00:00",
+    "status": "THREE_OWN_SENSITIVITY_ACTUAL_REPLAYS_PHYSICALLY_READ_BACK",
+    "actual_replays_passed": 3,
+    "checks_per_case": 8,
+    "cases": [
+      {
+        "case": "busy-weekend-2026-10-17",
+        "all_eight_checks_passed": true,
+        "model_sha256": "89f8710b51cbc06a12f93f7825d8d128e5cbe998c1eb0dfd77a57e3042e5e4b9",
+        "actual_training_dataset_manifests_verified": 97,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      },
+      {
+        "case": "sparse-weekday-2026-10-12",
+        "all_eight_checks_passed": true,
+        "model_sha256": "3007451ce1f4823e6daa8a36a0bed44dba4f920efa6d08f8336b55dc7d1bf465",
+        "actual_training_dataset_manifests_verified": 33,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      },
+      {
+        "case": "cup-national-2026-10-03",
+        "all_eight_checks_passed": true,
+        "model_sha256": "277af116059667496fe198782acef444949a76afaca1c9cef0b8649fe6fea9af",
+        "actual_training_dataset_manifests_verified": 1,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      }
+    ],
+    "summary_sha256": "c83650dddce6c786d0509d09d2dfe943aa4114671659199ad4ccd8c6aa20142d",
+    "frozen_source_files_verified": 1221,
+    "original_eight_check_asts_and_require_conditions_unchanged": true
+  },
+  "accepted_source_github_proof": {
+    "at": "2026-10-26T03:23:19.055691+00:00",
+    "commit": "b376c6978cf7c8c253cf5cb51f26850f417c4a01",
+    "remote_sha": "b376c6978cf7c8c253cf5cb51f26850f417c4a01",
+    "branch": "build/token-efficient-pipeline",
+    "source_blob_sha256_equals_frozen": {
+      "src/goal_analysis/jobs/portfolio.py": "b4c0bec575e45186cdbace338fb7453e6134d44cf62e4c34b4207a4e8c21ac08",
+      "src/goal_analysis/jobs/sensitivity_notes.py": "7a2f416f7c59fda87cf809211a2a1aad8d81ba1e15dcc796e0e42bd9edff066c",
+      "tests/test_sensitivity_notes.py": "d5c2566e04ac768b1044bd62343b3895e69fdec6ba48d3fbf20538e9f4afed2b"
+    },
+    "worker_and_closure_pins_unchanged": true,
+    "root_finalization_pending_gate_denied": true,
+    "full5822_complete": false,
+    "scope_complete": false
+  },
+  "export_only_physical_ast_readback": {
+    "at": "2026-10-26T03:23:52.659255+00:00",
+    "status": "FROZEN_PHYSICAL_SOURCE_AST_AND_HASH_KIND_INDEPENDENT_READBACK_PASS",
+    "all_nonexport_portfolio_ast_identical": true,
+    "original_reference_commit": "264852e0b97d551bbabe29f67e3c1c327f7ddfd4",
+    "old_source_bytes_sha256": "6be20a004878af2091fe0a42e414f72dfc253af4dddd43a0978eece774970283",
+    "new_source_bytes_sha256": "b4c0bec575e45186cdbace338fb7453e6134d44cf62e4c34b4207a4e8c21ac08",
+    "original_ast_proof_new_hash_kind": "UTF8_SOURCE_TEXT_WITH_NORMALIZED_NEWLINES",
+    "original_ast_proof_text_sha256": "21e90c27b0ca1788e9bea5ebd70bc011253e5d79c32a1ce95e60309cfd3623bc",
+    "old_proof_not_modified": true,
+    "production_source_change": false,
+    "new_test_or_retry_needed": false
+  },
+  "closure_helper_preflight": {
+    "at": "2026-10-26T03:21:10.338397+00:00",
+    "status": "OWN_IMPORT_ROOT_PENDING_OLD_AUTHORITY_DENIAL_AND_ACTIVATION_PASS",
+    "actual_helper_imports": true,
+    "pending_denied_before_transport_or_exports": true,
+    "old_5776_rollback_acceptance_denied": true,
+    "runtime_transport_sha256": "7dc233b937929fd61b6aa8bbcbe7263ee844b9e549d6ebf22e0b1eec94418e72",
+    "readonly_windows_activation_pass": true,
+    "http_runtime_production_config_writes": 0,
+    "root_progress_tasklist_writes_by_follower": 0,
+    "normal_generation_by_follower": false
+  },
+  "current_full5822_complete": false,
+  "runtime_restored": false,
+  "task_complete": false,
+  "numbered_worklist": {
+    "total": 167,
+    "checked": 137,
+    "open": 30
+  },
+  "fresh_original215_audit_complete": false
+}
