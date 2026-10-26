@@ -1,0 +1,130 @@
+{
+  "at": "2026-10-26T03:19:00.457877+00:00",
+  "task": "sensitivity_note",
+  "scope": "NORMAL_MARKDOWN_EXPORT_ONLY",
+  "task_complete": false,
+  "project_complete": false,
+  "targeted_tests_passed": 74,
+  "new_tests_added": 46,
+  "replay_adapter_controls_passed": 10,
+  "own_full_expected_not_yet_accepted": 5822,
+  "source_files_frozen": 1221,
+  "preserved_ledger_rows": 4016,
+  "protected_archive_files": 6393,
+  "source_changes": [
+    "src/goal_analysis/jobs/portfolio.py",
+    "src/goal_analysis/jobs/sensitivity_notes.py",
+    "tests/test_sensitivity_notes.py"
+  ],
+  "original_requirement_mapping": [
+    {
+      "id": "guard@33",
+      "reference_line": 33,
+      "requirement_sha256": "1411215e21e2ca4180b36d15bc9f9cf7248469a6e324d59593a43876b681d878"
+    },
+    {
+      "id": "9.8",
+      "reference_line": 291,
+      "requirement_sha256": "2ff22e1f1dacfd7e0d98bdb66f46bd583346a7d10b4cdb3ff837d580accceb0c"
+    },
+    {
+      "id": "11.2",
+      "reference_line": 309,
+      "requirement_sha256": "306dda901b89f4a84b8186a923a7f12cb4491d7ced306e68bf4548b83890e751"
+    }
+  ],
+  "original_daily_math_and_all_nonexport_portfolio_ast_unchanged": true,
+  "actual_retained_normal_writer_proof": {
+    "at": "2026-10-26T03:14:20.639790+00:00",
+    "task": "sensitivity_note",
+    "status": "FOUR_ACTUAL_RETAINED_BUNDLES_NORMAL_EXPORT_JSON_AND_IDS_EXACT_BOUND_NOTES_RENDERED",
+    "cases": [
+      {
+        "run_id": "2026-10-26-cc3b72cd5b81",
+        "original_report_bytes_sha256": "5592bf755cdc07c56969073d711b9c253107877bf53409e2dbe2dce06b7433be",
+        "audit_copy_report_bytes_sha256": "5592bf755cdc07c56969073d711b9c253107877bf53409e2dbe2dce06b7433be",
+        "all_original_artifact_json_and_cards_ids_exact": true,
+        "original_directory_all_file_hashes_unchanged": true,
+        "source_bound_ready_leg_occurrences": 3,
+        "bound_note_rendered_occurrences": 3,
+        "note_counts_not_unique_tickets": {
+          "EXACT_QUOTE_ACTUAL_REVIEW_NOTE": 57
+        },
+        "new_sidecar_sha256": "50e23fd6a3b57894f3806b2f87b5a73f38356b79d45bdd9f40a4e79dd8c71238",
+        "new_markdown_sha256": "b944f0275499e56bca9c933075dce27af38731e1be80945eb8067cbc5515fe7d",
+        "not_new_generation_publication_or_llm_response": true
+      },
+      {
+        "run_id": "2026-10-26-912b18b94ee3",
+        "original_report_bytes_sha256": "0f7b157a7a0fcdbde33aae8f8df11598c22544a7786619a2e8ee597f5c5c084b",
+        "audit_copy_report_bytes_sha256": "0f7b157a7a0fcdbde33aae8f8df11598c22544a7786619a2e8ee597f5c5c084b",
+        "all_original_artifact_json_and_cards_ids_exact": true,
+        "original_directory_all_file_hashes_unchanged": true,
+        "source_bound_ready_leg_occurrences": 3,
+        "bound_note_rendered_occurrences": 3,
+        "note_counts_not_unique_tickets": {
+          "EXACT_QUOTE_ACTUAL_REVIEW_NOTE": 57
+        },
+        "new_sidecar_sha256": "93019229648021a50f1409b1c50724b18a439256cee15d8a36fc348167608ba0",
+        "new_markdown_sha256": "1b9a5a4dd34b8b6b9a1c3119a0cb5e5036df973ec70f1a15c10e7237b1da02f1",
+        "not_new_generation_publication_or_llm_response": true
+      },
+      {
+        "run_id": "2026-10-25-f14ad05e1ce7",
+        "original_report_bytes_sha256": "6f48d584cf93823ea7be560189b631d6f9131c2d5980f5b0484312073ea1e1c9",
+        "audit_copy_report_bytes_sha256": "6f48d584cf93823ea7be560189b631d6f9131c2d5980f5b0484312073ea1e1c9",
+        "all_original_artifact_json_and_cards_ids_exact": true,
+        "original_directory_all_file_hashes_unchanged": true,
+        "source_bound_ready_leg_occurrences": 3,
+        "bound_note_rendered_occurrences": 3,
+        "note_counts_not_unique_tickets": {
+          "EXACT_QUOTE_ACTUAL_REVIEW_NOTE": 15
+        },
+        "new_sidecar_sha256": "586b152e031556e6f07afb40f2499d37dee746bf4a06f98b9ccbbc0f9e7b3454",
+        "new_markdown_sha256": "40aa4e501dc6ecf5744a44393f006cf730f356a4816d0bcfccab0d4f27ec2918",
+        "not_new_generation_publication_or_llm_response": true
+      },
+      {
+        "run_id": "2026-10-25-3472f0b6fb86",
+        "original_report_bytes_sha256": "fc9f57027dc8e2c0a15e1cf1da654681217d7c908e16a17f23979a6c14c7b30c",
+        "audit_copy_report_bytes_sha256": "fc9f57027dc8e2c0a15e1cf1da654681217d7c908e16a17f23979a6c14c7b30c",
+        "all_original_artifact_json_and_cards_ids_exact": true,
+        "original_directory_all_file_hashes_unchanged": true,
+        "source_bound_ready_leg_occurrences": 9,
+        "bound_note_rendered_occurrences": 21,
+        "note_counts_not_unique_tickets": {
+          "EXACT_QUOTE_ACTUAL_REVIEW_NOTE": 69
+        },
+        "new_sidecar_sha256": "366faf23e1ea873af2f05f7f89b1a2778c8968865758876f68752580b3db6ff1",
+        "new_markdown_sha256": "bd00c97f189dbf05c803c3b002e6d49c4a99f405c031ae2f50a56c5c79443199",
+        "not_new_generation_publication_or_llm_response": true
+      }
+    ],
+    "source_and_4016_prior_ledger_rows_unchanged": true,
+    "provider_or_llm_or_model_fit_or_generation": 0,
+    "normal_new_publication_not_claimed": true,
+    "task_complete": false
+  },
+  "new_api_llm_fit_or_generation_for_metadata": 0,
+  "current_numbered_worklist": {
+    "total": 167,
+    "checked": 137,
+    "open": 30
+  },
+  "fresh_full_original_215_audit": "PENDING",
+  "old_audit_160_green_55_partial_red_is_not_fresh": true,
+  "full_suite": "RUNNING_NOT_PASS",
+  "three_new_actual_replays": "RUNNING_NOT_YET_VERIFIED",
+  "runtime_restore": "PENDING",
+  "daily_enabled": false,
+  "legacy_enabled": false,
+  "no_new_publication_or_current_quote_claim": true,
+  "evidence_sha256": {
+    "targeted-final.xml": "d28fed87f4663051e0d9ac2edb3c3f4536835bede0dc09be784a2fc0278b04c6",
+    "adapter-target-final.xml": "0fb1f6bdcf466115922c69a8431b951c63e2ab9552f30add2fa2dc6df81cc08a",
+    "retained-export-v2-proof.json": "57d0a2ea0922bfe48c822b6290a53c4ec84d7b2c48171e0c90754a4dc1fecedf",
+    "export-only-ast-proof.json": "8020f646136c851182b93c84721f0aafd9f9019d7836d4567dc66765fed0f32b",
+    "source-under-test-active.json": "be81cf373e68b9476609797931969581e203f972bafa94deea4b330c7bef2c03",
+    "worker-helper-frozen.json": "41b68304e88579013e1bc921a8b7817c2919007a56da2d7dcd10059c7a427590"
+  }
+}

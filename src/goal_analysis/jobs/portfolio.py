@@ -1246,12 +1246,25 @@ def recommendation_overlap(recommendations: list[dict]) -> list[dict]:
 
 
 def write_portfolio_bundle(directory: Path, bundle: dict) -> None:
+    from goal_analysis.jobs.sensitivity_notes import (
+        ARTIFACT_NAME,
+        build_export_notes,
+        markdown_lines,
+    )
+
+    if ARTIFACT_NAME in bundle['artifacts']:
+        raise ValueError('Reserved derived sensitivity export artifact')
+    report = bundle['artifacts']['report']
+    note_bundle = build_export_notes(report, bundle['artifacts'])
+    notes = {tuple(entry['location']): entry for entry in note_bundle['entries']}
     directory.mkdir(parents=True, exist_ok=False)
     for name, value in bundle["artifacts"].items():
         with (directory / f"{name}.json").open("x", encoding="utf-8") as handle:
             json.dump(value, handle, ensure_ascii=False, indent=2, allow_nan=False)
             handle.write("\n")
-    report = bundle["artifacts"]["report"]
+    with (directory / f'{ARTIFACT_NAME}.json').open('x', encoding='utf-8') as handle:
+        json.dump(note_bundle, handle, ensure_ascii=False, indent=2, allow_nan=False)
+        handle.write('\n')
     lines = [
         f"# Arthur — {report['date']}",
         "",
@@ -1259,7 +1272,7 @@ def write_portfolio_bundle(directory: Path, bundle: dict) -> None:
         f"Astra: {report['astra']['status']}",
         "",
     ]
-    for ticket in report.get("tickets", []):
+    for card_index, ticket in enumerate(report.get("tickets", [])):
         lines.extend(
             [
                 f"## {ticket['profile_name']} · {ticket['combined_price']:.2f}×",
@@ -1268,22 +1281,24 @@ def write_portfolio_bundle(directory: Path, bundle: dict) -> None:
                 "",
             ]
         )
-        for leg in ticket["legs"]:
+        for leg_index, leg in enumerate(ticket["legs"]):
             lines.append(
                 f"- {leg['home_team']} – {leg['away_team']}: {leg['market_key']} / {leg['selection_key']} / {leg['period']} · {leg['decimal_price']:.2f}"
             )
+            lines.extend(markdown_lines(notes[('tickets', card_index, 'legs', leg_index)]))
         lines.extend(["", *ticket.get("reasoning", []), ""])
         lines.extend("Figyelmeztetés: " + warning for warning in ticket.get("quality_warnings", []))
         lines.append("")
-    for ticket in report.get("preview_tickets", []):
+    for card_index, ticket in enumerate(report.get("preview_tickets", [])):
         lines.extend([f"## {ticket['profile_name']} · Szorzóra váró előzetes", ""])
-        for leg in ticket["legs"]:
+        for leg_index, leg in enumerate(ticket["legs"]):
             lines.append(
                 f"- {leg['home_team']} – {leg['away_team']}: {leg['market_key']} / {leg['selection_key']} / {leg['period']} · szorzó hiányzik"
             )
+            lines.extend(markdown_lines(notes[('preview_tickets', card_index, 'legs', leg_index)]))
         lines.extend("Figyelmeztetés: " + warning for warning in ticket["quality_warnings"])
         lines.append("")
-    for recommendation in report.get("recommendations", []):
+    for card_index, recommendation in enumerate(report.get("recommendations", [])):
         if recommendation.get("profile_id") in TIPSTER_PROFILE_IDS:
             price = recommendation.get("combined_price")
             lines.extend([
@@ -1291,11 +1306,12 @@ def write_portfolio_bundle(directory: Path, bundle: dict) -> None:
                 f"Állapot: {recommendation['status']} · {recommendation.get('publication_scope', 'UNKNOWN')}",
                 f"Összszorzó: {price:.2f}×" if price is not None else "Nincs kiadható szorzós szelvény.", "",
             ])
-            for leg in recommendation.get("legs", []):
+            for leg_index, leg in enumerate(recommendation.get("legs", [])):
                 leg_price = leg.get("decimal_price")
                 leg_price_label = f"{leg_price:.2f}×" if leg_price is not None else "szorzó nélkül"
                 lines.append(f"- {leg['home_team']} – {leg['away_team']}: "
                              f"{leg['market_key']} / {leg['selection_key']} · {leg_price_label}")
+                lines.extend(markdown_lines(notes[('recommendations', card_index, 'legs', leg_index)]))
             lines.extend(recommendation.get("quality_warnings", []))
             lines.append("")
             continue
@@ -1305,13 +1321,14 @@ def write_portfolio_bundle(directory: Path, bundle: dict) -> None:
             f"## {recommendation['profile_name']} · kísérleti modell / papírteszt", "",
             f"Állapot: {recommendation['status']}", "",
         ])
-        for leg in recommendation.get("legs", []):
+        for leg_index, leg in enumerate(recommendation.get("legs", [])):
             probability = leg.get("model_probability")
             estimate = f"{probability:.1%}" if probability is not None else "nincs becslés"
             lines.append(
                 f"- {leg['home_team']} – {leg['away_team']}: "
                 f"{leg['market_key']} / {leg['selection_key']} · modellbecslés: {estimate}"
             )
+            lines.extend(markdown_lines(notes[('recommendations', card_index, 'legs', leg_index)]))
         lines.extend(recommendation.get("quality_warnings", []))
         lines.append("")
     if not report.get("tickets") and not report.get("preview_tickets"):
