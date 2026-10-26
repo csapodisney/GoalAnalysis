@@ -182,15 +182,15 @@ The Odds API → API-Football jelenlegi útvonal.
     - 2026-10-23: lezártSHADOWforráság;19→73valósxGmeccs,54újelfogadott/6kizárt/61GET,1nyersxGbecslés16hiányoscélmellett.4845full/143target/22új/3újactualreplayPASS. Riport:`C:/AI-Work/GoalAnalysis/artifacts/roadmap-execution-20261020/4.3.N1/REPORT.md`.
   - [x] **4.3.N2** Újonnan számolt külön xG-előrejelzések hiteles prospektív mentése tényleges forrás-/dataset-/modellnyugtával, mérkőzés előtt; régi artifact nem válhat visszadátumozott jóslattá, SHADOW.
     - 2026-10-23: valódi prospektívxGcapture/calibrationinput7piac/1meccs/0eredmény,73forrásmeccs;1frissmetadataGET,0odds/LLM/ledgerírás.4874full/200target/29új/3ÚJactualreplayPASS.4.3ensemble/LIVE nyitott. Riport:`C:/AI-Work/GoalAnalysis/artifacts/roadmap-execution-20261020/4.3.N2/REPORT.md`.
-- [x] **4.4** Több kulcsjátékos kiválasztása: támadó, kreatív játékos,
+- [ ] **4.4** Több kulcsjátékos kiválasztása: támadó, kreatív játékos,
   védekező kulcsember és kapus.
-- [x] **4.5** Játékosjellemzők: gól, xG, gólpassz, xA, játékperc, kezdések,
+- [ ] **4.5** Játékosjellemzők: gól, xG, gólpassz, xA, játékperc, kezdések,
   csapatrészesedés és rendelkezésre állás.
-- [x] **4.6** Posztonkénti hiányhatás és helyettesíthetőség; több hiányzó
+- [ ] **4.6** Posztonkénti hiányhatás és helyettesíthetőség; több hiányzó
   összhatása nem lehet egyszerű összegzés.
 - [x] **4.7** Prediktált kezdő csak bizonytalansági jel. Megerősített kezdő
   erősebb, időbélyeghez kötött jel.
-- [x] **4.8** Piaconkénti felhasználás: támadóhiány Over/BTTS, kapus- és
+- [ ] **4.8** Piaconkénti felhasználás: támadóhiány Over/BTTS, kapus- és
   védőhiány Over/BTTS/1X2, nem egyetlen univerzális szorzó.
 - [x] **4.9** Missingness-feature: a hiányzó adat ne jelentsen egészséges vagy
   gyenge játékost.
@@ -232,10 +232,10 @@ romló Brier/log-loss esetén az új hatás SHADOW marad.
     - 2026-10-23: aktuális2026-08-04DFLszabály+natív2026/27scope;2célmeccskörnyezet,0valóspontkorlátmertfázisUNKNOWN.4903full/111target/29új/3ÚJactualreplayPASS;2sport+6publicGET,0LLM/ledgerírás. UEFA/PIT/DAILY/3816ledgerstabil. Riport:`C:/AI-Work/GoalAnalysis/artifacts/roadmap-execution-20261020/5.4.N2/REPORT.md`.
   - [x] **5.4.N3** A két DE2-célmeccs tényleges natív fázisforrásának receiptvédett ellenőrzése és a dokumentált explicit null szemantika bekötése; hiányzó kulcs UNKNOWN, nincs liga-/dátum-/forduló-/tabellainferencia.
     - 2026-10-23: dokumentált explicit null fázis szemantikája; 2 valódi meccs/4 csapatoldal konzervatív SHADOW pontkorlát. 4930 full/199 célzott/27 új/3 ÚJ actual replay PASS; 1 public GET, 0 sport/LLM. Korábbi prefix0, DAILY/3816 ledger stabil; LIVE nyitott. Riport: `C:/AI-Work/GoalAnalysis/artifacts/roadmap-execution-20261020/5.4.N3/REPORT.md`.
-- [ ] **5.5** Fizetési probléma, edzőváltás, csapatkonfliktus és egyéb humán
+- [x] **5.5** Fizetési probléma, edzőváltás, csapatkonfliktus és egyéb humán
   állítás kizárólag időbélyeges, hivatkozható forrással.
   - 2026-10-22: SHADOW humánforrás-szerződés validált; közösGrok/NewsStore SALARY_PAYMENT/COACH_CHANGE/TEAM_CONFLICT/OTHER_HUMAN_FACTOR, explicitmetaadat és receiptvédelem. Valódi hírassertion/import/newsreceipt0,36napi fixture NO_ACCEPTED_HUMAN_CLAIMS; ez nem kockázatmentesség. A3legutóbbiGrok eredmény claims0;nemindultújfizetőskeresés. 29új eset,148célzott/3456teljesPASS+3valódi kontrollreplayPASS; DAILY+3745ledger-sor változatlan,API/LLM/ledgerírás0. Fizikaiadat és2.7LIVEPITgeneráció nyitott,ezért teljes5.5nincs kipipálva. Riport:`C:/AI-Work/GoalAnalysis/artifacts/roadmap-execution-20261020/5.5/REPORT.md`.
-- [ ] **5.6** Grok strukturált pro/kontra értékelés, majd Codex-egyetértési kapu.
+- [x] **5.6** Grok strukturált pro/kontra értékelés, majd Codex-egyetértési kapu.
   - 2026-10-22: javítva a natívTheStats Codex-adatátadási hiba: hiányzó7árforrásmező és quoted_atNone parserhiba. Exactpersistedrequest/pro-contra/teljes szelvény és receiptkötés, új configgrok-native-gate csakSHADOW;pozitívvéleményből csakwould_repair,nincs natív éles javítás. Valódi mentettGrokreview1daily223/actionabilityFalse,ezért helyesen0Codexkör; valódiárrekord adatátadásaPASS,nemvalódiújvélemény. 27új eset,128célzott/3483teljesPASS+3valódi modellreplayPASS; DAILY+3745ledger-sor változatlan,újAPI/LLM/ledgerírás0. Friss nemDAILY végigfutás ésforrásidő/tartalombizonyíték/LIVEpromóciónyitott. Riport:`C:/AI-Work/GoalAnalysis/artifacts/roadmap-execution-20261020/5.6/REPORT.md`.
 - [ ] **5.7** A visszamért motivációs jelekből legfeljebb korlátozott,
   verziózott rangsorhatás; mentális állapotot nem szabad kitalálni.
@@ -248,7 +248,7 @@ romló Brier/log-loss esetén az új hatás SHADOW marad.
 - [x] **6.1** A jelenlegi három tanulmányból származó hipotézisek változatlan
   tudásbázisa.
 - [x] **6.2** Csapat- és stadionazonosítóval kapcsolt történeti időjárás.
-- [x] **6.3** Hőmérséklet, csapadék, szél, széllökés és pályaállapot külön
+- [ ] **6.3** Hőmérséklet, csapadék, szél, széllökés és pályaállapot külön
   jellemzőként.
 - [ ] **6.4** Piaconkénti validáció: Over/Under **kész és LIVE-kapuval védett**; BTTS, 1X2 és félidős piacokhoz külön holdout-validáció még szükséges.
   - 2026-10-22:6.4nem kész.106 célzott PASS(16új piac/periodhatárpróba); OU validációs kapu implementált,de nem igazolt natív piaci előny. Aktívweatherhistory14015legacy/0native;1776natív eredményből0 időjárásazonosság, 6 reanalízises és26forecastoslegacymeccs(nem26teljespár),natívkanonikusfélidő0. Következő javítás6.4.N1:strict natívweatherhistory SHADOW; nemlépünk még7.1-re. App/DAILY/3745ledger változatlan,API/LLM0. Riport:`C:/AI-Work/GoalAnalysis/artifacts/roadmap-execution-20261020/6.4/REPORT.md`.
@@ -269,7 +269,7 @@ romló Brier/log-loss esetén az új hatás SHADOW marad.
   - [x] **6.4.N8** A meglévő időjárási piaci SHADOW-protokoll valódi immutable tárolói provenance és első saját receipt/idempotensóra/readonlysource/PIT/resource ellenőrzése. Nincs dummyproductionprotokoll/fit/probability/API/LIVE. N7hat weatherforrás továbbDATA_PENDING,nincs retryitt. Újfull/3ÚJactualreplay/hashguard/fizikaibizonyíték szükséges.
     - 2026-10-23:valódi immutable protocolstore/elsőreceipt/actualraweredmény+weather+schedulekötés/PIT kész;actualprotocol0,rawboundtraining9,modelp0.5303full/216target/86új/3ÚJactualreplay/RuffPASS;95weather/203feature/DAILY7/math/3816ledgerstabil. N7hatforrásDATA_PENDING. Riport:`C:/AI-Work/GoalAnalysis/artifacts/roadmap-execution-20261020/6.4.N8/REPORT.md`.
   - [ ] **6.4.N9** Egy külön, legalább60perc valós cooldown utáni új claim:csakN7hat hiányzó weatherforrás,max6freeERA5/0sports/web/LLM/fit;hibaSTOP,nincs ismétlődőretryloop. Legkorábban2026-10-23T14:00:25.636384Z. N7csakmind12pár fizikaiteljességévelkész;eredeti95weather/9pár/203feature/receipt/hashguardmegmarad.
-- [x] **6.5** Hasonló ellenfélerősség és hazai/idegen szerep szerinti
+- [ ] **6.5** Hasonló ellenfélerősség és hazai/idegen szerep szerinti
   összehasonlítható történeti minta.
 - [x] **6.6** Többszörös összehasonlítás és kis minta elleni védelem.
 - [x] **6.7** Csak előre rögzített holdouton javuló hatás kerülhet LIVE módba.
@@ -291,7 +291,7 @@ romló Brier/log-loss esetén az új hatás SHADOW marad.
   - [x] **7.3.N3** A külön előzetes SHADOW-ármegfigyelések szigorú, nyugtavédett olvasói bekötése a natív SHADOW-opcióelemzésbe. Meglévő modellek/ármozgás-képlet újrahasználata, 0 új fit/API/Grok, LIVE-history változatlan; valódi 24h összevetés hiányát nem szabad pozitív jelnek jelenteni.
     - 2026-10-23: szigorú korai SHADOW-forrásolvasó validált;69valódiár/0eltelt24hpár/0mai modellátfedés.4994full/206target/31új/3ÚJactualreplayPASS. Éleskártyák változatlanok. Riport: `C:/AI-Work/GoalAnalysis/artifacts/roadmap-execution-20261020/7.3.N3/REPORT.md`.
     - 2026-10-23: implementáció validált:4963full/134target/33új/3ÚJactualreplay/RuffPASS; különSHADOWstore,400kombináltsparecap/background300. Valódi naptár1/9lap tanúsított,0ablakbeli meccs/0elsőár; fizikai árpróba NYITOTT, nem készre pipálva. Árgyűjtő aktivált,backgroundhash újvalidált,ArthurPID18984,napiONlegacyOFF. Következő folytatás ugyanennek az alpontnak a pozitív forrásellenőrzése.
-- [ ] **7.4** Külön under-, BTTS-, félidő-, 1X2-, kupa-, forma-, xG-,
+- [x] **7.4** Külön under-, BTTS-, félidő-, 1X2-, kupa-, forma-, xG-,
   játékos- és motivációspecialisták.
   - [x] **7.4.N1** Kupa-specialista: forras- es receipt-kotott, kulon kapcsolhato SHADOW-kivalaszto; eles publikacio nelkul.
     - 2026-10-22: külön default-disabled kupaSHADOW-választó kész, 23új/163célzott/3579teljesPASS+3újmodellreplayPASS. Valós36kupaazonosság, frissár0, ténylegesjelölt0; nemLIVEintegráció. DAILY/3745ledger/staging változatlan. Riport:`C:/AI-Work/GoalAnalysis/artifacts/roadmap-execution-20261020/7.4.N1/REPORT.md`.
@@ -304,7 +304,7 @@ romló Brier/log-loss esetén az új hatás SHADOW marad.
 - [x] **7.5** Egy profil ugyanazon szabályokból dolgozzon minden nap; a napi
   kínálat csak a jelölteket változtathatja, a személyiséget nem.
   - 2026-10-22:20profil változatlan, pinned profiles.json-ból egyszer betöltött, közösen írásvédett szabályzata kész.49új/409célzott/3715teljesPASS+3új tényleges modellreplayPASS. 20valós kártya és külön7szintetikus kombináció minden alternatívával pontos ekvivalens; wheelasset/izolált import ellenőrizve. Új döntési hatás0, DAILY/3745ledger/staging stabil. Riport:`C:/AI-Work/GoalAnalysis/artifacts/roadmap-execution-20261020/7.5/REPORT.md`.
-- [x] **7.6** A nem-DAILY profil csak 10–50 cél-összszorzójú kombinációt
+- [ ] **7.6** A nem-DAILY profil csak 10–50 cél-összszorzójú kombinációt
   publikálhat, vagy dokumentáltan tartózkodik.
 - [x] **7.7** Nem lehet gyenge lábbal mesterségesen feltölteni a szorzót.
   - 2026-10-22: a meglévő pozitív alátámasztási kapu elsődleges/alternatív paritáshibája javítva, először SHADOW-ban.22új/196célzott/3737teljesPASS+3új tényleges modellreplayPASS. 20natív mentett kártya változatlan;3szintetikus falseREADY kizárva,2pozitív kontroll megmarad. Új önkényes küszöb0; profil/DAILY/3745ledger/staging változatlan. Riport:`C:/AI-Work/GoalAnalysis/artifacts/roadmap-execution-20261020/7.7/REPORT.md`.
@@ -322,15 +322,15 @@ romló Brier/log-loss esetén az új hatás SHADOW marad.
 - [x] **8.2** Szelvénypont: normalizált profilpont × `sqrt(meccsszám)`.
 - [x] **8.3** 100%-os mérkőzés+kimenetel egyezés: duplikáció, törlendő.
 - [x] **8.4** 50% feletti mérkőzésátfedés: 0,7-es lágy büntetés.
-- [x] **8.5** Mérkőzéskitettség: legfeljebb 40–50% a READY csomagban.
+- [ ] **8.5** Mérkőzéskitettség: legfeljebb 40–50% a READY csomagban.
   - A korlát a teljes READY ajánláscsomagra vonatkozik. Előbb ugyanazon profil
     kész alternatíváját keresi, és csak ennek hiányában tartózkodik.
-- [ ] **8.6** A 20–30 darab cél elérése előtt a rendszer új profilopciókat
+- [x] **8.6** A 20–30 darab cél elérése előtt a rendszer új profilopciókat
   vizsgáljon, ne ugyanazt a három mérkőzést kombinálja át.
   - [x] **8.6.N1** Rögzített profilkapuk melletti, korlátos újmeccs-lefedettségi keresés SHADOW összevetése; változatlan éles opciók és forráskötött bizonyíték.
     - 2026-10-22:N1SHADOW kész;8.6LIVE nyitott.20/40meccses kontrollban12→20/40lefedettség változatlan128/512kerettel, szabálylazítás nélkül.4valós mentett input/80klubkártya és minden alternatíva OFF/SHADOW döntése pontosan egyezik;7profil/18régi meccs 27új próba-megjelenése,0elveszett.21új/281célzott/3758teljesPASS+3újvalósreplayPASS. DAILY/3745ledger stabil,API/LLM0. Riport:`C:/AI-Work/GoalAnalysis/artifacts/roadmap-execution-20261020/8.6.N1/REPORT.md`.
   - [x] **8.6.N2** Explicit activation of bounded club fixture-coverage alternatives under unchanged source/profile/128-beam/512-option gates; preserve baseline best, source-bound context review and original DAILY/numeric mathematics. Own retained-input SHADOW/ACTIVE, full suite, three actual replays and new publication/runtime proof before closure.
-- [ ] **8.7** Ha nincs húsz bizonyított szelvény, a rendszer kevesebbet ad és
+- [x] **8.7** Ha nincs húsz bizonyított szelvény, a rendszer kevesebbet ad és
   `CAPACITY_SHORTFALL` jelentést készít a hiány okáról.
   - [x] **8.7.N1** Javított, döntést nem módosító LIVE/PAPER kapacitáselszámolás: READY DAILY pontos REVIEWED→mentett ticket hídja, külön PAPER és tényleges LIVE ticket darabszám; nincs töltelék, kapulazítás vagy régi snapshotátírás. Saját valós SHADOW/teszt/replay és adatmegőrző runtime-bizonyítás.
     - 2026-10-25: a szülő újranyitva a pontos számlálási hiba miatt. A friss egy READY DAILY az ajánlásnézetben REVIEWED, ezért a régi számláló0; a PAPER és LIVE összemosódott. Négy megőrzött valós riport SHADOW-projekciója és28célzott teszt/Ruff PASS. Saját teljes5673+3tényleges numerikus replay fut, nem kész. Csak allokáció utáni diagnosztika változik,0új sport/LLM/fit/ledgerírás a próbában.
@@ -346,7 +346,7 @@ romló Brier/log-loss esetén az új hatás SHADOW marad.
 - [x] **9.1** Astra/Codex a jelölteket a szelvényképzés előtt ellenőrzi.
 - [x] **9.2** Grok egyetlen közös csomagban kapja az összes READY szelvényt és
   a döntéshez szükséges, már letöltött adatot.
-- [ ] **9.3** A csomagban minden kihagyott vagy tömörített adatkategória
+- [x] **9.3** A csomagban minden kihagyott vagy tömörített adatkategória
   darabszámmal szerepeljen.
   - [x] **9.3.N1** A közös Grok-csomag változatlan korlátú, forrásazonos tömörítésének és kategóriánkénti kihagyás-/tömörítésszámlálásának javítása; méret miatti elutasítás is kapjon bizonyított számlálókat. Régi csomagok/árak/eredmények,100000karakterkorlát,modell és budget megmarad; előbb valós megőrzöttinput SHADOW, nincs új sports/LLM-kérés az auditban.
     - 2026-10-25 23:18UTC: sajátv2full5742PASS/44warning/2601.34sec,316target/10adapter/3actualreplay×8rootPASS,1216source/5382archive/8Gitblobegyező. Egyszeri új normálCLI márfut; újpublikáció/READY/Grok/runtime még külön bizonyítandó, nemkész scope/project.
@@ -371,7 +371,7 @@ romló Brier/log-loss esetén az új hatás SHADOW marad.
 - [x] **10.5** Napi KPI: nyertes szelvények száma és nyertes összszorzó.
 - [x] **10.6** Gördülő 7/30/90 napos KPI: legalább 3 nyertes/nap cél
   teljesülési aránya, profit, drawdown és profilmegbízhatóság.
-- [ ] **10.7** A tanulóréteg csak javaslatot készít; paramétermódosítás külön
+- [x] **10.7** A tanulóréteg csak javaslatot készít; paramétermódosítás külön
   verzióban, walk-forward és SHADOW kapun keresztül léphet életbe.
   - [x] **10.7.N1** Learning nem végrehajtó határa igazolt: 70 célzott PASS, ebből 21 artifact-határteszt; 0 paraméter/döntési diff. A szülő 10.7 NYITOTT: integrált verzióhoz kötött walk-forward/SHADOW release-kapu még nincs. Riport: `C:/AI-Work/GoalAnalysis/artifacts/roadmap-execution-20261020/10.7/REPORT.md`.
   - [x] **10.7.N2** Integrált, eredeti profil-/modell-/dataset-/kalibrációverzióhoz és bizonyítékhoz kötött SHADOW release-kapu; időhelyes minták, független proper-score értékelés és nyitott adatkapuk ellenőrzése. Hiány esetén blokkolt javaslat; nincs automatikus paraméterírás vagy LIVE-promóció. A7.8.N2 adatgyűjtése már LIVE előtt működik.

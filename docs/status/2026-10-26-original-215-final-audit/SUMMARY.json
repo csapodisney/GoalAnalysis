@@ -1,0 +1,35 @@
+{
+  "at": "2026-10-26T06:17:42.280016+00:00",
+  "task": "original-215-final-audit",
+  "status": "ALL215_REVIEWED_REPORT_PREPARED_REMOTE_PUSH_REQUIRED",
+  "original_count": 215,
+  "status_counts": {
+    "GREEN": 175,
+    "RED": 40
+  },
+  "numbered_worklist": {
+    "total": 167,
+    "checked": 136,
+    "open": 31
+  },
+  "original_reference_sha256": "ff12c999c352dd492b8e223f689f905cfa66a7c4f728528a941afa274bed991d",
+  "all215_original_text_hashes_and_lines_verified": true,
+  "retained_evidence_files_byte_exact": 459,
+  "application_source_files_unchanged": 1227,
+  "old_ledger_rows_unchanged": 4016,
+  "latest_own_local_full_tests_passed": 5848,
+  "new_actual_replays_per_latest_acceptance": 3,
+  "checks_per_case": 8,
+  "full_suite_rerun_by_audit": false,
+  "new_provider_llm_fit_generation_calls": 0,
+  "daily_should_remain_enabled": true,
+  "legacy_should_remain_disabled": true,
+  "whole_unassisted_public_clone_full_suite_proven": false,
+  "project_complete": false,
+  "next_atomic_task": "6.4.N9",
+  "next_scope": "ONE_NEW_MAX6_FREE_ERA5_CLAIM_AFTER_EXPIRED_COOLDOWN_NOT_OLD_TASK_RETRY",
+  "next_code_candidate_after_data_task": "Explicit LIVE/PAPER dashboard label; no counter/rank/threshold change",
+  "earlier160_55_audit_not_reused_as_current_score": true,
+  "worklist_mark_changes": 15,
+  "green_means_scoped_contract_not_universal_data_or_profitability": true
+}
