@@ -525,3 +525,5 @@ ellenőrizve.
 Odds hibajelzési forrás:38artifact/91target24új/10adapter/Ruff/PSAST PASS;own5960full+3NEWactual FUT,nemelfogadás. DailyOFFpackage. [Saját aktuális bizonyíték és215](status/2026-10-26-scheduled-odds-outcome/REPORT-SOURCE-PENDING.md).
 
 Odds hibajelzés saját5960full/91target24új/10adapter/3NEWactual×8/root/runtimeDailyOFFlegacyOFF igazolt. [Lezárt saját bizonyíték](status/2026-10-26-scheduled-odds-outcome/REPORT-CLOSED.md). Következő egyetlen pont: repair-package-remaining-triage-readonly; nincs kézi odds/API/LLM/gen művelet.
+
+Friss maradékROtriage6actualCLI kontrollal igazolta a hiányzó TheStatskulcsnál elvesző nonemptyqueryplan/NO_CHANGE0rést. Következő credential-preflight különscope;6.4storehitelesítés kódintegrációs maradék is. DailyOFF/07Berlin. [Friss maradéklista és215](status/2026-10-26-repair-package-remaining-triage/REPORT.md).

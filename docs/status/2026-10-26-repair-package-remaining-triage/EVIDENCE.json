@@ -1,0 +1,269 @@
+{
+  "at": "2026-10-26T20:32:24.887703+00:00",
+  "task": "repair-package-remaining-triage-readonly",
+  "status": "READONLY_TRIAGE_AND_SIX_ACTUAL_CLI_CREDENTIAL_CONTROLS_PASS",
+  "controls_passed": 6,
+  "source1238_and_4087oldledger_exact": true,
+  "closed37worker56closurepins_exact": true,
+  "source_snapshot_count": 1238,
+  "old_ledger_rows": 4087,
+  "actual_nonempty_native_query_plan_discarded_without_key_and_native_exit0": true,
+  "no_fixture_and_unqueryable_legitimate_noop_controls": true,
+  "keyed_cases_provider_and_monitor_are_doubles_not_real_calls": true,
+  "absent_and_blank_cases_use_actual_pureplanner_and_actual_empty_query_tick": true,
+  "no_production_db_or_network_attempts": true,
+  "daily_enabled": false,
+  "legacy_enabled": false,
+  "source_edit_worker_full_replay_api_llm_fit_gen_capture_receipt_import": 0,
+  "weather_forecast_outcome_store_integration_still_explicitly_unfinished": true,
+  "remaining_items_sha256": "b1ad366b707629922958140933bb74ec1c5698acf5b427ebb6aabefd985ac5cf",
+  "controls_xml_sha256": "a65b5a12dfc95320d4bd57ca2a9081ad591d0ab7cc3574c174bd7e3949aa8e5a",
+  "new_full_or_scope_implementation_acceptance": false,
+  "remaining": {
+    "at": "2026-10-26T20:32:13.009294+00:00",
+    "handoff": "2026-10-27T07:00:00+01:00",
+    "total": 31,
+    "saved_reference_not_new_215_semantic_audit": true,
+    "classification_counts": {
+      "real_data_collection": 1,
+      "requirements_conflict": 3,
+      "source_clock_and_pair_evidence": 1,
+      "promotion_dependency": 3,
+      "empirical_validation": 9,
+      "real_source_coverage": 7,
+      "unfinished_store_authentication_code_and_actual_data": 1,
+      "stopped_weather_source_gap": 2,
+      "consumer_coverage_dependency": 1,
+      "point_in_time_data_dependency": 1,
+      "elapsed_observation_window": 2
+    },
+    "items": [
+      {
+        "id": "2.2",
+        "primary_blocker": "real_data_collection",
+        "remaining": "Befejezett öt éves import + valódi forrás/availability; normál automata, kvótakorlát változatlan.",
+        "saved_implementation_status": "DATA_COVERAGE",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "3.3",
+        "primary_blocker": "requirements_conflict",
+        "remaining": "A párhuzamos régi API-mérés ütközik a későbbi szolgáltatókivezetéssel; nincs visszakapcsolási felhatalmazás.",
+        "saved_implementation_status": "SUPERSEDED_LEGACY_LIVE_COMPARISON",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "3.4",
+        "primary_blocker": "source_clock_and_pair_evidence",
+        "remaining": "Valódi szolgáltatói quote-idő és kortárs árpárok; receipt megfigyelés nem helyettesíti.",
+        "saved_implementation_status": "PROVIDER_CLOCK_AND_COMPARISON_DATA",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "3.5",
+        "primary_blocker": "promotion_dependency",
+        "remaining": "Lefedettség és quote-frissesség igazolása, 3.3/3.4 előfeltételek; nem kapulazítás.",
+        "saved_implementation_status": "ORIGINAL_GATE_NOT_PROVEN_APPROVED_ROUTE_DIFFERENT",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "4.3",
+        "primary_blocker": "empirical_validation",
+        "remaining": "A kalibrált/density-weighted ensemble kód már létezik: külön valószínűségek, fitted logloss-reliability és purged holdout; XG<3minta esetén0súly. A korábbi kódhiány megfogalmazás elavult. Tényleges elegendő prematch witnessed forecast/outcome és proper-score/kalibráltpromóció nincs tanúsítva, önkényes súlyt nem állítunk be.",
+        "saved_implementation_status": "IMPLEMENTED_SHADOW_NEEDS_WITNESSED_FIT_VALIDATION",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "4.4",
+        "primary_blocker": "real_source_coverage",
+        "remaining": "Többposztos SHADOW választó létezik és tényleges playersreview is van; teljes kulcstámadó/kreatív/védő/kapus kör minden szükséges adatának és éles profilfogyasztásának fedése nincs igazolva.",
+        "saved_implementation_status": "PLAYER_DATA_AND_FULL_CONSUMPTION",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "4.5",
+        "primary_blocker": "real_source_coverage",
+        "remaining": "A felsorolt mezők forrásolt olvasói implementáltak; minden releváns játékos gól/xG/xA/perc/kezdés/részesedés/availability tényleges teljes fedése nincs. Hiány nem0 vagy egészséges keret.",
+        "saved_implementation_status": "PLAYER_FEATURE_COVERAGE",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "4.6",
+        "primary_blocker": "empirical_validation",
+        "remaining": "A posztonkénti hiány/ellentmondáskezelés kód működik; helyettesíthetőség és több hiányzó együttes, nemadditív tényleges hatásmodellje nincs empirikusan tanúsítva. Önkényes új szorzó nem megoldás.",
+        "saved_implementation_status": "SUBSTITUTION_AND_JOINT_EFFECT_VALIDATION",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "4.8",
+        "primary_blocker": "empirical_validation",
+        "remaining": "Külön piaci irányok SHADOWban megvannak, de ténylegesen validált támadó/kapus/védő hiányhatás teljes éles fogyasztói köre még nem tanúsított.",
+        "saved_implementation_status": "MARKET_SPECIFIC_PLAYER_EFFECT_VALIDATION",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "5.2",
+        "primary_blocker": "real_source_coverage",
+        "remaining": "Az olvasók/regiszterek működnek és cc3bkétlábon schedule considered+cited, de teljes napi helyszín/naptár/utazás még részleges; actualtravel/weather/rotation nem mindforrásolt. Stadionok közti proxy nem bizonyított csapatútiterv.",
+        "saved_implementation_status": "SCHEDULE_VENUE_TRAVEL_COVERAGE",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "5.3",
+        "primary_blocker": "real_source_coverage",
+        "remaining": "Naptár és predictedXI forráskötés működik; aktuális tényleges confirmed kezdőváltozás/rotáció pozitív fedése nem teljes. Kupa/pihenőnap nem bizonyított Bcsapat.",
+        "saved_implementation_status": "CONFIRMED_XI_ROTATION_SOURCE_GAP",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "5.4",
+        "primary_blocker": "real_source_coverage",
+        "remaining": "Hivatalos szezon/szakasz szabály és boundsszámítás létezik, de minden napi meccs forrásolt, pontos tabellatétje nem áll rendelkezésre. UNRESOLVED_BOUNDS nem bizonyított mentális motiváció.",
+        "saved_implementation_status": "STAKES_SOURCE_PHASE_COVERAGE",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "5.7",
+        "primary_blocker": "empirical_validation",
+        "remaining": "Kitalált mentális súly tiltott; tényleges PIT visszamért motivációjel és verziózott éles ranghatás nincs validálva. Ez új bizonyítékhoz kötött optimalizálás, nem kis hiányzó tetszőleges súlyképlet.",
+        "saved_implementation_status": "EMPIRICAL_MOTIVATION_EFFECT",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "5.8",
+        "primary_blocker": "empirical_validation",
+        "remaining": "Globális péntek/szombat/vasárnap súly nincs bevezetve. Ligánkénti időhelyes történeti weekdayhatás nincs tanúsítva; a feltételes korlát működik, pozitív prediktív fejlesztés külön adat/optimalizálás.",
+        "saved_implementation_status": "EMPIRICAL_LEAGUE_WEEKDAY_EFFECT",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "6.3",
+        "primary_blocker": "real_source_coverage",
+        "remaining": "Hőmérséklet/csapadék/szél/széllökés külön olvasható; tényleges pályaállapot forrása/bekötése nincs igazolva, időjárásból nem található ki.",
+        "saved_implementation_status": "PITCH_STATE_SOURCE_MISSING",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "6.4",
+        "primary_blocker": "unfinished_store_authentication_code_and_actual_data",
+        "remaining": "Külön tervezendő forecast/outcome store-authentication integráció még nincs kész; a jelenlegi wrapper mindig PROVENANCE_PENDING/store_verifiedFalse. Utána is valódi előre rögzített forecast/outcome párok és empirikus validáció kell. N9 retry/backfill és gate-lazítás nincs.",
+        "saved_implementation_status": "MARKET_HOLDOUT_REAL_DATA",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "6.4.N7",
+        "primary_blocker": "stopped_weather_source_gap",
+        "remaining": "Régi valódi strict weather-párok hiánya; STOP megmarad, nincs új claim/retry.",
+        "saved_implementation_status": "BOUNDED_EXECUTABLE_DATA_COLLECTION_REMAINS",
+        "close_just_by_code_edit": false,
+        "latest_constraint": "N9 actualSTOP/no furtherclaim supersedes earlier may-execute wording; preserved downloads are not accepted pairs."
+      },
+      {
+        "id": "6.4.N9",
+        "primary_blocker": "stopped_weather_source_gap",
+        "remaining": "Egyszeri STOPPED ERA5 claim; újraindítás és hamis FETCHED_AT tiltott.",
+        "saved_implementation_status": null,
+        "close_just_by_code_edit": false,
+        "latest_constraint": "N9 actualSTOP/no furtherclaim supersedes earlier may-execute wording; preserved downloads are not accepted pairs."
+      },
+      {
+        "id": "6.5",
+        "primary_blocker": "empirical_validation",
+        "remaining": "A szerep/ellenfélerősség szerinti mintakapuk léteznek, de a kellő összehasonlítható tényleges weather-tanító/holdout minta nincs kész. Reanalysisismertség ma nem régi prematchknowledge.",
+        "saved_implementation_status": "COMPARABLE_WEATHER_HISTORICAL_SAMPLE",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "7.3",
+        "primary_blocker": "empirical_validation",
+        "remaining": "A3–4profil és szigorú ár/EVkapu működik, de tényleges24–48hazonos natív termék/clock párhoz kötött pozitívEV>1.15szelvény nem tanúsított. A megőrzött első forrás két payloadja nem eltelt24h; eltelt naptári idő önmagában nem második megfigyelés.",
+        "saved_implementation_status": "ACTUAL_PRICE_MOVEMENT_EV_DATA",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "7.6",
+        "primary_blocker": "requirements_conflict",
+        "remaining": "10–50 összodds és védett HIGH_ODDS singleton eltérése; közös specifikációs döntés kell.",
+        "saved_implementation_status": "PRESERVED_RULE_SPECIFICATION_CONFLICT",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "7.8",
+        "primary_blocker": "empirical_validation",
+        "remaining": "A profilfüggőkalibrátor és prospektív capture már implementált, de kellő tényleges független időhelyes forecast/outcome minta/30napos adat/promotion nincs. NOT_FIT nem hiányzó kód vagy ok az adatok visszadátumozására.",
+        "saved_implementation_status": "WITNESSED_WALK_FORWARD_CALIBRATION_DATA",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "8.5",
+        "primary_blocker": "requirements_conflict",
+        "remaining": "40–50% teljes READY kitettség és védett DAILY100% ütközése; önkényes DAILY módosítás nincs.",
+        "saved_implementation_status": "PRESERVED_DAILY_EXPOSURE_SPEC_CONFLICT",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "8.9",
+        "primary_blocker": "empirical_validation",
+        "remaining": "Közös meccskimenetelt használó bounded feltételesSHADOWszámítás létezik; teljes aktuális natívcsomaghoz kötött érvényes eloszlás és várható napi nyertesszám tényleges kalibráltfedése nincs igazolva. Nem független lábszorzat és nem KPI.",
+        "saved_implementation_status": "JOINT_DISTRIBUTION_FORECAST_COVERAGE_VALIDATION",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "11.2",
+        "primary_blocker": "consumer_coverage_dependency",
+        "remaining": "Működő normál út igazolt; teljes profil/modell/feature-fogyasztói fedéshez tényleges pozitív adatok szükségesek.",
+        "saved_implementation_status": "FULL_DATA_PATH_COVERAGE_AND_ALL_CONSUMERS",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "11.2.N23",
+        "primary_blocker": "real_source_coverage",
+        "remaining": "Az egzakt venue/koordinátaolvasó és69forrásolt regiszter implementált; részleges pozitívweather/travel volt. A teljes mai célkör natív helyszínblokkolása még nincs megszüntetve, a hiányt nem kell új olvasóval vagy hazai stadiontippel elfedni.",
+        "saved_implementation_status": "CURRENT_VENUE_SOURCE_COVERAGE",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "11.3",
+        "primary_blocker": "point_in_time_data_dependency",
+        "remaining": "30 korábbi nap valódi cutoff/forrás/lineage, nem ma letöltött adat visszadátumozása.",
+        "saved_implementation_status": "THIRTY_DAY_GLOBAL_PIT_REPLAY",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "11.4",
+        "primary_blocker": "elapsed_observation_window",
+        "remaining": "Legalább7egymástkövetővalódiélőSHADOWnap; szintetikusóra és replay nem helyettesíti.",
+        "saved_implementation_status": "SEVEN_CONSECUTIVE_NEW_COHORT_SHADOW_DAYS",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "11.5",
+        "primary_blocker": "elapsed_observation_window",
+        "remaining": "Legalább30valódiPAPERnap,1EUR és tényleges eredmények; nem kódtesztből gyártható.",
+        "saved_implementation_status": "THIRTY_DAY_NEW_COHORT_PAPER_MEASUREMENT",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "11.6",
+        "primary_blocker": "promotion_dependency",
+        "remaining": "Egyszerre egy feature-család tényleges elfogadási és friss publikációs bizonyíték után.",
+        "saved_implementation_status": "FAMILY_CANARY_PROMOTION_NOT_CERTIFIED",
+        "close_just_by_code_edit": false
+      },
+      {
+        "id": "11.8",
+        "primary_blocker": "promotion_dependency",
+        "remaining": "Dokumentált lefedettség/kalibráció/stabilitás/portfólióelőny; nincs pusztán dátum alapú promotion.",
+        "saved_implementation_status": "REAL_PROMOTION_QUALITY_GATES_NOT_MET",
+        "close_just_by_code_edit": false
+      }
+    ],
+    "new_crosscutting_executable_code_gap": "Missing/blank TheStats credential with actual nonempty pure query plan silently drops planned work and exits0;6actualTESTONLY controls proven.",
+    "next_single_scope": "scheduled-odds-credential-preflight-contract",
+    "weather_code_boundary_is_separate_not_automatically_data_only": true
+  },
+  "private_proof": {
+    "path": "artifacts/roadmap-execution-20261020/repair-package-remaining-triage-readonly/triage-proof.json",
+    "sha256": "dbbe43fc2d51fdf1cfcc7d612b2d7b50a503e8c1a95282e67db7f8780eb800e6"
+  }
+}
