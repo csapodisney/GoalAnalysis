@@ -1,0 +1,78 @@
+{
+  "at": "2026-10-26T18:58:44.127379+00:00",
+  "task": "scheduled-odds-outcome-readonly",
+  "status": "RO_TWO_LAYER_ODDS_ERROR_VISIBILITY_GAP_PROVEN_NO_PRODUCTION_OPERATION",
+  "controls_passed": 4,
+  "actual_native_wrapper_failure_hidden": {
+    "synthetic_odds_exit": 7,
+    "actual_wrapper_exit": 0,
+    "failure_log_absent": true,
+    "all_stages_once": true
+  },
+  "per_query_fetch_failures_already_persisted_not_all_errors_invisible": true,
+  "static_source_sha256": {
+    "scripts/run-arthur-scheduled.ps1": "70b9a43e44b7f4e0712f2e109a312f0336f3e9848d60f19a769ba8861cc640d6",
+    "scripts/run-arthur-odds-monitor.py": "5af865e2f29a593bc783ecd30f9c7e2059cbb1bc190907b8a58c15712f455d34",
+    "src/goal_analysis/jobs/odds_monitor.py": "161f4933e295a80007ff3fd8b1b5a89996741726f1cb1cf4cf18cb4d84604e0d",
+    "src/goal_analysis/jobs/prospective_odds.py": "c43ab6c9486dddbc458707e3f6c4019bc3c3377644e923d5446a030385b52ad6",
+    "tests/test_odds_monitor.py": "b3f51120bd0a9ff3193009ca50a7a9eee90a3a3ce8495bb58d1036a97f30d20a",
+    "tests/test_odds_monitor_providers.py": "4b050f2e6c5d129d3e7aa76a3f87bb69c321869fbb9c3481d5637b583ded4efb",
+    "tests/test_prospective_odds.py": "9de17b98e9e8f6b622c0639c35d1992fe0f6d428209a41a55eaa33c9a2ac7f6a",
+    "tests/test_arthur_schedule.py": "e2779e11629cf5c3eb9af9b96763d720f4831997a1b5acce87ba97cfc664b590"
+  },
+  "source_files_exact": 1237,
+  "old_ledger_rows_exact": 4087,
+  "direct_ro_monitor_inventory": {
+    "snapshot_at": "2026-10-26T18:58:40.467421+00:00",
+    "not_unique_events_valid_quotes_or_price_pairs": true,
+    "table_rows": {
+      "monitor_queries": 310,
+      "monitor_providers": 3,
+      "monitor_attempts": 3106,
+      "monitor_snapshots": 3074
+    },
+    "query_status_groups": [
+      {
+        "provider": "api_football",
+        "status": "DAILY_BUDGET",
+        "rows": 167
+      },
+      {
+        "provider": "api_football",
+        "status": "UPDATED",
+        "rows": 2
+      },
+      {
+        "provider": "the_odds_api",
+        "status": "QUOTA_PAUSED",
+        "rows": 26
+      },
+      {
+        "provider": "the_odds_api",
+        "status": "QUOTA_RESERVED",
+        "rows": 10
+      },
+      {
+        "provider": "the_stats_api",
+        "status": "UPDATED",
+        "rows": 105
+      }
+    ],
+    "snapshot_clock_range": [
+      "2026-10-15T22:00:03.253825+00:00",
+      "2026-10-26T18:44:14.175616+00:00"
+    ]
+  },
+  "daily_enabled": false,
+  "legacy_enabled": false,
+  "production_source_edit_worker_full_replay_provider_http_llm_fit_gen_receipt_import": 0,
+  "testonly_stubs_and_original_cli_bootstrap_network_db_provider_capture_denials": true,
+  "initial_module_path_and_tzdata_fixture_failures_preserved": true,
+  "proposed_minimal_next_scope": "scheduled-odds-outcome-contract",
+  "future_contract": "Expose primary MONITOR_UNAVAILABLE with bounded nonzero exit after optional shadow still considered; wrapper captures native odds failure safely after all once-only stages. Preserve NO_UNLOCKED_FIXTURES, valid NO_CHANGE and optional shadow nonveto, quotas/source clocks/lockouts, no paid normalgen. Probe all explicit cases before source fix.",
+  "not_yet_implementation_or_accepted_source_fix": true,
+  "private_proof": {
+    "path": "artifacts/roadmap-execution-20261020/scheduled-odds-outcome-readonly/readonly-proof.json",
+    "sha256": "d6071828ae849ab324f3f359983f482344714222b133b6b67de4d35200d1618e"
+  }
+}
