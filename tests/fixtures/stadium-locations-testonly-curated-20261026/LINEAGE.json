@@ -1,0 +1,26 @@
+{
+  "version": "safe-public-stadium-fixture-v1",
+  "fixture_kind": "CURATED_TESTONLY",
+  "created_at": "2026-10-26T04:17:26.300426+00:00",
+  "production_release": false,
+  "original_packet_sha256": "92d68ac3f097bf6a3cb0abef945e94ce2f49e05ef42dc5d7aa7cd480dd1e3dc7",
+  "original_private_source_sha256": "a51be549ec36777ac012cd53f8d7a743d53e8e1791595c62dc0454e108c3c6ba",
+  "original_private_source_size_bytes": 128352,
+  "curated_packet_sha256": "1cca986ad758a3e0f51fa9a94975187b6770943254ddac39b2d235f06e2baa1f",
+  "curated_packet_size_bytes": 103767,
+  "curated_identity_sha256": "0e250eff055644fcb148d43661283220988ad733ebd2616ddd76212d7932d012",
+  "curated_identity_size_bytes": 381,
+  "affected_entity": {
+    "wikidata_id": "Q152599",
+    "native_name": "Max-Morlock-Stadion",
+    "native_city": "Nuremberg"
+  },
+  "modified_record_count": 1,
+  "preserved_record_count": 68,
+  "all_coordinates_revisions_names_aliases_precision_unchanged": true,
+  "all_nonaffected_raw_sources_reference_original_tracked_bytes": true,
+  "historical_clocks": "TEST_SCENARIO_VALUES_NOT_NEW_NETWORK_OBSERVATION",
+  "protected_html_read_or_encoded": false,
+  "external_requests": 0,
+  "full_original_historical_raw_integrity_requires_separate_private_archive": true
+}
