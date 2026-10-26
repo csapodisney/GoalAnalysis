@@ -1,0 +1,53 @@
+{
+  "at": "2026-10-26T04:38:11.531976+00:00",
+  "task": "safe-public-fixture",
+  "status": "THREE_OWN_NEW_ACTUAL_REPLAYS_ROOT_READBACK_PASS_FULL5848_PENDING",
+  "independent_replay_proof": {
+    "at": "2026-10-26T04:37:27.873048+00:00",
+    "status": "THREE_OWN_PUBLIC_FIXTURE_ACTUAL_REPLAYS_PHYSICALLY_READ_BACK",
+    "actual_replays_passed": 3,
+    "checks_per_case": 8,
+    "cases": [
+      {
+        "case": "busy-weekend-2026-10-17",
+        "all_eight_checks_passed": true,
+        "model_sha256": "89f8710b51cbc06a12f93f7825d8d128e5cbe998c1eb0dfd77a57e3042e5e4b9",
+        "actual_training_dataset_manifests_verified": 97,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      },
+      {
+        "case": "sparse-weekday-2026-10-12",
+        "all_eight_checks_passed": true,
+        "model_sha256": "3007451ce1f4823e6daa8a36a0bed44dba4f920efa6d08f8336b55dc7d1bf465",
+        "actual_training_dataset_manifests_verified": 33,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      },
+      {
+        "case": "cup-national-2026-10-03",
+        "all_eight_checks_passed": true,
+        "model_sha256": "277af116059667496fe198782acef444949a76afaca1c9cef0b8649fe6fea9af",
+        "actual_training_dataset_manifests_verified": 1,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      }
+    ],
+    "summary_sha256": "1fb5ae7cd417a83a6a48df1907050b82102ff7137efef817bfd36473412c9922",
+    "frozen_source_files_verified": 1227,
+    "original_eight_check_asts_and_require_conditions_unchanged": true
+  },
+  "full5848_accepted": false,
+  "runtime_or_scope_complete": false,
+  "public_curated_controls_passed": 26,
+  "original_private_archive_dependency": "Two unchanged original raw-integrity controls fail in public copy because the protected body is deliberately absent; not skipped or weakened. Unassisted public whole-suite not proven.",
+  "numbered_worklist": {
+    "total": 167,
+    "checked": 137,
+    "open": 30
+  },
+  "fresh_original215_audit_complete": false
+}
