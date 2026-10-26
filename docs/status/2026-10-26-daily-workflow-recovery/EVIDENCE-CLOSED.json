@@ -1,0 +1,60 @@
+{
+  "at": "2026-10-26T10:42:52.896850+00:00",
+  "task": "daily-workflow-recovery-contract",
+  "status": "ROOT_PHYSICAL_RECOVERY_AND_ACCEPTED_RUNTIME_VERIFIED_GITHUB_PENDING",
+  "own_full": 5874,
+  "targeted": 96,
+  "adapter": 10,
+  "new_actual_replays": 3,
+  "checks_per_replay": 8,
+  "source_files": 1231,
+  "old_ledger_rows_preserved": 4016,
+  "old_archives_preserved": 6894,
+  "existing_run_id": "2026-10-26-cc3b72cd5b81",
+  "full_ledger_snapshot_sha256": "49f87b0c9bba26f497e494c5757500aef0231683d6564a537446ffabb8c99252",
+  "physical_report_sha256": "5592bf755cdc07c56969073d711b9c253107877bf53409e2dbe2dce06b7433be",
+  "embedded_report_sha256": "916089cc9a91372873e6cdce61ff768d3930b1658a799cf56c1a09d373c326ce",
+  "actual_stage_statuses": {
+    "settlement": "PARTIAL",
+    "generation": "PARTIAL",
+    "archive": "SUCCESS",
+    "learning": "SUCCESS"
+  },
+  "actual_stage_warnings": {
+    "settlement": "BACKLOG_OR_COVERAGE",
+    "generation": "BACKLOG_OR_COVERAGE"
+  },
+  "normal_generation_calls": 0,
+  "daily_enabled": true,
+  "legacy_enabled": false,
+  "serving": {
+    "local": {
+      "http_status": 200,
+      "runtime_idle": true,
+      "run_id": "2026-10-26-cc3b72cd5b81",
+      "report_sha256": "916089cc9a91372873e6cdce61ff768d3930b1658a799cf56c1a09d373c326ce",
+      "javascript_sha256": "d68c82e7be4449d09fa9d5428b62fecf1822c2ac65209868eb92ec66af6d1030",
+      "learning_report_hash": "0581efc3b1d891fd157c18d12e24c1433115308b826914e0547e17520abe7cdb",
+      "current_strategy_contracts": 20
+    },
+    "tailscale": {
+      "http_status": 200,
+      "runtime_idle": true,
+      "run_id": "2026-10-26-cc3b72cd5b81",
+      "report_sha256": "916089cc9a91372873e6cdce61ff768d3930b1658a799cf56c1a09d373c326ce",
+      "javascript_sha256": "d68c82e7be4449d09fa9d5428b62fecf1822c2ac65209868eb92ec66af6d1030",
+      "learning_report_hash": "0581efc3b1d891fd157c18d12e24c1433115308b826914e0547e17520abe7cdb",
+      "current_strategy_contracts": 20
+    }
+  },
+  "source_acceptance_sha256": "ab9c19af422cecfb5b80d62a3935fd48a90d300636d1b3a4f3358add9833a030",
+  "root_readback_sha256": "f5f17aa45913b32aab06c970a019eb22686e64ff6a0c490d59034bc68b057e3c",
+  "actual_cli_exit_code": 0,
+  "original_follower_exit_code": 1,
+  "runtime_after_separate_reconciliation_exit_code": 0,
+  "original_follower_failure_preserved": "TypeError in read-only SQLite tuple/string-key adapter after successful actual CLI; no recovery retry",
+  "reconciliation_sha256": "ae8c61d1117331c5e06d49c22ec436f96c7362ec6e33d6b0219c82984d508ea8",
+  "new_bettable_price_or_decision_claim": false,
+  "five_year_coverage_complete": false,
+  "project_complete": false
+}
