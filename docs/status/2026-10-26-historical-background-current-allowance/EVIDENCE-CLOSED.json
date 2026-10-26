@@ -1,0 +1,93 @@
+{
+  "at": "2026-10-26T10:57:49.440362+00:00",
+  "task": "historical-background-current-allowance-readonly",
+  "status": "OWN_SCOPE_READONLY_ROOT_VERIFIED_GITHUB_PENDING",
+  "audit_clock": "2026-10-26T10:55:43.687468+00:00",
+  "root_readback_clock": "2026-10-26T10:57:49.440362+00:00",
+  "publication_gate": "AVAILABLE",
+  "effective_first_gate": "COOLDOWN",
+  "next_attempt_at": "2026-10-26T11:11:09.169582+00:00",
+  "secondary_quota_evaluation_not_reached_by_tick_during_cooldown": {
+    "status": "QUOTA_REFRESH_REQUIRED",
+    "requests": 0
+  },
+  "last_normal_timer_batch": {
+    "status": "REQUEST_LIMIT",
+    "attempted_at": "2026-10-26T10:41:09.169582+00:00",
+    "completed_at": "2026-10-26T10:41:23.081032+00:00",
+    "next_attempt_at": "2026-10-26T11:11:09.169582+00:00",
+    "max_requests": 19,
+    "queue_day": "2026-10-26"
+  },
+  "normal_timer_batch_requests": 19,
+  "physical_original_pages_payload_sha_and_authenticated_200_receipts_verified": 19,
+  "plans": {
+    "recent_delta_plan": {
+      "plan_sha256": "c5ef89033f096ae9be15bd01e7539311b227d752b6c53901316e2f86d92947df",
+      "date_from": "2026-10-18",
+      "date_to": "2026-10-25",
+      "query_count": 20,
+      "checkpoint": {
+        "page": 1,
+        "plan_sha256": "c5ef89033f096ae9be15bd01e7539311b227d752b6c53901316e2f86d92947df",
+        "query_index": 19,
+        "total_pages": null
+      },
+      "uncompleted_query_windows": 1,
+      "not_a_fixed_http_call_count": true
+    },
+    "retained_main_plan": {
+      "plan_sha256": "0a6c448137e20951e4f4b513c33a0758f4075ba433954799b73e4df5a4f5474b",
+      "date_from": "2021-10-18",
+      "date_to": "2026-10-17",
+      "query_count": 1220,
+      "checkpoint": {
+        "page": 1,
+        "plan_sha256": "0a6c448137e20951e4f4b513c33a0758f4075ba433954799b73e4df5a4f5474b",
+        "query_index": 496,
+        "total_pages": null
+      },
+      "uncompleted_query_windows": 724,
+      "not_a_fixed_http_call_count": true
+    }
+  },
+  "normal_batch_declared_native_shadow_counts": [
+    {
+      "counts": {
+        "matches_created": 179,
+        "quarantined_records": 0,
+        "versions_created": 271
+      },
+      "effective_data_path": "LEGACY_UNCHANGED",
+      "external_requests": 0,
+      "mode": "SHADOW",
+      "reconciliation": "NATIVE_IDS_ONLY_INCREMENTAL",
+      "rejection_counts": {}
+    }
+  ],
+  "source_files_exact": 1231,
+  "source_file_bytes_streamed_during_independent_readback": 244824916,
+  "ledger_rows_unchanged_during_audit": 4087,
+  "pure_gate_negative_controls": 6,
+  "old_readonly_reader_budget_guard_failure_preserved": true,
+  "independent_readback_sha256": "4dcb99a5865ff65297748ab0c6b0c7211a48f8cabfad67722adf248521960b61",
+  "readiness_proof_sha256": "a66bd2096bbae4ee26ad9912acd65e644b1305ef0547891cff50323e03432c3a",
+  "audit_provider_api_llm_model_fit_generation_or_production_writes": 0,
+  "normal_timer_batch_preceded_audit_not_manually_started_by_audit": true,
+  "no_background_code_fix_indicated_by_current_cooldown_and_queue": true,
+  "normal_daily_enabled": true,
+  "legacy_enabled": false,
+  "original215": {
+    "GREEN": 176,
+    "RED": 39
+  },
+  "numbered167": {
+    "closed": 136,
+    "open": 31
+  },
+  "original_2_2": "RED",
+  "other214_rows_unchanged": true,
+  "five_year_coverage_complete": false,
+  "project_complete": false,
+  "root_run_lock_runtime_bytes_are_not_business_data_writes": true
+}
