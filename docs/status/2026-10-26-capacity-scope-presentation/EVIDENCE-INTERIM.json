@@ -1,0 +1,104 @@
+{
+  "at": "2026-10-26T06:53:56.694288+00:00",
+  "task": "capacity-scope-presentation",
+  "status": "OWN_TARGET87_AND_THREE_NEW_ACTUAL_REPLAYS_PASS_FULL5851_RUNNING_RUNTIME_PENDING",
+  "full_suite_complete": false,
+  "full_tests_expected": 5851,
+  "targeted_tests_passed": 87,
+  "adapter_tests_passed": 10,
+  "own_new_actual_replays_passed": 3,
+  "checks_per_case": 8,
+  "actual_training_manifests_verified": [
+    97,
+    33,
+    1
+  ],
+  "real_retained_ui_comparisons": 4,
+  "only_one_app_javascript_file_changed": true,
+  "two_new_test_files": true,
+  "source_files_frozen": 1229,
+  "old_ledger_rows_unchanged": 4016,
+  "worker_helper_inputs_pinned": 22,
+  "closure_helper_inputs_pinned": 13,
+  "preserved_old_archives_plus_N9_failure_files": 6843,
+  "numerical_fits_only_three_own_offline_regression_replays": true,
+  "daily_maintenance_off": true,
+  "legacy_enabled": false,
+  "source_changed_before_maintenance_off": false,
+  "scope_complete": false,
+  "project_complete": false,
+  "original215_counts_unchanged_until_own_closure": {
+    "GREEN": 175,
+    "RED": 40
+  },
+  "numbered167_worklist_unchanged": {
+    "checked": 136,
+    "open": 31
+  },
+  "changed_source_sha256": {
+    "src/goal_analysis/web/app.js": "d68c82e7be4449d09fa9d5428b62fecf1822c2ac65209868eb92ec66af6d1030",
+    "tests/capacity_scope_frontend_check.cjs": "8bedd8edd6a0d0a3b7a97fe11a1207d1526a4fdaf2cd0e5e67dabb5400050a5d",
+    "tests/test_capacity_scope_frontend.py": "4c3c6299a988f6f10c97aff56a77bec70d58a3a1b98d41fdec07137b4a16cddb"
+  },
+  "new_replay_physical_readback": {
+    "at": "2026-10-26T06:52:00.646458+00:00",
+    "status": "THREE_OWN_CAPACITY_UI_ACTUAL_REPLAYS_PHYSICALLY_READ_BACK",
+    "actual_replays_passed": 3,
+    "checks_per_case": 8,
+    "cases": [
+      {
+        "case": "busy-weekend-2026-10-17",
+        "all_eight_checks_passed": true,
+        "model_sha256": "89f8710b51cbc06a12f93f7825d8d128e5cbe998c1eb0dfd77a57e3042e5e4b9",
+        "actual_training_dataset_manifests_verified": 97,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      },
+      {
+        "case": "sparse-weekday-2026-10-12",
+        "all_eight_checks_passed": true,
+        "model_sha256": "3007451ce1f4823e6daa8a36a0bed44dba4f920efa6d08f8336b55dc7d1bf465",
+        "actual_training_dataset_manifests_verified": 33,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      },
+      {
+        "case": "cup-national-2026-10-03",
+        "all_eight_checks_passed": true,
+        "model_sha256": "277af116059667496fe198782acef444949a76afaca1c9cef0b8649fe6fea9af",
+        "actual_training_dataset_manifests_verified": 1,
+        "numeric_outputs_equal_original_validated_baseline": true,
+        "external_requests": 0,
+        "forbidden_attempts": 0
+      }
+    ],
+    "summary_sha256": "84244c512cdde55900e68108345e90781424853f3d92dde32a8fa35c11bc3ffc",
+    "frozen_source_files_verified": 1229,
+    "original_eight_check_asts_and_require_conditions_unchanged": true
+  },
+  "worker_state": {
+    "at": "2026-10-26T06:47:31.220177+00:00",
+    "task": "capacity-scope-presentation",
+    "status": "OWN_FULL5851_AND_THREE_NEW_ACTUAL_REPLAYS_RUNNING",
+    "automatic_retry": false,
+    "expected_full": 5851,
+    "targeted_passed": 87,
+    "child_pids": [
+      2896,
+      32520
+    ]
+  },
+  "closure_state": {
+    "at": "2026-10-26T06:52:45.546664+00:00",
+    "task": "capacity-scope-presentation",
+    "pid": 19324,
+    "status": "WAITING_FOR_EXISTING_OWN_FULL5851_AND_THREE_NEW_ACTUAL_REPLAYS_NO_RETRY",
+    "automatic_retry": false,
+    "new_paid_generation": false
+  },
+  "new_paid_provider_llm_or_normal_generation_calls": 0,
+  "production_model_fits_or_decision_changes": 0,
+  "new_offline_numerical_replay_cases": 3
+}
