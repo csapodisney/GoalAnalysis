@@ -238,5 +238,7 @@
   "only_original_requirement_evidence_delta": "2.2",
   "other214_rows_bit_exact": true,
   "five_year_or_project_or_model_promotion_complete": false,
-  "next_single_task": "native-history-row-budget-contract"
+  "next_single_task": "native-history-row-budget-contract",
+  "legacy_saved_normal_report_history_records": 3221,
+  "legacy_numeric_models_and_ranking_path_unchanged": true
 }

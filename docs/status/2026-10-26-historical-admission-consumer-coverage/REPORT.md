@@ -20,6 +20,8 @@ A forráskód szerint a HistoricalResultSink → HistoricalResults.ingest a kano
 
 ## A külön natív nyers SHADOW olvasó másik akadálya
 
+A régi cc3b normál futás mentett `history.json` állománya 3221 rekordot tartalmaz, és a korábbi numerikus adatút változatlan. Ez mentett bemeneti rekordszám, fogyasztónként külön alkalmassági szűréssel; nem 3221 minden modellhez igazolt PIT-tanítóminta. Az alábbi nulla sor a külön natív nyers SHADOW view eredménye.
+
 Az eredeti cc3b futás mind a hét mentett fixture-jét használtuk, eredmény szerinti szűrés és új forrás nélkül. Öt target forrásazonossága igazolt; két targetnél a valódi nyers is_neutral és a mentett neutral_venue is ismeretlen. A szigorú olvasó nem alakítja ezt False értékké. Ez nem írja át az eredeti READY szelvényt: egy külön, döntési hatás nélküli kutatási adatút feltételeiről van szó.
 
 Az összes fixture-t együtt olvasó hívás **LIMIT_REACHED**: 194 történeti forrásjelölt, 110 igazolt forrás és 10001 beolvasott sor után a meglévő ROW_LIMIT guard elutasítja az egész részleges történeti mintát. A visszaadott történet 0 sor, és az új 19 oldalból nincs befogadott raw source key. Ugyanez igaz az új batch előtti cutoffra is. Nem tekintjük pozitív kombinált modellbemenetnek.
