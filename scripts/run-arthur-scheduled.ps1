@@ -52,7 +52,19 @@ try {
         $RunExitCode = $LASTEXITCODE
         # This optional bounded tick independently proves the saved daily freeze
         # and shared quota. It is disarmed until its validated runtime activation.
-        & $Python (Join-Path $PSScriptRoot 'run-arthur-background-history.py') *> $null
+        $BackgroundExitCode = 0
+        $BackgroundRunner = Join-Path $PSScriptRoot 'run-arthur-background-history.py'
+        $BackgroundActivation = Join-Path $ProjectRoot 'data\arthur\historical-background\activation.json'
+        # An optional, uninstalled feature has no stage to run. An installed or
+        # configured stage must expose its own failure without child error text.
+        if (Test-Path -LiteralPath $BackgroundRunner -PathType Leaf) {
+            $global:LASTEXITCODE = $null
+            & $Python $BackgroundRunner *> $null
+            $BackgroundExitCode = $LASTEXITCODE
+            if ($null -eq $BackgroundExitCode) { $BackgroundExitCode = 1 }
+        } elseif (Test-Path -LiteralPath $BackgroundActivation -PathType Leaf) {
+            $BackgroundExitCode = 1
+        }
     } finally {
         $ErrorActionPreference = $PreviousErrorPreference
     }
@@ -61,7 +73,13 @@ try {
         New-Item -ItemType Directory -Path (Split-Path -Parent $LogPath) -Force | Out-Null
         Add-Content -LiteralPath $LogPath -Encoding UTF8 -Value ("[{0}] Arthur nightly check failed; exit code {1}. See the dashboard night-job status." -f [DateTime]::UtcNow.ToString("o"), $RunExitCode)
     }
-    exit $RunExitCode
+    if ($BackgroundExitCode -ne 0) {
+        New-Item -ItemType Directory -Path (Split-Path -Parent $LogPath) -Force | Out-Null
+        Add-Content -LiteralPath $LogPath -Encoding UTF8 -Value ("[{0}] Arthur background history check failed; exit code {1}. See the dashboard background-history status." -f [DateTime]::UtcNow.ToString("o"), $BackgroundExitCode)
+    }
+    # Keep the primary nightly error; otherwise report the background failure.
+    if ($RunExitCode -ne 0) { exit $RunExitCode }
+    exit $BackgroundExitCode
 } catch {
     New-Item -ItemType Directory -Path (Split-Path -Parent $LogPath) -Force | Out-Null
     Add-Content -LiteralPath $LogPath -Encoding UTF8 -Value ("[{0}] Arthur nightly launcher failed. Check the Python environment and dashboard status." -f [DateTime]::UtcNow.ToString("o"))

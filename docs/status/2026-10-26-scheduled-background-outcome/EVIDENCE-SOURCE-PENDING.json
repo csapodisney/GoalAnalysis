@@ -1,0 +1,135 @@
+{
+  "at": "2026-10-26T17:48:16.900292+00:00",
+  "task": "scheduled-background-outcome-contract",
+  "status": "OWN_WRAPPER_SOURCE_IMPLEMENTED_FULL5936_AND_THREE_NEW_ACTUAL_PENDING",
+  "scope_complete": false,
+  "source_files": [
+    {
+      "path": "scripts/run-arthur-scheduled.ps1",
+      "sha256": "70b9a43e44b7f4e0712f2e109a312f0336f3e9848d60f19a769ba8861cc640d6"
+    },
+    {
+      "path": "tests/test_arthur_background_outcome.py",
+      "sha256": "eec331a361debbb2b078bd6b0617b5654191610fd1f105851166e4e0c11c1a43"
+    }
+  ],
+  "unchanged_original_files": 1235,
+  "all_original_tests_byte_exact": true,
+  "artifact_controls": 15,
+  "targeted_passed": 67,
+  "new_tests": 10,
+  "adapter_passed": 10,
+  "full_expected": 5936,
+  "own_full_passed": false,
+  "own_three_new_actual_passed": false,
+  "source_count": 1237,
+  "old_ledger_rows": 4087,
+  "protected_archives": 8342,
+  "worker_helper_pins": 34,
+  "worker_state": {
+    "at": "2026-10-26T17:47:07.545849+00:00",
+    "task": "scheduled-background-outcome-contract",
+    "status": "OWN_FULL5936_AND_THREE_NEW_ACTUAL_REPLAYS_RUNNING",
+    "automatic_retry": false,
+    "expected_full": 5936,
+    "targeted_passed": 67,
+    "child_pids": [
+      32540,
+      39588
+    ]
+  },
+  "worker_service_start": {
+    "at": "2026-10-26T17:47:02.5220839Z",
+    "automatic_retry": false,
+    "pid": 18248,
+    "ancestry": [
+      {
+        "parent": 2480,
+        "pid": 18248,
+        "name": "powershell.exe",
+        "created": "2026-10-26T17:47:01.0878240Z"
+      },
+      {
+        "parent": 1092,
+        "pid": 2480,
+        "name": "svchost.exe",
+        "created": "2026-10-14T05:49:23.7779460Z"
+      },
+      {
+        "parent": 672,
+        "pid": 1092,
+        "name": "services.exe",
+        "created": "2026-10-14T05:49:23.0710070Z"
+      },
+      {
+        "parent": 824,
+        "pid": 672,
+        "name": "wininit.exe",
+        "created": "2026-10-14T05:49:23.0318890Z"
+      }
+    ],
+    "outside_codex_ancestry": true,
+    "task": "scheduled-background-outcome-contract"
+  },
+  "ruff_final_import_root_collection_powershell_ast_dailyguard_original8_ast_require": true,
+  "source_behavior": "Background native exit captured, fixed stage/numeric-code-only log; nightly error has precedence, otherwise background error returned. No stage repeated or child text/secret logged.",
+  "optional_lifecycle": "Both background script and activation absent: uninstalled stage skipped without SUCCESS. Script present: once. Activation present but script missing: error.",
+  "checkonly_and_secret_setup_nightly_odds_calls_outer_failure_handler_unchanged": true,
+  "paid_normal_generation_http_api_receipt_import_or_actual_scheduler_stage_calls": 0,
+  "offline_fits_only_three_required_replays": true,
+  "daily_maintenance_off": true,
+  "legacy_off": true,
+  "runtime_or_activation_revalidation_complete": false,
+  "decision_or_profile_effect": false,
+  "original215": {
+    "GREEN": 176,
+    "RED": 39
+  },
+  "separate167": {
+    "closed": 136,
+    "open": 31
+  },
+  "project_complete": false,
+  "private_evidence": [
+    {
+      "path": "artifacts/roadmap-execution-20261020/scheduled-background-outcome-contract/artifact-independent-readback.json",
+      "sha256": "be4c34eeda614922c50eb5891ef8fb92f0e1b1442b38ff1367f2cf02b9163ce4"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/scheduled-background-outcome-contract/production-wrapper-shadow-final.json",
+      "sha256": "218a739c36677d1f2426f8fab5669c580c88b863b4c2018caa163c6667e1ac40"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/scheduled-background-outcome-contract/source-edit-proof.json",
+      "sha256": "446ef7b67ed7aaa20f247840441faea94f65f71fbfc866732b49c8f1a6374ffd"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/scheduled-background-outcome-contract/targeted-final.xml",
+      "sha256": "ad92d83cf6e554d5f556e080ca780dd1a51f334870273eded5ff3092ab1188dd"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/scheduled-background-outcome-contract/adapter-target.xml",
+      "sha256": "c5b51fb302922fc62515db7b88f9e3d2cf83968d0a29c4e5543f750660c47018"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/scheduled-background-outcome-contract/ruff-final.json",
+      "sha256": "70163f958291494d9e8dcb86cba64a7c2885b8a6a319aad787823d0113a86197"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/scheduled-background-outcome-contract/import-preflight-final.json",
+      "sha256": "fe4c0b1ffe503f30d049f2c087ace541f80019c2aef1f326c3c45759b4f37f88"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/scheduled-background-outcome-contract/worker-helper-frozen.json",
+      "sha256": "dc06da2e9b0246cbb39421e6923a543f7f8cba29090730fbd98c063c9f325609"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/scheduled-background-outcome-contract/initial-artifact-basetemp-parent-failure.json",
+      "sha256": "61d1d7839378bd6381eba7928156c65684f86883eabddd56034e0b4d5d52dbf4"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/scheduled-background-outcome-contract/initial-new-test-ruff-explicit-check.json",
+      "sha256": "2ce94a6a4cfe9f7b2e6564c0c0e9117f3d27edbbfed6dd46e83bfdfdb36555c6"
+    }
+  ]
+}

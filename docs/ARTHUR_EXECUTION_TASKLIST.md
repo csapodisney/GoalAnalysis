@@ -32,7 +32,7 @@ A normál producer RO megfigyelése kész:6 teljes oldal308result+6raw witness e
 [Normál üzemi bizonyíték és pontos üresoldal-diagnózis](status/2026-10-26-historical-future-producer-observation/REPORT.md).
 Az üresoldal-jelölt artifact95 kontrollja és retained617→618/0newwitness próbája PASS. Minimális2függvény+11teszt forrás kész;95target/10adapter/Ruff PASS,saját5926full+3NEWactual fut,Daily maintenanceOFF.
 [Üresoldal-forrás és saját folyamatban lévő elfogadás](status/2026-10-26-historical-empty-page-no-admission/REPORT-SOURCE-PENDING.md).
-Saját üresoldal-javítás5926full/95target11új/10adapter/3NEWactual×8/root/runtime/DailyONlegacyOFF igazolt. [Lezárt saját bizonyíték](status/2026-10-26-historical-empty-page-no-admission/REPORT-CLOSED.md). Következő egyetlen pont: scheduled-background-outcome-contract; először artifact/izolált exit/log hibajelzési kontraktus.
+Saját üresoldal-javítás5926full/95target11új/10adapter/3NEWactual×8/root/runtime/DailyONlegacyOFF igazolt. [Lezárt saját bizonyíték](status/2026-10-26-historical-empty-page-no-admission/REPORT-CLOSED.md). Ütemező-background javítás: artifact15/final67target10új/10adapter/Ruff PASS;1PS+1újteszt source kész, saját5936full+3NEWactual fut,Daily maintenanceOFFlegacyOFF. [Forrás és folyamatban lévő saját elfogadás](status/2026-10-26-scheduled-background-outcome/REPORT-SOURCE-PENDING.md). Következő egyetlen pont: a már futó saját scheduler-validation és független closure/runtime előkészítése; nincs duplikált full/replay vagy tényleges scheduler/import/gen művelet.
 
 Cél: a rendelkezésre álló, mérkőzés előtt ismert adatok tényleges és
 ellenőrizhető felhasználása a szelvényképzésben, a meglévő működő logikák
