@@ -1,0 +1,45 @@
+{
+  "at": "2026-10-26T15:40:17.742917+00:00",
+  "status": "OWN_PRODUCER_ROOT_INDEPENDENT_PHYSICAL_READBACK_PASS",
+  "task": "historical-availability-producer-contract",
+  "full_tests_passed": 5915,
+  "targeted_passed": 84,
+  "new_tests": 21,
+  "adapter_passed": 10,
+  "actual_replays_passed": 3,
+  "checks_per_case": 8,
+  "source_files_physically_exact": 1235,
+  "ledger_rows_exact": 4087,
+  "old_archive_files_exact": 7501,
+  "protected_store_files_exact": 4,
+  "retained19raw271result_still_unadmitted": true,
+  "old_cutoff1143_and_earlier1655_matches_lineage_exact": true,
+  "current_result_reader_snapshot": {
+    "as_of": "2026-10-26T15:39:54.981255+00:00",
+    "matches": 1963,
+    "matches_sha256": "f8bfe8de61734e98926b0539060c1f0434bbe08dfcb44c235737f54762e35920",
+    "lineage_sha256": "c22cf2f943ee48da33548e92ae1f234da68df59e67cc2df69109fc0a3c178565",
+    "gaps": {
+      "RESULT:MISSING_AVAILABILITY_RECEIPT": 15409,
+      "MISSING_EXPLICIT_HALF_SCORE": 1963
+    },
+    "versions_scanned": 17768,
+    "halfscore_unknown": 1963
+  },
+  "daily_enabled": true,
+  "legacy_enabled": false,
+  "both_activations_bind_own_accepted_source": true,
+  "original_activation_epochs_flags_limits_preserved": true,
+  "new_root_capture_import_api_llm_fit_generation": 0,
+  "scope_acceptance_not_five_year_pit_live_or_project_completion": true,
+  "immutable_proof_sha256": {
+    "active-final-acceptance.json": "0a16df51bd21f29d3cf167556216bb6eb710275e07d5164ab402093f645b78a0",
+    "closure-complete.json": "c39ee176dbb4ba79a2a458168143a7e8418cd05770c18a816b2203b19f693b0d",
+    "runtime-proof.json": "a124c78e1e0e1ea73319d5db2ca159e88c2c765919c798ae903886ee45ea789b",
+    "activation-revalidation-complete.json": "5150cd64f51e0caf0bb2de9bebb77937f7823c372d01d0b6136032d35a7ed7dd"
+  },
+  "private_root_readback": {
+    "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/root-independent-readback.json",
+    "sha256": "99badceef5d648b0cfabb417fc3651dc9f86bd3a62887faf7309e4f5d12cdd44"
+  }
+}

@@ -26,7 +26,9 @@ Az elkülönített exact-page/keyset író és tényleges normál cached-page/Si
 [Új elkülönített bizonyíték és215-delta](status/2026-10-26-historical-availability-producer/REPORT-ISOLATED.md).
 A producer minimális5source/test forrása elkészült:84target/21új/10adapter/Ruff PASS. Saját5915full+3NEWactual fut;Daily maintenanceOFF,legacyOFF. Ez még nem teljes elfogadás vagy scopezárás.
 [Új forrás és folyamatban lévő saját ellenőrzés](status/2026-10-26-historical-availability-producer/REPORT-SOURCE-PENDING.md).
-Következő egyetlen pont: kizárólag a már futó saját producer-validation figyelése és saját független closure/runtime/revalidation előkészítése; nincs duplikált full/replay/worker vagy régi adatbefogadás.
+Saját producer5915full/84target21új/10adapter/Ruff/3NEWactual×8/root/runtime/DailyONlegacyOFF elfogadva. Retained19raw271result nem befogadási batch; öt év/PIT tovább nyitott.
+[Lezárt saját producer-scope](status/2026-10-26-historical-availability-producer/REPORT-CLOSED.md).
+Következő egyetlen pont: historical-future-producer-observation-readonly; csak a normál timer tényleges előrehaladásának leltára, kézi HTTP/receipt/import nélkül.
 
 Cél: a rendelkezésre álló, mérkőzés előtt ismert adatok tényleges és
 ellenőrizhető felhasználása a szelvényképzésben, a meglévő működő logikák
