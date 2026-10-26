@@ -446,7 +446,7 @@ def _run(root, work, plan, summary, cap, api_key, transport, clock, reserve, dea
             candidate = preflight_page(root, source, plan, root_lock, clock=clock)
             availability = (cached_page_status(root, candidate, root_lock, clock=clock) if cached
                             else {'status': candidate['status']})
-        if unified_results and sink is None:
+        if unified_results and sink is None and rows:
             from goal_analysis.jobs.historical_result_sink import HistoricalResultSink
 
             sink = HistoricalResultSink(archive, clock=clock)

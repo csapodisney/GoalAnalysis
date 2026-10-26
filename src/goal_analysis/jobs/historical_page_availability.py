@@ -78,9 +78,6 @@ def _page(db, root, page, plan, cutoff):
             or sha256(body).hexdigest() != page['content_hash']
             or len(body) != raw['size_bytes']):
         raise ValueError('RAW_HASH_SIZE_PROVIDER_MISMATCH')
-    if (raw['source_url'] != page['source_url']
-            or utc(raw['fetched_at']) != utc(page['observed_at'])):
-        raise ValueError('RAW_SOURCE_ALIAS_URL_OR_CLOCK_MISMATCH')
     if page['plan_sha256'] != plan['plan_sha256'] or utc(page['observed_at']) > cutoff:
         raise ValueError('PAGE_PLAN_OR_CLOCK_MISMATCH')
     params = page['params']
@@ -95,6 +92,13 @@ def _page(db, root, page, plan, cutoff):
     if scope not in plan['queries']:
         raise ValueError('PAGE_NOT_IN_FROZEN_PLAN')
     rows, _ = history._page(json.loads(body), params['page'], MAX_ROWS)
+    if not rows:
+        return {'status': 'NO_ADMISSION_EMPTY_OR_NONEXACT_PAGE',
+                'diagnostics': {'accepted_rows': 0, 'rejected_rows': 0, 'rejection_counts': {}},
+                'empty_page_without_admission': True, 'source_provenance_accepted': False}
+    if (raw['source_url'] != page['source_url']
+            or utc(raw['fetched_at']) != utc(page['observed_at'])):
+        raise ValueError('RAW_SOURCE_ALIAS_URL_OR_CLOCK_MISMATCH')
     recorder = _Records()
     diagnostics = history._ingest(recorder, rows, scope, plan, page)
     records = {digest(validate(r, now=cutoff)): r for r in recorder.records}

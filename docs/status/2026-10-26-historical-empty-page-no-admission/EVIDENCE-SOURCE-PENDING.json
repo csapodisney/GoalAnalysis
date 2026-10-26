@@ -1,0 +1,157 @@
+{
+  "at": "2026-10-26T16:28:52.525041+00:00",
+  "task": "historical-empty-page-no-admission-contract",
+  "status": "MINIMUM_EMPTY_ZERO_ADMISSION_SOURCE_IMPLEMENTED_OWN_FULL5926_AND_THREE_NEW_ACTUAL_REPLAYS_PENDING",
+  "scope_complete": false,
+  "source_files": [
+    {
+      "path": "src/goal_analysis/jobs/the_stats_history.py",
+      "sha256": "d4a21a9abe3312b32310061e33855e1b5253296d9eece63124b06b2700e248e9"
+    },
+    {
+      "path": "src/goal_analysis/jobs/historical_page_availability.py",
+      "sha256": "6137d0ac71a27ec66b64a590b332861e163d1d0a067e4073b9d24547316e81cb"
+    },
+    {
+      "path": "tests/test_historical_empty_page_no_admission.py",
+      "sha256": "36bcd5ec72e8f8124aab76dea4a73c829bbb2fc6ded967132bcb6754667f9bb6"
+    }
+  ],
+  "unchanged_prior_files": 1233,
+  "all_original_tests_byte_exact": true,
+  "frozen_source_files": 1236,
+  "frozen_old_ledger_rows": 4087,
+  "frozen_old_archive_files": 8004,
+  "frozen_worker_helper_inputs": 31,
+  "targeted_passed": 95,
+  "new_tests": 11,
+  "unchanged_adapter_passed": 10,
+  "ruff_final_import_root_collection_daily_guard_original8_ast_require_pass": true,
+  "own_full5926_passed": false,
+  "three_new_actual_replays_passed": false,
+  "worker_state_at_publication": {
+    "at": "2026-10-26T16:25:17.129674+00:00",
+    "task": "historical-empty-page-no-admission-contract",
+    "status": "OWN_FULL5926_AND_THREE_NEW_ACTUAL_REPLAYS_RUNNING",
+    "automatic_retry": false,
+    "expected_full": 5926,
+    "targeted_passed": 95,
+    "child_pids": [
+      9336,
+      22216
+    ]
+  },
+  "actual_worker_start_service_ancestry": {
+    "at": "2026-10-26T16:25:12.7899710Z",
+    "automatic_retry": false,
+    "pid": 8088,
+    "ancestry": [
+      {
+        "parent": 2480,
+        "pid": 8088,
+        "name": "powershell.exe",
+        "created": "2026-10-26T16:25:11.3303640Z"
+      },
+      {
+        "parent": 1092,
+        "pid": 2480,
+        "name": "svchost.exe",
+        "created": "2026-10-14T05:49:23.7779460Z"
+      },
+      {
+        "parent": 672,
+        "pid": 1092,
+        "name": "services.exe",
+        "created": "2026-10-14T05:49:23.0710070Z"
+      },
+      {
+        "parent": 824,
+        "pid": 672,
+        "name": "wininit.exe",
+        "created": "2026-10-14T05:49:23.0318890Z"
+      }
+    ],
+    "outside_codex_ancestry": true,
+    "task": "historical-empty-page-no-admission-contract"
+  },
+  "source_change_scope": {
+    "page_function": "Empty physical/plan/URL/page-clock/pagination checked NO_ADMISSION branch before old-body alias comparison; nonempty alias still rejects before normalization.",
+    "run_function": "No new incremental canonical Sink when raw rows are empty.",
+    "zero_canonical_receipt_or_source_provenance_claim": true,
+    "no_raw_metadata_url_clock_rewrite": true,
+    "nonempty_unknown_partial_contradictory_rows_not_treated_as_empty": true
+  },
+  "artifact_controls": {
+    "original_assertions_passed": 84,
+    "new_controls_passed": 11,
+    "actual_retained_isolated_cursor": "617->618",
+    "new_isolated_witnesses": 0
+  },
+  "actual_production_functions_retained_testonly_shadow_pass": true,
+  "actual_production_cursor_import_capture_http_or_paid_generation_operation": 0,
+  "offline_fits_allowed_only_required_three_actual_replays": true,
+  "runtime_or_activation_revalidation_complete": false,
+  "daily_maintenance_off": true,
+  "legacy_off": true,
+  "only_background_hash_dependency_changes": true,
+  "prospective_source_bytes_unchanged_revalidation_not_assumed": true,
+  "original215": {
+    "GREEN": 176,
+    "RED": 39
+  },
+  "separate167": {
+    "closed": 136,
+    "open": 31
+  },
+  "project_complete": false,
+  "private_physical_evidence": [
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-empty-page-no-admission-contract/artifact-independent-readback.json",
+      "sha256": "a3704487512dbd21ce4a3609c9e272313fc1f386b595506e35a2159e513d7e68"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-empty-page-no-admission-contract/retained-shadow-proof.json",
+      "sha256": "b27f2d66202d9a3b932f998503f677b14c0b8afba544ef3a2140675347a3e580"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-empty-page-no-admission-contract/production-retained-shadow-final.json",
+      "sha256": "fef6eaedcf8b56c38f444a8bc7a5bb29df795d096416f34edc9a75feea0b1420"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-empty-page-no-admission-contract/targeted-final.xml",
+      "sha256": "307c8aaadccf5be29911ddb510eb64a4b79d44ead77ef8fe6cd4e2d3ad2dccfb"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-empty-page-no-admission-contract/adapter-target.xml",
+      "sha256": "4c59f2ef81ab35b062583a30d99b497d960b7b83db923e65465eb73074b4e2ab"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-empty-page-no-admission-contract/source-edit-proof.json",
+      "sha256": "787f7351321c178bc641771dc51fbd629a2f71814940e2fd1f628e0bf12632d0"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-empty-page-no-admission-contract/import-preflight-final.json",
+      "sha256": "f4304e9fe4d2c047a77a792846b67640c4de512f60e5180d602b5a8947bd54c8"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-empty-page-no-admission-contract/worker-helper-frozen.json",
+      "sha256": "c67d8797453735f81902a96283447cb2101d98bef07bb647e4b752f0ef11652b"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-empty-page-no-admission-contract/maintenance-off.json",
+      "sha256": "37944b11dbba59f649bbb6033f93305634fb21244726fb230e04d6e141897a69"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-empty-page-no-admission-contract/initial-artifact-test-import-failure.json",
+      "sha256": "6b217ac7deae2663b97287edb233305d14efbb47f482b7d1e32caabb751c9e18"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-empty-page-no-admission-contract/initial-original-control-fixture-binding-failure.json",
+      "sha256": "443d9beaf67f21b267f2e1551a1e052a8d38a10a363b95d57e1bf9f5b48f8109"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-empty-page-no-admission-contract/initial-preflight-old-scope-path-failure.json",
+      "sha256": "da4b2f4594006b1c0d6f1cc4d2f4b2e02e33fb63dc718724d5b2974500914529"
+    }
+  ]
+}
