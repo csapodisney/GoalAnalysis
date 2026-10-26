@@ -142,6 +142,14 @@ def main(argv=None) -> int:
         if args.live:
             validate_target_day(day, datetime.now(UTC))
         with RunLock(ROOT / "data/arthur/run.lock"):
+            # Read one coherent configuration after any completed restore.
+            settings = load_settings(args.settings)
+            if args.strictness is not None:
+                settings["strictness"] = args.strictness
+            if args.ticket_count is not None:
+                settings["target_ticket_count"] = args.ticket_count
+            settings = validate_settings(settings)
+            config = validate_live_config(json.loads(args.config.read_text("utf-8-sig")))
             ledger = PortfolioLedger(ROOT / "data/arthur/ledger.sqlite3")
             db = Database(ROOT / "data/goal_analysis.sqlite3")
             db.initialize()

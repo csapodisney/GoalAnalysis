@@ -48,9 +48,10 @@ def validate_target_day(target: date, now: datetime) -> None:
 class RunLock(AbstractContextManager):
     """OS lock shared by dashboard and Windows Task Scheduler; process exit releases it."""
 
-    def __init__(self, path: Path):
+    def __init__(self, path: Path, *, configuration_recovery: bool = False):
         self.path = path
         self.stream = None
+        self.configuration_recovery = configuration_recovery
 
     def __enter__(self):
         self.path.parent.mkdir(parents=True, exist_ok=True)
@@ -73,6 +74,15 @@ class RunLock(AbstractContextManager):
             self.stream.close()
             self.stream = None
             raise RuntimeError("Már fut egy Arthur-feladat. Várd meg a befejezését.") from None
+        if (not self.configuration_recovery and self.path.name == 'run.lock'
+                and self.path.parent.name == 'arthur' and self.path.parent.parent.name == 'data'):
+            try:
+                from goal_analysis.jobs.configuration_rollback import ensure_consistent
+
+                ensure_consistent(self.path.resolve().parents[2])
+            except BaseException:
+                self.__exit__()
+                raise
         return self
 
     def __exit__(self, *args):

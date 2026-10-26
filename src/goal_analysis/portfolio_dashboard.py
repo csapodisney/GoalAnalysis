@@ -408,12 +408,13 @@ class ArthurState:
         with self.lock:
             if self.runtime["running"]:
                 raise RuntimeError("Futó elemzés alatt a beállítások nem módosíthatók.")
-            current = load_settings(self.settings_path)
-            if "openai" in patch:
-                if not isinstance(patch["openai"], dict):
-                    raise ValueError("Az OpenAI-beállítás objektum legyen.")
-                patch = {**patch, "openai": {**current["openai"], **patch["openai"]}}
-            return save_settings(self.settings_path, {**current, **patch})
+            with RunLock(self.root / "data/arthur/run.lock"):
+                current = load_settings(self.settings_path)
+                if "openai" in patch:
+                    if not isinstance(patch["openai"], dict):
+                        raise ValueError("Az OpenAI-beállítás objektum legyen.")
+                    patch = {**patch, "openai": {**current["openai"], **patch["openai"]}}
+                return save_settings(self.settings_path, {**current, **patch})
 
     def team_snapshot(self, settings=None) -> dict:
         from goal_analysis.team.manager import TeamManager

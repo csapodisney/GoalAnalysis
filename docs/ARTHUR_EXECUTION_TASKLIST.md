@@ -434,6 +434,7 @@ romló Brier/log-loss esetén az új hatás SHADOW marad.
 - [ ] **11.6 CANARY:** egyszerre csak egy új feature-család LIVE módba emelése.
 - [ ] **11.7 ROLLBACK:** konfigurációs visszaállítás az előző modell- és
   adatútvonalra adatvesztés nélkül.
+  - 2026-10-26: configrollback6source/34újteszt;75target/10adapter/Ruff/valósprior-currentizoláltSHADOWPASS. Saját5776full+3actualreplayfut,üzemidrill/runtime/lezárásmégNINCS. Strictquote/nativeSHADOW/model/budget/datapreservationkapukmaradnak;riportdocs/status/2026-10-26-configuration-rollback/README.md.
 - [ ] **11.8 PROMOTION:** csak dokumentált lefedettség-, kalibráció-,
   stabilitás- és portfólióminőség-javulás után.
 
