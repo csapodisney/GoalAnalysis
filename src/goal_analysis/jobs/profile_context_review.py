@@ -207,7 +207,7 @@ def audit(report,options,quotes,prepared,covered,*,now):
         'sports_requests':0,'llm_requests':0}
 
 
-def apply(report,options,coverage,covered,*,mode):
+def apply(report,options,coverage,covered,*,mode,final_review=None):
     """Separate publication eligibility from the retained independent selection.
 
     SHADOW returns the original objects unchanged. ACTIVE withholds unreviewed
@@ -233,6 +233,9 @@ def apply(report,options,coverage,covered,*,mode):
         if row['eligible']:
             for leg,binding in zip(card['legs'],row['legs'],strict=True):
                 leg['astra_review']=deepcopy(covered[binding['source_candidate_id']]['answer'])
+            from goal_analysis.jobs.review_completion import complete_card
+
+            complete_card(card, final_review if final_review is not None else result.get('astra', {}))
         else:
             if location[0]=='options':rejected.add((location[1],location[2]))
             # Preserve the exact independent model/selection in the frozen input

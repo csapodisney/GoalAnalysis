@@ -73,7 +73,7 @@ def execute(report,options,artifacts,prepared,quotes,review,*,mode,reviewer,targ
     coverage['mode']=mode
     artifacts['profile_context_review_coverage']=coverage
     artifacts['profile_context_review_attempts']=attempts
-    result,pools=contract.apply(report,options,coverage,covered,mode=mode)
+    result,pools=contract.apply(report,options,coverage,covered,mode=mode,final_review=review)
     if mode=='SHADOW':
         assert canonical_sha256(result)==before
     else:

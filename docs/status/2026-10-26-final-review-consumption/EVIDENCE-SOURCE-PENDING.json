@@ -1,0 +1,142 @@
+{
+  "at": "2026-10-26T22:09:34.166423+00:00",
+  "task": "final-review-consumption-contract",
+  "status": "SOURCE_PENDING",
+  "target": 91,
+  "new_tests": 15,
+  "adapter": 10,
+  "full_expected": 5988,
+  "full_accepted": false,
+  "runtime_accepted": false,
+  "source_count": 1241,
+  "retained_shadow": {
+    "at": "2026-10-26T22:07:12.831176+00:00",
+    "task": "final-review-consumption-contract",
+    "changes": [
+      {
+        "profile_id": "kronikas",
+        "legs": 6,
+        "old_status": "DRAFT",
+        "new_status": "DRAFT",
+        "review_completion": {
+          "status": "COMPLETE_EXACT_SOURCE_CONTEXT_BOUND",
+          "reviewed_legs": 6,
+          "unknown_categories": [
+            "players",
+            "rotation",
+            "schedule",
+            "travel",
+            "weather",
+            "xg"
+          ],
+          "publication_eligibility": "REQUIRES_EXISTING_FINAL_CALLER_GUARDS",
+          "automatically_made_playable": false
+        }
+      },
+      {
+        "profile_id": "ritmusor",
+        "legs": 6,
+        "old_status": "DRAFT",
+        "new_status": "REVIEWED",
+        "review_completion": {
+          "status": "COMPLETE_EXACT_SOURCE_CONTEXT_BOUND",
+          "reviewed_legs": 6,
+          "unknown_categories": [
+            "players",
+            "rotation",
+            "schedule",
+            "travel",
+            "weather",
+            "xg"
+          ],
+          "publication_eligibility": "REQUIRES_EXISTING_FINAL_CALLER_GUARDS",
+          "automatically_made_playable": false
+        }
+      },
+      {
+        "profile_id": "parharcmester",
+        "legs": 5,
+        "old_status": "DRAFT",
+        "new_status": "REVIEWED",
+        "review_completion": {
+          "status": "COMPLETE_EXACT_SOURCE_CONTEXT_BOUND",
+          "reviewed_legs": 5,
+          "unknown_categories": [
+            "players",
+            "rotation",
+            "schedule",
+            "travel",
+            "weather",
+            "xg"
+          ],
+          "publication_eligibility": "REQUIRES_EXISTING_FINAL_CALLER_GUARDS",
+          "automatically_made_playable": false
+        }
+      },
+      {
+        "profile_id": "orszem",
+        "legs": 5,
+        "old_status": "DRAFT",
+        "new_status": "REVIEWED",
+        "review_completion": {
+          "status": "COMPLETE_EXACT_SOURCE_CONTEXT_BOUND",
+          "reviewed_legs": 5,
+          "unknown_categories": [
+            "players",
+            "rotation",
+            "schedule",
+            "travel",
+            "weather",
+            "xg"
+          ],
+          "publication_eligibility": "REQUIRES_EXISTING_FINAL_CALLER_GUARDS",
+          "automatically_made_playable": false
+        }
+      },
+      {
+        "profile_id": "merlin",
+        "legs": 2,
+        "old_status": "DRAFT",
+        "new_status": "REVIEWED",
+        "review_completion": {
+          "status": "COMPLETE_EXACT_SOURCE_CONTEXT_BOUND",
+          "reviewed_legs": 2,
+          "unknown_categories": [
+            "players",
+            "rotation",
+            "schedule",
+            "travel",
+            "weather",
+            "xg"
+          ],
+          "publication_eligibility": "REQUIRES_EXISTING_FINAL_CALLER_GUARDS",
+          "automatically_made_playable": false
+        }
+      }
+    ],
+    "exact_bound_original_quotes": 115,
+    "saved_report_and_inputs_unchanged": {
+      "report.json": "5592bf755cdc07c56969073d711b9c253107877bf53409e2dbe2dce06b7433be",
+      "profile_context_independent_cards.json": "eec225de2d925fbe71379a488e6bd5c7eaf459e07491f66982c426d2f053a2d1",
+      "candidate_context_inputs.json": "0bb9b5eecaf3d705be17c6eef374403c36bbf59205ec280618426eb4d3f2e32c",
+      "candidate_input.json": "b36ad3a64eb5abfee7e54e863967828cd30c16df131d0ff71f1910b8b5b9802f",
+      "candidate_review_actual_packets.json": "806fec1bc614f371e3b193734b1e40cd7772a70b8a2fd5aa8c06482031578b9b",
+      "candidate_review_follow_up_packets.json": "eb911b60ff6fedc4137e34c5f126c04e37bd79dd12e9e956e0180f609924ae98",
+      "candidate_review_response_batches.json": "56110bc8ec5edf9c8d11f1730263ba64dc26d4a1ad0b0f64abfea75c8664ac53"
+    },
+    "old_report_not_republished": true,
+    "new_ready_or_playable_tickets": 0,
+    "provider_llm_fit_capture_import": 0
+  },
+  "daily": "OFF_REQUIRED",
+  "previous_credential_closure": "HUMAN_STOP_PRESERVED_NOT_RESTARTED",
+  "original_215": {
+    "GREEN": 176,
+    "RED": 39,
+    "other_rows_bit_exact": 214
+  },
+  "separate_worklist": {
+    "done": 136,
+    "open": 31
+  }
+}
