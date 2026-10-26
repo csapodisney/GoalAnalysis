@@ -1,0 +1,242 @@
+{
+  "at": "2026-10-26T11:21:28.291357+00:00",
+  "task": "historical-admission-consumer-coverage-readonly",
+  "status": "READONLY_SCOPE_ROOT_VERIFIED_GITHUB_PENDING",
+  "consumer_snapshot_cutoff": "2026-10-26T11:13:23.439834+00:00",
+  "native_canonical_versions": 15859,
+  "native_ids": 15463,
+  "native_versions_missing_result_receipts": 14103,
+  "strict_result_view": {
+    "as_of": "2026-10-26T11:13:23.439834+00:00",
+    "versions_scanned": 15859,
+    "accepted_native_ids": 1655,
+    "matches_sha256": "38149878b001aa02c25baaad10a1e692af4d626d8ff479ee12cc9a0b678f7ef7",
+    "lineage_sha256": "74249a6bb14bc871806d341636bfc3b833674b51b8619846eb2c973d675c0e93",
+    "gaps": {
+      "RESULT:MISSING_AVAILABILITY_RECEIPT": 13808,
+      "MISSING_EXPLICIT_HALF_SCORE": 1655
+    },
+    "all_halftime_scores_unknown": true
+  },
+  "old_cutoff_matches_and_lineage_exact": 1143,
+  "pre_batch_accepted_results_and_lineage_unchanged": 1655,
+  "weather_coverage": {
+    "result_versions_scanned": 15859,
+    "completed_matches": 1655,
+    "matches_with_reanalysis": 9,
+    "matches_with_prematch_forecast": 0,
+    "matches_with_both": 0,
+    "matches_with_explicit_half_score": 0
+  },
+  "weather_gaps": {
+    "RESULT:MISSING_AVAILABILITY_RECEIPT": 13808,
+    "MISSING_EXPLICIT_HALF_SCORE": 1655,
+    "WEATHER_WITHOUT_ACCEPTED_RESULT": 482,
+    "WEATHER:not_sourced_weather": 1,
+    "WEATHER:REANALYSIS_ACTUAL_EVENT_STADIUM_UNPROVEN": 3
+  },
+  "normal19page_cohort": {
+    "versions": 271,
+    "native_ids": 271,
+    "raw_sources": 19,
+    "canonical_physical_roundtrip_checks": {
+      "physical_raw_and_canonical_roundtrip_pass": 271,
+      "result_receipt_missing": 271
+    },
+    "strict_source_errors": {
+      "UNWITNESSED_SOURCE": 271
+    }
+  },
+  "combined_native_raw_view": {
+    "status": "LIMIT_REACHED",
+    "as_of": "2026-10-26T11:13:23.439834+00:00",
+    "mode": "SHADOW",
+    "verified_target_count": 5,
+    "fixture_count": 5,
+    "history_rows": 0,
+    "history_native_ids": 0,
+    "source_count": 110,
+    "history_source_candidates": 194,
+    "scanned_history_rows": 10001,
+    "gaps": {
+      "UNPROVEN_TARGET": 2,
+      "UNPROVEN_HISTORY_SOURCE": 60,
+      "ROW_LIMIT": 1
+    },
+    "dataset_id": "1261c78ceec234cd54ab760815487f44f1dc980135faeccbe79ecbf437b36bc4",
+    "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "source_proof_sha256": "1e613897ab9dcf2a97a892737a5327a55db2cdb601916c3726ca308f6439316d",
+    "new_normal_page_source_keys_actually_admitted": [],
+    "actual_input_fixture_sha256": "9470f0a9eec32a0524fd755c600715edcbfbcc4712fd4acc4846a6a29b922601",
+    "decision_effect": "NONE",
+    "live_promotion": false,
+    "historical_feature_availability_certified": false
+  },
+  "exact_competition_partition_diagnosis": {
+    "comp_0256": {
+      "status": "GAPS",
+      "as_of": "2026-10-26T11:13:23.439834+00:00",
+      "mode": "SHADOW",
+      "verified_target_count": 1,
+      "fixture_count": 1,
+      "history_rows": 2903,
+      "history_native_ids": 618,
+      "source_count": 36,
+      "history_source_candidates": 55,
+      "scanned_history_rows": 2903,
+      "gaps": {
+        "UNPROVEN_HISTORY_SOURCE": 20
+      },
+      "dataset_id": "f9ace6db231db875b35424f6c6ec327ae2db66bde2d761299bbe2572c0c0de27",
+      "history_sha256": "ec93be39b6c01dade43e8129e772c81be12c4295d569564563b3cbc199fce4f4",
+      "source_proof_sha256": "35a56c0def816f07ed268df7d2960286f804869fb571e3dab5165f4dc88c89b6",
+      "new_normal_page_source_keys_actually_admitted": [],
+      "actual_input_fixture_sha256": "8501b75b71725ca5940df49310967c13f6ee69eb12b724b539135a54d873e468",
+      "decision_effect": "NONE",
+      "live_promotion": false,
+      "historical_feature_availability_certified": false
+    },
+    "comp_615520": {
+      "status": "GAPS",
+      "as_of": "2026-10-26T11:13:23.439834+00:00",
+      "mode": "SHADOW",
+      "verified_target_count": 0,
+      "fixture_count": 0,
+      "history_rows": 0,
+      "history_native_ids": 0,
+      "source_count": 1,
+      "history_source_candidates": 0,
+      "scanned_history_rows": 0,
+      "gaps": {
+        "UNPROVEN_TARGET": 2
+      },
+      "dataset_id": "f81a85c8849898e4b46dede46cdb4ed3fff1931e41f89b7f13f5227da06f58cc",
+      "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "source_proof_sha256": "6777a6a28c213530db6889f18195172190de4dda7ecf152d1acdc0a0fa6f8755",
+      "new_normal_page_source_keys_actually_admitted": [],
+      "actual_input_fixture_sha256": "22263b67ba1468de1645180476f4723e521343984430615915252981eaec5e1a",
+      "decision_effect": "NONE",
+      "live_promotion": false,
+      "historical_feature_availability_certified": false
+    },
+    "comp_8385": {
+      "status": "AVAILABLE",
+      "as_of": "2026-10-26T11:13:23.439834+00:00",
+      "mode": "SHADOW",
+      "verified_target_count": 1,
+      "fixture_count": 1,
+      "history_rows": 2648,
+      "history_native_ids": 620,
+      "source_count": 30,
+      "history_source_candidates": 29,
+      "scanned_history_rows": 2663,
+      "gaps": {},
+      "dataset_id": "66194690192a226ce6934d6e5b82ad770d3e34981cb862787cb4b01b03b5e99f",
+      "history_sha256": "9c3db38529ec548b81da0f2e415526c8a8714149cbfe45eff7ed79822ae7ac5d",
+      "source_proof_sha256": "dd60f9038ed26dea2c36d6b35c2c06eca0c3f290e1692102317bf57a995f9010",
+      "new_normal_page_source_keys_actually_admitted": [],
+      "actual_input_fixture_sha256": "ae491fbd357e93b4b946d88844ef9f2c759f304bb974515d58a3664f7595368a",
+      "decision_effect": "NONE",
+      "live_promotion": false,
+      "historical_feature_availability_certified": false
+    },
+    "comp_8814": {
+      "status": "GAPS",
+      "as_of": "2026-10-26T11:13:23.439834+00:00",
+      "mode": "SHADOW",
+      "verified_target_count": 1,
+      "fixture_count": 1,
+      "history_rows": 3902,
+      "history_native_ids": 755,
+      "source_count": 46,
+      "history_source_candidates": 65,
+      "scanned_history_rows": 3910,
+      "gaps": {
+        "UNPROVEN_HISTORY_SOURCE": 20
+      },
+      "dataset_id": "1e9be0e65f79169d6a76f6e3a5081c30c7c771313133261eb95c79d7b70b9aec",
+      "history_sha256": "1462850f0ba615415d616fc5212006e6e801f35131711f59a3192be98b01a59e",
+      "source_proof_sha256": "e07c2a64166730d8a0a86091079c40fa0d3a74eeb1a216ad2c5792be5cd924ce",
+      "new_normal_page_source_keys_actually_admitted": [],
+      "actual_input_fixture_sha256": "7a3e2df43ce5d5206a70768bb929976f12f9c2a05e788b8b4a8c6ba9b7e68044",
+      "decision_effect": "NONE",
+      "live_promotion": false,
+      "historical_feature_availability_certified": false
+    },
+    "comp_9777": {
+      "status": "GAPS",
+      "as_of": "2026-10-26T11:13:23.439834+00:00",
+      "mode": "SHADOW",
+      "verified_target_count": 2,
+      "fixture_count": 2,
+      "history_rows": 2107,
+      "history_native_ids": 620,
+      "source_count": 26,
+      "history_source_candidates": 45,
+      "scanned_history_rows": 2119,
+      "gaps": {
+        "UNPROVEN_HISTORY_SOURCE": 20
+      },
+      "dataset_id": "98815852670b345259522b1b1754ec8e253253503c8a071d7b133c5de94ca009",
+      "history_sha256": "9e60e5a39e511b9ee66267c11d03b35e4c9c50196e4c44f665632554952261d8",
+      "source_proof_sha256": "d914f8602cad29302c3a8ec518c5b7d1263aace2226154bcca6b596c4caff7a9",
+      "new_normal_page_source_keys_actually_admitted": [],
+      "actual_input_fixture_sha256": "5ada019ec2697fab5ddfe84a1d52e3bf681c7de1cb966b21d887191f51a2752b",
+      "decision_effect": "NONE",
+      "live_promotion": false,
+      "historical_feature_availability_certified": false
+    }
+  },
+  "partition_is_not_combined_acceptance_or_model_fit": true,
+  "normal_automatic_progress_context": {
+    "at": "2026-10-26T11:22:22.520772+00:00",
+    "normal_timer_state": {
+      "status": "REQUEST_LIMIT",
+      "attempted_at": "2026-10-26T11:12:09.876224+00:00",
+      "completed_at": "2026-10-26T11:12:23.771463+00:00",
+      "next_attempt_at": "2026-10-26T11:42:09.876224+00:00",
+      "max_requests": 19
+    },
+    "normal_batch_requests": 19,
+    "normal_batch_processed_pages": 19,
+    "plan_checkpoints": {
+      "recent_delta_plan": {
+        "plan_sha256": "c5ef89033f096ae9be15bd01e7539311b227d752b6c53901316e2f86d92947df",
+        "queries": 20,
+        "query_index": 20,
+        "page": 1,
+        "total_pages": null
+      },
+      "retained_main_plan": {
+        "plan_sha256": "0a6c448137e20951e4f4b513c33a0758f4075ba433954799b73e4df5a4f5474b",
+        "queries": 1220,
+        "query_index": 514,
+        "page": 1,
+        "total_pages": null
+      }
+    },
+    "state_file_sha256": "8f2261fb40c950aa90694ebff1fe487ab5d0ef2c7f3461b0eba077ba34d908ed",
+    "this_context_read_production_writes_api_llm_fit_generation": 0
+  },
+  "source_files_physically_verified": 1231,
+  "source_bytes_streamed": 244824916,
+  "ledger_rows_unchanged_during_audit": 4087,
+  "api_llm_model_fit_generation_temporal_capture_or_production_business_writes_in_this_audit": 0,
+  "normal_daily_enabled": true,
+  "legacy_enabled": false,
+  "initial_readonly_lock_contention_preserved": true,
+  "own_proof_sha256": "810ed50a6d330be899c2e2e18db81824d6520cd7efcc86a2bd6abd5f73d6b356",
+  "independent_readback_sha256": "6e4d156af988f3f19c4d24c0fe45b3effbc459966aa664dd7f318c04964b1e6b",
+  "original215": {
+    "GREEN": 176,
+    "RED": 39
+  },
+  "numbered167": {
+    "closed": 136,
+    "open": 31
+  },
+  "only_original_requirement_evidence_delta": "2.2",
+  "other214_rows_bit_exact": true,
+  "five_year_or_project_or_model_promotion_complete": false,
+  "next_single_task": "native-history-row-budget-contract"
+}

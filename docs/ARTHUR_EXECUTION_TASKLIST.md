@@ -12,7 +12,11 @@ A háttérkapu leltára elkészült: a normál időzítő 19 friss deltaoldalt f
 a régi ötéves kurzor 496/1220 maradt. Az audit óráján COOLDOWN, a másodlagos kvóta
 QUOTA_REFRESH_REQUIRED; ebből nem következik új kézi HTTP-engedély.
 [Friss csak olvasó bizonyíték](status/2026-10-26-historical-background-current-allowance/REPORT.md).
-Következő egyetlen pont: a történeti adatok fogyasztónkénti source/availability/PIT-alkalmasságának csak olvasó leltára.
+A fogyasztói leltár elkészült: az új 19 oldal 271 kanonikus rekordja fizikai egyezésű,
+de raw/result availability-receipt nélkül maradt; a strict eredményolvasó 1655-öt fogad el.
+A kombinált natív SHADOW olvasó a 10001. sornál fail-closed; külön csoportleltár nem modellpromóció.
+[Friss fogyasztói bizonyíték](status/2026-10-26-historical-admission-consumer-coverage/REPORT.md).
+Következő egyetlen pont: native-history-row-budget-contract, először artifact-only kontraktus és SHADOW ellenpróba.
 
 Cél: a rendelkezésre álló, mérkőzés előtt ismert adatok tényleges és
 ellenőrizhető felhasználása a szelvényképzésben, a meglévő működő logikák
