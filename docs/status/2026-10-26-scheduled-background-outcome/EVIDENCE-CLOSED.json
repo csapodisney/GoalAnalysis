@@ -1,0 +1,108 @@
+{
+  "at": "2026-10-26T18:47:21.063030+00:00",
+  "task": "scheduled-background-outcome-contract",
+  "status": "OWN_BACKGROUND_OUTCOME_ROOT_INDEPENDENT_PHYSICAL_READBACK_PASS",
+  "full_tests_passed": 5936,
+  "targeted_passed": 67,
+  "new_tests": 10,
+  "adapter_passed": 10,
+  "actual_replays_passed": 3,
+  "checks_per_case": 8,
+  "source_files_exact": 1237,
+  "old_ledger_rows_exact": 4087,
+  "old_archive_files_exact": 8342,
+  "protected_store_files_exact": 4,
+  "physical_input_readback": {
+    "at": "2026-10-26T18:46:45.567649+00:00",
+    "task": "scheduled-background-outcome-contract",
+    "status": "OWN_ACCEPTED_BACKGROUND_OUTCOME_AND_PRESERVED_PROVENANCE_VERIFIED",
+    "own_acceptance_sha256": "d719b5323cd12be64af6c4072e80fb9b947f0fffc581c4d41ee1e163272d725e",
+    "full_tests_passed": 5936,
+    "targeted_controls_passed": 67,
+    "retained_exact_pages": 19,
+    "retained_exact_versions": 271,
+    "old181_unreceipted": true,
+    "old_receipt_prefix": 115736,
+    "old_native_version_prefix": 16832,
+    "previous_six_page_witnesses_exact": 314,
+    "empty_preflight": {
+      "diagnostics": {
+        "accepted_rows": 0,
+        "rejected_rows": 0,
+        "rejection_counts": {}
+      },
+      "empty_page_without_admission": true,
+      "source_provenance_accepted": false,
+      "status": "NO_ADMISSION_EMPTY_OR_NONEXACT_PAGE"
+    },
+    "old_raw_metadata_and_receipt_unchanged": true,
+    "same_prior_cutoff_views": [
+      {
+        "as_of": "2026-10-26T08:29:48.446228+00:00",
+        "matches": 1143,
+        "matches_sha256": "0dc47ad58b4d1ee76f828b01509319a78d46cfcae8e9fb6da1d46f1f72388edb",
+        "lineage_sha256": "58e002770158c7de07e7913edc2015be47b054b03debda7196ef35a91c36b4fe",
+        "gaps": {
+          "RESULT:MISSING_AVAILABILITY_RECEIPT": 13095,
+          "MISSING_EXPLICIT_HALF_SCORE": 1143,
+          "RESULT:FUTURE_AVAILABLE_AT": 512
+        },
+        "versions_scanned": 15047,
+        "halfscore_unknown": 1143
+      },
+      {
+        "as_of": "2026-10-26T14:32:33.419799+00:00",
+        "matches": 1655,
+        "matches_sha256": "38149878b001aa02c25baaad10a1e692af4d626d8ff479ee12cc9a0b678f7ef7",
+        "lineage_sha256": "74249a6bb14bc871806d341636bfc3b833674b51b8619846eb2c973d675c0e93",
+        "gaps": {
+          "RESULT:MISSING_AVAILABILITY_RECEIPT": 15409,
+          "MISSING_EXPLICIT_HALF_SCORE": 1655
+        },
+        "versions_scanned": 17460,
+        "halfscore_unknown": 1655
+      },
+      {
+        "as_of": "2026-10-26T15:57:33.683520+00:00",
+        "matches": 1963,
+        "matches_sha256": "f8bfe8de61734e98926b0539060c1f0434bbe08dfcb44c235737f54762e35920",
+        "lineage_sha256": "c22cf2f943ee48da33548e92ae1f234da68df59e67cc2df69109fc0a3c178565",
+        "gaps": {
+          "RESULT:MISSING_AVAILABILITY_RECEIPT": 15409,
+          "MISSING_EXPLICIT_HALF_SCORE": 1963
+        },
+        "versions_scanned": 17768,
+        "halfscore_unknown": 1963
+      }
+    ],
+    "strict_current": {
+      "as_of": "2026-10-26T18:46:42.158946+00:00",
+      "matches": 2656,
+      "matches_sha256": "949ae04be47632a1ff3a8978c8d54c2e3aea5dd77c72d9e2ac9b88b706bd0847",
+      "lineage_sha256": "23ff0a997509b520195fa65c88d4beadbefebdc7dd1e7627a72b559b2f6a9bbb",
+      "gaps": {
+        "RESULT:MISSING_AVAILABILITY_RECEIPT": 15409,
+        "MISSING_EXPLICIT_HALF_SCORE": 2656
+      },
+      "versions_scanned": 18461,
+      "halfscore_unknown": 2656
+    },
+    "new_root_capture_import_api_llm_fit_generation_or_cursor_operation": 0,
+    "production_shadow_proof_sha256": "218a739c36677d1f2426f8fab5669c580c88b863b4c2018caa163c6667e1ac40",
+    "elapsed_seconds": 40.38
+  },
+  "physical_report_sha256": "5592bf755cdc07c56969073d711b9c253107877bf53409e2dbe2dce06b7433be",
+  "embedded_report_sha256": "916089cc9a91372873e6cdce61ff768d3930b1658a799cf56c1a09d373c326ce",
+  "full_ledger_json_sha256": "49f87b0c9bba26f497e494c5757500aef0231683d6564a537446ffabb8c99252",
+  "daily_enabled": true,
+  "legacy_enabled": false,
+  "only_background_activation_revalidated": true,
+  "prospective_activation_raw_byte_exact": true,
+  "root_manual_scheduler_stage_cursor_receipt_import_api_paid_generation_operation": 0,
+  "offline_fits_only_three_required_replays": true,
+  "not_five_year_pit_live_fresh_quote_or_project_completion": true,
+  "private_root_readback": {
+    "path": "artifacts/roadmap-execution-20261020/scheduled-background-outcome-contract/root-independent-readback.json",
+    "sha256": "8b9477e32b95c14958919fa8eb4110620a59cd315aadaa432a94ff9379412610"
+  }
+}
