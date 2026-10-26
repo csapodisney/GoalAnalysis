@@ -28,9 +28,11 @@ def main(root=ROOT):
         limits = {'the_stats_api': 2000}  # <=62,000/month; daily collection retains headroom.
         policy = MonitorPolicy(daily_credit_limits=limits, quota_reserve_limits={'the_stats_api': 1000},
                                max_requests_per_minute=30, max_queries_per_tick=12)
-        football = TheStatsPrimaryClient(root, max_requests=12) if os.environ.get('THE_STATS_API_KEY', '').strip() else None
-        queries = [query for query in build_monitor_queries(saved, now, {**config, 'monitor_providers': ['the_stats_api']})
-                   if football is not None]
+        queries = build_monitor_queries(saved, now, {**config, 'monitor_providers': ['the_stats_api']})
+        if queries and not os.environ.get('THE_STATS_API_KEY', '').strip():
+            return {'status': 'MONITOR_UNAVAILABLE', 'reason': 'THE_STATS_CREDENTIAL_UNAVAILABLE',
+                    'provider_calls': 0, 'astra_calls': 0}
+        football = TheStatsPrimaryClient(root, max_requests=12) if queries else None
         return OddsMonitor(root, policy=policy).tick(
             queries, lambda query: fetch_monitor_query(query, football_client=football,
                                                        now=datetime.now(UTC)),
