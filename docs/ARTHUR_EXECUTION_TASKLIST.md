@@ -1,6 +1,15 @@
 # Arthur fejlesztési és végrehajtási feladatlista
 
-Állapot: 2026-10-18  
+Állapot: 2026-10-26
+Aktuális számozott lista: **136 kész / 31 nyitott / 167 tétel**. Az eredeti 215-ös
+követelménylista külön **176 zöld / 39 piros-részleges**; a két lista nem összeadandó.
+A meglévő normál futás egyszeri workflow-helyreállítása és elfogadott runtime-ja
+lezárt: Daily ON, legacy Daily223 OFF, 0 új normál generálás. A 74 függő eredmény,
+a részleges generálási csomag és az eredeti ellenőrzősegéd exit1 hibája megmaradt;
+külön csak olvasó egyeztetés és első runtime-visszaállítás igazolta a tényleges állapotot.
+[Részletes riport és aktuális teljes 215-ös leltár](status/2026-10-26-daily-workflow-recovery/REPORT-CLOSED.md).
+Következő egyetlen pont: a háttérfolyamat jelenlegi engedélyezhetőségének csak olvasó leltára.
+
 Cél: a rendelkezésre álló, mérkőzés előtt ismert adatok tényleges és
 ellenőrizhető felhasználása a szelvényképzésben, a meglévő működő logikák
 védelmével.
