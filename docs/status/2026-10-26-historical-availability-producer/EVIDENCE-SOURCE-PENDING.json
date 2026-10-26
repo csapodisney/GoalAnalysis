@@ -1,0 +1,159 @@
+{
+  "at": "2026-10-26T14:54:29.207811+00:00",
+  "task": "historical-availability-producer-contract",
+  "status": "SOURCE_IMPLEMENTED_OWN_FULL5915_AND_THREE_NEW_ACTUAL_REPLAYS_PENDING",
+  "producer_scope_complete": false,
+  "production_receipt_operation_performed": false,
+  "source_files": [
+    {
+      "path": "src/goal_analysis/jobs/the_stats_history.py",
+      "sha256": "b39bce49fef258c8b1416f321280f9d093991911b442e893905a26eac8a74090"
+    },
+    {
+      "path": "src/goal_analysis/jobs/historical_import_queue.py",
+      "sha256": "0155800806f7c33ad81cc643a8badd4447780efea2702cde181d540b269bb17f"
+    },
+    {
+      "path": "src/goal_analysis/jobs/background_history.py",
+      "sha256": "9534353043b0f8fb113ec79ed632fb0d4cdcc9d3741b2e931936b85fb392341d"
+    },
+    {
+      "path": "src/goal_analysis/jobs/historical_page_availability.py",
+      "sha256": "48d9f4b00691b02a70141ff6fed69cc1ceca9de129c41d19b485eb3bc3cc0656"
+    },
+    {
+      "path": "tests/test_historical_page_availability.py",
+      "sha256": "22e8c9a0e1fb5104a8817a03c4ed0213b79f394cfba015186c82995f9e908c2a"
+    }
+  ],
+  "all_original_tests_byte_exact": true,
+  "unchanged_original_source_files": 1230,
+  "frozen_source_files": 1235,
+  "frozen_ledger_rows": 4087,
+  "targeted_passed": 84,
+  "new_tests": 21,
+  "unchanged_adapter_passed": 10,
+  "ruff_and_final_preflight_passed": true,
+  "own_full5915_passed": false,
+  "three_own_actual_replays_passed": false,
+  "worker_started_once_service_ancestry": true,
+  "worker_start": {
+    "at": "2026-10-26T14:52:23.4436443Z",
+    "automatic_retry": false,
+    "pid": 33784,
+    "ancestry": [
+      {
+        "parent": 2480,
+        "pid": 33784,
+        "name": "powershell.exe",
+        "created": "2026-10-26T14:52:22.1615880Z"
+      },
+      {
+        "parent": 1092,
+        "pid": 2480,
+        "name": "svchost.exe",
+        "created": "2026-10-14T05:49:23.7779460Z"
+      },
+      {
+        "parent": 672,
+        "pid": 1092,
+        "name": "services.exe",
+        "created": "2026-10-14T05:49:23.0710070Z"
+      },
+      {
+        "parent": 824,
+        "pid": 672,
+        "name": "wininit.exe",
+        "created": "2026-10-14T05:49:23.0318890Z"
+      }
+    ],
+    "outside_codex_ancestry": true,
+    "task": "historical-availability-producer-contract"
+  },
+  "worker_state_snapshot": {
+    "at": "2026-10-26T14:52:26.985337+00:00",
+    "task": "historical-availability-producer-contract",
+    "status": "OWN_FULL5915_AND_THREE_NEW_ACTUAL_REPLAYS_RUNNING",
+    "automatic_retry": false,
+    "expected_full": 5915,
+    "targeted_passed": 84,
+    "child_pids": [
+      20004,
+      18900
+    ]
+  },
+  "finite_worker_minutes": 75,
+  "automatic_retry": false,
+  "retained_production_function_isolated_shadow": {
+    "status": "OWN_PRODUCTION_FUNCTIONS_RETAINED_TESTONLY_SHADOW_PASS_NOT_FULL_ACCEPTANCE",
+    "exact_page_versions": 12,
+    "isolated_new_receipts": 13,
+    "same_prior_matches_lineage_exact": true,
+    "source_canonical_versions_unchanged": 16832,
+    "actual_root_receipt_or_import_operation": 0
+  },
+  "integration_policy": {
+    "only_fresh_normal_page_with_existing_root_lock": true,
+    "retained_cached_page_no_new_receipts": true,
+    "stopped_intent_blocks_cached_sink_retry": true,
+    "empty_partial_conflicting_duplicate_page_whole_receipt_admission_skipped": true,
+    "unknown_regulation_and_halfscores_preserved": true,
+    "source_url_clock_hash_normalization_exact_keyset_before_new_sink_constructor": true,
+    "committed_read_and_immediate_transaction_cas_before_actual_now": true,
+    "no_generic_cursor_or_score_filtered_capture": true,
+    "availability_basis": "SOURCE_PRESENCE_UPPER_BOUND_NOT_PAST_KNOWLEDGE",
+    "no_retained_manual_batch_capture_http_n9_authorization": true
+  },
+  "daily_maintenance_off": true,
+  "legacy_off": true,
+  "two_source_dependent_activations_need_own_acceptance_then_revalidation": true,
+  "new_runtime_or_activation_revalidation_done": false,
+  "production_api_llm_fit_normal_generation_receipt_import_operations": 0,
+  "offline_fits_allowed_only_three_required_new_actual_replays": true,
+  "original215": {
+    "GREEN": 176,
+    "RED": 39
+  },
+  "separate167": {
+    "closed": 136,
+    "open": 31
+  },
+  "physical_private_proof_files": [
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/source-edit-proof.json",
+      "sha256": "8b870954628ed324f3857050180619625fa801ef3ec35162dbdf2fe9a20bca56"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/import-preflight-final.json",
+      "sha256": "34b8b52dd45951b251aafed1911cb9987896140b024e6f933d1a7877401e8be1"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/worker-helper-frozen.json",
+      "sha256": "1e9999e99a71f64c4b995aadebbfd3797187e36343546c02b29e3dc1aa0148d0"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/production-retained-shadow-final.json",
+      "sha256": "459ef0551f806bbf183d4323b01d6ed84500b03404425544009212d0183c1912"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/targeted-final.xml",
+      "sha256": "3220a898e24bc27383789883b102302935571c24725f19f0a4e04ca742180d06"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/adapter-target.xml",
+      "sha256": "3e86467a2beda26145d152d08ffa5513ca091989babb98937b5ae5f0efdad473"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/maintenance-off.json",
+      "sha256": "cbfe26f73584765ed5e76a0747f70ad1344283ef4baf4bc9abba19bb4c629ca9"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/ruff-final.json",
+      "sha256": "70163f958291494d9e8dcb86cba64a7c2885b8a6a319aad787823d0113a86197"
+    },
+    {
+      "path": "artifacts/roadmap-execution-20261020/historical-availability-producer-contract/independent-worker-start.json",
+      "sha256": "55433de5b8b67ae419ccf2e03b0d0e67d75e2cc26014d2ee5cbe7dfd0097b586"
+    }
+  ]
+}

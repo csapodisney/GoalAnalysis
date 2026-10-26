@@ -287,7 +287,7 @@ def _ingest(store, rows, query, plan, source):
 def run_history(root, plan, *, execute=False, daily_work_complete=False, max_requests=20,
                 api_key=None, transport=None, clock=lambda: datetime.now(UTC),
                 monthly_reserve=100, stop_at=None, unified_results=False, max_pages=20,
-                quota_observer=None):
+                quota_observer=None, root_lock=None):
     """One bounded batch, resuming immutable cached pages before any new request.
 
     Callers must confirm the daily jobs are finished before each batch. Live
@@ -332,22 +332,17 @@ def run_history(root, plan, *, execute=False, daily_work_complete=False, max_req
     work.mkdir(parents=True, exist_ok=True)
     with _lock(work / "batch.lock"):
         return _run(root, work, plan, summary, max_requests, api_key, transport, checked_clock,
-                    monthly_reserve, deadline, unified_results, max_pages, quota_observer)
+                    monthly_reserve, deadline, unified_results, max_pages, quota_observer, root_lock)
 
 
 def _run(root, work, plan, summary, cap, api_key, transport, clock, reserve, deadline,
-         unified_results=False, max_pages=20, quota_observer=None):
+         unified_results=False, max_pages=20, quota_observer=None, root_lock=None):
     database = Database(root / "data/goal_analysis.sqlite3")
     database.initialize()
     snapshots = SnapshotStore(database, root / "data/raw")
     archive = SportsArchive(database)
     archive.initialize()
     sink = None
-    if unified_results:
-        from goal_analysis.jobs.historical_result_sink import HistoricalResultSink
-
-        sink = HistoricalResultSink(archive, clock=clock)
-        archive = sink
     checkpoint_path = work / "checkpoint.json"
     cursor = _read(checkpoint_path) if checkpoint_path.exists() else {
         "plan_sha256": plan["plan_sha256"], "query_index": 0, "page": 1, "total_pages": None}
@@ -390,7 +385,8 @@ def _run(root, work, plan, summary, cap, api_key, transport, clock, reserve, dea
         query = plan["queries"][cursor["query_index"]]
         cache_path = work / f"page-{cursor['query_index']:05d}-{cursor['page']:06d}.json"
         params = {**query, "page": cursor["page"], "per_page": plan["per_page"]}
-        if cache_path.exists():
+        cached = cache_path.exists()
+        if cached:
             source = _read(cache_path)
             if (source.get("params") != params or source.get("plan_sha256") != plan["plan_sha256"]
                     or _stamp(source.get("observed_at")) > _stamp(clock())):
@@ -442,7 +438,26 @@ def _run(root, work, plan, summary, cap, api_key, transport, clock, reserve, dea
         except ValueError as error:
             summary.update(status="INVALID_PAGE", error_code=str(error))
             break
+        availability = None
+        candidate = None
+        if unified_results and root_lock is not None:
+            from .historical_page_availability import cached_page_status, preflight_page
+
+            candidate = preflight_page(root, source, plan, root_lock, clock=clock)
+            availability = (cached_page_status(root, candidate, root_lock, clock=clock) if cached
+                            else {'status': candidate['status']})
+        if unified_results and sink is None:
+            from goal_analysis.jobs.historical_result_sink import HistoricalResultSink
+
+            sink = HistoricalResultSink(archive, clock=clock)
+            archive = sink
         counts = _ingest(archive, rows, query, plan, source)
+        if candidate is not None and not cached and candidate['status'] == 'EXACT_PAGE_PREFLIGHT':
+            from .historical_page_availability import admit_page
+
+            availability = admit_page(root, candidate, root_lock, clock=clock)
+        if availability is not None:
+            counts['availability'] = availability
         pages.append({"query_index": cursor["query_index"], "page": cursor["page"],
                       "content_hash": source["content_hash"], **counts})
         if cursor["page"] >= total:

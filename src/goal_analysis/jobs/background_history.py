@@ -31,6 +31,8 @@ SOURCE_FILES = ('src/goal_analysis/jobs/background_history.py', 'src/goal_analys
     'src/goal_analysis/jobs/historical_result_sync.py',
     'src/goal_analysis/jobs/historical_source_binding.py',
     'src/goal_analysis/jobs/historical_results.py',
+    'src/goal_analysis/jobs/historical_result_sink.py',
+    'src/goal_analysis/jobs/historical_page_availability.py',
     'src/goal_analysis/storage/raw_admission.py',
     'src/goal_analysis/storage/raw_evidence.py',
     'src/goal_analysis/storage/http_observations.py',
@@ -130,7 +132,7 @@ def tick(root, *, scheduled=True, max_requests=None, clock=lambda: datetime.now(
     if max_requests is not None and (type(max_requests) is not int or not 1 <= max_requests <= policy['quota']['max_requests']):
         raise ValueError('INVALID_BACKGROUND_REQUEST_OVERRIDE')
     try:
-        with RunLock(root/'data/arthur/run.lock'):
+        with RunLock(root/'data/arthur/run.lock') as root_lock:
             now=utc(clock())
             gate=publication_gate(root,now,policy['max_seconds'])
             if gate['status'] != 'AVAILABLE':
@@ -173,7 +175,8 @@ def tick(root, *, scheduled=True, max_requests=None, clock=lambda: datetime.now(
             history._atomic(state_path,state)  # persists before any uncertain network I/O
             result=(runner or queue_job.run_queue)(root,queue,execute=True,daily_work_complete=True,
                 max_requests=cap,max_pages=policy['max_pages'],monthly_reserve=available['monthly_reserve'],
-                clock=clock,stop_at=gate['stop_at'],api_key=api_key,transport=transport,quota_observer=quota)
+                clock=clock,stop_at=gate['stop_at'],api_key=api_key,transport=transport,quota_observer=quota,
+                **({'root_lock':root_lock} if runner is None else {}))
             state.update(status=result['status'],result=result,completed_at=utc(clock()).isoformat(),quota=available)
             history._atomic(state_path,state)
             return {**base,**result,'next_attempt_at':state['next_attempt_at'],'daily_gate':state['daily_gate']}

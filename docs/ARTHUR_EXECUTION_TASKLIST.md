@@ -24,7 +24,9 @@ A producer kontraktusának RO/pure előpróbája kész: 19 oldal/271 verzió pon
 [Köztes producerbizonyíték](status/2026-10-26-historical-availability-producer/REPORT-INTERIM.md).
 Az elkülönített exact-page/keyset író és tényleges normál cached-page/Sink próba 22+12+4 kontrollja PASS; éles forrásváltozás vagy befogadás nincs. A TESTONLY1655→1667 nem éles kapacitásnövekedés; Daily ON.
 [Új elkülönített bizonyíték és215-delta](status/2026-10-26-historical-availability-producer/REPORT-ISOLATED.md).
-Következő egyetlen pont: minimális elsőosztályú production exact-page/keyset író és normál Sink-integráció, előtte RootLock maintenance OFF, utána saját új full/3actual/runtimeON; nincs régi batch vagy kézi HTTP/befogadási felhatalmazás.
+A producer minimális5source/test forrása elkészült:84target/21új/10adapter/Ruff PASS. Saját5915full+3NEWactual fut;Daily maintenanceOFF,legacyOFF. Ez még nem teljes elfogadás vagy scopezárás.
+[Új forrás és folyamatban lévő saját ellenőrzés](status/2026-10-26-historical-availability-producer/REPORT-SOURCE-PENDING.md).
+Következő egyetlen pont: kizárólag a már futó saját producer-validation figyelése és saját független closure/runtime/revalidation előkészítése; nincs duplikált full/replay/worker vagy régi adatbefogadás.
 
 Cél: a rendelkezésre álló, mérkőzés előtt ismert adatok tényleges és
 ellenőrizhető felhasználása a szelvényképzésben, a meglévő működő logikák

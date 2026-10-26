@@ -55,7 +55,7 @@ def save_queue(path, queue):
 
 def run_queue(root, queue, *, execute=False, daily_work_complete=False, max_requests=20,
               max_pages=20, monthly_reserve=100, api_key=None, transport=None,
-              clock=lambda: datetime.now(UTC), stop_at=None, quota_observer=None):
+              clock=lambda: datetime.now(UTC), stop_at=None, quota_observer=None, root_lock=None):
     validate_queue(queue)
     if (type(execute) is not bool or type(daily_work_complete) is not bool
             or type(max_requests) is not int or not 0 <= max_requests <= 20
@@ -121,7 +121,8 @@ def run_queue(root, queue, *, execute=False, daily_work_complete=False, max_requ
             result = history.run_history(root, plan, execute=True, daily_work_complete=True,
                 max_requests=cap, max_pages=remaining_pages, monthly_reserve=monthly_reserve,
                 api_key=api_key, transport=transport, clock=clock, stop_at=stop_at, unified_results=True,
-                **({'quota_observer':quota_observer} if quota_observer is not None else {}))
+                **({'quota_observer':quota_observer} if quota_observer is not None else {}),
+                **({'root_lock':root_lock} if root_lock is not None else {}))
             summary["plans"].append(result)
             summary["requests"] += result["requests"]
             summary["processed_pages"] += result["processed_pages"]
