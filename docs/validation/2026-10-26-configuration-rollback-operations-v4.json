@@ -1,0 +1,42 @@
+{
+  "at": "2026-10-26T02:34:15.517231+00:00",
+  "task": "11.7",
+  "source_acceptance_attempt": "followup-v2",
+  "operation_attempt": "operations-v4",
+  "status": "OWN_FULL5776_PASS_REAL_DB_INVENTORY_AND_COMPLETE_PHYSICAL_PRESERVATION_CONTROLS_PASS_OPERATIONS_RUNNING",
+  "own_full5776_unchanged": true,
+  "source1219_unchanged_no_new_full_or_replay_for_helpers": true,
+  "actual_physical_inventory": {
+    "inventory_files": 10655,
+    "inventory_bytes": 24750867951,
+    "sqlite_databases": 26,
+    "committed_rows_total_including_internal_and_virtual_shadow_tables": 18148065
+  },
+  "inventory_sha256": "3cc6cd9ef9a32a14eb8855449cbcddf1c1bc2fb26b7447c94261e1673c15d1d6",
+  "initial_semantic_reader_row_bound_before_config_write": 2000000,
+  "no_rows_sampled_or_skipped": true,
+  "complete_proof_method": "All raw file, SQLite main and complete WAL bytes exact SHA; schema and full COUNT per table transactionally checked. No Python per-row hashes claimed. Physical checkpoint change is unresolved and requires semantic review.",
+  "new_resource_bounds": {
+    "seconds_per_snapshot": 1800,
+    "max_files": 20000,
+    "max_bytes": 34359738368,
+    "max_counted_rows": 25000000
+  },
+  "physical_reader_controls_passed": 13,
+  "preflight_sha256": "168818b93f334308608a9b7cab50404eb38aa4ef7075a10960d150d1dd2b6fe8",
+  "old_failed_operation_versions_preserved": [
+    "initial",
+    "operations-v2",
+    "operations-v3"
+  ],
+  "all_old_attempts_stopped_before_config_or_bundle_write": true,
+  "production_restore_runtime_or_scope_completion_not_claimed": true,
+  "task_complete": false,
+  "project_complete": false,
+  "new_provider_llm_model_fit_or_generation_for_operations": 0,
+  "worklist": {
+    "total": 167,
+    "checked": 136,
+    "open": 31
+  }
+}
