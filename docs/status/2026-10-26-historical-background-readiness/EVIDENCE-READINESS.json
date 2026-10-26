@@ -1,0 +1,953 @@
+{
+  "task": "historical-background-readiness",
+  "status": "READONLY_CURRENT_GATE_DIAGNOSIS_COMPLETE_OPERATIONAL_RECOVERY_OPEN",
+  "project_complete": false,
+  "background_import_currently_eligible": false,
+  "full_automatic_daily_cycle_for_today_proven": false,
+  "actual_readiness": {
+    "at": "2026-10-26T08:59:03.334884+00:00",
+    "task": "historical-background-readiness",
+    "status": "CURRENT_BACKGROUND_BLOCKED_BY_MISSING_TODAY_NIGHTLY_JOB_AND_FREEZE",
+    "actual_gate": {
+      "status": "DAILY_WORK_HAS_PRIORITY"
+    },
+    "schedule": {
+      "timezone": "Europe/Berlin",
+      "scheduled_time": "22:00",
+      "catchup_until": "06:00",
+      "next_run_at": "2026-10-26T22:00:00+01:00",
+      "next_target_date": "2026-10-27",
+      "due": false,
+      "slot_date": "2026-10-25",
+      "target_date": "2026-10-26",
+      "scheduled_at": "2026-10-25T22:00:00+01:00",
+      "deadline": "2026-10-26T06:00:00+01:00"
+    },
+    "current_job_exists": false,
+    "current_freeze_chain_count": 0,
+    "latest_nightly_jobs": [
+      {
+        "target_date": "2026-10-23",
+        "state_sha256": "30ceacfad872a9655204299ed30b9b27f4305e226243df967366c8d9473c2a8f",
+        "job_id": "nightly-2026-10-23",
+        "status": "COMPLETED_WITH_WARNINGS",
+        "updated_at": "2026-10-22T20:49:40.611396+00:00",
+        "stages": [
+          {
+            "name": "settlement",
+            "status": "PARTIAL",
+            "attempts": 3,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": null,
+            "last_started_at": "2026-10-22T20:46:12.229447+00:00",
+            "last_finished_at": "2026-10-22T20:46:18.761973+00:00"
+          },
+          {
+            "name": "generation",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": "nightly-2026-10-23-a1",
+            "last_started_at": "2026-10-22T20:00:22.165966+00:00",
+            "last_finished_at": "2026-10-22T20:13:57.462109+00:00"
+          },
+          {
+            "name": "archive",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": null,
+            "last_started_at": "2026-10-22T20:13:57.480518+00:00",
+            "last_finished_at": "2026-10-22T20:14:00.760653+00:00"
+          },
+          {
+            "name": "learning",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": null,
+            "last_started_at": "2026-10-22T20:46:18.784664+00:00",
+            "last_finished_at": "2026-10-22T20:49:40.583426+00:00"
+          }
+        ]
+      },
+      {
+        "target_date": "2026-10-22",
+        "state_sha256": "5ceaa638cf54af2d918ee569bfea467faa0e3a5d11b0b72acae3cb6d322cf705",
+        "job_id": "nightly-2026-10-22",
+        "status": "COMPLETED_WITH_WARNINGS",
+        "updated_at": "2026-10-21T20:57:37.041996+00:00",
+        "stages": [
+          {
+            "name": "settlement",
+            "status": "FAILED",
+            "attempts": 3,
+            "reason": "RESULT_REFRESH_FAILED",
+            "run_id": null,
+            "last_started_at": "2026-10-21T20:53:03.830733+00:00",
+            "last_finished_at": "2026-10-21T20:53:09.858020+00:00"
+          },
+          {
+            "name": "generation",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": "nightly-2026-10-22-a1",
+            "last_started_at": "2026-10-21T20:07:04.503085+00:00",
+            "last_finished_at": "2026-10-21T20:15:11.303704+00:00"
+          },
+          {
+            "name": "archive",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": null,
+            "last_started_at": "2026-10-21T20:15:11.308707+00:00",
+            "last_finished_at": "2026-10-21T20:15:12.148096+00:00"
+          },
+          {
+            "name": "learning",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": null,
+            "last_started_at": "2026-10-21T20:53:09.873704+00:00",
+            "last_finished_at": "2026-10-21T20:57:36.963810+00:00"
+          }
+        ]
+      },
+      {
+        "target_date": "2026-10-21",
+        "state_sha256": "d7cd50c6de53472f703dcdd01b39b7d6d6d53b73e55422572beb054005848a9c",
+        "job_id": "nightly-2026-10-21",
+        "status": "COMPLETED_WITH_WARNINGS",
+        "updated_at": "2026-10-20T20:04:23.824234+00:00",
+        "stages": [
+          {
+            "name": "settlement",
+            "status": "BLOCKED",
+            "attempts": 1,
+            "reason": "PROVIDER_LIMIT",
+            "run_id": null,
+            "last_started_at": "2026-10-20T20:00:06.469390+00:00",
+            "last_finished_at": "2026-10-20T20:00:28.007679+00:00"
+          },
+          {
+            "name": "generation",
+            "status": "BLOCKED",
+            "attempts": 1,
+            "reason": "PROVIDER_LIMIT",
+            "run_id": "nightly-2026-10-21-a1",
+            "last_started_at": "2026-10-20T20:00:28.014689+00:00",
+            "last_finished_at": "2026-10-20T20:00:52.763948+00:00"
+          },
+          {
+            "name": "archive",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": null,
+            "last_started_at": "2026-10-20T20:00:52.774156+00:00",
+            "last_finished_at": "2026-10-20T20:00:52.811756+00:00"
+          },
+          {
+            "name": "learning",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": null,
+            "last_started_at": "2026-10-20T20:00:52.820958+00:00",
+            "last_finished_at": "2026-10-20T20:04:23.803501+00:00"
+          }
+        ]
+      },
+      {
+        "target_date": "2026-10-19",
+        "state_sha256": "b80f253e4a4f16304e8e5a1a304f0aa493bb1981075516e6ccaceff6b42863cc",
+        "job_id": "nightly-2026-10-19",
+        "status": "COMPLETED_WITH_WARNINGS",
+        "updated_at": "2026-10-18T20:09:23.912301+00:00",
+        "stages": [
+          {
+            "name": "settlement",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": null,
+            "last_started_at": "2026-10-18T20:00:06.277567+00:00",
+            "last_finished_at": "2026-10-18T20:00:27.136722+00:00"
+          },
+          {
+            "name": "generation",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": "nightly-2026-10-19-a1",
+            "last_started_at": "2026-10-18T20:00:27.140990+00:00",
+            "last_finished_at": "2026-10-18T20:07:12.942740+00:00"
+          },
+          {
+            "name": "archive",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": null,
+            "last_started_at": "2026-10-18T20:07:12.948019+00:00",
+            "last_finished_at": "2026-10-18T20:07:13.132696+00:00"
+          },
+          {
+            "name": "learning",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": null,
+            "last_started_at": "2026-10-18T20:07:13.137321+00:00",
+            "last_finished_at": "2026-10-18T20:09:23.902359+00:00"
+          }
+        ]
+      },
+      {
+        "target_date": "2026-10-18",
+        "state_sha256": "9e948dc7222a6c73d6ec4b233e79db812637e6aec39357d05f5ff4ee9999f4c7",
+        "job_id": "nightly-2026-10-18",
+        "status": "COMPLETED_WITH_WARNINGS",
+        "updated_at": "2026-10-17T20:09:31.917630+00:00",
+        "stages": [
+          {
+            "name": "settlement",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": null,
+            "last_started_at": "2026-10-17T20:00:05.786149+00:00",
+            "last_finished_at": "2026-10-17T20:00:33.858928+00:00"
+          },
+          {
+            "name": "generation",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": "nightly-2026-10-18-a1",
+            "last_started_at": "2026-10-17T20:00:33.865148+00:00",
+            "last_finished_at": "2026-10-17T20:07:57.188366+00:00"
+          },
+          {
+            "name": "archive",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": null,
+            "last_started_at": "2026-10-17T20:07:57.194395+00:00",
+            "last_finished_at": "2026-10-17T20:07:57.843554+00:00"
+          },
+          {
+            "name": "learning",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": null,
+            "last_started_at": "2026-10-17T20:07:57.849403+00:00",
+            "last_finished_at": "2026-10-17T20:09:31.905107+00:00"
+          }
+        ]
+      },
+      {
+        "target_date": "2026-10-17",
+        "state_sha256": "7c70926713e39ff77ea320fc8aa7c6d5fa9ca5764d45b30bf256b01d4d916d3c",
+        "job_id": "nightly-2026-10-17",
+        "status": "COMPLETED_WITH_WARNINGS",
+        "updated_at": "2026-10-16T20:18:04.569300+00:00",
+        "stages": [
+          {
+            "name": "settlement",
+            "status": "BLOCKED",
+            "attempts": 2,
+            "reason": "DAILY_REQUEST_BUDGET",
+            "run_id": null,
+            "last_started_at": "2026-10-16T20:16:03.375271+00:00",
+            "last_finished_at": "2026-10-16T20:16:03.380219+00:00"
+          },
+          {
+            "name": "generation",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": "nightly-2026-10-17-a1",
+            "last_started_at": "2026-10-16T20:00:28.268904+00:00",
+            "last_finished_at": "2026-10-16T20:09:49.882674+00:00"
+          },
+          {
+            "name": "archive",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": null,
+            "last_started_at": "2026-10-16T20:09:49.896568+00:00",
+            "last_finished_at": "2026-10-16T20:09:51.260536+00:00"
+          },
+          {
+            "name": "learning",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": null,
+            "last_started_at": "2026-10-16T20:16:03.385832+00:00",
+            "last_finished_at": "2026-10-16T20:18:04.556246+00:00"
+          }
+        ]
+      },
+      {
+        "target_date": "2026-10-16",
+        "state_sha256": "7550d55215fe5c64e5c869b3cc042b874758137881d6a2e0c1a842a23d95ac54",
+        "job_id": "nightly-2026-10-16",
+        "status": "COMPLETED_WITH_WARNINGS",
+        "updated_at": "2026-10-15T20:05:44.892608+00:00",
+        "stages": [
+          {
+            "name": "settlement",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": null,
+            "last_started_at": "2026-10-15T20:00:04.271052+00:00",
+            "last_finished_at": "2026-10-15T20:00:22.155376+00:00"
+          },
+          {
+            "name": "generation",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": "nightly-2026-10-16-a1",
+            "last_started_at": "2026-10-15T20:00:22.162556+00:00",
+            "last_finished_at": "2026-10-15T20:04:45.852695+00:00"
+          },
+          {
+            "name": "archive",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": null,
+            "last_started_at": "2026-10-15T20:04:45.857974+00:00",
+            "last_finished_at": "2026-10-15T20:04:45.902995+00:00"
+          },
+          {
+            "name": "learning",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": null,
+            "last_started_at": "2026-10-15T20:04:45.918559+00:00",
+            "last_finished_at": "2026-10-15T20:05:44.886111+00:00"
+          }
+        ]
+      },
+      {
+        "target_date": "2026-10-15",
+        "state_sha256": "b9de30736966b3e8f728bc0c0898f56a85a42cfe81af3b3f6810bb0df89eb582",
+        "job_id": "nightly-2026-10-15",
+        "status": "COMPLETED_WITH_WARNINGS",
+        "updated_at": "2026-10-14T20:05:32.419943+00:00",
+        "stages": [
+          {
+            "name": "settlement",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": null,
+            "last_started_at": "2026-10-14T20:00:03.687482+00:00",
+            "last_finished_at": "2026-10-14T20:00:22.764837+00:00"
+          },
+          {
+            "name": "generation",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": "nightly-2026-10-15-a1",
+            "last_started_at": "2026-10-14T20:00:22.771784+00:00",
+            "last_finished_at": "2026-10-14T20:04:35.200885+00:00"
+          },
+          {
+            "name": "archive",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": null,
+            "last_started_at": "2026-10-14T20:04:35.226150+00:00",
+            "last_finished_at": "2026-10-14T20:04:35.918194+00:00"
+          },
+          {
+            "name": "learning",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": null,
+            "last_started_at": "2026-10-14T20:04:35.934338+00:00",
+            "last_finished_at": "2026-10-14T20:05:32.404168+00:00"
+          }
+        ]
+      },
+      {
+        "target_date": "2026-10-14",
+        "state_sha256": "e0589e7e230bb227617d156017baf89eb68fbd33baecbabbd84637cbeb4fc5ef",
+        "job_id": "nightly-2026-10-14",
+        "status": "COMPLETED_WITH_WARNINGS",
+        "updated_at": "2026-10-13T20:31:35.215578+00:00",
+        "stages": [
+          {
+            "name": "settlement",
+            "status": "BLOCKED",
+            "attempts": 2,
+            "reason": "DAILY_REQUEST_BUDGET",
+            "run_id": null,
+            "last_started_at": "2026-10-13T20:30:03.491089+00:00",
+            "last_finished_at": "2026-10-13T20:30:03.499353+00:00"
+          },
+          {
+            "name": "generation",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": "nightly-2026-10-14-a1",
+            "last_started_at": "2026-10-13T20:00:22.358923+00:00",
+            "last_finished_at": "2026-10-13T20:06:15.497583+00:00"
+          },
+          {
+            "name": "archive",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": null,
+            "last_started_at": "2026-10-13T20:06:15.545356+00:00",
+            "last_finished_at": "2026-10-13T20:06:16.302985+00:00"
+          },
+          {
+            "name": "learning",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": null,
+            "last_started_at": "2026-10-13T20:30:03.506930+00:00",
+            "last_finished_at": "2026-10-13T20:31:35.199141+00:00"
+          }
+        ]
+      },
+      {
+        "target_date": "2026-10-13",
+        "state_sha256": "40496876f9110e6547c937ea13283d7f6516118ced6c42c7985d172349e3d6fe",
+        "job_id": "nightly-2026-10-13",
+        "status": "COMPLETED_WITH_WARNINGS",
+        "updated_at": "2026-10-12T20:05:50.782462+00:00",
+        "stages": [
+          {
+            "name": "settlement",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": null,
+            "last_started_at": "2026-10-12T20:00:02.364225+00:00",
+            "last_finished_at": "2026-10-12T20:00:22.950622+00:00"
+          },
+          {
+            "name": "generation",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": "nightly-2026-10-13-a1",
+            "last_started_at": "2026-10-12T20:00:22.966665+00:00",
+            "last_finished_at": "2026-10-12T20:05:01.839602+00:00"
+          },
+          {
+            "name": "archive",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": null,
+            "last_started_at": "2026-10-12T20:05:01.855079+00:00",
+            "last_finished_at": "2026-10-12T20:05:02.425464+00:00"
+          },
+          {
+            "name": "learning",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": null,
+            "last_started_at": "2026-10-12T20:05:02.447312+00:00",
+            "last_finished_at": "2026-10-12T20:05:50.768375+00:00"
+          }
+        ]
+      },
+      {
+        "target_date": "2026-10-12",
+        "state_sha256": "9ef2381e6afd8daae7c7003e7efd172119347d3e75dfc8a03c453eb64f3a5323",
+        "job_id": "nightly-2026-10-12",
+        "status": "COMPLETED_WITH_WARNINGS",
+        "updated_at": "2026-10-11T20:04:37.592105+00:00",
+        "stages": [
+          {
+            "name": "settlement",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": null,
+            "last_started_at": "2026-10-11T20:00:02.903875+00:00",
+            "last_finished_at": "2026-10-11T20:00:27.468367+00:00"
+          },
+          {
+            "name": "generation",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": "nightly-2026-10-12-a1",
+            "last_started_at": "2026-10-11T20:00:27.474282+00:00",
+            "last_finished_at": "2026-10-11T20:04:09.846897+00:00"
+          },
+          {
+            "name": "archive",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": null,
+            "last_started_at": "2026-10-11T20:04:09.846897+00:00",
+            "last_finished_at": "2026-10-11T20:04:09.947051+00:00"
+          },
+          {
+            "name": "learning",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": null,
+            "last_started_at": "2026-10-11T20:04:09.947051+00:00",
+            "last_finished_at": "2026-10-11T20:04:37.592105+00:00"
+          }
+        ]
+      },
+      {
+        "target_date": "2026-10-11",
+        "state_sha256": "a238a3d7ad8d4e0a1589bf2028f80af16270a3d9ccf37201e6ac821178b738a8",
+        "job_id": "nightly-2026-10-11",
+        "status": "COMPLETED_WITH_WARNINGS",
+        "updated_at": "2026-10-10T20:07:58.915179+00:00",
+        "stages": [
+          {
+            "name": "settlement",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": null,
+            "last_started_at": "2026-10-10T20:00:02.439991+00:00",
+            "last_finished_at": "2026-10-10T20:00:32.988375+00:00"
+          },
+          {
+            "name": "generation",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": "nightly-2026-10-11-a1",
+            "last_started_at": "2026-10-10T20:00:32.995543+00:00",
+            "last_finished_at": "2026-10-10T20:07:16.975836+00:00"
+          },
+          {
+            "name": "archive",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": null,
+            "last_started_at": "2026-10-10T20:07:17.017788+00:00",
+            "last_finished_at": "2026-10-10T20:07:17.357745+00:00"
+          },
+          {
+            "name": "learning",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": null,
+            "last_started_at": "2026-10-10T20:07:17.399371+00:00",
+            "last_finished_at": "2026-10-10T20:07:58.905422+00:00"
+          }
+        ]
+      },
+      {
+        "target_date": "2026-10-10",
+        "state_sha256": "94151483aeea4bdee64ddcb4c9be55168b2471a6af084f594786a72686960af7",
+        "job_id": "nightly-2026-10-10",
+        "status": "COMPLETED_WITH_WARNINGS",
+        "updated_at": "2026-10-09T20:30:25.713475+00:00",
+        "stages": [
+          {
+            "name": "settlement",
+            "status": "BLOCKED",
+            "attempts": 2,
+            "reason": "DAILY_REQUEST_BUDGET",
+            "run_id": null,
+            "last_started_at": "2026-10-09T20:30:01.995021+00:00",
+            "last_finished_at": "2026-10-09T20:30:01.995021+00:00"
+          },
+          {
+            "name": "generation",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": "nightly-2026-10-10-a1",
+            "last_started_at": "2026-10-09T20:00:28.250149+00:00",
+            "last_finished_at": "2026-10-09T20:09:17.558916+00:00"
+          },
+          {
+            "name": "archive",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": null,
+            "last_started_at": "2026-10-09T20:09:17.573300+00:00",
+            "last_finished_at": "2026-10-09T20:09:17.839918+00:00"
+          },
+          {
+            "name": "learning",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": null,
+            "last_started_at": "2026-10-09T20:30:01.995021+00:00",
+            "last_finished_at": "2026-10-09T20:30:25.698664+00:00"
+          }
+        ]
+      },
+      {
+        "target_date": "2026-10-09",
+        "state_sha256": "7e51e649421ce4eedc15bf713ef3b40140cb99d7bbf1e6450dde343f5ecb57de",
+        "job_id": "nightly-2026-10-09",
+        "status": "COMPLETED_WITH_WARNINGS",
+        "updated_at": "2026-10-08T20:05:47.166351+00:00",
+        "stages": [
+          {
+            "name": "settlement",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": null,
+            "last_started_at": "2026-10-08T20:00:02.688254+00:00",
+            "last_finished_at": "2026-10-08T20:00:15.561706+00:00"
+          },
+          {
+            "name": "generation",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": "nightly-2026-10-09-a1",
+            "last_started_at": "2026-10-08T20:00:15.572336+00:00",
+            "last_finished_at": "2026-10-08T20:05:26.526492+00:00"
+          },
+          {
+            "name": "archive",
+            "status": "PARTIAL",
+            "attempts": 1,
+            "reason": "BACKLOG_OR_COVERAGE",
+            "run_id": null,
+            "last_started_at": "2026-10-08T20:05:26.556303+00:00",
+            "last_finished_at": "2026-10-08T20:05:26.623296+00:00"
+          },
+          {
+            "name": "learning",
+            "status": "SUCCESS",
+            "attempts": 1,
+            "reason": null,
+            "run_id": null,
+            "last_started_at": "2026-10-08T20:05:26.623296+00:00",
+            "last_finished_at": "2026-10-08T20:05:47.153859+00:00"
+          }
+        ]
+      }
+    ],
+    "nightly_event_bounds": {
+      "event_count": 338,
+      "last_event_id": 338,
+      "last_event_at": "2026-10-22T20:49:40.611396+00:00"
+    },
+    "last_actual_daily_freezes": [
+      {
+        "date": "2026-10-23",
+        "run_id": "nightly-2026-10-23-a1",
+        "frozen_at": "2026-10-22T20:14:00.034500+00:00",
+        "snapshot_hash": "db3671e8ee3b1447c069822832c5fba392911de9e7b727e439f800e423ff8011"
+      },
+      {
+        "date": "2026-10-22",
+        "run_id": "nightly-2026-10-22-a1",
+        "frozen_at": "2026-10-21T20:15:11.421122+00:00",
+        "snapshot_hash": "7f7cdf2cad088a0cf9a6a2d868847ba2a21a3c0f4762582351e25e47a5664d9e"
+      },
+      {
+        "date": "2026-10-19",
+        "run_id": "nightly-2026-10-19-a1",
+        "frozen_at": "2026-10-18T20:07:13.023205+00:00",
+        "snapshot_hash": "fea0688651efc8b6de4bfe1313b6356ede710b35a6f7cf074f6056ab8f1d0e20"
+      },
+      {
+        "date": "2026-10-18",
+        "run_id": "nightly-2026-10-18-a1",
+        "frozen_at": "2026-10-17T20:07:57.650703+00:00",
+        "snapshot_hash": "9597d76abedc53aa94e76e00ac92e411704963f7d5882ac72cc832b60c79af30"
+      },
+      {
+        "date": "2026-10-17",
+        "run_id": "nightly-2026-10-17-a1",
+        "frozen_at": "2026-10-16T20:09:50.067514+00:00",
+        "snapshot_hash": "fe591a5ac2be43a26d970baf23212184c3f15731161c4badb4d0157d5e58fae7"
+      },
+      {
+        "date": "2026-10-16",
+        "run_id": "nightly-2026-10-16-a1",
+        "frozen_at": "2026-10-15T20:04:45.880318+00:00",
+        "snapshot_hash": "2e821fbd1e52bbf48cf04ed079012f54afe851ad8d733dd9d857ba682349e7b5"
+      },
+      {
+        "date": "2026-10-15",
+        "run_id": "nightly-2026-10-15-a1",
+        "frozen_at": "2026-10-14T20:04:35.305388+00:00",
+        "snapshot_hash": "6c54f2f1f401b0ab9d32943178a871f091f363ea9ce51ee5884797210279a4b1"
+      },
+      {
+        "date": "2026-10-14",
+        "run_id": "nightly-2026-10-14-a1",
+        "frozen_at": "2026-10-13T20:06:15.696863+00:00",
+        "snapshot_hash": "3212147a0409aa616a8910b52e8ca31dfa107439d30101a9a844039232b8489f"
+      },
+      {
+        "date": "2026-10-13",
+        "run_id": "nightly-2026-10-13-a1",
+        "frozen_at": "2026-10-12T20:05:01.994836+00:00",
+        "snapshot_hash": "b00e434587b1c975654e1073691ca3cd1f0a654a931805b28cfb5a1489de8f47"
+      },
+      {
+        "date": "2026-10-12",
+        "run_id": "nightly-2026-10-12-a1",
+        "frozen_at": "2026-10-11T20:04:09.911529+00:00",
+        "snapshot_hash": "a3a5473fc63b768e592fcb1fc383a76c5ffafefc5cecc971f5f132d5e8b5d330"
+      },
+      {
+        "date": "2026-10-11",
+        "run_id": "2026-10-11-c6d3f0ac29d0",
+        "frozen_at": "2026-10-10T19:48:50.536329+00:00",
+        "snapshot_hash": "d5a3312eb3a4fd802c43a6450ec29c010ce9d8c947810e087f8c825cffbde975"
+      },
+      {
+        "date": "2026-10-10",
+        "run_id": "2026-10-10-7e1b2904e88b",
+        "frozen_at": "2026-10-06T20:03:00.678339+00:00",
+        "snapshot_hash": "26e3d5259570d1f9098601e7b92265e76b10a0db333c08c5ca82aec99afd2afd"
+      },
+      {
+        "date": "2026-10-09",
+        "run_id": "2026-10-09-8729cff6a42f",
+        "frozen_at": "2026-10-06T19:49:16.763107+00:00",
+        "snapshot_hash": "09ae1f56e7f4664db2e57d8e79f8b553e1aee81a6b82e32bcdeaba8f9439b98c"
+      },
+      {
+        "date": "2026-10-06",
+        "run_id": "2026-10-06-3f06f84cc77c",
+        "frozen_at": "2026-10-05T17:49:00.221263+00:00",
+        "snapshot_hash": "d0ceab3f24060ad5e1b3ba3838485dc6304567533aa7c4b3ff5740d7a72726fa"
+      }
+    ],
+    "accepted_normal_cli_report": {
+      "run_id": "2026-10-26-cc3b72cd5b81",
+      "target_date": "2026-10-26",
+      "observed_at": "2026-10-25T23:18:43.800398+00:00",
+      "finished_at": "2026-10-25T23:45:57.413762+00:00",
+      "logical_report_sha256": "49f87b0c9bba26f497e494c5757500aef0231683d6564a537446ffabb8c99252",
+      "physical_archive_sha256": "5592bf755cdc07c56969073d711b9c253107877bf53409e2dbe2dce06b7433be",
+      "leg_kickoffs": [
+        "2026-10-26T18:45:00+00:00",
+        "2026-10-26T19:30:00+00:00",
+        "2026-10-26T19:45:00+00:00",
+        "2026-10-26T20:00:00+00:00"
+      ],
+      "is_current_schedule_target": true,
+      "nightly_workflow_job_exists": false,
+      "current_target_freeze_chains": 0,
+      "not_current_quote_or_bettability_attestation": true
+    },
+    "activation": {
+      "activated_at": "2026-10-21T21:35:24.178841+00:00",
+      "background_enabled": true,
+      "enabled_at": "2026-10-21T21:35:30.878485+00:00",
+      "legacy_history_requests": {
+        "date": "2026-10-21",
+        "requests": 20
+      },
+      "previous_source_sha256": "56ea31a7f98a27cb245bf4536d0e2fcf65888665339e080d089f7bbe68dfef85",
+      "revalidated_at": "2026-10-23T23:34:34.397827+00:00",
+      "revalidation_evidence": "C:\\AI-Work\\GoalAnalysis\\artifacts\\roadmap-execution-20261020\\11.2.N35\\followup-v6\\activation-revalidation-evidence.json",
+      "source_sha256": "68a489643180cc893c7be5f54480315cc41cc95a1dfb49cad5171813092723b3",
+      "tracking_enabled": true,
+      "version": "historical-background-v1"
+    },
+    "current_implementation_sha256": "68a489643180cc893c7be5f54480315cc41cc95a1dfb49cad5171813092723b3",
+    "activation_current_source_hash_matches": true,
+    "policy": {
+      "version": "historical-background-v1",
+      "enabled": true,
+      "interval_seconds": 1800,
+      "max_pages": 20,
+      "max_seconds": 55,
+      "quota": {
+        "max_requests": 20,
+        "max_quota_age_seconds": 1800,
+        "monthly_reserve": 5000,
+        "daily_reserve": 2500,
+        "minute_reserve": 30,
+        "daily_cap": 300,
+        "per_minute_cap": 20
+      }
+    },
+    "secondary_current_quota_evaluation_not_reached_by_tick": {
+      "status": "QUOTA_REFRESH_REQUIRED",
+      "requests": 0
+    },
+    "shared_authenticated_quota_dimensions": {
+      "monthly_remaining": {
+        "attempt_id": "ee46f42c12f74d76929313a3bd3afeae",
+        "started_at": "2026-10-26T08:36:07.188563+00:00",
+        "observed_at": "2026-10-26T08:36:07.498861+00:00",
+        "http_status": 200,
+        "usage": {
+          "minute_limit": 120,
+          "minute_remaining": 113,
+          "minute_reset": 1793003820,
+          "monthly_limit": 100000,
+          "monthly_remaining": 92346,
+          "monthly_reset": 1794960768,
+          "retry_after": null
+        }
+      },
+      "minute_remaining": {
+        "attempt_id": "ee46f42c12f74d76929313a3bd3afeae",
+        "started_at": "2026-10-26T08:36:07.188563+00:00",
+        "observed_at": "2026-10-26T08:36:07.498861+00:00",
+        "http_status": 200,
+        "usage": {
+          "minute_limit": 120,
+          "minute_remaining": 113,
+          "minute_reset": 1793003820,
+          "monthly_limit": 100000,
+          "monthly_remaining": 92346,
+          "monthly_reset": 1794960768,
+          "retry_after": null
+        }
+      },
+      "http_status": {
+        "attempt_id": "ee46f42c12f74d76929313a3bd3afeae",
+        "started_at": "2026-10-26T08:36:07.188563+00:00",
+        "observed_at": "2026-10-26T08:36:07.498861+00:00",
+        "http_status": 200,
+        "usage": {
+          "minute_limit": 120,
+          "minute_remaining": 113,
+          "minute_reset": 1793003820,
+          "monthly_limit": 100000,
+          "monthly_remaining": 92346,
+          "monthly_reset": 1794960768,
+          "retry_after": null
+        }
+      }
+    },
+    "shared_quota_counts": {
+      "attempts": 7109,
+      "receipts": 7107
+    },
+    "last_history_attempt": {
+      "attempted_at": "2026-10-23T07:41:09.556357+00:00",
+      "completed_at": "2026-10-23T07:41:18.842703+00:00",
+      "status": "REQUEST_LIMIT",
+      "queue_day": "2026-10-23"
+    },
+    "plan_sha256": "0a6c448137e20951e4f4b513c33a0758f4075ba433954799b73e4df5a4f5474b",
+    "checkpoint": {
+      "page": 1,
+      "plan_sha256": "0a6c448137e20951e4f4b513c33a0758f4075ba433954799b73e4df5a4f5474b",
+      "query_index": 496,
+      "total_pages": null
+    },
+    "query_windows_remaining": 724,
+    "state_files_sha256": {
+      "data/arthur/historical-background/state.json": "b43977758b1593db09769daf4ef6c4a25d34ab594190a996a7ca40e61a1de33e",
+      "data/arthur/the-stats-history/active-plan.json": "a8cdc6b198457402348f78ec59a9e30924c41d01ece2690c86f367ea2eaebdcb",
+      "data/arthur/the-stats-history/0a6c448137e20951e4f4b513c33a0758f4075ba433954799b73e4df5a4f5474b/checkpoint.json": "e6edd6bb123954b9d588494d552276b52c0778018616ad42e63ee759e48bebd4"
+    },
+    "code_semantics": {
+      "nightly_scheduled_outside_window": "NOT_DUE; no new target job is created",
+      "normal_cli_is_not_nightly_workflow": true,
+      "manual_normal_report_does_not_certify_settlement_archive_learning_completion": true,
+      "current_gate_has_not_reached_quota_or_history_queue": true,
+      "scheduled_wrapper_discards_background_stdout": true
+    },
+    "proposed_next_single_task": "daily-workflow-recovery-contract",
+    "recovery_constraints": [
+      "No synthetic SUCCESS job or backdated freeze.",
+      "Audit existing explicit run recovery/adoption before adding minimum code.",
+      "Preserve exact already accepted run/quote/review/report; no new bettability or generation claim.",
+      "Every recovered archive/settlement/learning stage must have its own actual operation proof.",
+      "No provider/model run solely to unlock background metadata. No gate/quota relaxation.",
+      "Source change requires RootRunLock maintenanceOFF, own SHADOW/appropriatefull/3newactual/runtimeON."
+    ],
+    "source_files_and_gold_exact": 1229,
+    "old_ledger_rows_exact": 4016,
+    "provider_requests": 0,
+    "llm_calls": 0,
+    "fits": 0,
+    "generations": 0,
+    "production_writes": 0,
+    "daily": "ON_UNCHANGED",
+    "legacy_daily": "OFF_UNCHANGED",
+    "full_automatic_daily_cycle_for_today_proven": false,
+    "current_original215": {
+      "GREEN": 176,
+      "RED": 39
+    },
+    "original_2_2_requirement_complete": false
+  },
+  "independent_current_state_readback": {
+    "at": "2026-10-26T09:00:44.161749+00:00",
+    "task": "historical-background-readiness",
+    "status": "INDEPENDENT_CURRENT_JOB_FREEZE_ABSENCE_AND_VALIDATED_ACTIVATION_STATE_CONFIRMED",
+    "readiness_proof_sha256": "dc89c2c5858e7ce4a8cafcdfd6bbbc28294d63e723afa13e7678e7c609cc8c1a",
+    "current_db_observations": {
+      "automation": [
+        {
+          "target_date": "2026-10-23",
+          "state_sha256": "30ceacfad872a9655204299ed30b9b27f4305e226243df967366c8d9473c2a8f"
+        }
+      ],
+      "current_job": [],
+      "current_freeze": []
+    },
+    "task_observation": {
+      "legacy": {
+        "state": "Disabled",
+        "enabled": false
+      },
+      "observed_at": "2026-10-26T09:00:43.9932970Z",
+      "daily": {
+        "enabled": true,
+        "next_run": "2026-10-26T09:01:00.0000000Z",
+        "last_task_result": 0,
+        "last_run": "2026-10-26T09:00:01.0000000Z",
+        "state": "Ready"
+      }
+    },
+    "snapshot_and_source_checks_use_actual_current_files": true,
+    "production_writes": 0,
+    "provider_calls": 0,
+    "model_or_generation_calls": 0
+  },
+  "private_artifact_sha256": {
+    "audit_readonly.py": "ae8b8273f31fa37b4ebb150bf570d9b29018f1d2a3d2a025e9f5aa547421cf1b",
+    "baseline-after.json": "3137679f3317e4729a169f44784de27ab55aea63129383490bc07f60f4c78891",
+    "baseline-before.json": "6fa88bacd9facb6048e478046f269a15b22dc1aa7a0049cd0ef09f67a2254723",
+    "finalize_scope.py": "db1f434029c75f0b84c1d10dc6a070df11a1027920968996ad96166420b693af",
+    "independent-readback.json": "6c274d2ca99ef125ff26819b72a52cdffd05fcf817025e5e8924673e7cb109d9",
+    "readiness-proof.json": "dc89c2c5858e7ce4a8cafcdfd6bbbc28294d63e723afa13e7678e7c609cc8c1a",
+    "windows-readonly-observation.json": "386169581900c034e9ad042d88e34510de39c704727f941aa137a5cfd2d78943"
+  },
+  "next_task": "daily-workflow-recovery-contract",
+  "next_scope": "AUDIT_EXISTING_NORMAL_RUN_RECOVERY_SEMANTICS_THEN_MINIMUM_EXPLICIT_TRUTHFUL_RECOVERY_CONTRACT_NO_FAKE_JOB_OR_FREEZE"
+}
