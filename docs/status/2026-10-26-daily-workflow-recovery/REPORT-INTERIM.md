@@ -1,0 +1,19 @@
+# Meglévő normál futás napi workflow-helyreállítása — köztes státusz
+
+A konkrét hiányra minimális javítás készült: az explicit `--recover-run` mód csak egy pontos run-ID/logikai ledgerhash/fizikai fájlhash alapján már mentett normál futást vehet át. Nem generál új értékelést, nem módosít reportot, quote-ot, szelvényt vagy régi időt. A producer eredeti stratégiaváltozata megmarad, a jelenlegi helyreállító kód változata külön rögzített. A22:00–06:00normál ütemezés és a `--run-now` holnapi dátumkorlátja változatlan.
+
+Az explicit operátori helyreállítás külön, legfeljebb3600másodperces ablakot kaphat a legkorábbi kickoff-15perc előtt, az eredeti scheduled deadline átírása nélkül. Kezdetben minden stagePENDING. A generation valódi mentett checkpointot használhat, fallback/modelhívás nélkül; archive/settlement/learning csak a saját tényleges végrehajtása után kaphat eredményt. Más job/freeze megmarad, ismeretlen korábbi stage-execution és módosult hash/idő/konfiguráció elutasított. Recovery közben nincs új weather/historyclaim; az eredeti background-kapu és kvóták változatlanok.
+
+Öt source/testfájl: új `nightly_recovery.py`, két szűk Nightly-őr/operátori deadlinekezelés és explicit provenance, background source-pin bővítés, CLI-mód,23újteszt. A többi1226eredeti source/config/test/script/goldfile byteazonos. Matematikai modell, numerikus rang, súly, profilküszöb, READYkapu és minden régi report/ticket/quote változatlan.
+
+Saját **96célzott /10adapter /Ruff PASS**. A valódi cc3bcsomagon az új kód readonlyledger+in-memoryjob mellett bizonyítottan az eredeti generationt használta újra PARTIAL eredménnyel; a többi stagePENDING maradt, valódi helyreállítás nem történt. A korábbi pureterv16határ-/negatív kontrollja is PASS. Ezek teszt/SHADOWbizonyítékok, nem valódi új modellválasz, napi freeze vagy feldolgozott eredmény.
+
+**Saját5874teljes suite és3új tényleges numerikus replay még fut**,75perces véges határral, retry nélkül.1231source/4016régi ledger-sor/6894archívum és26workerhelper-input fagyasztott. Nincs párhuzamos másik full/replay/generálás. A service-ősű új WindowsTask saját neve `Arthur Daily Existing Run Recovery Validation`; a régi taskok történetiek. A napi időzítő a valódi sourceedit előtt ugyanazon RootRunLock alatt maintenanceOFF lett; legacyOFF marad. Elfogadott kód/runtime igazolása után DailyONhelyreállítás szükséges.
+
+Az első prelaunchhelper kizárólag a megváltozott fájlnevek listájának eltérő sorrendje miatt megállt; a halmaz és valamennyi sourcebyte azonos volt. Eredeti helper/kimenetek megőrzöttek, külön v2finalizer teljes tényleges worker/replay/authorityimport, eredeti Dailyguard, eredeti8checkAST/require,5874collection és10adapter előpróbával PASS még launch előtt. Ez nem productionhiba vagy full/replayretry. Régi aranyref, assert és általános riportellenőrzés nem gyengült.
+
+Még **nincs saját full/runtime/aktiváció-revalidáció/valódi recovery/checkpoint/scopelezárás**. A Nightly az aktiváció kódhash-ének része, ezért az új forrás csak saját teljes elfogadás után revalidálható, a régi activationbyte/activated_at megőrzésével. Ezután egyszer valódi recovery és saját fizikai stage/report/adat-visszaolvasás, runtime/DailyON és végleges GitHubremoteSHA szükséges. Metadata kedvéért új fizetős generálás nem indul.
+
+Az eredeti215aktuális auditja **176zöld/39piros-részleges**, a külön167munkalista **136kész/31nyitott**. Ez a köztes javítás egyiket sem pipálja ki és nem teljes projektkészség. A mai teljes automatikus napi ciklus hiánya továbbra nyitott operációs probléma. A korábbi2b6785freadinessriport,1a74df8admissionreconciliation és minden régi STOP/hiba/XML/hash/quote megőrzött.
+
+Gépi köztesbizonyíték: [EVIDENCE-INTERIM.json](EVIDENCE-INTERIM.json). A teljes legutóbbi215audit: [STATUS-215.json](../2026-10-26-historical-background-readiness/STATUS-215.json).

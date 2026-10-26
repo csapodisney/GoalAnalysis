@@ -23,7 +23,8 @@ from .portfolio import RunLock
 VERSION = 'historical-background-v1'
 SOURCE_FILES = ('src/goal_analysis/jobs/background_history.py', 'src/goal_analysis/jobs/historical_import_queue.py',
     'src/goal_analysis/jobs/the_stats_history.py','src/goal_analysis/jobs/the_stats_context.py',
-    'src/goal_analysis/jobs/nightly.py','src/goal_analysis/storage/provider_quota.py',
+    'src/goal_analysis/jobs/nightly.py','src/goal_analysis/jobs/nightly_recovery.py',
+    'src/goal_analysis/storage/provider_quota.py',
     'src/goal_analysis/providers/the_stats_api.py','src/goal_analysis/providers/the_stats_primary.py',
     'scripts/run-arthur-background-history.py','scripts/run-arthur-scheduled.ps1',
     'config/historical-background.json',

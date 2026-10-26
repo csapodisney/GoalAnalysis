@@ -1,0 +1,58 @@
+{
+  "at": "2026-10-26T09:48:49.631217+00:00",
+  "task": "daily-workflow-recovery-contract",
+  "status": "OWN_TARGET96_RETAINED_SHADOW_PASS_FULL5874_AND3NEWACTUAL_REPLAYS_RUNNING",
+  "source_files_sha256": {
+    "scripts/run-arthur-nightly.py": "a5813693ac9b8b2d067532f17ba58a19d178bfe170a5ed40ca59581c0d5f9c9f",
+    "src/goal_analysis/jobs/background_history.py": "e792138aef6ae0725478428efab9e0a76f3b33fd6b0f985fe6845688139a4b91",
+    "src/goal_analysis/jobs/nightly.py": "53e076708a3c8585e1cf76345d4e247f508fb4d94c72593f3ecdd78773446e81",
+    "src/goal_analysis/jobs/nightly_recovery.py": "d5c8bf52271e56a37302c08978b46b976151650ac20ac43e68587868a41d1cb3",
+    "tests/test_nightly_recovery.py": "0c62ce87e4572142636afa95782ac3ef359234ab6ea8d92fd0e32ff4d7a82000"
+  },
+  "own_full_acceptance": false,
+  "production_recovery_job_or_freeze_created": false,
+  "targeted_tests_passed": 96,
+  "new_recovery_tests": 23,
+  "adapter_controls_passed": 10,
+  "source_count": 1231,
+  "old_ledger_rows_frozen": 4016,
+  "old_archives_frozen": 6894,
+  "worker_helper_inputs_frozen": 26,
+  "worker_state_at_capture": {
+    "at": "2026-10-26T09:46:59.701765+00:00",
+    "task": "daily-workflow-recovery-contract",
+    "status": "OWN_FULL5874_AND_THREE_NEW_ACTUAL_REPLAYS_RUNNING",
+    "automatic_retry": false,
+    "expected_full": 5874,
+    "targeted_passed": 96,
+    "child_pids": [
+      11360,
+      7704
+    ]
+  },
+  "daily_enabled": false,
+  "legacy_enabled": false,
+  "new_api_llm_fit_or_generation_before_validation": 0,
+  "numerical_replays_are_actual_new_offline_fits_not_api_calls": true,
+  "current_original215": {
+    "GREEN": 176,
+    "RED": 39
+  },
+  "separate_numbered_worklist": {
+    "total": 167,
+    "checked": 136,
+    "open": 31
+  },
+  "project_complete": false,
+  "evidence_sha256": {
+    "targeted-frozen.xml": "5fd19b9a3d41052745a001e6ee86a0432dc51dc51f2e1327c5385215aeac140e",
+    "adapter-target.xml": "44d3dd6ccd5db81036ef3b1272a728f4631864a8f160f9708dae5a98c1a406ab",
+    "retained-shadow.json": "bd495ae45fa06247bffab0aa43a2021d7793fc6206ffc3b535ac60423468a517",
+    "retained-production-shadow.json": "fbee54d7ac5ffc4a2d5600c4266ac3bf4812a231ad1cc76310cf9bace7ba557a",
+    "source-edit-proof.json": "96fb5e708665a05a836a9c9a5b5410e51afc03dde68bc9685fddbdf446109835",
+    "maintenance-off.json": "2d8056ac4309a6c5945a45456918e5d043ec8ce800dc59112ae6202df90f38f0",
+    "worker-helper-frozen.json": "2fb3ed35d8f3feaf3255eea12d2a705a54687512b4539c2feb5a23bba8178ddf",
+    "import-preflight-final.json": "005a264bd77a64dce4149c87a0d947b3294e2a3635b7a89fab095d4ecd5f6c0c",
+    "initial-preflight-failure.json": "2baf2d3e3bdaa9f23778961c9d82eb39d0a1f4032425c1f8a2b08053273ec548"
+  }
+}

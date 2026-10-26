@@ -33,6 +33,14 @@ def aware(value: datetime) -> datetime:
     return value.astimezone(UTC)
 
 
+def execution_deadline(job: dict) -> datetime:
+    if 'existing_run_recovery' in job:
+        from goal_analysis.jobs.nightly_recovery import recovery_deadline
+
+        return recovery_deadline(job)
+    return aware(datetime.fromisoformat(job['deadline']))
+
+
 def schedule_plan(now: datetime) -> dict:
     local = aware(now).astimezone(BERLIN)
     today_at_22 = datetime.combine(local.date(), time(22), BERLIN)
@@ -131,6 +139,7 @@ def public_job(job: dict) -> dict:
         "job_id", "slot_date", "target_date", "status", "created_at", "updated_at",
         "next_retry_at", "stages", "usage", "manifest_sha256", "completed_at",
         "native_shadow",
+        "existing_run_recovery",
     )}
 
 
@@ -260,7 +269,7 @@ class NightlyWorkflow:
     def _expire_jobs(self, now):
         expired = [job for job in self.store.jobs() if job["status"] not in {
             "COMPLETED", "COMPLETED_WITH_WARNINGS", "EXPIRED"
-        } and now >= datetime.fromisoformat(job["deadline"])]
+        } and now >= execution_deadline(job)]
         if not expired:
             return
         try:
@@ -284,7 +293,7 @@ class NightlyWorkflow:
         if stage["status"] in TERMINAL:
             return
         now = aware(self.clock())
-        if now >= datetime.fromisoformat(job["deadline"]):
+        if now >= execution_deadline(job):
             stage.update(status="EXPIRED", reason="CATCHUP_WINDOW_EXPIRED", last_finished_at=self._stamp())
             self._save(job)
             return
@@ -309,6 +318,12 @@ class NightlyWorkflow:
                              last_finished_at=self._stamp(), next_retry_at=None)
                 self._save(job)
                 return
+        if name == 'generation' and 'existing_run_recovery' in job and (
+                checkpoint is None or _hash(checkpoint) != job['existing_run_recovery']['source_snapshot_sha256']):
+            stage.update(status='BLOCKED', reason='IMMUTABLE_RECOVERY_GENERATION_UNAVAILABLE',
+                         last_finished_at=self._stamp(), next_retry_at=None)
+            self._save(job)
+            return
         reuse_generation = checkpoint is not None and not (
             checkpoint.get("construction_status") == "DATA_BLOCKED" and checkpoint.get("reason")
         )
