@@ -1,0 +1,42 @@
+{
+  "at": "2026-10-27T04:36:20.283464+00:00",
+  "task": "non-ready-selected-leg-research-contract",
+  "status": "SOURCE_PENDING_OWN_FULL_AND_RUNTIME_ACCEPTANCE",
+  "targeted_passed": 117,
+  "new_behavior_cases": 52,
+  "adapter": 10,
+  "collection": 6261,
+  "source_files": 1257,
+  "existing_files_byte_exact": 1255,
+  "source_sha256": {
+    "src/goal_analysis/jobs/portfolio_distribution.py": "de3bda9cc4085a2c0cb8e2f860b2be22a83bf3cd9e29d979864e26782f8a03cc",
+    "tests/test_non_ready_selected_leg_research.py": "b215e4be9100e6177ee7b68b490b860adfa136cc60e97e85334a7378269f5bcc"
+  },
+  "own_full_accepted": false,
+  "own_runtime_accepted": false,
+  "scope_complete": false,
+  "daily_enabled": false,
+  "legacy_enabled": false,
+  "parent_remote_sha": "9d7d407be804ce38bb4e4ee9b4e187e5118f413e",
+  "canonical_saved_cards": 6,
+  "saved_leg_occurrences": 27,
+  "known_legs_by_model": {
+    "gauss": 3,
+    "kepler": 1,
+    "laplace": 3
+  },
+  "all_original_READY_fields_exact": true,
+  "partial_full_card_probability": null,
+  "APP_pure_readback": {
+    "path": "artifacts/roadmap-execution-20261020/non-ready-selected-leg-research-contract/production-nonready-research-readonly-final.json",
+    "sha256": "382a6baa678955f8ced180ce8ae9ba79e5326af16f303e255acddadea0518e66"
+  },
+  "activation_CAS_or_revalidation_writes_required": 0,
+  "both_activation_source_sets_unchanged": true,
+  "prior_215_status": {
+    "path": "docs/status/2026-10-27-readonly-weather-catalogue-consumers/STATUS-215-CLOSED.json",
+    "sha256": "ed64f34922e94956886d8e92bfc10e9cf8d4e52f7c2a32448157a05b9b5a11cf"
+  },
+  "new_ROOT_capture_receipt_import_provider_LLM_generation": 0,
+  "project_complete": false
+}

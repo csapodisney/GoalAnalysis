@@ -1,0 +1,3 @@
+# NemREADY kijelölt lábak kutatása — forrás elfogadás alatt
+
+2026-10-27T04:36:20.283464+00:00. Saját117célzott52új/10adapter/Ruff/6261collection/eredeti8check/Dailyguard/actualAPPpure6kártya27láb3-1-3ismert PASS, teljesfull/replay/runtime/scopeacceptance mégNINCS. 1257source/1255régi byteexact. A külön SHADOWismert-rész szcenárió eredeti koherens kernelt használ, partialfullpNULL/unknownnem0.5/nincs READYpromóció vagy újquote/matek/profit/PITállítás. Régi READYmezők/kilencfüggvény/65teszt változatlan. Mindkét activationRAWváltozatlan0CAS, Daily/legacyOFF. Teljes ownfull+3NEWactual/physicalROOT/runtimeOFF/6exactGitblob kelllezáráshoz.215176GREEN39REDcsak11.2evidence214másstatus/refexact, B03/B04/context/B08bizonyíték megmarad.

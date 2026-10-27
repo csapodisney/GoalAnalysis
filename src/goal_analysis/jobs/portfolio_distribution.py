@@ -269,6 +269,13 @@ def build_portfolio_distribution(report, artifacts):
         result["selected_leg_partial_scenarios"] = {"version": SELECTED_LEG_VERSION,
             "mode": "SHADOW", "decision_effect": "NONE", "status": "UNAVAILABLE",
             "reason": "SELECTED_LEG_RESEARCH_COMPONENT_INVALID_INPUT", "external_requests": 0}
+    if "candidate_input" in artifacts or "fixtures" in artifacts:
+        try:
+            result["non_ready_selected_leg_research"] = non_ready_selected_leg_research(report, artifacts)
+        except (AttributeError, KeyError, TypeError, ValueError):
+            result["non_ready_selected_leg_research"] = {"version": NON_READY_VERSION,
+                "mode": "SHADOW", "decision_effect": "NONE", "status": "UNAVAILABLE",
+                "reason": "NON_READY_RESEARCH_SOURCE_INPUT_INVALID", "external_requests": 0}
     result["sha256"] = canonical_sha256(result)
     return result
 
@@ -416,3 +423,251 @@ def selected_leg_partial_scenarios(report, artifacts):
                             "SYNTHETIC_TEST_TARGETS_NOT_ACTUAL_OLD_DAILY_OR_POINT_IN_TIME_FORECASTS"],
             "budgets": {"max_cards_per_package": MAX_CARDS, "max_fixtures": MAX_FIXTURES,
                         "max_leg_references_per_package": MAX_CARDS * MAX_FIXTURES}, "external_requests": 0}
+
+
+# Additive non-READY research; existing READY entry points/kernels stay intact.
+NON_READY_VERSION = "non-ready-selected-leg-research-v1"
+NON_READY_STATUSES = {"DRAFT", "REVIEWED", "MODEL_READY", "ODDS_PENDING", "TARGET_PROPOSAL"}
+NON_READY_MAX_SOURCE_CANDIDATES = 10000
+NON_READY_PRODUCT = ("fixture_id", "market_key", "selection_key", "period", "settlement")
+
+
+def _research_source_binding(leg, candidates, fixtures, as_of, profile):
+    """Exact retained source correspondence, never current offer/PIT proof."""
+    identifier = leg.get("source_candidate_id") or leg.get("quote_candidate_id") or leg.get("candidate_id")
+    if not isinstance(identifier, str) or not isinstance(leg.get("fixture_id"), str):
+        return {"status": "UNKNOWN", "reason": "EXACT_SOURCE_IDENTIFIERS_REQUIRED"}
+    matching, targets = candidates.get(identifier, []), fixtures.get(leg["fixture_id"], [])
+    if len(matching) != 1:
+        return {"status": "UNKNOWN", "reason": "MISSING_OR_AMBIGUOUS_SOURCE_CANDIDATE"}
+    source = matching[0]
+    original_alias, quote_alias = leg.get("source_candidate_id"), leg.get("quote_candidate_id")
+    source_id = leg.get("candidate_id")
+    if original_alias is not None and quote_alias is not None and original_alias != quote_alias:
+        return {"status": "UNKNOWN", "reason": "CONFLICTING_SUPPLIED_CANDIDATE_IDENTIFIERS"}
+    if source_id is not None and source_id != identifier:
+        virtual = f"{profile}-" + canonical_sha256([profile, leg["fixture_id"], leg.get("market_key"),
+            leg.get("selection_key"), source.get("bookmaker")])[:24]
+        if not (original_alias == quote_alias == identifier and source_id == virtual and source_id not in candidates):
+            return {"status": "UNKNOWN", "reason": "CONFLICTING_SUPPLIED_CANDIDATE_IDENTIFIERS"}
+    if any(key not in leg or key not in source or leg[key] != source[key] for key in NON_READY_PRODUCT):
+        return {"status": "UNKNOWN", "reason": "SOURCE_PRODUCT_IDENTITY_MISMATCH"}
+    family = leg.get("market_key")
+    for value in (leg.get("line"), source.get("line")):
+        if value is not None:
+            try:
+                valid = family == "totals_2_5" and type(value) in (str, int, float) and float(value) == 2.5
+            except (ValueError, OverflowError):
+                valid = False
+            if not valid:
+                return {"status": "UNKNOWN", "reason": "EXPLICIT_MARKET_LINE_MISMATCH"}
+    if len(targets) != 1 or not isinstance(targets[0], dict):
+        return {"status": "UNKNOWN", "reason": "MISSING_OR_AMBIGUOUS_SOURCE_FIXTURE"}
+    target = targets[0]
+    kickoff, source_kickoff, target_kickoff = (_time(row.get("kickoff")) for row in (leg, source, target))
+    if (kickoff is None or kickoff != source_kickoff or kickoff != target_kickoff
+            or any(leg.get(key) != target.get(key) for key in (
+                "provider_fixture_id", "provider_league_id", "provider_season_id",
+                "provider_home_team_id", "provider_away_team_id") if key in leg or key in target)):
+        return {"status": "UNKNOWN", "reason": "SOURCE_FIXTURE_IDENTITY_OR_KICKOFF_MISMATCH"}
+    if as_of is None:
+        return {"status": "UNKNOWN", "reason": "AWARE_REPORT_CUTOFF_REQUIRED"}
+    for key in ("decimal_price", "bookmaker", "quote_provider", "quote_source_id", "quote_source_sha256"):
+        # Missing odds do not veto an otherwise valid numeric research event.
+        if leg.get(key) is not None and leg[key] != source.get(key):
+            return {"status": "UNKNOWN", "reason": "EXPLICIT_QUOTE_CORRESPONDENCE_MISMATCH"}
+    for key in ("quote_observed_at", "quoted_at"):
+        if leg.get(key) is not None:
+            observed, original = _time(leg[key]), _time(source.get(key))
+            if observed is None or observed != original or observed > as_of:
+                return {"status": "UNKNOWN", "reason": "EXPLICIT_QUOTE_CLOCK_MISMATCH"}
+    return {"status": "BOUND", "reason": "EXACT_RETAINED_PRODUCT_FIXTURE_CORRESPONDENCE",
+            "candidate_id": identifier, "candidate_sha256": canonical_sha256(source),
+            "fixture_sha256": canonical_sha256(target),
+            "quote_price_known": leg.get("decimal_price") is not None,
+            "provider_quote_clock_known": _time(leg.get("quoted_at")) is not None,
+            "not_current_quote_or_PIT_authentication": True}
+
+
+def _non_ready_model_research(cards, sources, model, as_of):
+    indices = defaultdict(list)
+    for prediction in model.get("predictions", []):
+        indices[prediction.get("fixture_id")].append(prediction)
+    references, projected = [], []
+    for card, source_bindings in zip(cards, sources, strict=True):
+        fixtures = Counter(leg.get("fixture_id") for leg in card["legs"] if isinstance(leg.get("fixture_id"), str))
+        repeated = {key for key, count in fixtures.items() if count > 1}
+        bindings, known = [], []
+        for position, (leg, source) in enumerate(zip(card["legs"], source_bindings, strict=True)):
+            try:
+                reason = source["reason"] if source["status"] != "BOUND" else _selected_leg_binding(
+                    leg, repeated, indices, model, as_of)
+            except OverflowError:
+                reason = "INVALID_LOCAL_MODEL_PROBABILITY"
+            if reason == "VALID_MODEL_MARKET_MARGINAL":
+                prediction = indices[leg["fixture_id"]][0]
+                cutoff = _time(prediction.get("model_details", {}).get("cutoff"))
+                version = prediction.get("model_details", {}).get("version")
+                if (cutoff is None or cutoff >= _time(leg["kickoff"])
+                        or not isinstance(version, str) or not version):
+                    reason = "PREMATCH_MODEL_VERSION_AND_CUTOFF_REQUIRED"
+            bindings.append({"source_leg_index": position, "source_leg_sha256": canonical_sha256(leg),
+                             "leg": dict(leg), "source_binding": source, "binding": reason})
+            if reason == "VALID_MODEL_MARKET_MARGINAL":
+                known.append(leg)
+        reference = {"source_card_sha256": card["sha256"], "source_card_identity": card["source_card_identity"],
+            "source_card_index": card["source_card_index"], "profile_id": card["profile_id"],
+            "source_leg_count": len(card["legs"]), "known_leg_count": len(known),
+            "unknown_leg_count": len(card["legs"]) - len(known), "leg_bindings": bindings,
+            "status": "NO_COVERED_LEGS_NOT_ESTIMABLE", "known_leg_event_probability": None,
+            "scenario_model_full_card_probability": None, "scenario_model_full_card_probability_bounds": None,
+            "bounds_interpretation": SCENARIO_BOUNDS_LABEL, "research_event_is_new_ticket": False,
+            "source_status_promoted": False}
+        references.append(reference)
+        if known:
+            projected.append({"profile_id": card["profile_id"], "sha256": card["sha256"], "legs": known,
+                              "source_card_identity": card["source_card_identity"]})
+    # Reuse the unchanged coherent kernel through the already accepted known-leg
+    # helper. Projected subsets never escape as replacements for source cards.
+    measured = _selected_leg_scenario(projected, model, as_of) if projected else None
+    by_hash = {row["source_card_sha256"]: row for row in measured["cards"]} if measured else {}
+    for reference in references:
+        result = by_hash.get(reference["source_card_sha256"])
+        if result is None:
+            continue
+        probability = result["known_leg_event_probability"]
+        if probability is None:
+            reference.update(status="KNOWN_LEG_EVENT_UNAVAILABLE", reason=result.get("reason", result["status"]))
+            continue
+        complete = reference["known_leg_count"] == reference["source_leg_count"]
+        reference.update(status="FULLY_COVERED_RESEARCH_EVENT" if complete else "PARTIALLY_COVERED_RESEARCH_EVENT",
+            known_leg_event_probability=probability,
+            scenario_model_full_card_probability=probability if complete else None,
+            scenario_model_full_card_probability_bounds={"lower": probability if complete else 0.0, "upper": probability},
+            fixture_scenarios=result.get("fixture_scenarios", {}))
+    return {"status": "RESEARCH_SCENARIOS_ONLY" if projected else "NOT_ESTIMABLE", "cards": references,
+            "source_card_count": len(cards), "source_leg_count": sum(row["source_leg_count"] for row in references),
+            "known_leg_count": sum(row["known_leg_count"] for row in references),
+            "unknown_leg_count": sum(row["unknown_leg_count"] for row in references),
+            "joint_known_leg_events": measured["joint_known_leg_events"] if measured else None,
+            "numeric_predictions_sha256": canonical_sha256(model.get("predictions", []))}
+
+
+def non_ready_selected_leg_research(report, artifacts):
+    """Canonical non-READY recommendation research; never publish or promote."""
+    rows = report.get("recommendations", []) or []
+    candidate_rows = artifacts.get("candidate_input", {}).get("candidates", [])
+    fixture_source = artifacts.get("fixtures", [])
+    fixture_rows = fixture_source.get("records") if isinstance(fixture_source, dict) else fixture_source
+    as_of = _time(report.get("finished_at", report.get("observed_at")))
+    observed = _time(fixture_source.get("observed_at")) if isinstance(fixture_source, dict) else None
+    fixture_clock_valid = not isinstance(fixture_source, dict) or (observed is not None and as_of is not None and observed <= as_of)
+    if not isinstance(rows, list) or not isinstance(candidate_rows, list) or not isinstance(fixture_rows, list):
+        raise TypeError("NON_READY_RESEARCH_LIST_INPUTS_REQUIRED")
+    result = {"version": NON_READY_VERSION, "mode": "SHADOW", "decision_effect": "NONE",
+        "scope": "CANONICAL_RECOMMENDATIONS_NON_READY_RESEARCH_NOT_WAGERS", "status": "NOT_ESTIMABLE",
+        "source_stage": "recommendations", "profile_proposals_are_not_additional_events": True,
+        "supported_source_statuses": sorted(NON_READY_STATUSES), "card_accounting": [], "models": {},
+        "bounds_interpretation": SCENARIO_BOUNDS_LABEL, "external_requests": 0,
+        "source_authentication": "RETAINED_REPORT_INPUT_CORRESPONDENCE_NOT_PIT_OR_CALIBRATION",
+        "fixture_source_kind": "NORMAL_OBSERVED_RECORDS_ENVELOPE" if isinstance(fixture_source, dict) else "DIRECT_LIST_PURE_CONTENT_NOT_PHYSICAL_AUTHENTICATION",
+        "fixture_source_sha256": canonical_sha256(fixture_source),
+        "fixture_source_observed_at": fixture_source.get("observed_at") if isinstance(fixture_source, dict) else None,
+        "budgets": {"max_cards": MAX_CARDS, "max_fixtures": MAX_FIXTURES,
+                    "max_leg_references": MAX_CARDS * MAX_FIXTURES,
+                    "max_source_candidates": NON_READY_MAX_SOURCE_CANDIDATES}}
+    if (len(rows) > MAX_CARDS or len(candidate_rows) > NON_READY_MAX_SOURCE_CANDIDATES
+            or len(fixture_rows) > MAX_FIXTURES):
+        result["accounting"] = {"input_card_count": len(rows), "candidate_source_count": len(candidate_rows),
+            "fixture_source_count": len(fixture_rows), "unexamined_card_count": len(rows),
+            "budget_failure_means_unexamined_not_empty_or_zero": True}
+        if len(rows) <= MAX_CARDS:
+            result["card_accounting"] = [{"source_card_index": index,
+                "source_card_sha256": canonical_sha256(card), "status": "UNEXAMINED",
+                "reason": "COMPLETE_SOURCE_BUDGET_EXCEEDED"} for index, card in enumerate(rows)]
+        result.update(status="UNAVAILABLE", reason="NON_READY_RESEARCH_COMPLETE_INPUT_BUDGET_EXCEEDED")
+        return result
+    if not fixture_clock_valid:
+        result["accounting"] = {"input_card_count": len(rows), "unexamined_card_count": len(rows)}
+        result["card_accounting"] = [{"source_card_index": index, "source_card_sha256": canonical_sha256(card),
+            "status": "UNEXAMINED", "reason": "MISSING_NAIVE_MALFORMED_OR_FUTURE_FIXTURE_SOURCE_CLOCK"}
+            for index, card in enumerate(rows)]
+        result.update(status="UNAVAILABLE", reason="MISSING_NAIVE_MALFORMED_OR_FUTURE_FIXTURE_SOURCE_CLOCK")
+        return result
+    candidates, fixtures = defaultdict(list), defaultdict(list)
+    for row in candidate_rows:
+        if isinstance(row, dict) and isinstance(row.get("candidate_id"), str):
+            candidates[row["candidate_id"]].append(row)
+    for row in fixture_rows:
+        if isinstance(row, dict) and isinstance(row.get("fixture_id"), str):
+            fixtures[row["fixture_id"]].append(row)
+    identity_records = defaultdict(set)
+    for card in rows:
+        if isinstance(card, dict):
+            for key in ("recommendation_id", "ticket_id"):
+                value = card.get(key)
+                if isinstance(value, str) and value:
+                    identity_records[(key, value)].add(canonical_sha256(card))
+    conflicts = {key for key, versions in identity_records.items() if len(versions) > 1}
+    cards, seen = [], set()
+    for index, card in enumerate(rows):
+        account = {"source_card_index": index, "source_card_sha256": canonical_sha256(card),
+                   "status": "EXCLUDED", "reason": "MALFORMED_SOURCE_CARD"}
+        result["card_accounting"].append(account)
+        if not isinstance(card, dict):
+            continue
+        account["source_status"] = card.get("status")
+        conflict_fields = [key for key in ("recommendation_id", "ticket_id")
+            if isinstance(card.get(key), str) and (key, card[key]) in conflicts]
+        if conflict_fields:
+            account.update(reason="CONFLICTING_SOURCE_CARD_IDENTITY", conflicting_identity_fields=conflict_fields)
+            continue
+        if not isinstance(card.get("status"), str) or card["status"] not in NON_READY_STATUSES:
+            account["reason"] = "READY_REMAINS_ORIGINAL_PATH" if card.get("status") == "READY" else "UNSUPPORTED_SOURCE_STATUS"
+            continue
+        legs = card.get("legs", [])
+        if not isinstance(legs, list) or any(not isinstance(leg, dict) for leg in legs):
+            continue
+        if not legs:
+            account["reason"] = "EMPTY_SOURCE_CARD"
+            continue
+        identity = account["source_card_sha256"]
+        if identity in seen:
+            account.update(status="DUPLICATE", reason="EXACT_SAME_SOURCE_RECORD")
+            continue
+        seen.add(identity)
+        account.update(status="INCLUDED", reason="CANONICAL_NON_READY_RESEARCH_SOURCE")
+        cards.append({"sha256": identity, "legs": legs, "profile_id": card.get("profile_id"),
+            "source_card_index": index, "source_card_identity": {key: card[key] for key in (
+                "recommendation_id", "ticket_id", "portfolio_ticket_id", "profile_id", "status", "stake", "stake_units",
+                "unit_stake", "wager_id") if key in card}})
+    reference_count = sum(len(card["legs"]) for card in cards)
+    fixture_ids = {leg.get("fixture_id") for card in cards for leg in card["legs"] if isinstance(leg.get("fixture_id"), str)}
+    if reference_count > MAX_CARDS * MAX_FIXTURES or len(fixture_ids) > MAX_FIXTURES:
+        result.update(status="UNAVAILABLE", reason="NON_READY_RESEARCH_COMPLETE_REFERENCE_BUDGET_EXCEEDED")
+        return result
+    result["accounting"] = {"input_card_count": len(rows), "included_card_count": len(cards),
+        "partitions": dict(Counter(row["status"] for row in result["card_accounting"])),
+        "source_leg_references": reference_count, "source_fixture_count": len(fixture_ids),
+        "source_keyset_sha256": canonical_sha256(result["card_accounting"]),
+        "candidate_source_count": len(candidate_rows),
+        "invalid_candidate_source_indices": [index for index, row in enumerate(candidate_rows)
+            if not isinstance(row, dict) or not isinstance(row.get("candidate_id"), str)],
+        "fixture_source_count": len(fixture_rows),
+        "invalid_fixture_source_indices": [index for index, row in enumerate(fixture_rows)
+            if not isinstance(row, dict) or not isinstance(row.get("fixture_id"), str)],
+        "candidate_input_keyset_sha256": canonical_sha256([[index, canonical_sha256(row)]
+            for index, row in enumerate(candidate_rows)]),
+        "fixture_input_keyset_sha256": canonical_sha256(fixture_rows)}
+    as_of = _time(report.get("finished_at", report.get("observed_at")))
+    sources = [[_research_source_binding(leg, candidates, fixtures, as_of, card["profile_id"]) for leg in card["legs"]] for card in cards]
+    if cards:
+        for name in MODELS:
+            try:
+                result["models"][name] = _non_ready_model_research(cards, sources,
+                    artifacts.get("numeric_models", {}).get(name) or {}, as_of)
+            except (AttributeError, KeyError, TypeError, ValueError, OverflowError):
+                result["models"][name] = {"status": "UNAVAILABLE", "reason": "INVALID_LOCAL_MODEL_SOURCE",
+                                           "source_card_count": len(cards), "cards": [], "joint_known_leg_events": None}
+    result["status"] = "RESEARCH_SCENARIOS_ONLY" if cards else "NO_SUPPORTED_NON_READY_CARDS"
+    return result

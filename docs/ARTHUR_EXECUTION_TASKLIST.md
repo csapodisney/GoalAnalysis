@@ -551,3 +551,5 @@ Adatfogyasztási integritás saját6151full/75új/3NEWactual/ROOT/runtimeOFF iga
 Read-only időjárási minőségmérés és passzív sorozatlista saját6209teljes ellenőrzés alatt: [forrásbizonyíték](status/2026-10-27-readonly-weather-catalogue-consumers/REPORT-SOURCE-PENDING.md). 58újPython/3JS,7TESTONLYtermék1meccs,25konfigurált24mapped32UNKNOWN; nem új weatherchallenger/forecast/szelvény/profit. DailyOFF.
 
 Időjárási baseline-visszamérés/passzív catalogue saját6209full/58új/3NEWactual/ROOT/runtimeOFF igazolt: [lezárt bizonyíték](status/2026-10-27-readonly-weather-catalogue-consumers/REPORT-CLOSED.md). Formal6.4nyitott; következő normal-quality-business-validation-readonly; DailyOFF.
+
+NemREADY kijelölt lábkutatás saját6261full/52új ellenőrzés alatt: [forrásbizonyíték](status/2026-10-27-non-ready-selected-leg-research/REPORT-SOURCE-PENDING.md). DailyOFF.
