@@ -1,0 +1,51 @@
+{
+  "at": "2026-10-27T13:35:38.687617+00:00",
+  "task": "astra-feedback-consumption-contract",
+  "status": "OWN_ROOT_INDEPENDENT_PHYSICAL_RUNTIME_PASS",
+  "full": 6392,
+  "target": 131,
+  "new_tests": 19,
+  "adapter": 10,
+  "actual_replays": 3,
+  "source_files": 1268,
+  "old_ledger_rows": 4092,
+  "old_archives": 15510,
+  "protected_stores": 4,
+  "consumer_input": {
+    "status": "FINAL_INSTALLED_TYPED_FEEDBACK_AND_SAVED30_CONTEXT8_OFFLINE_PROOF_READ_BACK",
+    "actual_APP_readback_sha256": "4447e44df62ad8bd6e297a2c29879c93d5010ce1f8e75771ae1d116bf6cd67e6",
+    "final_target_proof_sha256": "567fbac711e14a82a171a1716cc99961263cea5627e4c0075087a97176f4a356",
+    "current_source_files": {
+      "src/goal_analysis/jobs/portfolio.py": "46a97a5854d507f920c892b51084dfcddfcd54270decf1ab3a6e6a888cac83ca",
+      "tests/test_astra_compact_monetary_feedback.py": "72521cecc12ca7bb6c8f072b1484a0542adc3d84cd06d129ceb251463b8bfc10"
+    },
+    "actual_feedback_characters": 11903,
+    "actual_wire_utf8_bytes": 247714,
+    "original_feedback_characters": 22226,
+    "all_nonfeedback_fields_exact": true,
+    "new_paid_request_or_business_generation": 0,
+    "saved_case_only_not_universal_future_size_guarantee": true,
+    "old_PARTIAL_report_not_regenerated_or_repaired": true
+  },
+  "old_stadium_registry_files_physically_preserved": 155,
+  "report_run_id": "2026-10-27-d57b8c56e622",
+  "report_date": "2026-10-27",
+  "report_physical": "e5d35ed277f3275586bcb9fad0479f1d2d2c8596c28f0861980424836222700d",
+  "report_embedded": "aa60b3feac2aafa1c2dcede069a63651c9ac2179818c110fc997afe9ba759bef",
+  "report_full_ledger": "ba5d2f81f3bc293a6f89bd809c33bb5f1883fbfbe4d8fa05fc534b8b5d226dc4",
+  "validation_exit_code": 0,
+  "closure_exit_code": 0,
+  "first_runtime_exit_code": 0,
+  "activation_CAS_or_revalidation_writes": 0,
+  "both_whole_RAW_byte_exact": true,
+  "daily_enabled": false,
+  "legacy_enabled": false,
+  "prior_business_prefix_role": "ORIGINAL_NATIVE1_AND_FIRST_ARCHIVE0_PRESERVED_NOT_RETAGGED",
+  "current_four_store_baseline_role": "POST_BUSINESS_PREINSTALL_MAIN_FILE_BYTES_NOT_HISTORICAL_LOGICAL_PREFIX",
+  "root_provider_capture_import_llm_normal_generation_money_schema_operations": 0,
+  "new_actual_review_forecast_ticket_quote_PIT_cash_profit_claim": false,
+  "physical_proof": {
+    "path": "artifacts/roadmap-execution-20261020/astra-feedback-consumption-contract/root-independent-readback.json",
+    "sha256": "f12adc35f330a197f55e77e4ef6ae4f29f14d86fbf4e80f254b764ddd8e6edb5"
+  }
+}

@@ -565,3 +565,5 @@ Pénzügyi projekció/UI végleges forrása saját ellenőrzés alatt, még nem 
 Pénzügyi projekció és dashboard saját teljes/replay/ROOT/runtime OFF ellenőrzéssel: [lezárt bizonyíték](status/2026-10-27-actual-money-projection/REPORT-CLOSED.md). Régi ledger/report nem módosult.
 
 Friss normál-input readiness: [RO diagnózis](status/2026-10-27-normal-input-readiness/REPORT.md). Új mai report még nincs; következő külön operátori business-preflight. Daily/legacy OFF.
+
+Astra feedback saját teljes/replay/ROOT/runtime OFF ellenőrzéssel: [lezárt bizonyíték](status/2026-10-27-astra-feedback-consumption/REPORT-CLOSED.md). A régi PARTIAL riport nem regenerálódott.
