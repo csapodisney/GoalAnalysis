@@ -1,0 +1,11 @@
+# B05 — az összegyűjtött adatok tényleges felhasználásának ellenőrzése
+
+2026-10-27T02:03:33.973237+00:00. Csak olvasási audit, nem új APP-javítás vagy modell-elfogadás. A lezárt B04 előzmény GitHub SHA-ja: `8a45f1d535cb643155a23ff5929315fe7baf1cf5`. Friss, közös ROOT lock alatti 1247 forrásfile, 4087 ledger sor és négy védett store egyezése igazolt; Daily és legacy OFF. Nem történt új fit, replay, provider/API/LLM-kérés, import, receipt, activation vagy runtime-művelet.
+
+A régi, változatlan cc3b riportban az xG/játékos adatok működő fogyasztóhoz érnek: 156 súlyozott opció-előfordulás, 553 játékoskontextus-láb és 308 availability-adjusted láb. Játékos/xG/schedule kategóriánként 84 sourced és 31 UNKNOWN candidate-előfordulás látszik. Ezek nem egyedi meccsek és nem okozatilag bizonyított profitnövekedés. Az időjárás régi UNKNOWN állapota nem cáfolja a később külön elfogadott B03 javítást; a régi riportot nem írjuk át. A pihenő- és távolságadat proxy, nem igazolt regeneráció vagy útiterv; hiányzó opcionális adat nem állít le más érvényes fogyasztót.
+
+Három konkrét, következő javítás bizonyított: hiányos confirmed XI-listából nem következhet automatikus játékoshiány; a native bookmaker pontos forráskulcsát kell használni a supplementary quote kontextushoz; részleges modell-lefedettségnél a többi igazolt szelvényláb maradjon külön kutatási szcenárióban. A régi quote kohorszban 628 candidate mellett 95 exact native összehasonlítási lehetőségből az eredeti út nullát adott, 34 mentett expert-láb-előfordulásból 14-hez van pontos párosítás. Ez kontextus, nem új ajánlat vagy provider quote-idő. A B07 mentett szintetikus jövőpéldában Gauss/Laplace 2/3 és Kepler 1/3 lábja használható; az egész szelvény valószínűsége továbbra is ismeretlen, a részesemény nem új szelvény.
+
+A külön artifact-kontrollok 31/23/65 PASS eredménye a jelöltek helyi bizonyítéka, nem production elfogadás. A következő egyetlen scope `context-data-consumer-integrity-contract`; annak külön végleges forrásellenőrzése/full/új replay/fizikai/runtime OFF bizonyítása szükséges. Nincs új szelvény/PIT/current quote/LIVE/profit állítás.
+
+215 sor: 176 zöld, 39 piros; kizárólag 11.2 evidence változott, a másik 214 sor és minden státusz/reference változatlan. A külön 136 kész/31 nyitott lista nem projekt-százalék. [Bizonyíték](EVIDENCE.json) · [215 állapot](STATUS-215.json)

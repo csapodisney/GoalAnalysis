@@ -1,0 +1,48 @@
+{
+  "at": "2026-10-27T02:03:33.973237+00:00",
+  "task": "ticket-quality-context-use-readonly",
+  "status": "READONLY_CONSUMER_AUDIT_VERIFIED_NOT_APP_FIX_ACCEPTANCE",
+  "audit_only": true,
+  "APP_acceptance": false,
+  "parent_APP_scope_remote_sha": "8a45f1d535cb643155a23ff5929315fe7baf1cf5",
+  "source_file_count": 1247,
+  "ledger_rows": 4087,
+  "four_stores_unchanged": true,
+  "daily": "OFF_REQUIRED",
+  "legacy": "OFF",
+  "new_APP_test_full_replay_fit_runtime_activation_provider_operations": 0,
+  "saved_report": "2026-10-26-cc3b72cd5b81",
+  "saved_report_is_historical": true,
+  "actual_old_saved_consumption": {
+    "weighted_option_occurrences": 156,
+    "player_context_leg_occurrences": 553,
+    "availability_adjusted_leg_occurrences": 308,
+    "players_xg_schedule_each_sourced_candidate_occurrences": 84,
+    "players_xg_schedule_each_unknown_candidate_occurrences": 31
+  },
+  "concrete_issues_not_APP_fixed": [
+    "Partial confirmed XI cannot prove negative starter membership",
+    "Exact native bookmaker context join misses saved evidence",
+    "Missing selected leg discards other valid leg research scenarios"
+  ],
+  "artifact_controls_only": {
+    "lineup": 31,
+    "native_bookmaker": 23,
+    "selected_leg": 65
+  },
+  "physical_evidence": {
+    "path": "artifacts/roadmap-execution-20261020/ticket-quality-context-use-readonly/root-independent-readback.json",
+    "sha256": "ee9542ff3923d40f050c6593f3a831c214f9915e287d98bf662bdd7025f60a8d"
+  },
+  "original_audit_sha256": "a602837577fa126fa2a7617e4c5f12cc55bda0cbcba52f4932939c0112752fb6",
+  "artifact_proof_references": {
+    "../confirmed-lineup-membership-contract/artifact-final-readback.json": "98ae4c148c0d9c69a0ca7716fcf54b89965e9935d71f51759eeadee2742c9b28",
+    "../native-bookmaker-context-binding-contract/artifact-final-readback.json": "e9ee8ca44c07d143040991fa7d06aa13eda42c39cf031cefcff91af24e9266c1",
+    "../ticket-quality-quote-use-readonly/saved-cohort-proof.json": "e52cf08ae2bd9fedbbfa58df82c096217e0030414025a2281ff71f59acccbf42",
+    "../ticket-quality-selected-leg-simulation-readonly/readonly-evidence.json": "d1ee581d6bc133be716a1f3535983b0039cffde7e6783cc61f7b02059d335749",
+    "../selected-leg-partial-scenario-contract/artifact-final-readback.json": "1af978b5e6a1af6fe8b8bd20503bd76460148cf49d767c017c62fc7f1f2159eb",
+    "../selected-leg-partial-scenario-contract/performance-probe-outcome.json": "33bb10f87c3e5d820bb364e585c43975d688f028dfa792b61cc1ef8a143322ae"
+  },
+  "new_ticket_forecast_PIT_quote_profit_claim": false,
+  "next_single_task": "context-data-consumer-integrity-contract"
+}
