@@ -1,0 +1,50 @@
+{
+  "at": "2026-10-27T04:29:38.376171+00:00",
+  "task": "weather-forecast-outcome-source-contract",
+  "status": "OWN_ROOT_INDEPENDENT_PHYSICAL_RUNTIME_PASS",
+  "full": 6209,
+  "target": 350,
+  "new_tests": 58,
+  "adapter": 10,
+  "actual_replays": 3,
+  "source_files": 1256,
+  "old_ledger_rows": 4087,
+  "old_archives": 13853,
+  "protected_stores": 4,
+  "consumer_input": {
+    "status": "FINAL_APP_READONLY_WEATHER_CATALOGUE_PURE_PROOF_READ_BACK",
+    "actual_APP_pure_readback_sha256": "082819a8a22990868183a7aaa2f989d9de4ea193b03090df9f3c73e3b8636d58",
+    "final_target_proof_sha256": "cc5f0f61b9cd260f6990e8f917a2a4f77182326fcaa7398c4a7adc885584f986",
+    "new_behavior_cases": 58,
+    "current_source_files": {
+      "src/goal_analysis/learning/__init__.py": "8387855c2f05f41aa47942f2dd732475863f176af6b10361655d29d7f42561d9",
+      "src/goal_analysis/learning/weather_forecast_quality.py": "1be8eba00c843bbe5c6844fdb068f49efed55e1592e928a01768020df58c3a89",
+      "tests/test_weather_forecast_quality.py": "a0d39257a4e48de40d9ccc05be66617e47d100217678ee5251f5305b56f740e4",
+      "tests/test_weather_forecast_quality_physical.py": "92c4321d4f9e154903c13bd58cb6c952d56a69bc1d001340ba5cddff843d04aa",
+      "src/goal_analysis/jobs/readonly_competitions.py": "7108e141c01f646c537c0569cc543eea5bb89561990371058a1ddf30b4656943",
+      "src/goal_analysis/portfolio_dashboard.py": "88568026e2f364c610cc47dfc8d428327ed579bc7828db871e323a097f79402f",
+      "src/goal_analysis/web/app.js": "beff17491c66473390d681afac6a8f7f580e8a6929bdc25455a20cbaf3485ccc",
+      "tests/test_readonly_competition_catalogue.py": "38f3a69b2d005867adb078268b07b6dbe7cc8a645e7b00693359b65d38816a15",
+      "tests/readonly_competitions_frontend_check.mjs": "5445b127e8562a473c8c00cc112bf4803c189564f958b52827c969388f882dc6"
+    },
+    "new_model_fits_or_actual_publication_in_this_readback": 0,
+    "actual_old_DAILY_PIT_live_current_quote_profit_claim": false
+  },
+  "old_stadium_registry_files_physically_preserved": 155,
+  "report_physical": "5592bf755cdc07c56969073d711b9c253107877bf53409e2dbe2dce06b7433be",
+  "report_embedded": "916089cc9a91372873e6cdce61ff768d3930b1658a799cf56c1a09d373c326ce",
+  "report_full_ledger": "49f87b0c9bba26f497e494c5757500aef0231683d6564a537446ffabb8c99252",
+  "validation_exit_code": 0,
+  "closure_exit_code": 0,
+  "first_runtime_exit_code": 0,
+  "activation_CAS_or_revalidation_writes": 0,
+  "both_whole_RAW_byte_exact": true,
+  "daily_enabled": false,
+  "legacy_enabled": false,
+  "root_provider_capture_import_llm_normal_generation_operations": 0,
+  "new_actual_forecast_ticket_quote_PIT_global_unique_profit_claim": false,
+  "physical_proof": {
+    "path": "artifacts/roadmap-execution-20261020/weather-forecast-outcome-source-contract/root-independent-readback.json",
+    "sha256": "ffc08ac28f60408a3409d19ab7dd29ab800abf218c3e73fdb0399f5e6680e5b2"
+  }
+}

@@ -1,0 +1,11 @@
+# Időjárási visszamérés és passzív ligaolvasás — ellenőrzött javítás
+
+2026-10-27T04:29:38.376171+00:00. Saját6209full/350célzott58új/10adapter/Ruff/3NEWactual×8 és97+33+1DatasetStore manifest+adat PASS. Validation0/follower0/FIRSTmetadata-runtime0; ROOT1256source/4087régi ledger/archívum/4store/155stadionfile, korábbi receipt/cutofflineage és pontos meglévő2026-10-26cc3b három hash változatlan. Local+Tailscale/currentJS/gateway/learning/team igazolt; Daily éslegacyOFF. Mindkét activation teljesRAWbyteazonos, CAS és friss revalidationóra0.
+
+A meglévő baselineforecast, tényleges eredmény és elérhető forecastjellegű időjárási feature pontos kulcs/idő/forráskötéssel jut a normál learning riportba, mentésbe, betöltésbe és hash-ellenőrzött exportba. Az alapforecast megfelelőscore-visszamérése időjárási rétegek szerint látható; ez nem tanított időjárásmodell, önkényes súly vagy új weather-modellvalószínűség. Hiányzó/érvénytelen opcionális weather helyiUNKNOWN, az értékelhető baseline folytatódik. A külön weatherchallenger, calibration/holdout és formális6.4 elfogadás továbbra sem kész; eltérő kohorszok scorekülönbsége nem javulásbizonyíték.
+
+Passzív dashboard GET nem hoz létre providert/DBsémát, nem tölt le, nem decryptál és nem ír cache-t/kvótát. A meglévő pontos cached raw/HTTPwitness olvasása vagy a25beállítottID/24natívmapping+32UNKNOWN konfigurált fallback szolgálja a választót. Ismeretlen meccsszám nem0; staleclock nem frissül. A valós eredeti Pythoncollection API és normál collector megmarad, GET nem hívja. Az explicit refresh=1 csak helyi újraolvasás. Tényleges izolált SQLite+ephemerallocalGET/normalstorage/JS kontrollok és eredetiassertok külön bizonyítottak; a TESTONLYfixture nem actualsportforecast/PITismeret.
+
+Nincs új provider/import/capture/normalgeneration, mentett szelvény/ár/quoteóra átírás, LIVEpromóció vagy profitállítás. B03/B04/context bizonyítékok és régi19raw271result/181/N9STOP megmaradtak. Következő egyetlen scope: normal-quality-business-validation-readonly; előbb friss actualkapuk és meglévő fogyasztási/üzleti adatút ROleltára, nem hallgatólagos paidgeneration.
+
+215176zöld39piros: csak11.2evidence frissült; más214status/reference és weather6.4piros megmaradt. Külön136kész31nyitott, nemprojekt%. [Bizonyíték](EVIDENCE-CLOSED.json) · [215állapot](STATUS-215-CLOSED.json)
