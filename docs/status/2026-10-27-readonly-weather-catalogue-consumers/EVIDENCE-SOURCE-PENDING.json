@@ -1,0 +1,151 @@
+{
+  "at": "2026-10-27T03:37:22.699200+00:00",
+  "task": "weather-forecast-outcome-source-contract",
+  "status": "SOURCE_PENDING_OWN_FULL_AND_RUNTIME_ACCEPTANCE",
+  "targeted_passed": 350,
+  "new_behavior_cases": 58,
+  "frontend_cases": 3,
+  "adapter": 10,
+  "collection": 6209,
+  "source_files": 1256,
+  "existing_files_byte_exact": 1247,
+  "source_sha256": {
+    "src/goal_analysis/learning/__init__.py": "8387855c2f05f41aa47942f2dd732475863f176af6b10361655d29d7f42561d9",
+    "src/goal_analysis/learning/weather_forecast_quality.py": "1be8eba00c843bbe5c6844fdb068f49efed55e1592e928a01768020df58c3a89",
+    "tests/test_weather_forecast_quality.py": "a0d39257a4e48de40d9ccc05be66617e47d100217678ee5251f5305b56f740e4",
+    "tests/test_weather_forecast_quality_physical.py": "92c4321d4f9e154903c13bd58cb6c952d56a69bc1d001340ba5cddff843d04aa",
+    "src/goal_analysis/jobs/readonly_competitions.py": "7108e141c01f646c537c0569cc543eea5bb89561990371058a1ddf30b4656943",
+    "src/goal_analysis/portfolio_dashboard.py": "88568026e2f364c610cc47dfc8d428327ed579bc7828db871e323a097f79402f",
+    "src/goal_analysis/web/app.js": "beff17491c66473390d681afac6a8f7f580e8a6929bdc25455a20cbaf3485ccc",
+    "tests/test_readonly_competition_catalogue.py": "38f3a69b2d005867adb078268b07b6dbe7cc8a645e7b00693359b65d38816a15",
+    "tests/readonly_competitions_frontend_check.mjs": "5445b127e8562a473c8c00cc112bf4803c189564f958b52827c969388f882dc6"
+  },
+  "own_full_accepted": false,
+  "own_runtime_accepted": false,
+  "scope_complete": false,
+  "daily_enabled": false,
+  "legacy_enabled": false,
+  "actual_APP_physical_TESTONLY_readback": {
+    "path": "artifacts/roadmap-execution-20261020/weather-forecast-outcome-source-contract/production-readonly-consumers-readonly-final.json",
+    "sha256": "082819a8a22990868183a7aaa2f989d9de4ea193b03090df9f3c73e3b8636d58"
+  },
+  "weather_conditioned_baseline_measurement": {
+    "products": 7,
+    "unique_fixtures": 1,
+    "UTC_days": 1,
+    "models": 1,
+    "market_families": 3,
+    "baseline_all_product_brier": 0.12571428571428572,
+    "selected_baseline_brier": 0.09000000000000002,
+    "different_cohorts_not_improvement": true,
+    "weather_stratum_basis": "PREMATCH_FORECAST_FEATURE_PROXY_NOT_REALIZED_WEATHER",
+    "original_MAX_PATH_worker_exit_code_preserved": 1,
+    "separate_completion_exit_code": 0,
+    "separate_normal_save_load_proof_exit_code": 0,
+    "normal_build_consumes_actual_reader": true,
+    "heldout_weather_comparison_complete": false
+  },
+  "readonly_catalogue": {
+    "physical_cases": [
+      {
+        "case": "fresh",
+        "status": "CACHED_SNAPSHOT",
+        "cache_status": "VALID",
+        "english_fixture_count": 1
+      },
+      {
+        "case": "stale",
+        "status": "STALE_SNAPSHOT",
+        "cache_status": "VALID",
+        "english_fixture_count": 1
+      },
+      {
+        "case": "corrupt",
+        "status": "CONFIGURED_FALLBACK",
+        "cache_status": "CORRUPT_CACHE_ENVELOPE",
+        "english_fixture_count": null
+      },
+      {
+        "case": "missing",
+        "status": "CONFIGURED_FALLBACK",
+        "cache_status": "MISSING_DB",
+        "english_fixture_count": null
+      },
+      {
+        "case": "alias_nonempty",
+        "status": "CACHED_SNAPSHOT",
+        "cache_status": "VALID",
+        "english_fixture_count": 1
+      },
+      {
+        "case": "alias_empty",
+        "status": "CACHED_SNAPSHOT",
+        "cache_status": "VALID",
+        "english_fixture_count": 0
+      },
+      {
+        "case": "alias_stale",
+        "status": "STALE_SNAPSHOT",
+        "cache_status": "VALID",
+        "english_fixture_count": 1
+      },
+      {
+        "case": "alias_url_bad",
+        "status": "CONFIGURED_FALLBACK",
+        "cache_status": "INVALID_EXPLICIT_HTTP_CACHE_PROOF",
+        "english_fixture_count": null
+      },
+      {
+        "case": "alias_clock_bad",
+        "status": "CONFIGURED_FALLBACK",
+        "cache_status": "INVALID_EXPLICIT_HTTP_CACHE_PROOF",
+        "english_fixture_count": null
+      },
+      {
+        "case": "alias_hash_bad",
+        "status": "CONFIGURED_FALLBACK",
+        "cache_status": "INVALID_EXPLICIT_HTTP_CACHE_PROOF",
+        "english_fixture_count": null
+      },
+      {
+        "case": "alias_unauth",
+        "status": "CONFIGURED_FALLBACK",
+        "cache_status": "INVALID_EXPLICIT_HTTP_CACHE_PROOF",
+        "english_fixture_count": null
+      },
+      {
+        "case": "alias_missing",
+        "status": "CONFIGURED_FALLBACK",
+        "cache_status": "INVALID_EXPLICIT_HTTP_CACHE_PROOF",
+        "english_fixture_count": null
+      },
+      {
+        "case": "alias_malformed",
+        "status": "CONFIGURED_FALLBACK",
+        "cache_status": "INVALID_EXPLICIT_HTTP_CACHE_PROOF",
+        "english_fixture_count": null
+      },
+      {
+        "case": "alias_http201",
+        "status": "CONFIGURED_FALLBACK",
+        "cache_status": "INVALID_EXPLICIT_HTTP_CACHE_PROOF",
+        "english_fixture_count": null
+      }
+    ],
+    "configured": 25,
+    "mapped": 24,
+    "unmapped_UNKNOWN": [
+      32
+    ]
+  },
+  "activation_CAS_or_revalidation_writes_required": 0,
+  "both_activation_source_sets_unchanged": true,
+  "parent_context_remote_sha": "4c641c7861a15f9e2a22827b8030a3580bcb168d",
+  "prior_215_status": {
+    "path": "docs/status/2026-10-27-context-data-consumer-integrity/STATUS-215-CLOSED.json",
+    "sha256": "2419314f519f9fa414299df1ddfbb6975571e1a630584e4a9bcf32c19894dda0"
+  },
+  "new_ROOT_capture_receipt_import_provider_LLM_generation": 0,
+  "new_actual_forecast_ticket_currentquote_PIT_LIVE_profit_claim": false,
+  "project_complete": false
+}

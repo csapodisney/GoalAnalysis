@@ -491,6 +491,18 @@ class ArthurState:
             self.runtime.update(running=False, last_output=output, last_exit_code=code,
                                 last_finished_at=datetime.now(UTC).isoformat())
 
+    def competition_catalogue(self, day: str, force: bool = False) -> dict:
+        """Passive GET projection; refresh means local reread, never collection."""
+        target = date.fromisoformat(day)
+        now = datetime.now(UTC)
+        validate_target_day(target, now)
+        from goal_analysis.jobs.readonly_competitions import read_competition_catalogue
+
+        result = read_competition_catalogue(self.root, _json(self.config_path), target, as_of=now)
+        result['local_reload_requested'] = bool(force)
+        return result
+
+    # Backward-compatible explicit collection command; never route passive GET here.
     def competitions(self, day: str, force: bool = False) -> dict:
         target = date.fromisoformat(day)
         validate_target_day(target, datetime.now(UTC))
@@ -701,7 +713,7 @@ def make_handler(state: ArthurState, token: str):
                     day = query.get("date", [None])[0]
                     if day is None:
                         raise ValueError("Válassz napot a sorozatok lekéréséhez.")
-                    return self._send(state.competitions(day, query.get("refresh") == ["1"]))
+                    return self._send(state.competition_catalogue(day, query.get("refresh") == ["1"]))
                 if parsed.path == "/api/performance":
                     return self._send(
                         state.ledger.performance(

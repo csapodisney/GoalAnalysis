@@ -547,3 +547,5 @@ B05 meglévő adatfogyasztási RO-audit lezárható: [ellenőrzött megállapít
 Adatfogyasztási integritás saját6151teljes ellenőrzés alatt: [forrásbizonyíték](status/2026-10-27-context-data-consumer-integrity/REPORT-SOURCE-PENDING.md). HiányosXI helyiUNKNOWN, natív bookmaker exactSHADOWösszevetés, ismert selectedleg külön kutatási szcenárió; nem új aktuális forecast/szelvény/profit. DailyOFF.
 
 Adatfogyasztási integritás saját6151full/75új/3NEWactual/ROOT/runtimeOFF igazolt: [lezárt bizonyíték](status/2026-10-27-context-data-consumer-integrity/REPORT-CLOSED.md). XIhiány nem lesz téves absence, natív bookmaker pontos, ismert lábak külön részszcenárió. Következő weatherforecast/outcome forráscontract; DailyOFF.
+
+Read-only időjárási minőségmérés és passzív sorozatlista saját6209teljes ellenőrzés alatt: [forrásbizonyíték](status/2026-10-27-readonly-weather-catalogue-consumers/REPORT-SOURCE-PENDING.md). 58újPython/3JS,7TESTONLYtermék1meccs,25konfigurált24mapped32UNKNOWN; nem új weatherchallenger/forecast/szelvény/profit. DailyOFF.

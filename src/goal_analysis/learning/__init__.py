@@ -101,7 +101,7 @@ class LearningAgent:
         findings, proposals = findings_and_proposals(measured["evidence"])
         total = sum(m["tickets"]["total"] for m in measured["metrics"].values())
         day = as_of.astimezone(BERLIN).date().isoformat()
-        return {
+        report = {
             "schema_version": 1, "report_id": f"learning-{day}-{digest(measured)[:12]}",
             "date": day, "as_of": as_of.isoformat(), "created_at": now.isoformat(),
             "status": "PARTIAL" if total else "NO_DATA",
@@ -113,6 +113,19 @@ class LearningAgent:
             "automatic_changes": False, **measured, "findings": findings,
             "recommendations": proposals, "limits": list(LIMITS),
         }
+
+        try:
+            from .weather_forecast_quality import inspect_weather_forecast_quality
+
+            report["weather_conditioned_forecast_quality"] = inspect_weather_forecast_quality(
+                self.root, as_of=as_of, max_seconds=30)
+        except Exception:  # noqa: BLE001 - optional diagnostics never veto baseline learning.
+            report["weather_conditioned_forecast_quality"] = {
+                "status": "UNAVAILABLE", "reason": "OPTIONAL_WEATHER_LEARNING_UNAVAILABLE",
+                "mode": "SHADOW", "decision_effect": "NONE", "heldout_weather_comparison_complete": False,
+                "weather_stratum_basis": "PREMATCH_FORECAST_FEATURE_PROXY_NOT_REALIZED_WEATHER",
+                "external_requests": 0, "additional_model_fits": 0, "production_writes": 0}
+        return report
 
     def _save(self, db, report):
         report["report_hash"] = digest(report)
