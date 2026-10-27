@@ -1,6 +1,6 @@
 # Arthur fejlesztési és végrehajtási feladatlista
 
-Aktuális fejlesztés: NORMAL időjárási receipt-forrás telepítve; a külön 284-es célzott futás időkerete timeout124-gyel lejárt, nincs célzott PASS/XML. Az első saját 6426 teljes ellenőrzés és három új actual replay fut; a pontos 284-es részhalmaz lefedése és új fizikai fixture-bizonyítéka még PENDING. 10 adapter, Ruff és collection PASS; full/runtime/scope-elfogadás még nincs. Daily és legacy OFF. [Forrás és pontos kapuk](status/2026-10-27-current-weather-availability/REPORT-SOURCE-PENDING.md). Az alábbi korábbi állapotok történetiek.
+Aktuális fejlesztés: az időjárási forrás telepítve, de az első 6426-os teljes ellenőrzés natív1-gyel megállt:6425 PASS és egy helyi HTTP-kapcsolati FAIL. A284 weather-eset egyedi PASS nem teljes elfogadás. Eredeti eredmények megőrizve; külön HTTP-okvizsgálat/jelölt készül, nincs régi full/target/replay retry vagy follower/runtime. Daily és legacy OFF. [Pontos állapot](status/2026-10-27-current-weather-availability/REPORT-VALIDATION-STOPPED.md). Az alábbi korábbi állapotok történetiek.
 
 Aktuális, 2026-10-27: **Daily és legacy OFF.** Egy valódi mai NORMAL elemzés mentve: PARTIAL / 1 DRAFT / 0 fogadás. 1664 retained DB-mérkőzés tényleges modellinput; a fő Astra-review pénzügyi feedback-kerete hibásan túlterhelt. Következő: `astra-feedback-consumption-contract`, majd jövőbeli weather receipt-integráció. [Friss eredmény és pontos új hibák](status/2026-10-27-current-normal-business-assessment/REPORT.md). A lentebbi korábbi Daily ON és korábbi állapotok történeti bejegyzések.
 

@@ -1,0 +1,51 @@
+{
+  "at": "2026-10-27T16:55:26.851997+00:00",
+  "task": "current-normal-weather-provenance-consumer-gap",
+  "status": "STOPPED_OWN_FIRST_FULL_NATIVE1_NOT_SOURCE_OR_RUNTIME_ACCEPTANCE",
+  "full_cases": 6426,
+  "case_PASS": 6425,
+  "case_FAIL": 1,
+  "original_standalone_target_native_exit_code": 124,
+  "selected284_case_PASS_in_failed_XML_NOT_acceptance": 284,
+  "new34_case_PASS_in_failed_XML_NOT_acceptance": 34,
+  "failure": {
+    "test": "tests.actual_money.test_money_http::test_local_token_guard_before_money_call",
+    "observed": "ConnectionAbortedError WinError10053 at HTTP client.getresponse before status line",
+    "confirmed_weather_regression": false,
+    "same_handler_and_test_as_accepted_Astra6392": true,
+    "cause": "NOT_YET_EXCLUSIVELY_PROVEN"
+  },
+  "source_pending_remote_sha": "750714539138f4e6a88bccc5120b00f15c2e6344",
+  "sources_sha256": {
+    "scripts/run-arthur.py": "525a4bd5704369502ed136602c5a63667b8c51beb41189142d710878e2b5911f",
+    "src/goal_analysis/jobs/nightly.py": "72a05bfb0ecc0c3d85465ab22de2d347e74b73d3289ac12f3f228e18233d6851",
+    "src/goal_analysis/jobs/sports_context_archive.py": "ceb7507b5c7bda4e7bcbacdb0d5a7ad1340caf20fab8bd4505d1cda86f5b96bc",
+    "src/goal_analysis/providers/open_meteo.py": "582ec60e5e497406e9f322c6567a268347bc6f3502e772cadbb8628e6a2c1923",
+    "src/goal_analysis/storage/weather_availability.py": "2a2f60c5b4cf1896d0a951eccb54c41bde071bd08809c677e9fed6d2a9701118",
+    "tests/test_current_weather_availability.py": "e8895d41d77329f926189ca666d77e37fa19c06366d33d65f3dfe8d93a746c12"
+  },
+  "source1270_and392helper_pins_hash_exact_in_independent_RO_diagnosis": true,
+  "independent_diagnosis": {
+    "path": "artifacts/roadmap-execution-20261020/weather-first-full-failure-readonly-diagnosis-path-completion-20261027/DIAGNOSIS.json",
+    "sha256": "fc6d73feef91a5d15b20330d0a51788a34c448f93dd9a0921ead896330bbfcf1"
+  },
+  "original_evidence_sha256": {
+    "full-active.xml": "9107e93d5ac00a5908e8a71d4c513dd04ceb9b34fe8f14003820622648bb1778",
+    "full-active.log": "f90007c4428c207aa7ec15929e1ef99d0abd0950c30c2c8be05c8305fec732b4",
+    "full-active.log.outcome.json": "91038b78173d8937fcea067c4203df7f6241925ec40c2488fdd0980de4c54318",
+    "replay-active.log.outcome.json": "4c336d954ac8e0a69bb8b173b13f44506c8240fcf5b32818d4582826037ec6c0",
+    "independent-worker-full-first-outcome.json": "b41bf58b75c5c3c9d007a47b510a23c3f82c22323a76ba929d06f8a0a78bcf0f",
+    "worker-state-full-first.json": "f338fc8a4fdc6e618299d52efa886dd769ee311ecaeb8b9d9d4b409e6f7ddd68",
+    "worker-helper-frozen-full-first.json": "693c2d8fcd103adfc80e9d0a124343dbc4fb4b2bf6a63fd750732c8185a03fc8",
+    "installed-controls-outcome.json": "9af61b5b23b339251950c45f4fbefc50439bd3790957e3caa6844332f04f55c9"
+  },
+  "new_full_attestation_consumer_acceptance_follower_activation_runtime": false,
+  "original_full_target_replay_retry_or_assert_weakening": false,
+  "new_HTTP_source_candidate_and_diagnostic_probe": "PREPARE_ONLY_UNRUN_NO_APP_EDIT",
+  "Daily_enabled": false,
+  "legacy_enabled": false,
+  "existing_D57": "HISTORICAL_PARTIAL_1_DRAFT_0_WAGER_UNMODIFIED_NOT_NEW_ACCEPTED_WEATHER_OR_REVIEW",
+  "green_red_semantic_snapshot": "176GREEN39RED_OF215_RETAINED_NOT_NEW_COMPLETE_CLAIM",
+  "original_numbered_open_requirements": 31,
+  "project_complete": false
+}
