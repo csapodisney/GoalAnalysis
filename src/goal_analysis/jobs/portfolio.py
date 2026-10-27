@@ -282,7 +282,113 @@ def _compact_feedback(ledger) -> dict | None:
         }
         for ticket in source.get("recent_settled", [])[:12]
     ]
-    return result
+    # Only the recorded-money V2 feedback extension is projected. Other data and
+    # the original legacy/nonmonetary path remain exactly as before.
+    import copy
+    import hashlib
+    import json
+
+    amount_fields = {
+        "stake_eur", "settled_stake_eur", "payout_eur", "net_eur", "open_stake_eur",
+        "cash_flow_eur", "yield_pct", "known_subset_net_eur", "bank_cash_receipt_eur",
+        "after_cost_system_net_eur",
+        "max_drawdown_eur", "known_subset_max_drawdown_eur",
+    }
+    modified = False
+    original = copy.deepcopy(result)
+
+    def identity(value):
+        return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=False,
+                                        separators=(",", ":"), allow_nan=False).encode("utf-8")).hexdigest()
+
+    def safe_identity(value):
+        try:
+            return identity(value)
+        except (TypeError, ValueError):
+            return None
+
+    def valid_number(value):
+        return value is None or type(value) in (int, float)
+
+    def project(summary):
+        nonlocal modified
+        projection = summary.get("monetary_projection")
+        if not isinstance(projection, dict) or projection.get("monetary_contract") == "LEGACY_RECORDED_V1":
+            return summary
+        modified = True
+        output = copy.deepcopy(summary)
+        try:
+            projection_sha = identity(projection)
+            identity(summary)
+            valid = (projection.get("version") == "arthur-recorded-money-projection-v1"
+                     and projection.get("monetary_contract") == "CURRENT_HASH_V2"
+                     and projection.get("basis") == "RECORDED_SETTLEMENT_ARITHMETIC_NOT_BANK_CASH"
+                     and isinstance(projection.get("records"), list)
+                     and all(isinstance(row, dict) for row in projection["records"])
+                     and type(projection.get("projected_records")) is int
+                     and projection.get("projected_records") == len(projection["records"])
+                     and ("currency" not in projection or projection["currency"] == "EUR")
+                     and projection.get("verified_cash") is False
+                     and projection.get("bank_cash_receipt_eur") is None
+                     and projection.get("after_cost_system_net_eur") is None
+                     and projection.get("costs_included") is False
+                     and projection.get("fee_tax_or_subscription_allocation_inferred") is False
+                     and all(valid_number(projection[key]) for key in amount_fields if key in projection)
+                     and all(valid_number(summary[key]) for key in amount_fields if key in summary))
+        except (TypeError, ValueError):
+            projection_sha, valid = None, False
+        if not valid:
+            invalid_fields = [key for key, value in summary.items() if safe_identity(value) is None]
+            output = {key: value for key, value in output.items() if key not in invalid_fields}
+            for key in amount_fields:
+                if key in summary:
+                    preserve = key in {"stake_eur", "open_stake_eur", "settled_stake_eur"} and ("currency" not in projection or projection["currency"] == "EUR")
+                    output[key] = summary[key] if preserve and valid_number(summary[key]) and safe_identity(summary[key]) is not None else None
+            output["monetary_projection"] = {
+                "status": "UNAVAILABLE_INVALID_MONETARY_FEEDBACK_CONTRACT",
+                "monetary_contract": projection.get("monetary_contract"),
+                "source_projection_sha256": projection_sha,
+                "source_identity_status": "HASHED" if projection_sha is not None else "UNHASHABLE_INVALID_JSON",
+                "invalid_source_fields": invalid_fields,
+                "bank_cash_receipt_eur": None,
+                "after_cost_system_net_eur": None,
+            }
+            return output
+        # The already computed parent amounts are authoritative. Only exact
+        # same-type duplicate values are referenced there; no amount is recalculated.
+        compact = {key: copy.deepcopy(value) for key, value in projection.items()
+                   if key != "records" and not (key in amount_fields and key in summary
+                       and type(value) is type(summary[key]) and value == summary[key])}
+        compact["record_evidence"] = {
+            "rows": len(projection["records"]),
+            "source_projection_sha256": projection_sha,
+        }
+        output["monetary_projection"] = compact
+        return output
+
+    for section in ("actual", "research", "recommendations"):
+        result[section]["summary"] = project(result[section]["summary"])
+        result[section]["by_profile"] = [project(row) for row in result[section]["by_profile"]]
+    if not modified:
+        return result
+    result["feedback_schema"] = "descriptive-money-feedback-v1"
+    try:
+        if len(json.dumps(result, ensure_ascii=False, allow_nan=False)) <= 12_000:
+            return result
+    except (TypeError, ValueError):
+        pass
+    # Descriptive monetary feedback is optional. Its oversize details cannot veto
+    # the separate sporting/model/weather candidate packets or invent zero cash.
+    return {
+        "feedback_schema": "descriptive-money-feedback-v1",
+        "status": "UNAVAILABLE_DESCRIPTIVE_FEEDBACK_BOUND",
+        "source_feedback_sha256": safe_identity(original),
+        "source_identity_status": "HASHED" if safe_identity(original) is not None else "UNHASHABLE_INVALID_JSON",
+        "interpretation": "Optional descriptive history unavailable; candidate inputs remain separate.",
+        "source_sections": ["actual", "research", "recommendations", "recent_settled"],
+        "bank_cash_receipt_eur": None,
+        "after_cost_system_net_eur": None,
+    }
 
 
 def run_portfolio(

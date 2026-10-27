@@ -1,0 +1,11 @@
+# Főelemző feedback – végleges forrásellenőrzés kész, teljes elfogadás folyamatban
+
+2026-10-27T12:46:57.165894+00:00: minimális javítás telepítve, kizárólag a `_compact_feedback` függvény és egy új19esetes teszt. A teljes fájl eredeti sorvége, a függvény előtti/utáni byte-ok,1266 másik forrás és az eredeti tesztek változatlanok. A131célzott (112eredeti+19új),10adapter,Root-defaultRuff,6392collection és tényleges original8AST/require/Dailyguard PASS.
+
+A telepített APP a valódi mentett30packet/8context bemenetét offline előkészíti: feedback22 226→11 903karakter, wire257 463→247 714byte. A korlát12 000karakter/360 000byte maradt, minden nem-feedback sport/contextadat pontos. A pénzügyi részletsorok ismétlése helyett típusos leíró aggregátum és teljes forráshash szerepel; a pénzügyi számítás, UNKNOWN/cash/cost szerep, legacy út és matek/rank/READY változatlan. A97karakter tartalék e kohorsz bizonyítéka, nem minden jövőbeli csomag méretgaranciája; nagy optionalfeedback explicit gap, nem globális sportvétó.
+
+Az első telepített tesztvezérlő a pytest WindowsNUL alapnaplóját még a teszttörzsek előtt helyesen letiltotta: eredeti pytest3/outer1/log/claim/helper/binding16fájl megmaradt. Külön új controller/nonce/claim/XML/log0, saját külső naplóval; nincs Root/NUL kivétel, guardlazítás vagy APP/tesztassertváltozás. A végleges131teszt első tényleges törzsfutása sikeres.
+
+**Saját6392teljes +3új actual replay MÁR FUT**,75perces véges/noRetry workerrel,98helper/inputpin,15510archívfájl,4092ledger és4aktuálisstore baseline mellett. Ez nem saját teljes/runtime/scopeelfogadás. Régi full/replay nem új acceptance. Teljes siker+worker0 után független physical/data/root readback és első metadataOFFruntime szükséges, kizárólag a meglévő d57/date27riporttal; nincs új üzleti/LLM/providerfutás. Mindkét activationSOURCE_FILES ténylegesen független, nullaCAS és teljesRAWmegőrzés kötelező. Daily és legacy OFF.
+
+A valódi mai d57 riport továbbra PARTIAL/1DRAFT/0fogadás; nem generáltuk újra. Következő adatjavítás a jövőbeli NORMAL weatheravailabilityreceipt-integráció, régi adat/óra átírása nélkül.215176GREEN39RED retainedsnapshot,csak11.2evidence,214másrowstátusz/referencebitazonos; külön136kész31nyitott,nemprojektarány/profit/PIT/LIVEgarancia.

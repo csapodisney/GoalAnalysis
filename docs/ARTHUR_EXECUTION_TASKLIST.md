@@ -1,5 +1,7 @@
 # Arthur fejlesztési és végrehajtási feladatlista
 
+Aktuális fejlesztés: Astra feedbackforrás telepítve;131célzott/19új/10adapter/Ruff6392collection PASS, saját6392full+3újactual folyamatban. Daily/legacyOFF; még nincs saját full/runtime/scopeelfogadás. [Forrás és pontos kapuk](status/2026-10-27-astra-feedback-consumption/REPORT-SOURCE-PENDING.md).
+
 Aktuális, 2026-10-27: **Daily és legacy OFF.** Egy valódi mai NORMAL elemzés mentve: PARTIAL / 1 DRAFT / 0 fogadás. 1664 retained DB-mérkőzés tényleges modellinput; a fő Astra-review pénzügyi feedback-kerete hibásan túlterhelt. Következő: `astra-feedback-consumption-contract`, majd jövőbeli weather receipt-integráció. [Friss eredmény és pontos új hibák](status/2026-10-27-current-normal-business-assessment/REPORT.md). A lentebbi korábbi Daily ON és korábbi állapotok történeti bejegyzések.
 
 Állapot: 2026-10-26
