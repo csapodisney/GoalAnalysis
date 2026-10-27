@@ -555,3 +555,5 @@ Időjárási baseline-visszamérés/passzív catalogue saját6209full/58új/3NEW
 NemREADY kijelölt lábkutatás saját6261full/52új ellenőrzés alatt: [forrásbizonyíték](status/2026-10-27-non-ready-selected-leg-research/REPORT-SOURCE-PENDING.md). DailyOFF.
 
 NemREADY kijelölt lábkutatás saját6261full/52új/3NEWactual/ROOT/runtimeOFF igazolt: [lezárt bizonyíték](status/2026-10-27-non-ready-selected-leg-research/REPORT-CLOSED.md). Nincs READY/ár/matek/promóció; DailyOFF.
+
+Pénzügyi projekció/UI végleges forrása saját ellenőrzés alatt, még nem elfogadott: [forrásállapot](status/2026-10-27-actual-money-projection/REPORT-SOURCE-PENDING.md). Daily OFF.

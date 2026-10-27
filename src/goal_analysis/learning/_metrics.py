@@ -17,7 +17,16 @@ from datetime import datetime
 from decimal import Decimal
 from pathlib import Path
 
-from goal_analysis.storage.portfolio_ledger import _hash, _leg_result, _stamp
+from goal_analysis.storage.monetary_projection import (
+    project_recorded_cohort,
+    project_recorded_wager,
+)
+from goal_analysis.storage.portfolio_ledger import (
+    _bookmaker_return_provenance,
+    _hash,
+    _leg_result,
+    _stamp,
+)
 from goal_analysis.storage.recommendation_ledger import abstention_profiles
 
 from .forecast_quality import evaluate as evaluate_forecasts
@@ -26,7 +35,7 @@ TABLES = (
     "portfolio_runs", "portfolio_tickets", "portfolio_recommendations", "portfolio_wagers",
     "portfolio_results", "portfolio_result_observations", "portfolio_settlements",
     "portfolio_settlement_observations", "portfolio_bookmaker_returns", "portfolio_freezes",
-    "portfolio_freeze_revisions",
+    "portfolio_freeze_revisions", "portfolio_bookmaker_return_provenance",
 )
 
 
@@ -45,18 +54,35 @@ def _number(value, minimum=0):
 
 
 def _read(path: Path):
+    provenance = "portfolio_bookmaker_return_provenance"
+    data = {name: [] for name in TABLES}
+    data["_optional_read_quality"] = {provenance: {"status": "ABSENT_TABLE", "physical_table_present": False}}
     if not path.is_file():
-        return {name: [] for name in TABLES}
-    # Constructor and read paths never initialize or migrate the production ledger.
+        return data
     with closing(sqlite3.connect(path.resolve().as_uri() + "?mode=ro", uri=True, timeout=15)) as db:
         db.row_factory = sqlite3.Row
         db.execute("PRAGMA query_only=ON")
         db.execute("BEGIN")
-        present = {r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
-        return {
-            name: [dict(r) for r in db.execute(f"SELECT rowid AS _rowid,* FROM {name}")]
-            if name in present else [] for name in TABLES
-        }
+        present = {row[0] for row in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        for name in TABLES:
+            if name not in present:
+                continue
+            if name == provenance:
+                try:
+                    # Reuse the actual ledger schema predicate; this never creates DDL.
+                    _bookmaker_return_provenance(db, "", "")
+                except (ValueError, TypeError, sqlite3.DatabaseError):
+                    data["_optional_read_quality"][name] = {
+                        "status": "INVALID_SCHEMA", "physical_table_present": True,
+                        "reason": "INVALID_OPTIONAL_BOOKMAKER_RETURN_PROVENANCE_SCHEMA",
+                        "rows_unexamined": True,
+                    }
+                    continue
+                data["_optional_read_quality"][name] = {"status": "VALID_SCHEMA", "physical_table_present": True}
+                data[name] = [dict(row) for row in db.execute("SELECT * FROM portfolio_bookmaker_return_provenance")]
+            else:
+                data[name] = [dict(row) for row in db.execute(f"SELECT rowid AS _rowid,* FROM {name}")]
+    return data
 
 
 def _snapshot(row, field="snapshot_json", hash_field="snapshot_hash"):
@@ -263,7 +289,7 @@ def _effective_freezes(data, runs, cutoff, quality):
     return effective
 
 
-def _actual_record(ticket, wager, settlement, returns, cutoff):
+def _actual_record(ticket, wager, settlement, returns, cutoff, return_provenance=(), provenance_quality=None):
     if settlement:
         _, payload, reference, settlement_hash = settlement
         ticket["source_refs"].append(reference)
@@ -280,41 +306,57 @@ def _actual_record(ticket, wager, settlement, returns, cutoff):
         for leg in ticket["legs"]:
             leg["outcome"] = "PENDING"
         settlement_hash = None
-    stake, price = Decimal(wager["stake_eur"]), Decimal(wager["actual_combined_price"])
-    if not stake.is_finite() or stake <= 0 or not price.is_finite() or price <= 1:
-        raise ValueError("Invalid recorded wager")
-    confirmed = [r for r in returns if r["ticket_id"] == wager["ticket_id"]
-                 and r["settlement_hash"] == settlement_hash and _before(r["recorded_at"], cutoff)]
-    has_void = any(l["outcome"] == "VOID" for l in ticket["legs"])
-    payout = None
-    if confirmed:
-        row = max(confirmed, key=lambda r: _stamp(r["recorded_at"]))
-        payout = Decimal(row["payout_eur"])
-        if not payout.is_finite() or payout < 0:
-            raise ValueError("Invalid recorded payout")
+    ticket["wager"] = dict(wager)
+    ticket["ticket_id"] = wager["ticket_id"]
+    ticket["as_of"] = cutoff.isoformat()
+    payload = dict(settlement[1]) if settlement else {}
+    if settlement:
+        payload["settlement_hash"] = settlement_hash
+        payload["observed_at"] = settlement[0][0].isoformat()
+    confirmed = [row for row in returns if row["ticket_id"] == wager["ticket_id"]
+                 and row["settlement_hash"] == settlement_hash and _before(row["recorded_at"], cutoff)]
+    if len(confirmed) == 1:
+        row = confirmed[0]
+        confirmation = dict(row)
+        metas = [meta for meta in return_provenance if meta.get("ticket_id") == wager["ticket_id"]
+                 and meta.get("settlement_hash") == settlement_hash]
+        if (provenance_quality or {}).get("status") == "INVALID_SCHEMA":
+            confirmation["provenance_status"] = "INVALID_PROVENANCE"
+            confirmation["provenance_diagnostic"] = provenance_quality
+        elif len(metas) == 1:
+            meta = metas[0]
+            required = {"payout_basis", "fee_tax_inclusion", "confirmed_at", "contract_version"}
+            valid_meta = required <= set(meta) and meta["contract_version"] == "bookmaker-gross-return-v1"
+            valid_meta = valid_meta and meta.get("payout_basis") == "BOOKMAKER_CONFIRMED_GROSS_SPORTS_RETURN" and meta.get("fee_tax_inclusion") == "EXCLUDED"
+            try:
+                valid_meta = valid_meta and isinstance(meta.get("confirmed_at"), str) and bool(_stamp(meta["confirmed_at"]))
+            except (ValueError, TypeError):
+                valid_meta = False
+            if valid_meta:
+                confirmation.update(contract_version=meta["contract_version"],
+                    payout_basis=meta["payout_basis"],
+                    fee_tax_inclusion=meta["fee_tax_inclusion"],
+                    provenance_confirmed_at=meta["confirmed_at"], provenance_status="RECORDED_PROVENANCE")
+            else:
+                confirmation["provenance_status"] = "INVALID_PROVENANCE"
+            ticket["source_refs"].append(_reference("portfolio_bookmaker_return_provenance",
+                                                   f"{wager['ticket_id']}:{settlement_hash}", meta))
+        elif metas:
+            confirmation["provenance_status"] = "INVALID_PROVENANCE"
+        payload["bookmaker_return"] = confirmation
         ticket["source_refs"].append(_reference("portfolio_bookmaker_returns", row["_rowid"], row))
-        if payout == stake and has_void:
+    elif confirmed:
+        payload["bookmaker_return"] = {"provenance_status": "INVALID_PROVENANCE"}
+    ticket["settlement"] = payload
+    projection = project_recorded_wager(ticket)
+    # Preserve the original partial-VOID presentation, without changing sports evidence.
+    if ticket["outcome"] == "WON" and any(leg["outcome"] == "VOID" for leg in ticket["legs"]):
+        if projection["status"] != "KNOWN":
+            ticket["outcome"] = "REVIEW"
+        elif projection["payout_eur"] == projection["stake_eur"]:
             ticket["outcome"] = "VOID"
-    elif ticket["outcome"] == "WON" and has_void:
-        ticket["outcome"] = "REVIEW"
-    elif ticket["outcome"] == "WON":
-        payout = stake * price
-    elif ticket["outcome"] == "LOST":
-        payout = Decimal(0)
-    elif ticket["outcome"] == "VOID":
-        payout = stake
-    verified_price = wager.get("price_source") == "USER_CONFIRMED" or bool(confirmed)
-    if not verified_price:
-        # A legacy recorded wager can still carry an estimated research price.
-        # Keep its outcomes, never promote that estimate into actual-money ROI.
-        payout = None
-    ticket["financial"] = {
-        "stake_eur": float(stake), "payout_eur": round(float(payout), 2) if payout is not None else None,
-        "net_eur": round(float(payout - stake), 2) if payout is not None else None,
-        "settled_at": settlement[0][0].isoformat() if settlement else None,
-        "actual_price_source": wager.get("price_source", "UNKNOWN_LEGACY"),
-        "verified_price": verified_price,
-    }
+    projection["settled_at"] = settlement[0][0].isoformat() if settlement else None
+    ticket["financial"] = projection
     ticket["source_refs"].append(_reference("portfolio_wagers", wager["ticket_id"], wager))
     return ticket
 
@@ -331,23 +373,38 @@ def _counts(items):
 
 def _summarize(records, actual=False):
     legs = [leg for record in records for leg in record["legs"]]
-    settled = [r["financial"] for r in records if r["financial"] and r["financial"]["net_eur"] is not None]
-    stake = sum(Decimal(str(r["stake_eur"])) for r in settled)
-    payout = sum(Decimal(str(r["payout_eur"])) for r in settled)
-    unverified = sum(bool(r["financial"] and not r["financial"]["verified_price"]) for r in records)
-    money_available = actual and bool(records) and not unverified
-    financial = {
-        "available": money_available,
-        "settled_stake_eur": round(float(stake), 2) if money_available else None,
-        "payout_eur": round(float(payout), 2) if money_available else None,
-        "net_eur": round(float(payout - stake), 2) if money_available else None,
-        "roi_pct": round(float((payout - stake) / stake * 100), 4) if money_available and stake else None,
-        "unverified_price_tickets": unverified,
-        "costs_included": False,
-        "open_stake_eur": round(sum(r["financial"]["stake_eur"] for r in records
-                                    if r["financial"] and r["outcome"] in {"PENDING", "REVIEW"}), 2)
-        if actual else None,
-    }
+    if actual:
+        projection = project_recorded_cohort(records)
+        financial = {
+            "available": bool(records) and projection["complete_financial_coverage"],
+            "settled_stake_eur": projection["settled_stake_eur"],
+            "payout_eur": projection["payout_eur"], "net_eur": projection["net_eur"],
+            "roi_pct": projection["yield_pct"],
+            "unverified_price_tickets": sum(bool(row.get("financial") and
+                not row["financial"].get("verified_price")) for row in records),
+            "costs_included": False, "open_stake_eur": projection["open_stake_eur"],
+            "known_subset_net_eur": projection["known_subset_net_eur"],
+            "monetary_projection": projection,
+            "bank_cash_receipt_eur": None, "after_cost_system_net_eur": None,
+        }
+    else:
+        settled = [r["financial"] for r in records if r["financial"] and r["financial"]["net_eur"] is not None]
+        stake = sum(Decimal(str(r["stake_eur"])) for r in settled)
+        payout = sum(Decimal(str(r["payout_eur"])) for r in settled)
+        unverified = sum(bool(r["financial"] and not r["financial"]["verified_price"]) for r in records)
+        money_available = actual and bool(records) and not unverified
+        financial = {
+            "available": money_available,
+            "settled_stake_eur": round(float(stake), 2) if money_available else None,
+            "payout_eur": round(float(payout), 2) if money_available else None,
+            "net_eur": round(float(payout - stake), 2) if money_available else None,
+            "roi_pct": round(float((payout - stake) / stake * 100), 4) if money_available and stake else None,
+            "unverified_price_tickets": unverified,
+            "costs_included": False,
+            "open_stake_eur": round(sum(r["financial"]["stake_eur"] for r in records
+                                        if r["financial"] and r["outcome"] in {"PENDING", "REVIEW"}), 2)
+            if actual else None,
+        }
     tickets = _counts(records)
     unique_selections = {(l["fixture_id"], l["market"], l["selection"]) for l in legs}
     return {
@@ -434,7 +491,9 @@ def measure(path: Path, as_of: datetime, *, include_records: bool = False,
             item = _record(record, runs[row["run_id"]], results, cutoff,
                            _reference("portfolio_tickets", row["ticket_id"], record), quality)
             actual.append(_actual_record(item, wager, settlements.get(wager["ticket_id"]),
-                                         data["portfolio_bookmaker_returns"], cutoff))
+                                         data["portfolio_bookmaker_returns"], cutoff,
+                                         data["portfolio_bookmaker_return_provenance"],
+                                         data.get("_optional_read_quality", {}).get("portfolio_bookmaker_return_provenance")))
         except (KeyError, TypeError, ValueError, ArithmeticError, AttributeError):
             quality["invalid_records"] += 1
     frozen_packages = 0
@@ -507,6 +566,7 @@ def measure(path: Path, as_of: datetime, *, include_records: bool = False,
         metrics[scope] = summary
     dates = sorted(r["date"] for r in runs.values())
     coverage = {
+        "optional_read_quality": data.get("_optional_read_quality", {}),
         "runs_total": len(data["portfolio_runs"]), "runs_as_of": len(runs),
         "recommendations_total": len(data["portfolio_recommendations"]),
         "recommendations_as_of": len(recommendations), "actual_wagers_as_of": len(actual),

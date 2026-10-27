@@ -12,7 +12,7 @@ import json
 import math
 import re
 import sqlite3
-from collections import defaultdict
+from collections import Counter, defaultdict
 from collections.abc import Callable, Mapping
 from contextlib import contextmanager, nullcontext
 from copy import deepcopy
@@ -23,6 +23,7 @@ from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
 
+from .monetary_projection import project_recorded_cohort, project_recorded_wager
 from .recommendation_ledger import RecommendationLedger
 
 BERLIN = ZoneInfo("Europe/Berlin")
@@ -67,6 +68,34 @@ def _money(value: Decimal | float) -> float:
 
 def _day(value: str | Date | None) -> str | None:
     return Date.fromisoformat(str(value)).isoformat() if value is not None else None
+
+
+def _bookmaker_return_provenance(db, ticket_id, settlement_hash):
+    legacy = {"payout_basis": "LEGACY_REPORTED_RETURN_BASIS_UNSPECIFIED", "fee_tax_inclusion": "UNKNOWN", "provenance_status": "LEGACY_UNSPECIFIED"}
+    exists = db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='portfolio_bookmaker_return_provenance'").fetchone()
+    if not exists:
+        return legacy
+    columns = db.execute("PRAGMA table_info(portfolio_bookmaker_return_provenance)").fetchall()
+    expected = {"ticket_id","settlement_hash","payout_basis","fee_tax_inclusion","confirmed_at","contract_version"}
+    if ({row["name"] for row in columns} != expected
+            or {row["name"]:row["pk"] for row in columns if row["pk"]} != {"ticket_id":1,"settlement_hash":2}
+            or any(str(row["type"]).upper() != "TEXT" or row["notnull"] != 1 for row in columns)):
+        raise ValueError("INVALID_BOOKMAKER_RETURN_PROVENANCE_SCHEMA")
+    row = db.execute("SELECT * FROM portfolio_bookmaker_return_provenance WHERE ticket_id=? AND settlement_hash=?", (ticket_id,settlement_hash)).fetchone()
+    if row is None:
+        return legacy
+    if row["payout_basis"] != "BOOKMAKER_CONFIRMED_GROSS_SPORTS_RETURN" or row["fee_tax_inclusion"] != "EXCLUDED" or row["contract_version"] != "bookmaker-gross-return-v1":
+        raise ValueError("INVALID_BOOKMAKER_RETURN_PROVENANCE_RECORD")
+    _stamp(row["confirmed_at"])
+    return {"payout_basis":row["payout_basis"], "fee_tax_inclusion":row["fee_tax_inclusion"], "provenance_confirmed_at":row["confirmed_at"], "provenance_status":"EXPLICIT_REVISION_BOUND", "contract_version":row["contract_version"]}
+
+
+def _ensure_bookmaker_return_provenance(db):
+    db.execute("CREATE TABLE IF NOT EXISTS portfolio_bookmaker_return_provenance (ticket_id TEXT NOT NULL,settlement_hash TEXT NOT NULL,payout_basis TEXT NOT NULL,fee_tax_inclusion TEXT NOT NULL,confirmed_at TEXT NOT NULL,contract_version TEXT NOT NULL,PRIMARY KEY(ticket_id,settlement_hash),FOREIGN KEY(ticket_id,settlement_hash) REFERENCES portfolio_bookmaker_returns(ticket_id,settlement_hash))")
+    # Validate any preexisting table rather than treating corruption as no data.
+    _bookmaker_return_provenance(db, "", "")
+    for operation in ("UPDATE", "DELETE"):
+        db.execute("CREATE TRIGGER IF NOT EXISTS bookmaker_return_provenance_no_" + operation.lower() + " BEFORE " + operation + " ON portfolio_bookmaker_return_provenance BEGIN SELECT RAISE(ABORT,'Bookmaker return provenance is immutable'); END")
 
 
 class PortfolioLedger(RecommendationLedger):
@@ -621,7 +650,7 @@ class PortfolioLedger(RecommendationLedger):
         }
 
     def list_tickets(
-        self, date: str | Date | None = None, mode: str = "all"
+        self, date: str | Date | None = None, mode: str = "all", *, monetary_contract="LEGACY_RECORDED_V1"
     ) -> list[dict[str, Any]]:
         if mode not in {"all", "actual", "research", "archive"}:
             raise ValueError("mode must be all, actual, research or archive")
@@ -632,7 +661,7 @@ class PortfolioLedger(RecommendationLedger):
                 "ORDER BY date DESC, created_at DESC, rowid DESC",
                 (day, day),
             ).fetchall()
-            tickets = [self._ticket_view(db, row) for row in rows]
+            tickets = [self._ticket_view(db, row, monetary_contract=monetary_contract) for row in rows]
         return [
             t
             for t in tickets
@@ -641,16 +670,16 @@ class PortfolioLedger(RecommendationLedger):
             and (mode != "research" or not t["played"])
         ]
 
-    def get_ticket(self, ticket_id: str) -> dict[str, Any]:
+    def get_ticket(self, ticket_id: str, *, monetary_contract="LEGACY_RECORDED_V1") -> dict[str, Any]:
         with self._connection() as db:
             row = db.execute(
                 "SELECT * FROM portfolio_tickets WHERE ticket_id=?", (ticket_id,)
             ).fetchone()
             if row is None:
                 raise ValueError("Unknown ticket_id")
-            return self._ticket_view(db, row)
+            return self._ticket_view(db, row, monetary_contract=monetary_contract)
 
-    def _ticket_view(self, db, row) -> dict[str, Any]:
+    def _ticket_view(self, db, row, *, monetary_contract="LEGACY_RECORDED_V1") -> dict[str, Any]:
         ticket = json.loads(row["snapshot_json"])
         wager_row = db.execute(
             "SELECT * FROM portfolio_wagers WHERE ticket_id=?", (row["ticket_id"],)
@@ -674,6 +703,8 @@ class PortfolioLedger(RecommendationLedger):
         settled = observations[0] if observations else None
         settlement = json.loads(settled[0]) if settled else None
         if settlement:
+            settlement["settlement_hash"] = settled[2]
+        if settlement:
             settlement["settled_at"] = settled[1]
             settlement["updated_at"] = settled[1]
             if settlement["outcome"] in TERMINAL:
@@ -695,6 +726,11 @@ class PortfolioLedger(RecommendationLedger):
                         "recorded_at": confirmation[1],
                         "note": confirmation[2],
                     }
+                    settlement["bookmaker_return"]["settlement_hash"] = settled[2]
+                    try:
+                        settlement["bookmaker_return"].update(_bookmaker_return_provenance(db, row["ticket_id"], settled[2]))
+                    except (ValueError, sqlite3.Error):
+                        settlement["bookmaker_return"].update(payout_basis="INVALID_PROVENANCE", fee_tax_inclusion="UNKNOWN", provenance_status="INVALID")
                     settlement["settled_at"] = confirmation[1]
                     if Decimal(confirmation[0]) == Decimal(str(wager["stake_eur"])):
                         settlement["outcome"] = "VOID"
@@ -715,7 +751,16 @@ class PortfolioLedger(RecommendationLedger):
             settlement=settlement,
             outcome=settlement["outcome"] if settlement else "PENDING",
         )
-        ticket["financial"] = _financial(ticket)
+        ticket["bookmaker_return_contract"] = {
+            "eligible": bool(wager and settlement and settlement.get("reason") == "ACTUAL_PARTIAL_VOID_RETURN_REQUIRES_BOOKMAKER_CONFIRMATION"),
+            "expected_settlement_hash": settled[2] if settled else None,
+            "stake_eur": wager["stake_eur"] if wager else None,
+            "minimum_gross_return_eur": wager["stake_eur"] if wager else None,
+            "currency": "EUR", "amount_step": "0.01",
+            "payout_basis": "BOOKMAKER_CONFIRMED_GROSS_SPORTS_RETURN",
+            "fee_tax_inclusion": "EXCLUDED", "contract_version": "bookmaker-gross-return-v1",
+        }
+        ticket["financial"] = _financial(ticket, monetary_contract=monetary_contract)
         return ticket
 
     def record_wager(
@@ -821,50 +866,65 @@ class PortfolioLedger(RecommendationLedger):
         return self.get_ticket(ticket_id)
 
     def confirm_bookmaker_return(
-        self, ticket_id: str, payout_eur: float, note: str
+        self, ticket_id: str, payout_eur: float, note: str, *,
+        expected_settlement_hash: str | None = None, payout_basis: str | None = None,
     ) -> dict[str, Any]:
-        """Resolve a partial-void actual wager using its bookmaker-confirmed return.
+        """Explicit gross revision-CAS; legacy Python calls mean atomic latest.
 
-        The original total accepted price cannot reconstruct accepted prices of
-        individual legs. A confirmation is tied to the exact settlement revision.
+        HTTP callers must supply both token and basis. The real legacy three
+        positional API remains untyped recorded arithmetic, never fee-free cash.
         """
         amount = _amount(payout_eur, "payout_eur")
-        if amount != amount.quantize(Decimal("0.01")) or amount < Decimal(5):
-            raise ValueError(
-                "The confirmed partial-void return must be at least the 1 EUR stake in cents"
-            )
-        if not isinstance(note, str) or len(note.strip()) < 5:
-            raise ValueError("A bookmaker return confirmation note is required")
+        try:
+            cents = amount == amount.quantize(Decimal("0.01"))
+        except InvalidOperation:
+            cents = False
+        if not cents:
+            raise ValueError("Confirmed returns must be exact cents, without rounding")
+        if not isinstance(note, str) or not 5 <= len(note.strip()) <= 1000:
+            raise ValueError("A bounded bookmaker return confirmation note is required")
+        typed = expected_settlement_hash is not None or payout_basis is not None
+        if typed and (not isinstance(expected_settlement_hash, str)
+                or re.fullmatch(r"[a-f0-9]{64}", expected_settlement_hash) is None
+                or payout_basis != "BOOKMAKER_CONFIRMED_GROSS_SPORTS_RETURN"):
+            raise ValueError("Explicit gross return requires its exact settlement hash and supported basis")
         stamp = _stamp(self.now()).isoformat()
         with self._connection() as db:
             db.execute("BEGIN IMMEDIATE")
-            wager = db.execute(
-                "SELECT 1 FROM portfolio_wagers WHERE ticket_id=?", (ticket_id,)
-            ).fetchone()
+            wager = db.execute("SELECT stake_eur FROM portfolio_wagers WHERE ticket_id=?", (ticket_id,)).fetchone()
             row = db.execute(
                 "SELECT s.settlement_json,s.settlement_hash FROM portfolio_settlement_observations o "
                 "JOIN portfolio_settlements s ON s.id=o.settlement_id "
-                "WHERE o.ticket_id=? ORDER BY o.id DESC LIMIT 1",
-                (ticket_id,),
+                "WHERE o.ticket_id=? ORDER BY o.id DESC LIMIT 1", (ticket_id,),
             ).fetchone()
+            if typed and row is not None and row[1] != expected_settlement_hash:
+                raise RuntimeError("SETTLEMENT_REVISION_CHANGED")
             if not wager or row is None:
                 raise ValueError("No actual partially voided wager is awaiting confirmation")
             settlement = json.loads(row[0])
-            if settlement["outcome"] != "WON" or not any(
-                leg["outcome"] == "VOID" for leg in settlement["legs"]
-            ):
+            if settlement["outcome"] != "WON" or not any(leg["outcome"] == "VOID" for leg in settlement["legs"]):
                 raise ValueError("No actual partially voided wager is awaiting confirmation")
-            old = db.execute(
-                "SELECT payout_eur,note FROM portfolio_bookmaker_returns "
-                "WHERE ticket_id=? AND settlement_hash=?",
-                (ticket_id, row[1]),
-            ).fetchone()
-            if old and (Decimal(old[0]) != amount or old[1] != note.strip()):
-                raise ValueError("An immutable bookmaker return confirmation already exists")
-            db.execute(
-                "INSERT OR IGNORE INTO portfolio_bookmaker_returns VALUES (?,?,?,?,?)",
-                (ticket_id, row[1], str(amount), stamp, note.strip()),
-            )
+            stake = _amount(wager["stake_eur"], "stored_wager_stake_eur")
+            if amount < stake:
+                raise ValueError("Confirmed gross partial-void return must cover the actual stored stake")
+            # RO validation applies to the genuine legacy writer too.
+            # Never commit an amount and discover corrupt provenance only on GET.
+            _bookmaker_return_provenance(db, ticket_id, row[1])
+            previous = db.execute("SELECT payout_eur,note FROM portfolio_bookmaker_returns WHERE ticket_id=? AND settlement_hash=?", (ticket_id,row[1])).fetchone()
+            if previous:
+                if Decimal(previous[0]) != amount or previous[1] != note.strip():
+                    raise ValueError("An immutable bookmaker return confirmation already exists")
+                provenance = _bookmaker_return_provenance(db, ticket_id, row[1])
+                if typed and provenance["payout_basis"] != payout_basis:
+                    raise ValueError("Existing legacy return basis remains unspecified; no automatic backfill")
+            else:
+                if typed:
+                    # No DDL before CAS, actual wager/settlement, cents, minimum
+                    # and immutable-conflict checks. execute(), not executescript().
+                    _ensure_bookmaker_return_provenance(db)
+                db.execute("INSERT INTO portfolio_bookmaker_returns VALUES (?,?,?,?,?)", (ticket_id,row[1],str(amount),stamp,note.strip()))
+                if typed:
+                    db.execute("INSERT INTO portfolio_bookmaker_return_provenance(ticket_id,settlement_hash,payout_basis,fee_tax_inclusion,confirmed_at,contract_version) VALUES (?,?,?,?,?,?)", (ticket_id,row[1],payout_basis,"EXCLUDED",stamp,"bookmaker-gross-return-v1"))
         return self.get_ticket(ticket_id)
 
     def refresh_results(self, football_client) -> dict[str, Any]:
@@ -1093,7 +1153,7 @@ class PortfolioLedger(RecommendationLedger):
         )
         return True
 
-    def performance(self, month: str | None = None, mode: str = "actual") -> dict[str, Any]:
+    def performance(self, month: str | None = None, mode: str = "actual", *, monetary_contract="LEGACY_RECORDED_V1") -> dict[str, Any]:
         from .daily_ticket_kpis import safe_daily_ticket_kpis
         from .leg_error_analysis import safe_leg_error_analysis
         from .performance_breakdowns import safe_breakdowns
@@ -1109,7 +1169,7 @@ class PortfolioLedger(RecommendationLedger):
             not re.fullmatch(r"\d{4}-\d{2}", month) or _day(month + "-01") is None
         ):
             raise ValueError("month must be YYYY-MM")
-        all_tickets = self.list_tickets(mode=mode)
+        all_tickets = self.list_tickets(mode=mode, monetary_contract=monetary_contract)
         tickets = [
             ticket
             for ticket in all_tickets
@@ -1119,11 +1179,17 @@ class PortfolioLedger(RecommendationLedger):
         for ticket in tickets:
             profiles[ticket["profile_id"]].append(ticket)
             days[ticket["date"]].append(ticket)
-        series, cumulative = [], Decimal(0)
+        series, cumulative, known_cumulative, complete = [], Decimal(0), Decimal(0), True
         for day, items in sorted(days.items()):
             summary = _summary(items)
-            cumulative += Decimal(str(summary["net_eur"]))
-            series.append({"date": day, **summary, "cumulative_net_eur": _money(cumulative)})
+            known = summary.get("known_subset_net_eur", summary["net_eur"])
+            known_cumulative += Decimal(str(known))
+            complete = complete and summary["net_eur"] is not None
+            if summary["net_eur"] is not None:
+                cumulative += Decimal(str(summary["net_eur"]))
+            series.append({"date": day, **summary,
+                           "cumulative_net_eur": _money(cumulative) if complete else None,
+                           "known_subset_cumulative_net_eur": _money(known_cumulative)})
         leg_analysis = safe_leg_error_analysis(tickets, mode=mode)
         daily_kpis = safe_daily_ticket_kpis(tickets, mode=mode, leg_analysis=leg_analysis)
         return {
@@ -1135,7 +1201,7 @@ class PortfolioLedger(RecommendationLedger):
             "breakdowns": safe_breakdowns(tickets, _summary, mode=mode),
             "leg_error_analysis": leg_analysis,
             "daily_kpis": daily_kpis,
-            "rolling_kpis": safe_rolling_ticket_kpis(all_tickets, _summary, mode=mode,
+            "rolling_kpis": safe_rolling_ticket_kpis(all_tickets, _summary, mode=mode, monetary_contract=monetary_contract,
                 as_of=self.now(), month=month,
                 daily_kpis=daily_kpis if len(tickets) == len(all_tickets) else None),
             "series": series,
@@ -1192,13 +1258,13 @@ class PortfolioLedger(RecommendationLedger):
         return totals
 
     def feedback_summary(self) -> dict[str, Any]:
-        tickets = self.list_tickets()
+        tickets = self.list_tickets(monetary_contract="CURRENT_HASH_V2")
         settled = [t for t in tickets if t["outcome"] in TERMINAL]
         settled.sort(key=lambda t: (t["date"], t["created_at"], t["ticket_id"]), reverse=True)
         return {
             "schema_version": 1,
             "generated_at": _stamp(self.now()).isoformat(),
-            "actual": self.performance(mode="actual"),
+            "actual": self.performance(mode="actual", monetary_contract="CURRENT_HASH_V2"),
             "research": self.performance(mode="research"),
             "recommendations": {
                 k: v
@@ -1266,7 +1332,10 @@ def _leg_result(leg: Mapping[str, Any], fixture: Mapping[str, Any] | None) -> di
     return {"outcome": "WON" if won else "LOST", "reason": "PERIOD_SCORE_CONFIRMED", **context}
 
 
-def _financial(ticket: Mapping[str, Any]) -> dict[str, Any]:
+def _financial(ticket: Mapping[str, Any], *, monetary_contract="LEGACY_RECORDED_V1") -> dict[str, Any]:
+    if ticket.get("wager"):
+        return project_recorded_wager(ticket, contract=monetary_contract,
+            allow_estimated_price_arithmetic=monetary_contract == "LEGACY_RECORDED_V1")
     wager = ticket.get("wager")
     stake = Decimal(str(wager["stake_eur"] if wager else ticket.get("stake_eur", 1)))
     settlement = ticket.get("settlement")
@@ -1294,6 +1363,8 @@ def _financial(ticket: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def _summary(tickets):
+    if any(ticket.get("wager") for ticket in tickets):
+        return _recorded_summary(tickets)
     result = {
         "tickets": len(tickets),
         "won": 0,
@@ -1337,3 +1408,40 @@ def _summary(tickets):
 
 
 Ledger = PortfolioLedger
+
+
+def _recorded_summary(tickets):
+    contracts = {(ticket.get("financial") or {}).get("monetary_contract") for ticket in tickets}
+    contract = "LEGACY_RECORDED_V1" if contracts == {"LEGACY_RECORDED_V1"} else "CURRENT_HASH_V2"
+    projection = project_recorded_cohort(tickets, contract=contract,
+        allow_estimated_price_arithmetic=contract == "LEGACY_RECORDED_V1")
+    outcomes = Counter(ticket.get("outcome", "PENDING") for ticket in tickets)
+    result = {"tickets": len(tickets), **{name.lower(): outcomes[name] for name in
+        ("WON", "LOST", "VOID", "PENDING", "REVIEW")}}
+    for name in ("stake_eur", "settled_stake_eur", "payout_eur", "net_eur",
+                 "open_stake_eur", "cash_flow_eur"):
+        result[name] = projection[name]
+    decided = outcomes["WON"] + outcomes["LOST"]
+    result["win_rate"] = outcomes["WON"] / decided if decided else None
+    result["yield_pct"] = round(projection["yield_pct"], 2) if projection["yield_pct"] is not None else None
+    projected = {row["ticket_id"]: row for row in projection["records"]}
+    ordered = sorted(tickets, key=lambda ticket: (
+        (ticket.get("settlement") or {}).get("settled_at", ""), ticket["ticket_id"]))
+    running = peak = drawdown = Decimal(0)
+    seen = set()
+    for ticket in ordered:
+        key = ticket["ticket_id"]
+        row = projected.get(key)
+        if key in seen or not row or row["status"] != "KNOWN":
+            continue
+        seen.add(key)
+        running += Decimal(str(row["net_eur"]))
+        peak = max(peak, running)
+        drawdown = max(drawdown, peak - running)
+    result.update(max_drawdown_eur=_money(drawdown) if projection["complete_financial_coverage"] else None,
+                  known_subset_max_drawdown_eur=_money(drawdown),
+                  known_subset_net_eur=projection["known_subset_net_eur"],
+                  drawdown_basis="settlement_observation_order",
+                  monetary_projection=projection,
+                  bank_cash_receipt_eur=None, after_cost_system_net_eur=None)
+    return result

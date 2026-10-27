@@ -1,0 +1,27 @@
+{
+  "at": "2026-10-27T07:42:53.732036+00:00",
+  "task": "actual-money-projection-contract",
+  "status": "OWN_FINANCIAL_SOURCE_PENDING_NOT_FULL_RUNTIME_ACCEPTANCE",
+  "targeted_tests_passed": 187,
+  "new_behavior_tests": 112,
+  "collection": 6373,
+  "source_files_under_test": 1267,
+  "final_target_proof_sha256": "6869c54dbc9b3f39a5c01d84ebddda791f95fe6594d1dd95d782684e5a714b35",
+  "own_full_accepted": false,
+  "own_runtime_accepted": false,
+  "daily_enabled": false,
+  "legacy_enabled": false,
+  "schema_migration_or_money_business_operations": 0,
+  "scope": "REVISION_BOUND_GROSS_RETURN_SHARED_STRICT_PROJECTION_COHERENT_UI",
+  "legacy_arithmetic_not_gross_cash_or_system_profit": true,
+  "old_report_quote_math_READY_unchanged": true,
+  "original_215": {
+    "GREEN": 176,
+    "RED": 39
+  },
+  "worklist": {
+    "checked": 136,
+    "open": 31
+  },
+  "project_complete": false
+}

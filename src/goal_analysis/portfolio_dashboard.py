@@ -254,7 +254,7 @@ class ArthurState:
         except (OSError, ValueError) as error:
             settings, config_error = validate_settings({}), safe_error(error)
         runs = self.ledger.list_runs(date=day, limit=50)
-        tickets = self.ledger.list_tickets(date=day)
+        tickets = self.ledger.list_tickets(date=day, monetary_contract="CURRENT_HASH_V2")
         now = datetime.now(UTC)
         for ticket in tickets:
             ticket["from_previous_run"] = bool(runs and ticket.get("run_id") != runs[0]["run_id"])
@@ -719,6 +719,7 @@ def make_handler(state: ArthurState, token: str):
                         state.ledger.performance(
                             month=query.get("month", [None])[0],
                             mode=query.get("mode", ["actual"])[0],
+                            monetary_contract="CURRENT_HASH_V2",
                         )
                     )
                 if parsed.path == "/api/paper-performance":
@@ -793,19 +794,22 @@ def make_handler(state: ArthurState, token: str):
                         stake_eur=payload.get("stake_eur", 1),
                         actual_combined_price=payload.get("actual_combined_price"),
                     )
-                    return self._send(result or {"recorded": True})
+                    return self._send(state.ledger.get_ticket(payload["ticket_id"], monetary_contract="CURRENT_HASH_V2") if result else {"recorded": True})
                 if path == "/api/void":
-                    return self._send(
-                        state.ledger.record_void(
-                            payload["ticket_id"], payload["fixture_id"], payload["note"]
-                        )
-                    )
+                    state.ledger.record_void(payload["ticket_id"], payload["fixture_id"], payload["note"])
+                    return self._send(state.ledger.get_ticket(payload["ticket_id"], monetary_contract="CURRENT_HASH_V2"))
                 if path == "/api/bookmaker-return":
-                    return self._send(
-                        state.ledger.confirm_bookmaker_return(
-                            payload["ticket_id"], payload["payout_eur"], payload["note"]
-                        )
+                    expected = payload.get("expected_settlement_hash")
+                    basis = payload.get("payout_basis")
+                    if not isinstance(expected, str) or re.fullmatch(r"[a-f0-9]{64}", expected) is None:
+                        raise ValueError("A megjelenített elszámolás azonosítója szükséges; frissítsd a nézetet.")
+                    if basis != "BOOKMAKER_CONFIRMED_GROSS_SPORTS_RETURN":
+                        raise ValueError("Itt csak az iroda díjak előtti bruttó sportelszámolása rögzíthető.")
+                    state.ledger.confirm_bookmaker_return(
+                        payload["ticket_id"], payload["payout_eur"], payload["note"],
+                        expected_settlement_hash=expected, payout_basis=basis,
                     )
+                    return self._send(state.ledger.get_ticket(payload["ticket_id"], monetary_contract="CURRENT_HASH_V2"))
                 return self._send({"error": "Nincs ilyen művelet."}, 404)
             except (ValueError, TypeError, KeyError) as error:
                 return self._send({"error": safe_error(error)}, 400)

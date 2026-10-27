@@ -15,6 +15,8 @@ from zoneinfo import ZoneInfo
 from goal_analysis.agents import canonical_sha256
 
 from .daily_ticket_kpis import build_daily_ticket_kpis
+from .monetary_projection import VERSION as MONEY_VERSION
+from .monetary_projection import project_recorded_cohort, project_recorded_wager
 
 VERSION = "arthur-rolling-ticket-kpis-v1"
 BERLIN = ZoneInfo("Europe/Berlin")
@@ -42,7 +44,7 @@ def _finite(value):
     return type(value) in (int, float) and math.isfinite(value)
 
 
-def _money_admission(original, row, mode):
+def _money_admission(original, row, mode, monetary_contract="LEGACY_RECORDED_V1"):
     if original.get("outcome", "PENDING") != row["outcome"]:
         return "OUTCOME_IDENTITY_REVIEW"
     if mode == "paper":
@@ -54,6 +56,12 @@ def _money_admission(original, row, mode):
             return "MISSING_PAPER_SETTLED_NET"
         return None
     financial = original.get("financial") or {}
+    if mode == "actual" and financial.get("monetary_projection_version") == MONEY_VERSION:
+        projected = project_recorded_wager(original, contract=monetary_contract)
+        if projected["status"] not in {"KNOWN", "OPEN"}:
+            return projected["reason"]
+        keys = ("stake_eur", "payout_eur", "net_eur", "open_stake_eur", "settled")
+        return None if all(financial.get(key) == projected[key] for key in keys) else "RECORDED_PROJECTION_MISMATCH"
     if any(not _finite(financial.get(k)) for k in ("stake_eur", "payout_eur", "net_eur")):
         return "MISSING_OR_INVALID_RECORDED_FINANCIAL"
     if financial["stake_eur"] <= 0 or financial["payout_eur"] < 0:
@@ -95,8 +103,8 @@ def _paper_drawdown(items):
     return float(drawdown)
 
 
-def _financial(rows, originals, summarize, mode, unassigned=0):
-    kind = {"actual":"RECORDED_ACTUAL_SETTLED_CASH", "research":"INDICATIVE_RESEARCH_SIMULATION",
+def _financial(rows, originals, summarize, mode, unassigned=0, monetary_contract="LEGACY_RECORDED_V1"):
+    kind = {"actual":"RECORDED_ACTUAL_SETTLEMENT_ARITHMETIC", "research":"INDICATIVE_RESEARCH_SIMULATION",
             "paper":"HYPOTHETICAL_EUR1_VERIFIED_ORIGINAL_QUOTES", "recommendations":"OUTCOMES_ONLY_NO_ASSUMED_STAKE"}[mode]
     if mode == "recommendations" or not rows:
         return {"basis":kind,"available":False,"complete_financial_coverage":False,
@@ -108,7 +116,7 @@ def _financial(rows, originals, summarize, mode, unassigned=0):
     good, reasons = [], Counter()
     for row in rows:
         original = originals[row["source_record_sha256"]]
-        reason = _money_admission(original, row, mode)
+        reason = _money_admission(original, row, mode, monetary_contract)
         if reason:
             reasons[reason] += 1
         else:
@@ -118,16 +126,30 @@ def _financial(rows, originals, summarize, mode, unassigned=0):
     known_net = summary[net_key] if summary else None
     known_dd = (_paper_drawdown(good) if mode == "paper" else summary["max_drawdown_eur"]) if good else None
     complete = len(good) == len(rows) and not unassigned
-    return {"basis":kind,"available":bool(good),"complete_financial_coverage":complete,
+    # Only the typed installed projection changes meaning. Original legacy
+    # external financial dictionaries remain visible arithmetic, never cash proof.
+    projection = None
+    if mode == "actual" and any((item.get("financial") or {}).get("monetary_projection_version") == MONEY_VERSION
+                                for item in originals.values()):
+        source = [originals[row["source_record_sha256"]] for row in rows]
+        projection = project_recorded_cohort(source, unassigned_source_records=unassigned, contract=monetary_contract)
+        complete = projection["complete_financial_coverage"]
+        known_net = projection["known_subset_net_eur"]
+    if projection and projection["legacy_unbound_arithmetic_records"]:
+        kind = "LEGACY_UNBOUND_REPORTED_ARITHMETIC"
+    return {"basis":kind,"verified_cash":False,"available":bool(good),"complete_financial_coverage":complete,
             "settled_net_eur_to_date":known_net if complete else None,
             "max_drawdown_eur":known_dd if complete else None,
             "known_subset_settled_net_eur":known_net,"known_subset_max_drawdown_eur":known_dd,
             "eligible_records":len(good),"excluded_records":len(rows)-len(good),
             "unassigned_source_records":unassigned,
-            "missing_reasons":dict(reasons),"open_stake_eur":summary.get("open_stake_eur") if summary else None,
+            "missing_reasons":dict(reasons),"open_stake_eur":projection["open_stake_eur"] if projection is not None else summary.get("open_stake_eur") if summary else None,
             "drawdown_basis":"ORIGINAL_DAY_AGGREGATED_SETTLED_NET_ZERO_WINDOW_OPENING" if mode == "paper"
             else "EXISTING_SETTLEMENT_OBSERVATION_ORDER_ZERO_WINDOW_OPENING",
-            "prior_window_bankroll_peak_included":False,"api_costs_tax_or_bonus_inferred":False}
+            "prior_window_bankroll_peak_included":False,"api_costs_tax_or_bonus_inferred":False,
+            "monetary_projection":projection, "bank_cash_receipt_eur":None,
+            "after_cost_system_net_eur":None,
+            "money_role":"RECORDED_SETTLEMENT_ARITHMETIC_NOT_BANK_CASH" if mode == "actual" else kind}
 
 
 def _goals(days, requested_days, unassigned):
@@ -153,7 +175,7 @@ def _goals(days, requested_days, unassigned):
 
 
 def build_rolling_ticket_kpis(records, summarize=None, *, mode, as_of=None, month=None, daily_kpis=None,
-                              unassigned_input_records=0):
+                              unassigned_input_records=0, monetary_contract="LEGACY_RECORDED_V1"):
     if mode not in {"actual","research","recommendations","paper"}:
         raise ValueError("Unknown rolling KPI mode")
     if type(unassigned_input_records) is not int or unassigned_input_records < 0:
@@ -212,13 +234,13 @@ def build_rolling_ticket_kpis(records, summarize=None, *, mode, as_of=None, mont
                     "unidentified_fixture_occurrences":len(legs)-len(fixtures),
                     "predictive_reliability_validated":False,"strategy_recommendation":None,
                     "sample_status":"DESCRIPTIVE_ONLY_REQUIRES_WALK_FORWARD_AND_DEPENDENCE_VALIDATION",
-                    "financial":_financial(items,originals,summarize,mode,unassigned)})
+                    "financial":_financial(items,originals,summarize,mode,unassigned,monetary_contract)})
             output["windows"].append({"window_days":size,"start_date":start.isoformat(),"end_date":end.isoformat(),
                 "records":len(selected),"observed_days":len(days),"missing_calendar_days":len(missing),
                 "missing_dates":missing,"unassigned_source_records":unassigned,
                 "full_calendar_coverage":not missing and not unassigned,
                 "goals":_goals(days,size,unassigned),
-                "financial":_financial(selected,originals,summarize,mode,unassigned),
+                "financial":_financial(selected,originals,summarize,mode,unassigned,monetary_contract),
                 "profile_reliability":reliability})
     return output
 
