@@ -1,0 +1,46 @@
+{
+  "at": "2026-10-27T03:14:43.537266+00:00",
+  "task": "context-data-consumer-integrity-contract",
+  "status": "OWN_ROOT_INDEPENDENT_PHYSICAL_RUNTIME_PASS",
+  "full": 6151,
+  "target": 205,
+  "new_tests": 75,
+  "adapter": 10,
+  "actual_replays": 3,
+  "source_files": 1250,
+  "old_ledger_rows": 4087,
+  "old_archives": 13247,
+  "protected_stores": 4,
+  "consumer_input": {
+    "status": "FINAL_APP_CONTEXT_CONSUMERS_PURE_PROOF_READ_BACK",
+    "actual_APP_pure_readback_sha256": "f962d550d7a5c805c559a0448f803a16d54616937fb3272ec9f6c27943559811",
+    "final_target_proof_sha256": "428c50ea9ff05910059ecc466b782582d9452ca2d4d8f6fb0a0fec582f5796fe",
+    "new_behavior_cases": 75,
+    "current_source_files": {
+      "src/goal_analysis/jobs/expert_advisory.py": "784e0d86435d568c28206b523a2219da3b57ef821411df978f906a68888299a1",
+      "src/goal_analysis/jobs/portfolio_distribution.py": "e6b80a06fb40acc0e56aacef8748907d5dd348a8801917cbe7dbce5897c4bba0",
+      "tests/test_expert_lineup_membership_integrity.py": "cff478ff029edab44fbf10b34a977287d911b27d5c646e6887bf82723ac9a338",
+      "tests/test_native_bookmaker_context_binding.py": "a560d837c50bedd1e172f361bf8dd5c5da1a745ffd675751425820494d694333",
+      "tests/test_selected_leg_partial_scenarios.py": "78c6e565820b595af46e9b4e2193c227068123387e9092c929c916f883622954"
+    },
+    "new_model_fits_or_actual_publication_in_this_readback": 0,
+    "actual_old_DAILY_PIT_live_current_quote_profit_claim": false
+  },
+  "old_stadium_registry_files_physically_preserved": 155,
+  "report_physical": "5592bf755cdc07c56969073d711b9c253107877bf53409e2dbe2dce06b7433be",
+  "report_embedded": "916089cc9a91372873e6cdce61ff768d3930b1658a799cf56c1a09d373c326ce",
+  "report_full_ledger": "49f87b0c9bba26f497e494c5757500aef0231683d6564a537446ffabb8c99252",
+  "validation_exit_code": 0,
+  "closure_exit_code": 0,
+  "first_runtime_exit_code": 0,
+  "activation_CAS_or_revalidation_writes": 0,
+  "both_whole_RAW_byte_exact": true,
+  "daily_enabled": false,
+  "legacy_enabled": false,
+  "root_provider_capture_import_llm_normal_generation_operations": 0,
+  "new_actual_forecast_ticket_quote_PIT_global_unique_profit_claim": false,
+  "physical_proof": {
+    "path": "artifacts/roadmap-execution-20261020/context-data-consumer-integrity-contract/root-independent-readback.json",
+    "sha256": "b29952587104f5622a058dd1da604d6e31604709af643effb5ae535399ecd690"
+  }
+}

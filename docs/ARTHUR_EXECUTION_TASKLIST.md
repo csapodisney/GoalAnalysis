@@ -545,3 +545,5 @@ B04retainedhistory saját6076full/70új/3NEWactual/ROOT/runtimeOFF ésfeltétele
 B05 meglévő adatfogyasztási RO-audit lezárható: [ellenőrzött megállapítások](status/2026-10-27-ticket-quality-context-use-readonly/REPORT.md). Következő a confirmed-XI/native-bookmaker/részleges-lábszcenárió egyetlen külön javítási scope-ja; ez még nem APP-elfogadás. Daily/legacy OFF.
 
 Adatfogyasztási integritás saját6151teljes ellenőrzés alatt: [forrásbizonyíték](status/2026-10-27-context-data-consumer-integrity/REPORT-SOURCE-PENDING.md). HiányosXI helyiUNKNOWN, natív bookmaker exactSHADOWösszevetés, ismert selectedleg külön kutatási szcenárió; nem új aktuális forecast/szelvény/profit. DailyOFF.
+
+Adatfogyasztási integritás saját6151full/75új/3NEWactual/ROOT/runtimeOFF igazolt: [lezárt bizonyíték](status/2026-10-27-context-data-consumer-integrity/REPORT-CLOSED.md). XIhiány nem lesz téves absence, natív bookmaker pontos, ismert lábak külön részszcenárió. Következő weatherforecast/outcome forráscontract; DailyOFF.
