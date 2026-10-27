@@ -166,6 +166,7 @@ def main():
             bundle = run_portfolio(config, settings, football, odds, cache, args.date,
                 cli.make_reviewer(settings), ledger, weather_provider=weather,
                 model_artifact_dir=ROOT / 'data/arthur/models',
+                normal_history_root=ROOT,
                 team_plan=generation_plan(settings['enabled_profiles'],
                     TeamManager(ROOT).enroll_missing()['snapshot']),
                 nemotron_stylist=lambda available, cards, day, cutoff: curate(ROOT, available, cards, day, cutoff),

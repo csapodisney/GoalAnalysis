@@ -1,0 +1,205 @@
+{
+  "at": "2026-10-27T01:07:26.152961+00:00",
+  "task": "retained-history-normal-input-contract",
+  "status": "SOURCE_PENDING_OWN_FULL_AND_RUNTIME_ACCEPTANCE",
+  "targeted_passed": 136,
+  "new_behavior_cases": 70,
+  "adapter": 10,
+  "collection": 6076,
+  "source_files": 1247,
+  "own_full_accepted": false,
+  "own_runtime_accepted": false,
+  "daily_enabled": false,
+  "legacy_enabled": false,
+  "source_sha256": {
+    "src/goal_analysis/jobs/native_history_shadow.py": "a2bda29dba5ed5a84333ea92ac12bb9bcf92242db4b30f50aedf12e8ee164bf6",
+    "src/goal_analysis/jobs/portfolio.py": "012eceffcc8bc284cf3b139231c50f7e233c281f21fa7b589319af91a17a20fd",
+    "src/goal_analysis/jobs/nightly.py": "007b573ea1d35d09f3790b99229f39ffc3246fb3e9d92f60e138d74ecec48ef3",
+    "scripts/run-arthur.py": "f91b21b52412ead42fabc70f0843ef4c0e26468cae39b3b7b7007dba7fd266f8",
+    "scripts/regenerate-arthur-protected.py": "6048694549256d3e42ae44860cecd17ef32022015800542585df211fdaae2eeb",
+    "src/goal_analysis/jobs/normal_history_input.py": "2cac61e9ab9816f1d39e35b34e77607a893fc0a1377493e564cee96fc4f72590",
+    "src/goal_analysis/jobs/online_history_venue.py": "c71cec04b13a29a926c7213542085f0dcc5852135bdcbf9c75858f8d380e7c88",
+    "tests/test_normal_history_input.py": "c73af37e7f6cdf326fee123258e52cc9132c8c3cbf237d31fa9deb4fd56702bc",
+    "tests/test_online_history_venue.py": "9be3d67c3ff5496682ba582b28e1f90b8fe9957bee2c43d5da61ec8032b5e127",
+    "tests/test_normal_history_input_integration.py": "e7dc6d6efa01983e30258607c9e42d90bb2e697d2384a4cb52a55b97d88bbc3a"
+  },
+  "conditional_numerical_experiment": {
+    "fixture_kind": "SYNTHETIC_FUTURE_TARGETS_REAL_RETAINED_HISTORY_CONDITIONAL_SCENARIOS",
+    "as_of": "2026-10-27T00:30:58.243942+00:00",
+    "same_fixture_universe_sha256": "e33b7a27468eec1d00d1a1b3b4980282e3371ffef4008ea6c0f34f26b16ee23e",
+    "control_fixture_counts": {
+      "gauss": 1,
+      "kepler": 1,
+      "laplace": 1
+    },
+    "treatment_fixture_counts": {
+      "gauss": 5,
+      "kepler": 5,
+      "laplace": 5
+    },
+    "prediction_count_delta": {
+      "gauss": 4,
+      "kepler": 4,
+      "laplace": 4
+    },
+    "actual_dataset_files_physically_verified": 61,
+    "selected_records": 2613,
+    "selected_record_origin_counts": {
+      "ONLINE": 8,
+      "RETAINED": 2605,
+      "BOTH": 0
+    },
+    "normal_input_dataset": {
+      "version": "training-dataset-v1",
+      "role": "normal_standard_venue_history",
+      "as_of": "2026-10-27T00:30:58.243942+00:00",
+      "row_count": 2613,
+      "rows_sha256": "469f9c33a8206c1091650038d26daf32afa4b0c94f9c1ff00883816fa77527cd",
+      "recipe": {
+        "version": "normal-witnessed-history-standard-venue-v1",
+        "policy": "explicit-non-neutral-history-shadow-v1",
+        "truth_bound": 10000,
+        "raw_alias_bound": 20000,
+        "selection": "CONFLICT_BEFORE_EXPLICIT_STANDARD_VENUE"
+      },
+      "lineage_sha256": "768de18a9866181e633c166ce568a66e89b0e57d3f86da26a69aa764500084f5",
+      "ordering": "EXACT_CONSUMPTION_ORDER",
+      "dataset_id": "8600eacc294875e724525d4c954d7d029b4d69e894ece6d367cf11abab0dd8e7"
+    },
+    "reader_diagnostics": [
+      {
+        "code": "RETAINED_COMPLETE_BOUNDED_READ",
+        "status": "GAPS",
+        "gaps": {
+          "UNPROVEN_TARGET": 2,
+          "UNPROVEN_HISTORY_SOURCE": 57
+        },
+        "dataset_id": "4dd2594c08c9fdf9e1d01557399944b9ef09eb6eb86c08f0b78305e1eae75a88",
+        "source_count": 135,
+        "verified_target_ids": [
+          "the_stats_api:mt_9900270001",
+          "the_stats_api:mt_9900270002",
+          "the_stats_api:mt_9900270003",
+          "the_stats_api:mt_9900270006",
+          "the_stats_api:mt_9900270007"
+        ]
+      }
+    ],
+    "model_input_uses": [
+      {
+        "profile_id": "gauss",
+        "competition_id": "comp_0256",
+        "history_rows": 618,
+        "history_sha256": "cd9228d7e1479ef257938f8bb4d664d6b3bc84c5a4601c88a33328c4b8117530",
+        "basis": "CURRENT_CUTOFF_STANDARD_VENUE_UNION"
+      },
+      {
+        "profile_id": "kepler",
+        "competition_id": "comp_0256",
+        "history_rows": 618,
+        "history_sha256": "ac5d632636694e82ca922b105bca5c66a6b76661a0681f5f5f80636e701ca805",
+        "basis": "ORIGINAL_ONLINE_KICKOFF_PLUS_3H_APPROXIMATION_NOT_CERTIFIED_PIT"
+      },
+      {
+        "profile_id": "laplace",
+        "competition_id": "comp_0256",
+        "history_rows": 618,
+        "history_sha256": "cd9228d7e1479ef257938f8bb4d664d6b3bc84c5a4601c88a33328c4b8117530",
+        "basis": "CURRENT_CUTOFF_STANDARD_VENUE_UNION"
+      },
+      {
+        "profile_id": "gauss",
+        "competition_id": "comp_615520",
+        "history_rows": 0,
+        "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "basis": "CURRENT_CUTOFF_STANDARD_VENUE_UNION"
+      },
+      {
+        "profile_id": "kepler",
+        "competition_id": "comp_615520",
+        "history_rows": 0,
+        "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "basis": "ORIGINAL_ONLINE_KICKOFF_PLUS_3H_APPROXIMATION_NOT_CERTIFIED_PIT"
+      },
+      {
+        "profile_id": "laplace",
+        "competition_id": "comp_615520",
+        "history_rows": 0,
+        "history_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "basis": "CURRENT_CUTOFF_STANDARD_VENUE_UNION"
+      },
+      {
+        "profile_id": "gauss",
+        "competition_id": "comp_8385",
+        "history_rows": 620,
+        "history_sha256": "a18582cad9352f16d2aab892b056ce49a0656fa9764d130cfd25536b492eb853",
+        "basis": "CURRENT_CUTOFF_STANDARD_VENUE_UNION"
+      },
+      {
+        "profile_id": "kepler",
+        "competition_id": "comp_8385",
+        "history_rows": 620,
+        "history_sha256": "0cf1f250d06ea54d928fc68f02d60e4403cd7cf658596328aae3be3d8e943eeb",
+        "basis": "ORIGINAL_ONLINE_KICKOFF_PLUS_3H_APPROXIMATION_NOT_CERTIFIED_PIT"
+      },
+      {
+        "profile_id": "laplace",
+        "competition_id": "comp_8385",
+        "history_rows": 620,
+        "history_sha256": "a18582cad9352f16d2aab892b056ce49a0656fa9764d130cfd25536b492eb853",
+        "basis": "CURRENT_CUTOFF_STANDARD_VENUE_UNION"
+      },
+      {
+        "profile_id": "gauss",
+        "competition_id": "comp_8814",
+        "history_rows": 755,
+        "history_sha256": "e3503923bc488414413ec8695a64485c0d4bd515cc42a43ced719df3831051c6",
+        "basis": "CURRENT_CUTOFF_STANDARD_VENUE_UNION"
+      },
+      {
+        "profile_id": "kepler",
+        "competition_id": "comp_8814",
+        "history_rows": 754,
+        "history_sha256": "b307e46ce541b4128db6d9c2cc793007ca3e56ae30f9437d4ec2e0feb1e670eb",
+        "basis": "RETAINED_CHRONOLOGY_UNPROVEN_ORIGINAL_ONLINE_APPROXIMATION_FALLBACK"
+      },
+      {
+        "profile_id": "laplace",
+        "competition_id": "comp_8814",
+        "history_rows": 755,
+        "history_sha256": "e3503923bc488414413ec8695a64485c0d4bd515cc42a43ced719df3831051c6",
+        "basis": "CURRENT_CUTOFF_STANDARD_VENUE_UNION"
+      },
+      {
+        "profile_id": "gauss",
+        "competition_id": "comp_9777",
+        "history_rows": 620,
+        "history_sha256": "bf807b0865eeb392a11d76147d2e01c76121f099d3fbbd7c63f35736b01bbd3a",
+        "basis": "CURRENT_CUTOFF_STANDARD_VENUE_UNION"
+      },
+      {
+        "profile_id": "kepler",
+        "competition_id": "comp_9777",
+        "history_rows": 620,
+        "history_sha256": "fe9df077208d6fb2a184090f5d61ceb06e49358b6124551a91c5343f248bd498",
+        "basis": "ORIGINAL_ONLINE_KICKOFF_PLUS_3H_APPROXIMATION_NOT_CERTIFIED_PIT"
+      },
+      {
+        "profile_id": "laplace",
+        "competition_id": "comp_9777",
+        "history_rows": 620,
+        "history_sha256": "bf807b0865eeb392a11d76147d2e01c76121f099d3fbbd7c63f35736b01bbd3a",
+        "basis": "CURRENT_CUTOFF_STANDARD_VENUE_UNION"
+      }
+    ],
+    "copied_raw_metadata": 219,
+    "copied_bytes": 10437420,
+    "old_DAILY_PIT_currentquote_ticket_profit_claim": false,
+    "actual_numeric_experiment_proof_sha256": "e4672cb6e3d05442008deea71fc0250d0bc874e6f8a3dc1db6ae6ee1e4a01a8a"
+  },
+  "raw_model_input_not_new_canonical_result_admission": true,
+  "original19raw271result181_alias_state_and_oldcutoffs_preserved": true,
+  "parent_closed_remote_sha": "aef1aac536d06de1e91c45621daf899f5a7c7ff5",
+  "new_ROOT_capture_receipt_import_provider_llm_generation": 0,
+  "project_complete": false
+}

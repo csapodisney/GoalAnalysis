@@ -537,3 +537,5 @@ B02 final-review-consumption saját5988/91target15új/3NEWactual/root/runtimeOFF
 B03 időjárási exact facility és lokális forecastbinding javítás saját forrásellenőrzés alatt: [forrásbizonyíték](status/2026-10-27-weather-context-data-use/REPORT-SOURCE-PENDING.md). DailyOFF, nem új forecast/szelvény/publikáció.
 
 B03weather saját6006full/18újteszt/3NEWactual/root/runtimeOFF igazolt: [lezárt bizonyíték](status/2026-10-27-weather-context-data-use/REPORT-CLOSED.md). Következő B04retainedDB NORMALmodelinput; DailyOFF.
+
+B04retainedDB normálmodellinput saját6076teljes ellenőrzés alatt: [forrásbizonyíték](status/2026-10-27-retained-history-normal-input/REPORT-SOURCE-PENDING.md). Feltételes numerikus kontroll/treatment igazolt, nem aktuális forecast/szelvény; DailyOFF.

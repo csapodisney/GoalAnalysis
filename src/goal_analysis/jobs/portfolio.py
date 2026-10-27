@@ -307,6 +307,7 @@ def run_portfolio(
     player_specialist_shadow_root: Path | None = None,
     native_history_shadow_root: Path | None = None,
     native_option_shadow: bool = False,
+    normal_history_root: Path | None = None,
 ) -> dict:
     """Injectable coordinator. No wager is ever placed or marked automatically."""
     from goal_analysis.engine.diversification import allocate
@@ -415,13 +416,47 @@ def run_portfolio(
     enriched = {}
     if enabled_models:
         try:
-            model_results = (model_predictor or predict_models)(
-                fixture_records, history_records, model_cutoff,
-                enabled_profiles=enabled_models, artifact_dir=model_artifact_dir,
-            )
+            if normal_history_root is None:
+                model_results = (model_predictor or predict_models)(
+                    fixture_records, history_records, model_cutoff,
+                    enabled_profiles=enabled_models, artifact_dir=model_artifact_dir,
+                )
+            else:
+                from goal_analysis.jobs.native_history_shadow import native_history_view
+                from goal_analysis.jobs.normal_history_input import predict_normal
+                from goal_analysis.jobs.online_history_venue import bind_online_venue
+
+                normal_root = Path(normal_history_root).resolve()
+                bound = bind_online_venue(normal_root, fixture_records,
+                    artifacts.get('history', {}), as_of=model_cutoff)
+                fixture_records = deepcopy(bound['fixtures'])
+                normal = predict_normal(fixture_records, bound['history'], model_cutoff,
+                    retained_reader=lambda targets, *, as_of: native_history_view(
+                        normal_root, targets, as_of=as_of,
+                        history_start=as_of-timedelta(days=730)),
+                    predictor=model_predictor or predict_models,
+                    enabled_profiles=enabled_models, artifact_dir=model_artifact_dir)
+                model_results = normal['numeric_models']
+                # Keep legacy collected inputs intact for their existing consumers.
+                # Persist exact source-bound model inputs and uses independently.
+                artifacts['normal_model_input'] = {
+                    'status': 'COMPLETE', 'as_of': model_cutoff.isoformat(),
+                    'venue_binding': bound, 'input_view': normal['input_view'],
+                    'model_input_uses': normal['model_input_uses'],
+                    'fixture_issues': normal['fixture_issues'],
+                    'original_online_history_rows': len(history_records),
+                    'original_collected_inputs_preserved': True,
+                }
             if not isinstance(model_results, dict):
                 raise TypeError("Invalid numerical model response")
         except Exception:  # noqa: BLE001 - Optional local models must not hide existing tickets.
+            if normal_history_root is not None:
+                artifacts['normal_model_input'] = {
+                    'status': 'UNAVAILABLE', 'as_of': model_cutoff.isoformat(),
+                    'reason': 'NORMAL_MODEL_INPUT_PREPARATION_FAILED',
+                    'original_online_history_rows': len(history_records),
+                    'original_collected_inputs_preserved': True,
+                }
             model_results = {
                 profile: {
                     "profile_id": profile, "status": "MODEL_ERROR", "predictions": [],
@@ -806,6 +841,35 @@ def run_portfolio(
         })
     report["numeric_models"] = model_results
     report["model_cutoff"] = model_cutoff.isoformat()
+    normal_input = artifacts.get('normal_model_input')
+    if normal_input is not None:
+        summary = {key: normal_input[key] for key in (
+            'status', 'as_of', 'original_online_history_rows', 'original_collected_inputs_preserved')}
+        summary['input_artifact_sha256'] = canonical_sha256(normal_input)
+        if normal_input['status'] == 'COMPLETE':
+            view = normal_input['input_view']
+            summary.update(
+                version=view['version'], input_dataset=deepcopy(view['dataset']['manifest']),
+                selected_history_rows=len(view['history']), model_target_fixtures=len(view['fixtures']),
+                selected_record_origin_counts=deepcopy(view['selected_record_origin_counts']),
+                retained_selected_records=view['retained_selected_records'],
+                retained_only_selected_records=view['retained_only_selected_records'],
+                partition_counts=deepcopy(view['partition_counts']),
+                reader_diagnostics=deepcopy(view['reader_diagnostics']),
+                venue_source_diagnostics=deepcopy(normal_input['venue_binding']['diagnostics']),
+                venue_source_read_budget_failure=normal_input['venue_binding']['read_budget_failure'],
+                model_input_uses=deepcopy(normal_input['model_input_uses']),
+                source_flags={
+                    'native_fixture_venue': 'SOURCE_BOUND_RAW_IS_NEUTRAL_OR_UNKNOWN',
+                    'numeric_history': 'DECLARED_STANDARD_VENUE_UNION',
+                    'heuristic_history': 'ORIGINAL_ONLINE_ONLY',
+                    'original_collected_inputs': 'PRESERVED_UNMODIFIED',
+                },
+                historical_feature_availability_certified=False,
+            )
+        else:
+            summary['reason'] = normal_input['reason']
+        report['normal_model_input'] = summary
     for recommendation in numeric_recommendations:
         report.setdefault("profiles", []).append({
             "profile_id": recommendation["profile_id"],
@@ -831,7 +895,8 @@ def run_portfolio(
             "odds_status": "PRICED" if fixture["fixture_id"] in priced_fixtures else "ODDS_PENDING",
             "weather": weather_by_fixture.get(fixture["fixture_id"]),
         }
-        for fixture in artifacts.get("fixtures", {}).get("records", [])
+        for fixture in (fixture_records if artifacts.get('normal_model_input', {}).get('status') == 'COMPLETE'
+                        else artifacts.get("fixtures", {}).get("records", []))
     ]
     report["calendar"] = artifacts.get("calendar", {})
     report["selected_competition_ids"] = [

@@ -201,6 +201,7 @@ def main(argv=None) -> int:
                         max_standings_requests=min(8, max(0, config['max_football_calls']
                             - report.get('usage', {}).get('football_calls', 0)))),
                     model_artifact_dir=ROOT / "data/arthur/models",
+                    normal_history_root=ROOT,
                     team_plan=team_plan,
                     nemotron_stylist=lambda options, cards, target, now: curate_nemotron_tickets(
                         ROOT, options, cards, target, now),

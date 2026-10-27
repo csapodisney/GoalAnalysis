@@ -732,6 +732,7 @@ class NightlyWorkflow:
                                  max_standings_requests=min(8, max(0, config['max_football_calls']
                                      - job['usage'].get('generation_football_calls', 0)))),
                              model_artifact_dir=self.root / "data/arthur/models",
+                             normal_history_root=self.root,
                              team_plan=job.get("team_plan"),
                              nemotron_stylist=lambda options, cards, day, now: curate_nemotron_tickets(
                                  self.root, options, cards, day, now),

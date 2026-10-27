@@ -63,7 +63,7 @@ def _envelope(payload, proof, kind):
         'source_sha256': proof['source_sha256']}
 
 
-def native_history_view(root, fixtures, *, as_of):
+def native_history_view(root, fixtures, *, as_of, history_start=None):
     """Bounded read-only input view. Unknown venue/identity/receipt remains a gap.
 
     Exact native target IDs, season, sides, kickoff and explicit venue must
@@ -73,6 +73,10 @@ def native_history_view(root, fixtures, *, as_of):
     model fitting, irrespective of goals or which version looks convenient.
     """
     cutoff = utc(as_of)
+    # Optional NORMAL model-window scope; default SHADOW semantics stay intact.
+    first_event = None if history_start is None else utc(history_start)
+    if first_event is not None and not cutoff - timedelta(days=730) <= first_event <= cutoff:
+        raise ValueError('INVALID_NORMAL_HISTORY_MODEL_WINDOW')
     if not isinstance(fixtures, list) or len(fixtures) > 1000:
         raise ValueError('INVALID_NATIVE_TARGETS')
     root = Path(root).resolve()
@@ -200,12 +204,39 @@ def native_history_view(root, fixtures, *, as_of):
             return {**base, 'status': 'LIMIT_REACHED', 'fixtures': targets, 'history': [],
                     'gaps': {**counts, 'METADATA_LIMIT': 1}}
         applicable = []
+        outside_window = []
         for source in sources:
             query = _query(source['_alias'])
             if (query is not None and query.get('status') == ['finished']
                     and len(query.get('competition_id', [])) == 1
                     and query['competition_id'][0] in competitions):
+                if first_event is not None:
+                    from datetime import date
+                    upper = query.get('date_to', [None])
+                    lower = query.get('date_from', [None])
+                    try:
+                        # Only canonical complete windows can be partitioned.
+                        if (len(upper) != 1 or len(lower) != 1
+                                or date.fromisoformat(upper[0]).isoformat() != upper[0]
+                                or date.fromisoformat(lower[0]).isoformat() != lower[0]
+                                or lower[0] > upper[0]):
+                            raise ValueError('INVALID_WINDOW_PARTITION')
+                        old_window = upper[0] < first_event.date().isoformat()
+                    except (ValueError, TypeError):
+                        old_window = False  # Existing strict source gate must diagnose it.
+                    if old_window:
+                        outside_window.append(deepcopy(source['_alias']))
+                        continue
                 applicable.append((source, query))
+        if first_event is not None:
+            base['normal_model_window_partition'] = {
+                'start': first_event.isoformat(), 'end': cutoff.isoformat(),
+                'older_source_aliases': outside_window,
+                'older_source_count': len(outside_window),
+                'older_source_aliases_sha256': sha(outside_window),
+                'partition_policy': 'DECLARED_SOURCE_WINDOW_BEFORE_SOURCE_BUDGET_NOT_SCORE_FILTER',
+                'metadata_budget_unchanged': MAX_METADATA, 'source_budget_unchanged': MAX_SOURCES,
+                'global_five_year_provider_coverage_claim': False}
         truncated = len(applicable) > MAX_SOURCES
         if truncated:
             counts['SOURCE_LIMIT'] += 1
