@@ -243,7 +243,8 @@ class NightlyWorkflow:
                         scheduled_at=datetime.combine(slot, time(22), BERLIN).isoformat(),
                         deadline=datetime.combine(target, time(6), BERLIN).isoformat())
         try:
-            with RunLock(self.root / "data/arthur/run.lock"):
+            with RunLock(self.root / "data/arthur/run.lock") as normal_weather_lock:
+                self._normal_weather_lock = normal_weather_lock
                 self.ledger = self.ledger or PortfolioLedger(
                     self.root / "data/arthur/ledger.sqlite3", now=self.clock,
                     correction_window_hours=168,
@@ -722,7 +723,8 @@ class NightlyWorkflow:
                                  cache_dir=self.root / "data/arthur/codex-cache")
         football, cache = self._football(job, 'generation'), CacheStore(db)
         weather = make_weather_provider(self.root, self._stage(job, 'generation').get('run_id')
-            or f'{target}-{self.clock().isoformat()}', clock=self.clock)
+            or f'{target}-{self.clock().isoformat()}', clock=self.clock,
+            root_run_lock=getattr(self, '_normal_weather_lock', None))
         return run_portfolio(config, settings, football, odds,
                              cache, target, reviewer, self.ledger, clock=self.clock,
                              weather_provider=weather,

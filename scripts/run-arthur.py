@@ -141,7 +141,7 @@ def main(argv=None) -> int:
         day = args.date or datetime.now(ZoneInfo("Europe/Berlin")).date()
         if args.live:
             validate_target_day(day, datetime.now(UTC))
-        with RunLock(ROOT / "data/arthur/run.lock"):
+        with RunLock(ROOT / "data/arthur/run.lock") as normal_weather_lock:
             # Read one coherent configuration after any completed restore.
             settings = load_settings(args.settings)
             if args.strictness is not None:
@@ -183,7 +183,8 @@ def main(argv=None) -> int:
                     {"selected_competition_ids": selected_competitions}
                     if selected_competitions is not None else {}
                 )
-                weather = make_weather_provider(ROOT, f'{day}-{datetime.now(UTC).isoformat()}')
+                weather = make_weather_provider(ROOT, f'{day}-{datetime.now(UTC).isoformat()}',
+                    root_run_lock=normal_weather_lock)
                 cache = CacheStore(db)
                 bundle = run_portfolio(
                     config,

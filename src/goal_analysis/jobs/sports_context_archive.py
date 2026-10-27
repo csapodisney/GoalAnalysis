@@ -13,7 +13,7 @@ from goal_analysis.storage.sports_weather import WeatherStore
 
 
 def make_weather_provider(root: Path, source_run_id: str | None = None, *, clock=None,
-                          transport=None):
+                          transport=None, root_run_lock=None):
     """Build the normal forecast provider with a local, failure-visible recorder.
 
     A provider belongs to one serial portfolio run. Construction does no I/O;
@@ -27,18 +27,33 @@ def make_weather_provider(root: Path, source_run_id: str | None = None, *, clock
         source_run_id = f"weather-{clock().isoformat()}"
     archive = WeatherStore(Database(Path(root) / "data/goal_analysis.sqlite3"))
     archive_status = None
+    availability_status = None
+    completion = None
+    if root_run_lock is not None:
+        from goal_analysis.storage.weather_availability import WeatherCompletion
+
+        try:
+            completion = WeatherCompletion(root, source_run_id, root_run_lock, clock=clock)
+        except (ValueError, TypeError, AttributeError, OSError):
+            availability_status = {"status": "NO_ADMISSION_INVALID_NORMAL_RUN_CAPABILITY", "created": False}
     venue_resources = {}
     previous_venues_collected = False
 
     def record(fixture, weather, context):
-        nonlocal archive_status
+        nonlocal archive_status, availability_status
         try:
+            if root_run_lock is not None:
+                if completion is None:
+                    raise ValueError("NORMAL_WEATHER_RUN_CAPABILITY_UNAVAILABLE")
+                completion.check_held()
             archive.initialize()
-            saved = archive.ingest(weather, fixture, source_run_id=source_run_id,
-                                   raw_payload=context.get("raw_payload"),
-                                   metadata={k:fixture[v] for k,v in (
-                                       ('venue_source','_venue_source'),('stadium_location','_stadium_location'))
-                                       if fixture.get(v)} or None)
+            metadata = {k: fixture[v] for k, v in (
+                ('venue_source', '_venue_source'), ('stadium_location', '_stadium_location')) if fixture.get(v)} or None
+            if completion is None:
+                saved = archive.ingest(weather, fixture, source_run_id=source_run_id,
+                    raw_payload=context.get("raw_payload"), metadata=metadata)
+            else:
+                saved, availability_status = completion.record(archive, weather, fixture, context, metadata=metadata)
             archive_status = {
                 "status": "ARCHIVED" if saved["inserted"] else "ALREADY_ARCHIVED",
                 "snapshot_id": saved["snapshot_id"], "source_run_id": source_run_id,
@@ -51,18 +66,28 @@ def make_weather_provider(root: Path, source_run_id: str | None = None, *, clock
             archive_status = {"status": "FAILED", "error_code": "WEATHER_ARCHIVE_FAILED"}
 
     kwargs = {"clock": clock, "recorder": record}
-    if transport is not None:
+    if completion is not None:
+        from goal_analysis.providers.open_meteo import _get_json
+
+        kwargs["transport"] = completion.transport(transport if transport is not None else _get_json)
+    elif transport is not None:
         kwargs["transport"] = transport
     provider = OpenMeteoForecast(**kwargs)
     forecast = provider.forecast
 
     def archived_forecast(fixture, *, exact_stadium=False):
-        nonlocal archive_status
+        nonlocal archive_status, availability_status
         provider.isolate_request_failures = exact_stadium
         checked_at = clock()
         archive_status = None
+        availability_status = None if completion is not None else availability_status
         venue_lookup = None
         try:
+            kickoff = datetime.fromisoformat(fixture["kickoff"])
+            if kickoff.tzinfo is None or kickoff.utcoffset() is None:
+                raise ValueError("AWARE_WEATHER_KICKOFF_REQUIRED")
+            if completion is not None:
+                completion.check_held()
             location = None
             if fixture.get('source_provider') == 'the_stats_api':
                 from goal_analysis.jobs.stadium_locations_shadow import fixture_location
@@ -109,6 +134,8 @@ def make_weather_provider(root: Path, source_run_id: str | None = None, *, clock
                            time_basis="LOOKUP_ATTEMPT_AT")
             record(fixture, weather, {"raw_payload": None})
         weather["archive_status"] = archive_status
+        if root_run_lock is not None:
+            weather["availability_status"] = availability_status
         if venue_lookup is not None:
             weather['venue_lookup'] = venue_lookup
             weather['venue_lookup_requests'] = venue_resources[40 if exact_stadium else 12].usage['requests']

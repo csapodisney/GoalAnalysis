@@ -98,6 +98,10 @@ class OpenMeteoForecast:
             raise
 
     def forecast(self, fixture: dict, *, coordinates=None) -> dict:
+        kickoff = datetime.fromisoformat(fixture["kickoff"])
+        if kickoff.tzinfo is None or kickoff.utcoffset() is None:
+            raise ValueError("weather kickoff must be timezone-aware")
+        kickoff = kickoff.astimezone(UTC)
         city = fixture.get("venue_city")
         if not isinstance(city, str) or len(city.strip()) < 2:
             return self._finish(fixture, unknown(fixture))
@@ -127,7 +131,6 @@ class OpenMeteoForecast:
         lon = _number(place.get("longitude"), -180, 180)
         if lat is None or lon is None:
             return self._finish(fixture, unknown(fixture))
-        kickoff = datetime.fromisoformat(fixture["kickoff"]).astimezone(UTC)
         hour = kickoff.replace(minute=0, second=0, microsecond=0)
         if kickoff - hour >= timedelta(minutes=30):
             hour += timedelta(hours=1)
