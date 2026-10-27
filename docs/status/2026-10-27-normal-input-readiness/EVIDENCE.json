@@ -1,0 +1,69 @@
+{
+  "at": "2026-10-27T09:15:07.322363+00:00",
+  "snapshot_at": "2026-10-27T09:10:02.339070+00:00",
+  "scope": "ticket-quality-current-normal-input-coverage-readonly",
+  "status": "BOUNDED_CURRENT_READINESS_COMPLETE_NO_FRESH_NORMAL_REPORT",
+  "accepted_source_remote_sha": "90f800cc8de45bd7f18070695d4052e6b26e1a2f",
+  "source_scope_retagged": false,
+  "source_files": 1267,
+  "exact_accepted_source_doc_local_blobs": 20,
+  "remote_verification_role": "VERIFIED_AT_SOURCE_RECORD_PUSH_NOT_FRESH_REMOTE_HEAD",
+  "original_follower1_RO0_FIRST_runtime0_lineage_preserved": true,
+  "current_date": "2026-10-27",
+  "target_date": "2026-10-27",
+  "manual_nightly_target_only": "2026-10-28",
+  "actual_today_runs": 0,
+  "actual_today_freezes": 0,
+  "actual_today_and_tomorrow_nightly_jobs": 0,
+  "Daily": "OFF_REQUIRED",
+  "legacy": "OFF_REQUIRED",
+  "ordinary_processes_at_snapshot": [],
+  "quota_diagnosis": {
+    "status": "STALE_QUOTA_HEADER",
+    "current_allowance_proven": false,
+    "historical_authenticated_facts_only": true,
+    "daily_and_optional_background_policy_are_separate": true,
+    "SharedQuota_allowance_called": false
+  },
+  "latest_authenticated_quota_observed_at": "2026-10-26T21:12:51.331525+00:00",
+  "historical_monthly_remaining": 92074,
+  "today_durable_claim_count": 0,
+  "grok": {
+    "day_requests": 0,
+    "day_reserved_or_charged_usd": 0.0,
+    "month_reserved_or_charged_usd": 2.4718419999999997,
+    "day_known_cost_usd": 0.0,
+    "month_known_cost_usd": 0.708494,
+    "unknown_cost_request_ids": [
+      "60f8b940138a4bde82ad240c1d7a45cb",
+      "9abaaf4badde4619a43c540358de0182"
+    ],
+    "pending_request_ids": [],
+    "unknown_cost_is_zero": false
+  },
+  "ordinary_Grok_policy": {
+    "enabled": true,
+    "model": "grok-4.7",
+    "daily_budget_usd": 1.0,
+    "monthly_budget_usd": 20.0,
+    "max_requests_per_day": 2
+  },
+  "readonly_connections": 4,
+  "readonly_statements": 32,
+  "forbidden_attempts": [],
+  "per_store_snapshots_not_globally_atomic": true,
+  "new_APP_provider_HTTP_LLM_fit_predict_capture_import_runtime_task_lock_money_schema_operations": 0,
+  "actual_new_report_dataset_model_quote_weather_review_scenario_cohort_audit_executed": false,
+  "business_execution_authorized": false,
+  "no_new_ticket_forecast_PIT_quote_bank_cash_profit_claim": true,
+  "proof": {
+    "path": "artifacts/roadmap-execution-20261020/ticket-quality-current-normal-input-coverage-readonly/helpers-v3-physical-ro-completion/readiness-result.json",
+    "sha256": "117302498f6dc2008a96080b01fd2e747a4ba1aab67276225962c4b54afc844f"
+  },
+  "external_native_outcome": {
+    "path": "artifacts/roadmap-execution-20261020/ticket-quality-current-normal-input-coverage-readonly/helpers-v3-physical-ro-completion/readiness-command-outcome.json",
+    "sha256": "da4d0d12688e24496816455dae77515f86990a8124e458e4ae3c3f7f44754699"
+  },
+  "next_single_task": "normal-quality-current-operator-validation-preflight",
+  "next_business_conditions": "Fresh source/clock/OFF/quota/cost/once and oldtoday ticket+recommendation eligible-key inventory, reviewed one-shot launcher, then separate explicit parent business decision; oldpilot never restarted."
+}

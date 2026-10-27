@@ -559,3 +559,5 @@ NemREADY kijelölt lábkutatás saját6261full/52új/3NEWactual/ROOT/runtimeOFF 
 Pénzügyi projekció/UI végleges forrása saját ellenőrzés alatt, még nem elfogadott: [forrásállapot](status/2026-10-27-actual-money-projection/REPORT-SOURCE-PENDING.md). Daily OFF.
 
 Pénzügyi projekció és dashboard saját teljes/replay/ROOT/runtime OFF ellenőrzéssel: [lezárt bizonyíték](status/2026-10-27-actual-money-projection/REPORT-CLOSED.md). Régi ledger/report nem módosult.
+
+Friss normál-input readiness: [RO diagnózis](status/2026-10-27-normal-input-readiness/REPORT.md). Új mai report még nincs; következő külön operátori business-preflight. Daily/legacy OFF.
