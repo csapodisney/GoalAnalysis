@@ -635,6 +635,7 @@ def make_handler(state: ArthurState, token: str):
             download=None,
             inline=None,
             nonce=None,
+            close=False,
         ):
             data = (
                 json.dumps(value, ensure_ascii=False, allow_nan=False).encode("utf-8")
@@ -646,6 +647,8 @@ def make_handler(state: ArthurState, token: str):
             self.send_response(status)
             self.send_header("Content-Type", media)
             self.send_header("Content-Length", str(len(data)))
+            if close:
+                self.send_header("Connection", "close")
             self.send_header("Cache-Control", "no-store")
             self.send_header("X-Content-Type-Options", "nosniff")
             self.send_header("Referrer-Policy", "no-referrer")
@@ -661,6 +664,44 @@ def make_handler(state: ArthurState, token: str):
                 self.send_header("Content-Disposition", f'inline; filename="{inline}"')
             self.end_headers()
             self.wfile.write(data)
+
+        def _reject_post(self, value, status=403):
+            """Deliver the rejection, then boundedly drain transport bytes only."""
+            from socket import SHUT_WR
+
+            self.close_connection = True
+            try:
+                self._send(value, status, close=True)
+                self.wfile.flush()
+                self.connection.shutdown(SHUT_WR)
+            except (OSError, ValueError):
+                return  # Client already left; never send a second response.
+            deadline = time.monotonic() + 1.0
+            remaining = 16384
+            length = self.headers.get("Content-Length", "").strip()
+            if self.headers.get("Transfer-Encoding") is None and re.fullmatch(r"[0-9]{1,5}", length):
+                declared = int(length)
+                if declared <= 16384:
+                    remaining = declared
+            previous_timeout = None
+            try:
+                previous_timeout = self.connection.gettimeout()
+                while remaining:
+                    left = deadline - time.monotonic()
+                    if left <= 0:
+                        break
+                    self.connection.settimeout(left)
+                    part = self.rfile.read1(min(4096, remaining))
+                    if not part:
+                        break
+                    remaining -= len(part)
+            except (OSError, ValueError):
+                pass  # EOF/timeout/abort is a local close, not a business retry.
+            finally:
+                try:
+                    self.connection.settimeout(previous_timeout)
+                except (OSError, ValueError):
+                    pass
 
         def do_GET(self):
             if not self._local():
@@ -761,7 +802,7 @@ def make_handler(state: ArthurState, token: str):
                 or (origin is not None and origin not in valid_origins)
                 or not secrets.compare_digest(self.headers.get("X-Arthur-Token", ""), token)
             ):
-                return self._send(
+                return self._reject_post(
                     {"error": "Érvénytelen helyi munkamenet. Frissítsd az oldalt."}, 403
                 )
             try:
