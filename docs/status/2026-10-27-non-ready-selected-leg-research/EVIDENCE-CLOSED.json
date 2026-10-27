@@ -1,0 +1,43 @@
+{
+  "at": "2026-10-27T05:28:47.007621+00:00",
+  "task": "non-ready-selected-leg-research-contract",
+  "status": "OWN_ROOT_INDEPENDENT_PHYSICAL_RUNTIME_PASS",
+  "full": 6261,
+  "target": 117,
+  "new_tests": 52,
+  "adapter": 10,
+  "actual_replays": 3,
+  "source_files": 1257,
+  "old_ledger_rows": 4087,
+  "old_archives": 14192,
+  "protected_stores": 4,
+  "consumer_input": {
+    "status": "FINAL_APP_NONREADY_SELECTED_LEG_RESEARCH_PURE_PROOF_READ_BACK",
+    "actual_APP_pure_readback_sha256": "382a6baa678955f8ced180ce8ae9ba79e5326af16f303e255acddadea0518e66",
+    "final_target_proof_sha256": "eafa7c4b2a3550cb39c89d5b029ff790ac52e62cee36708922863746989644ce",
+    "new_behavior_cases": 52,
+    "current_source_files": {
+      "src/goal_analysis/jobs/portfolio_distribution.py": "de3bda9cc4085a2c0cb8e2f860b2be22a83bf3cd9e29d979864e26782f8a03cc",
+      "tests/test_non_ready_selected_leg_research.py": "b215e4be9100e6177ee7b68b490b860adfa136cc60e97e85334a7378269f5bcc"
+    },
+    "new_model_fits_or_actual_publication_in_this_readback": 0,
+    "actual_old_DAILY_PIT_live_current_quote_profit_claim": false
+  },
+  "old_stadium_registry_files_physically_preserved": 155,
+  "report_physical": "5592bf755cdc07c56969073d711b9c253107877bf53409e2dbe2dce06b7433be",
+  "report_embedded": "916089cc9a91372873e6cdce61ff768d3930b1658a799cf56c1a09d373c326ce",
+  "report_full_ledger": "49f87b0c9bba26f497e494c5757500aef0231683d6564a537446ffabb8c99252",
+  "validation_exit_code": 0,
+  "closure_exit_code": 0,
+  "first_runtime_exit_code": 0,
+  "activation_CAS_or_revalidation_writes": 0,
+  "both_whole_RAW_byte_exact": true,
+  "daily_enabled": false,
+  "legacy_enabled": false,
+  "root_provider_capture_import_llm_normal_generation_operations": 0,
+  "new_actual_forecast_ticket_quote_PIT_global_unique_profit_claim": false,
+  "physical_proof": {
+    "path": "artifacts/roadmap-execution-20261020/non-ready-selected-leg-research-contract/root-independent-readback.json",
+    "sha256": "547e90b1736c857bb61b989cb9bb9ff5b75d974e49c0dfa321a43ab7fc07487b"
+  }
+}
