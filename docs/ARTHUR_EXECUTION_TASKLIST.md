@@ -557,3 +557,5 @@ NemREADY kijelölt lábkutatás saját6261full/52új ellenőrzés alatt: [forrá
 NemREADY kijelölt lábkutatás saját6261full/52új/3NEWactual/ROOT/runtimeOFF igazolt: [lezárt bizonyíték](status/2026-10-27-non-ready-selected-leg-research/REPORT-CLOSED.md). Nincs READY/ár/matek/promóció; DailyOFF.
 
 Pénzügyi projekció/UI végleges forrása saját ellenőrzés alatt, még nem elfogadott: [forrásállapot](status/2026-10-27-actual-money-projection/REPORT-SOURCE-PENDING.md). Daily OFF.
+
+Pénzügyi projekció és dashboard saját teljes/replay/ROOT/runtime OFF ellenőrzéssel: [lezárt bizonyíték](status/2026-10-27-actual-money-projection/REPORT-CLOSED.md). Régi ledger/report nem módosult.
