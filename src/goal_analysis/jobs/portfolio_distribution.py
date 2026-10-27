@@ -262,5 +262,157 @@ def build_portfolio_distribution(report, artifacts):
         "budgets": {"max_cards_per_package": MAX_CARDS, "max_fixtures": MAX_FIXTURES,
                     "max_exact_states": MAX_EXACT_STATES, "simulation_trials": TRIALS},
         "external_requests": 0}
+    try:
+        result["selected_leg_partial_scenarios"] = selected_leg_partial_scenarios(report, artifacts)
+    except (AttributeError, KeyError, TypeError, ValueError):
+        # An optional research component cannot erase the original packages.
+        result["selected_leg_partial_scenarios"] = {"version": SELECTED_LEG_VERSION,
+            "mode": "SHADOW", "decision_effect": "NONE", "status": "UNAVAILABLE",
+            "reason": "SELECTED_LEG_RESEARCH_COMPONENT_INVALID_INPUT", "external_requests": 0}
     result["sha256"] = canonical_sha256(result)
     return result
+
+
+SELECTED_LEG_VERSION = "selected-leg-partial-scenario-shadow-v1"
+SCENARIO_BOUNDS_LABEL = "SCENARIO_MODEL_ESTIMATED_BOUNDS_NOT_EMPIRICAL_TRUE_PROBABILITY_OR_EDGE"
+
+
+def _selected_leg_binding(leg, repeated, indices, model, as_of):
+    """Return an explicit reason, never an invented market probability."""
+    if model.get("status") != "READY":
+        return "MODEL_NOT_READY"
+    fixture, family = leg.get("fixture_id"), leg.get("market_key")
+    if (not isinstance(fixture, str) or fixture in repeated or family not in FAMILIES
+            or leg.get("selection_key") not in FAMILIES.get(family, ())
+            or leg.get("period") != "FULL_TIME" or leg.get("settlement") != SETTLEMENT):
+        return "UNSUPPORTED_PRODUCT_OR_REPEATED_FIXTURE"
+    if len(indices.get(fixture, [])) != 1:
+        return "MISSING_OR_AMBIGUOUS_FIXTURE_PREDICTION"
+    prediction = indices[fixture][0]
+    cutoff = _time(prediction.get("model_details", {}).get("cutoff"))
+    if as_of is None or cutoff is None or cutoff > as_of:
+        return "MISSING_OR_FUTURE_MODEL_CUTOFF"
+    try:
+        _partitions(prediction, [family])
+    except ValueError as error:
+        return str(error)
+    return "VALID_MODEL_MARKET_MARGINAL"
+
+
+def _selected_leg_scenario(cards, model, as_of):
+    """Preserve known legs as research events without estimating unknown legs.
+
+    The existing shared-fixture kernel supplies all event distributions. Its
+    marginal/IPF assumptions remain explicit, including the cross-fixture
+    conditional-independence assumption. Bounds apply only inside that model
+    scenario, not to empirical true probabilities or betting edge.
+    """
+    predictions = model.get("predictions", [])
+    indices = defaultdict(list)
+    for prediction in predictions:
+        indices[prediction.get("fixture_id")].append(prediction)
+    references, events = [], []
+    for card in cards:
+        fixture_counts = Counter(leg.get("fixture_id") for leg in card["legs"]
+                                 if isinstance(leg.get("fixture_id"), str))
+        repeated = {fixture for fixture, count in fixture_counts.items() if count > 1}
+        bindings, known = [], []
+        for position, leg in enumerate(card["legs"]):
+            reason = _selected_leg_binding(leg, repeated, indices, model, as_of)
+            bindings.append({"source_leg_index": position, "source_leg_sha256": canonical_sha256(leg),
+                             "leg": dict(leg), "binding": reason})
+            if reason == "VALID_MODEL_MARKET_MARGINAL":
+                known.append(leg)
+        reference = {"source_card_sha256": card["sha256"], "profile_id": card["profile_id"],
+                     "source_card_identity": card["source_card_identity"],
+                     "source_leg_count": len(card["legs"]), "known_leg_count": len(known),
+                     "unknown_leg_count": len(card["legs"]) - len(known), "leg_bindings": bindings,
+                     "research_event_is_new_ticket": False,
+                     "known_leg_event_probability": None, "scenario_model_full_card_probability": None,
+                     "scenario_model_full_card_probability_bounds": None, "bounds_interpretation": SCENARIO_BOUNDS_LABEL}
+        if not known:
+            reference["status"] = "NO_COVERED_LEGS_NOT_ESTIMABLE"
+            references.append(reference)
+            continue
+        event = {"profile_id": card["profile_id"], "legs": known,
+                 "sha256": canonical_sha256({"component": SELECTED_LEG_VERSION,
+                     "source_card_sha256": card["sha256"], "known_legs": known})}
+        individual = _scenario([event], model, as_of)
+        # A per-card event has no repeated fixture and only independently
+        # validated supported products. Keep the failure explicit regardless.
+        covered = individual.get("covered_cards", [])
+        if individual.get("status") != "COMPLETE_SCENARIO" or len(covered) != 1:
+            reference.update(status="KNOWN_LEG_EVENT_UNAVAILABLE", reason=individual.get("reason", individual["status"]))
+            references.append(reference)
+            continue
+        probability = covered[0]["scenario_win_probability"]
+        complete = len(known) == len(card["legs"])
+        reference.update(status="FULLY_COVERED_RESEARCH_EVENT" if complete else "PARTIALLY_COVERED_RESEARCH_EVENT",
+            research_event_sha256=event["sha256"], known_leg_event_probability=probability,
+            scenario_model_full_card_probability=probability if complete else None,
+            scenario_model_full_card_probability_bounds={"lower": probability if complete else 0.0, "upper": probability},
+            fixture_scenarios=individual["fixture_scenarios"])
+        references.append(reference)
+        events.append(event)
+    joint = _scenario(events, model, as_of) if events else None
+    # Names deliberately describe known-leg research events, never full-ticket
+    # winners. Distinct source tickets/stakes stay separate perfectly dependent
+    # events if their known selections coincide.
+    joint_result = None if joint is None else {
+        "status": joint["status"], "reason": joint.get("reason"),
+        "known_leg_event_count": len(events),
+        "expected_satisfied_known_leg_events": joint.get("covered_expected_winners"),
+        "satisfied_known_leg_event_count_variance": joint.get("covered_winner_count_variance"),
+        "satisfied_known_leg_event_count_distribution": joint.get("covered_winner_count_distribution"),
+        "fixture_scenarios": joint.get("fixture_scenarios", {}),
+        "interpretation": "RESEARCH_EVENTS_NOT_WAGERS_OR_ESTIMATES_FOR_UNKNOWN_FULL_CARDS"}
+    return {"status": "RESEARCH_SCENARIOS_ONLY" if events else "NOT_ESTIMABLE",
+            "source_card_count": len(cards), "cards": references, "joint_known_leg_events": joint_result,
+            "numeric_predictions_sha256": canonical_sha256(predictions)}
+
+
+def selected_leg_partial_scenarios(report, artifacts):
+    """Additive bounded coverage for the same separate READY source cohorts."""
+    packages = {}
+    for group in ("tickets", "recommendations"):
+        cards, seen, duplicates = [], set(), 0
+        for card in report.get(group, []) or []:
+            if card.get("status") != "READY" or not card.get("legs"):
+                continue
+            identity = canonical_sha256(card)
+            if identity in seen:
+                duplicates += 1
+                continue
+            seen.add(identity)
+            source_identity = {key: card[key] for key in (
+                "ticket_id", "portfolio_ticket_id", "profile_id", "status", "publication_scope", "stake", "unit_stake",
+                "stake_units", "wager_id") if key in card}
+            cards.append({"profile_id": card.get("profile_id"), "sha256": identity, "legs": card["legs"],
+                          "source_card_identity": source_identity})
+        cards.sort(key=lambda item: item["sha256"])
+        reason = "READY_CARD_BUDGET_EXCEEDED" if len(cards) > MAX_CARDS else None
+        references = sum(len(card["legs"]) for card in cards)
+        # Explicit component bound, in leg references. No first-N truncation.
+        if reason is None and references > MAX_CARDS * MAX_FIXTURES:
+            reason = "SELECTED_LEG_REFERENCE_BUDGET_EXCEEDED"
+        fixtures = {leg.get("fixture_id") for card in cards for leg in card["legs"]
+                    if isinstance(leg.get("fixture_id"), str)}
+        if reason is None and len(fixtures) > MAX_FIXTURES:
+            reason = "FIXTURE_BUDGET_EXCEEDED"
+        packages[group] = {"status": "UNAVAILABLE" if reason else "NO_READY_CARDS" if not cards else "RESEARCH_SCENARIOS_ONLY",
+                           "reason": reason, "source_ready_card_count": len(cards),
+                           "exact_duplicate_records_not_counted_twice": duplicates,
+                           "source_leg_reference_count": references,
+                           "models": {name: _selected_leg_scenario(cards,
+                               artifacts.get("numeric_models", {}).get(name) or {},
+                               _time(report.get("finished_at", report.get("observed_at"))))
+                               for name in MODELS} if cards and reason is None else {}}
+    return {"version": SELECTED_LEG_VERSION, "mode": "SHADOW", "decision_effect": "NONE",
+            "scope": "EXISTING_SEPARATE_READY_COHORTS_NO_STATUS_PROMOTION_OR_NEW_TICKET",
+            "bounds_interpretation": SCENARIO_BOUNDS_LABEL, "packages": packages,
+            "assumptions": ["UNKNOWN_LEGS_UNESTIMATED_NEVER_ZERO_HALF_OR_INVERSE_ODDS",
+                            "KNOWN_LEG_EVENT_IS_NOT_A_REPLACEMENT_TICKET_OR_NEW_WAGER",
+                            "SAME_MODEL_MARGINALS_AND_SHARED_FIXTURE_COUPLING_AS_ORIGINAL_KERNEL",
+                            "SYNTHETIC_TEST_TARGETS_NOT_ACTUAL_OLD_DAILY_OR_POINT_IN_TIME_FORECASTS"],
+            "budgets": {"max_cards_per_package": MAX_CARDS, "max_fixtures": MAX_FIXTURES,
+                        "max_leg_references_per_package": MAX_CARDS * MAX_FIXTURES}, "external_requests": 0}

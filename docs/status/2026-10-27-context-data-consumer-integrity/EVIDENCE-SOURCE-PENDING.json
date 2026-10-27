@@ -1,0 +1,94 @@
+{
+  "at": "2026-10-27T02:09:39.148937+00:00",
+  "task": "context-data-consumer-integrity-contract",
+  "status": "SOURCE_PENDING_OWN_FULL_AND_RUNTIME_ACCEPTANCE",
+  "targeted_passed": 205,
+  "new_behavior_cases": 75,
+  "adapter": 10,
+  "collection": 6151,
+  "source_files": 1250,
+  "existing_files_byte_exact": 1245,
+  "source_sha256": {
+    "src/goal_analysis/jobs/expert_advisory.py": "784e0d86435d568c28206b523a2219da3b57ef821411df978f906a68888299a1",
+    "src/goal_analysis/jobs/portfolio_distribution.py": "e6b80a06fb40acc0e56aacef8748907d5dd348a8801917cbe7dbce5897c4bba0",
+    "tests/test_expert_lineup_membership_integrity.py": "cff478ff029edab44fbf10b34a977287d911b27d5c646e6887bf82723ac9a338",
+    "tests/test_native_bookmaker_context_binding.py": "a560d837c50bedd1e172f361bf8dd5c5da1a745ffd675751425820494d694333",
+    "tests/test_selected_leg_partial_scenarios.py": "78c6e565820b595af46e9b4e2193c227068123387e9092c929c916f883622954"
+  },
+  "own_full_accepted": false,
+  "own_runtime_accepted": false,
+  "scope_complete": false,
+  "daily_enabled": false,
+  "legacy_enabled": false,
+  "actual_APP_pure_readback": {
+    "path": "artifacts/roadmap-execution-20261020/context-data-consumer-integrity-contract/production-context-consumers-readonly-final.json",
+    "sha256": "f962d550d7a5c805c559a0448f803a16d54616937fb3272ec9f6c27943559811"
+  },
+  "lineup_counterexamples": {
+    "kind": "EXPLICIT_TESTONLY_NOT_REAL_PLAYER_ABSENCE",
+    "cases": [
+      {
+        "case": "empty",
+        "original_home_availability": "CONFIRMED_NOT_STARTING",
+        "actual_home_availability": "AVAILABLE_OR_UNKNOWN",
+        "original_home_rate": 1.38,
+        "actual_home_rate": 1.5,
+        "unchanged_baseline_home_rate": 1.5,
+        "valid_other_side_still_used": true
+      },
+      {
+        "case": "partial",
+        "original_home_availability": "CONFIRMED_NOT_STARTING",
+        "actual_home_availability": "AVAILABLE_OR_UNKNOWN",
+        "original_home_rate": 1.38,
+        "actual_home_rate": 1.5,
+        "unchanged_baseline_home_rate": 1.5,
+        "valid_other_side_still_used": true
+      },
+      {
+        "case": "duplicate",
+        "original_home_availability": "CONFIRMED_NOT_STARTING",
+        "actual_home_availability": "AVAILABLE_OR_UNKNOWN",
+        "original_home_rate": 1.38,
+        "actual_home_rate": 1.5,
+        "unchanged_baseline_home_rate": 1.5,
+        "valid_other_side_still_used": true
+      }
+    ],
+    "inputs_unchanged": true,
+    "new_probability_formula_or_weight": false
+  },
+  "native_bookmaker_saved_reference": {
+    "priced_candidates": 628,
+    "original_comparisons": 0,
+    "exact_native_candidate_comparisons": 95,
+    "selected_expert_leg_occurrences": 34,
+    "selected_unique_candidates": 17,
+    "selected_exact_comparison_occurrences": 14,
+    "provider_quoted_at_remains_null": 628,
+    "current_price_rank_probability_changes": false
+  },
+  "partial_synthetic_projection": {
+    "kind": "SAVED_B04_UNIQUE_SYNTHETIC_FUTURE_PROJECTION",
+    "known_leg_counts": {
+      "gauss": 2,
+      "kepler": 1,
+      "laplace": 2
+    },
+    "source_legs": 3,
+    "original_full_card_probability_stays_null": true,
+    "known_event_is_not_a_new_ticket": true,
+    "bounds_interpretation": "SCENARIO_MODEL_ESTIMATED_BOUNDS_NOT_EMPIRICAL_TRUE_PROBABILITY_OR_EDGE"
+  },
+  "activation_CAS_or_revalidation_writes_required": 0,
+  "both_activation_source_sets_unchanged": true,
+  "parent_B04_remote_sha": "8a45f1d535cb643155a23ff5929315fe7baf1cf5",
+  "parent_B05_readonly_remote_sha": "13a50f2269efc4bdb11ec9366f8119c05060e222",
+  "prior_215_status": {
+    "path": "docs/status/2026-10-27-ticket-quality-context-use-readonly/STATUS-215.json",
+    "sha256": "3eccc8f7a96a1a656a20a05543c8d2716e06efb65f6cec24b94ab7eef5a8b364"
+  },
+  "new_ROOT_capture_receipt_import_provider_LLM_generation": 0,
+  "new_actual_forecast_ticket_currentquote_PIT_LIVE_profit_claim": false,
+  "project_complete": false
+}

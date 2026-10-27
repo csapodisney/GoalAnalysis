@@ -1,0 +1,13 @@
+# Meglévő sportadatok helyes fogyasztása — teljes ellenőrzés alatt
+
+2026-10-27T02:09:39.148937+00:00. Két meglévő APPmodul és három új tesztfájl,1250forrás/1245régi byteazonos. Saját205célzott75új/10adapter/Ruff/6151collection/original8check/Dailyguard és actualAPPpure readback PASS. A saját6151full+3NEWactual fut, teljes elfogadás/runtime/ROOT/GitHubscopelezárás MÉG NINCS. Daily éslegacyOFF.
+
+Hiányos, üres vagy duplikált confirmedXI nem bizonyítja az összes hiányzó játékos nemkezdését. Negatív tagsági következtetéshez az adott csapat teljes11külön kezdője kell. A másik valid oldal, az explicit pozitív kezdő és az önálló igazolt sérülés/helyettesítés tovább használható. Ez a meglévő xG/player inputjának javítása, nem új képlet vagy rangsorolási súly.
+
+A natív bookmaker hashkulcsát az eredeti provider_bookmaker névhez a meglévő forrásvalidátor köti. A supplementary ár pontos fixture/bookmaker/market/selection/period/settlement/line szerint jut a meglévő SHADOWösszevetésbe. A történeti cc3b628jelöltjén0helyett95pontos függvényszintű összevetés érhető el; a külön mentett expertcohort34láb-előfordulás/17egyedi jelölt, közülük14exact összevetés. Ezek eltérő egységek, nem95új kiválasztott láb. A628provider quoted_at továbbNULL; receiptobservation nem providerquoteóra. Az ár, probability és B06rangsúly nem változik, másik bookmaker/termék nem helyettesíthet.
+
+A részben becsülhető kártya ismert lábai a meglévő, közös fixture-kimeneteleket használó kernelben külön kutatási eseményként futnak. A B04mentett valódi modellekből, kizárólag7egyedi SZINTETIKUSJÖVŐ targetre vetített háromlábú alakzatban Gauss2/3,Kepler1/3,Laplace2/3láb becsülhető. A teljes eredeti kártya NOT_ESTIMABLE és fullcardprobabilityNULL marad; a hiány nem0/.5/p=1. Az additive szcenárió nem új szelvény, nem ranghatás és nem READYpromóció. A bizonytalan feltételes intervallum nem empirikus valódi probability/edge.
+
+Hiányos optionaladat helyi hiány; a valid baseline/más modell/másik meccs továbbfut. Az eredeti teljeskártya-csomagmezők, numerikus képletek, limites keretek, modellek/profilok/rank/súly/threshold/READY/gold változatlanok. A B03weather és B04retainedNORMALinput elfogadott bizonyítéka, régi report/quote/raw/óra,19raw271result/181alias és N9/519STOP megmarad. Mindkét activation függőségkészlete változatlan,0CAS/nincs új revalidationóra. Metadata igazolásáért nincs provider/LLM/normalgen/import/capture.
+
+Ez még nem új tényleges forecast/szelvény/currentquote/PIT/LIVE vagy profitbizonyíték. A teljes ellenőrzés után saját fizikai ROOTreadback/metadataOFFruntime/exact9GitHubsource-docblob kell a javítás lezárásához.215176zöld39piros: csak11.2evidence változik, más214status/reference és korábbi B03/B04/B05proof megmarad. Külön136kész31nyitott, nemprojekt%.

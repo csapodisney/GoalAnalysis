@@ -176,13 +176,37 @@ def _stats_fixture_signal(record):
                 active_absences.add(row.get('player_id'))
                 absence_team[row.get('player_id')] = team_id
     lineup = next((fact for fact in facts if fact.get('category') == 'lineup'), None)
-    confirmed = bool(lineup and lineup['data'].get('confirmed') is True)
-    starters = {}
-    if lineup:
-        starters = {
-            mapping['home_team_id']: {p.get('player_id') for p in lineup['data'].get('home_players', [])},
-            mapping['away_team_id']: {p.get('player_id') for p in lineup['data'].get('away_players', [])},
+    lineup_data = (lineup.get('data') if isinstance(lineup, dict) else None)
+    lineup_data = lineup_data if isinstance(lineup_data, dict) else {}
+    confirmed = (lineup_data.get('confirmed') is True
+                 and lineup_data.get('type') == 'team_sheet')
+    starters, lineup_membership = {}, {}
+    for side in ('home', 'away'):
+        team_id = mapping[side + '_team_id']
+        rows = lineup_data.get(side + '_players')
+        bound = lineup_data.get(side + '_team_id') == team_id
+        identifiers = [row.get('player_id') for row in rows
+                       if isinstance(row, dict)] if isinstance(rows, list) else []
+        valid = [pid for pid in identifiers
+                 if isinstance(pid, str) and pid and pid.strip() == pid]
+        complete = (confirmed and bound and isinstance(rows, list) and len(rows) == 11
+                    and len(identifiers) == 11 and len(valid) == 11 and len(set(valid)) == 11)
+        # Positive explicit membership survives an incomplete side; absence
+        # requires a complete XI. The canonical schema has no bench entries.
+        starters[team_id] = set(valid) if confirmed and bound else set()
+        lineup_membership[team_id] = {
+            'side': side, 'provider_confirmed': lineup_data.get('confirmed') is True,
+            'starter_count': len(rows) if isinstance(rows, list) else None,
+            'unique_valid_starter_count': len(set(valid)),
+            'negative_membership_eligible': complete,
+            'status': 'COMPLETE_XI' if complete else 'INCOMPLETE_XI' if confirmed else 'UNCONFIRMED',
         }
+    shared_starters = starters[mapping['home_team_id']] & starters[mapping['away_team_id']]
+    if shared_starters:
+        for team_id in starters:
+            starters[team_id] -= shared_starters
+            lineup_membership[team_id].update(
+                negative_membership_eligible=False, status='CONFLICTING_SIDE_IDENTITIES')
     def player_role(value):
         token = ''.join(character for character in str(value or '').casefold()
                         if character.isalnum())
@@ -203,8 +227,11 @@ def _stats_fixture_signal(record):
                               for row in fact['data'].get('players', [])})
         elif fact.get('category') == 'lineup':
             for side in ('home_players', 'away_players'):
+                data = fact.get('data')
+                rows = data.get(side) if isinstance(data, dict) else None
                 positions.update({row.get('player_id'): player_role(row.get('position'))
-                                  for row in fact['data'].get(side, [])})
+                                  for row in rows if isinstance(row, dict)}
+                                 if isinstance(rows, list) else {})
 
     player_context, attack_penalties = [], {mapping['home_team_id']: [],
                                             mapping['away_team_id']: []}
@@ -224,7 +251,8 @@ def _stats_fixture_signal(record):
                     and team['expected_goals_for'] > 0 else 0)
         share = min(1.0, max(goal_share, xg_share))
         reason = ('ACTIVE_ABSENCE' if player_id in active_absences else
-                  'CONFIRMED_NOT_STARTING' if confirmed and player_id not in starters.get(team_id, set())
+                  'CONFIRMED_NOT_STARTING' if (lineup_membership[team_id]['negative_membership_eligible']
+                                               and player_id not in starters.get(team_id, set()))
                   else 'AVAILABLE_OR_UNKNOWN')
         role = positions.get(player_id, 'ATTACKER')
         # Each attacking absence is capped at 12%. Multiple absences combine
@@ -309,6 +337,7 @@ def _stats_fixture_signal(record):
             'baseline_probabilities': baseline_probabilities,
             'player_market_effects': market_effects,
             'sources': sources, 'player_context': player_context,
+            **({'lineup_membership': lineup_membership} if lineup is not None else {}),
             'absence_context': absence_context,
             'replacement_coverage': replacement_coverage,
             'data_coverage': {
@@ -326,16 +355,30 @@ def _stats_fixture_signal(record):
 
 
 def _shadow_quote(leg, signal):
+    if leg.get('period') != 'FULL_TIME':
+        return None
     market = leg.get('market_key')
     point = None
     if market in {'totals_2_5', 'totals_3_5'}:
         point, market = float(market[-3:].replace('_', '.')), 'totals'
-    bookmaker = ''.join(c for c in str(leg.get('bookmaker', '')).casefold() if c.isalnum())
+    native = leg.get('quote_provider') == 'the_stats_api'
+    if native:
+        from goal_analysis.providers.the_stats_odds import valid_quote_source
+
+        native_market = {'h2h': 'match_odds', 'btts': 'btts', 'totals': 'total_goals'}.get(market)
+        if (not valid_quote_source(leg) or native_market is None
+                or leg.get('provider_market_id') != native_market
+                or leg.get('settlement') != 'REGULATION_90_PLUS_STOPPAGE_EXCLUDING_EXTRA_TIME_AND_PENALTIES'):
+            return None
+        bookmaker = leg['provider_bookmaker']
+    else:
+        bookmaker = ''.join(c for c in str(leg.get('bookmaker', '')).casefold() if c.isalnum())
     matches = []
     for quote in signal.get('shadow_odds_quotes', []):
-        quote_book = ''.join(c for c in str(quote.get('bookmaker', '')).casefold() if c.isalnum())
+        quote_book = (quote.get('bookmaker') if native else
+                      ''.join(c for c in str(quote.get('bookmaker', '')).casefold() if c.isalnum()))
         if (quote.get('market_key') == market and quote.get('selection_key') == leg.get('selection_key')
-                and quote_book == bookmaker and (point is None or quote.get('point') == point)):
+                and quote_book == bookmaker and quote.get('point') == point):
             matches.append(quote)
     if len(matches) != 1:
         return None

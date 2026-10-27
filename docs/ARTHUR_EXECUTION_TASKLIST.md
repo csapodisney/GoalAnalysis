@@ -543,3 +543,5 @@ B04retainedDB normálmodellinput saját6076teljes ellenőrzés alatt: [forrásbi
 B04retainedhistory saját6076full/70új/3NEWactual/ROOT/runtimeOFF ésfeltételes valódi modellinput1→5/7 igazolt: [lezárt bizonyíték](status/2026-10-27-retained-history-normal-input/REPORT-CLOSED.md). Következő B05context-useRO; DailyOFF.
 
 B05 meglévő adatfogyasztási RO-audit lezárható: [ellenőrzött megállapítások](status/2026-10-27-ticket-quality-context-use-readonly/REPORT.md). Következő a confirmed-XI/native-bookmaker/részleges-lábszcenárió egyetlen külön javítási scope-ja; ez még nem APP-elfogadás. Daily/legacy OFF.
+
+Adatfogyasztási integritás saját6151teljes ellenőrzés alatt: [forrásbizonyíték](status/2026-10-27-context-data-consumer-integrity/REPORT-SOURCE-PENDING.md). HiányosXI helyiUNKNOWN, natív bookmaker exactSHADOWösszevetés, ismert selectedleg külön kutatási szcenárió; nem új aktuális forecast/szelvény/profit. DailyOFF.
