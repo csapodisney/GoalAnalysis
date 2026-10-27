@@ -1,0 +1,70 @@
+{
+  "at": "2026-10-27T02:01:38.030988+00:00",
+  "task": "retained-history-normal-input-contract",
+  "status": "OWN_ROOT_INDEPENDENT_PHYSICAL_RUNTIME_PASS",
+  "full": 6076,
+  "target": 136,
+  "new_tests": 70,
+  "adapter": 10,
+  "actual_replays": 3,
+  "source_files": 1247,
+  "old_ledger_rows": 4087,
+  "old_archives": 12500,
+  "protected_stores": 4,
+  "numeric_input": {
+    "status": "FINAL_APP_INPUT_AND_RECORDED_CONDITIONAL_NUMERIC_EXPERIMENT_READ_BACK",
+    "input_dataset": {
+      "version": "training-dataset-v1",
+      "role": "normal_standard_venue_history",
+      "as_of": "2026-10-27T00:30:58.243942+00:00",
+      "row_count": 2613,
+      "rows_sha256": "469f9c33a8206c1091650038d26daf32afa4b0c94f9c1ff00883816fa77527cd",
+      "recipe": {
+        "version": "normal-witnessed-history-standard-venue-v1",
+        "policy": "explicit-non-neutral-history-shadow-v1",
+        "truth_bound": 10000,
+        "raw_alias_bound": 20000,
+        "selection": "CONFLICT_BEFORE_EXPLICIT_STANDARD_VENUE"
+      },
+      "lineage_sha256": "768de18a9866181e633c166ce568a66e89b0e57d3f86da26a69aa764500084f5",
+      "ordering": "EXACT_CONSUMPTION_ORDER",
+      "dataset_id": "8600eacc294875e724525d4c954d7d029b4d69e894ece6d367cf11abab0dd8e7"
+    },
+    "selected_records": 2613,
+    "selected_record_origin_counts": {
+      "ONLINE": 8,
+      "RETAINED": 2605,
+      "BOTH": 0
+    },
+    "actual_numeric_dataset_files_physically_verified_at_acceptance": 61,
+    "conditional_future_target_coverage": {
+      "control": 1,
+      "treatment": 5,
+      "universe": 7
+    },
+    "fixture_kind": "SYNTHETIC_FUTURE_TARGETS_REAL_RETAINED_HISTORY_CONDITIONAL_SCENARIOS",
+    "actual_APP_readback_sha256": "e6b380fb06c74439ac8132d02a47af4eb791ffab63451b9e4a316281bd0c26ac",
+    "experiment_proof_sha256": "e4672cb6e3d05442008deea71fc0250d0bc874e6f8a3dc1db6ae6ee1e4a01a8a",
+    "input_view_file_sha256": "223b3fd8f084497930f79ac84108a0f8f807df9e94bc5c362a0dbac6aa3daa44",
+    "new_model_fits_or_actual_publication_in_this_readback": 0,
+    "raw_source_input_not_new_canonical_result_admission": true,
+    "global_unique_PIT_live_current_quote_profit_claim": false
+  },
+  "old_stadium_registry_files_physically_preserved": 155,
+  "report_physical": "5592bf755cdc07c56969073d711b9c253107877bf53409e2dbe2dce06b7433be",
+  "report_embedded": "916089cc9a91372873e6cdce61ff768d3930b1658a799cf56c1a09d373c326ce",
+  "report_full_ledger": "49f87b0c9bba26f497e494c5757500aef0231683d6564a537446ffabb8c99252",
+  "validation_exit_code": 0,
+  "closure_exit_code": 0,
+  "first_runtime_exit_code": 0,
+  "background_CAS_writes": 1,
+  "prospective_whole_RAW_byte_exact": true,
+  "daily_enabled": false,
+  "legacy_enabled": false,
+  "root_provider_capture_import_llm_normal_generation_operations": 0,
+  "new_actual_forecast_ticket_quote_PIT_global_unique_profit_claim": false,
+  "physical_proof": {
+    "path": "artifacts/roadmap-execution-20261020/retained-history-normal-input-contract/root-independent-readback.json",
+    "sha256": "9c486e3aa34ebda5e88cb0ff4346b2cb02dd99d9f6f30b2d97b100845f4008f1"
+  }
+}
