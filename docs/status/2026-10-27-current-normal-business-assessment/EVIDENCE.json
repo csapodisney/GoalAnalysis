@@ -1,0 +1,139 @@
+{
+  "at": "2026-10-27T11:22:27.145376+00:00",
+  "scope": "normal-quality-current-operator-validation-preflight",
+  "status": "ONE_REAL_NORMAL_PARTIAL_RUN_RECONCILED_AND_READONLY_ASSESSED_GITHUB_PENDING",
+  "run_id": "2026-10-27-d57b8c56e622",
+  "target_date": "2026-10-27",
+  "construction_status": "PARTIAL",
+  "tickets": 1,
+  "ticket_status": "DRAFT",
+  "previews": 0,
+  "wagers_placed": 0,
+  "native_business_exit_code": 0,
+  "child_tree_stopped": true,
+  "core_Astra": {
+    "status": "FAILED",
+    "requests": 0,
+    "considered_or_cited_proven": false,
+    "wire_utf8_bytes": 257463,
+    "wire_limit_bytes": 360000,
+    "feedback_characters": 22226,
+    "feedback_character_limit": 12000,
+    "cause": "REPEATED_CURRENT_HASH_V2_MONETARY_RECORD_DETAILS_IN_OPTIONAL_FEEDBACK"
+  },
+  "distinct_other_reviews": {
+    "Grok": "COMPLETE",
+    "post_save_Codex": "COMPLETE",
+    "these_are_not_core_Astra_acceptance": true
+  },
+  "report_hash_roles": {
+    "physical_report_file_sha256": {
+      "2026-10-27-d57b8c56e622": "e5d35ed277f3275586bcb9fad0479f1d2d2c8596c28f0861980424836222700d"
+    },
+    "report_logical_sha256": "aa60b3feac2aafa1c2dcede069a63651c9ac2179818c110fc997afe9ba759bef",
+    "full_ledger_snapshot_sha256": "ba5d2f81f3bc293a6f89bd809c33bb5f1883fbfbe4d8fa05fc534b8b5d226dc4"
+  },
+  "normal_model_input": {
+    "status": "COMPLETE",
+    "selected_rows": 1896,
+    "RETAINED": 1664,
+    "ONLINE": 232,
+    "actual_physical_datasets_exact": 31,
+    "model_prediction_fixture_counts": {
+      "gauss": 10,
+      "kepler": 10,
+      "laplace": 10
+    },
+    "causal_uplift_all_database_rows_or_certified_old_PIT_claim": false
+  },
+  "whole_candidate_accounting": {
+    "source": 3598,
+    "accounted": 3598,
+    "selected_unique_candidates": 3,
+    "actual_core_considered_cited": 0,
+    "prepared_core_review_packet_records": 30,
+    "exact_actual_request_response_bindings": 0
+  },
+  "selected_quote_physical_raw_sources_exact": 3,
+  "provider_quoted_at_without_provider_clock": null,
+  "selected_weather": {
+    "focused_completion_exit_code": 0,
+    "fixtures": 3,
+    "strict_verified_forecasts": 0,
+    "issues": {
+      "MISSING_AVAILABILITY_RECEIPT": 2,
+      "UNKNOWN_NULL_TARGET_DIAGNOSTIC": 1
+    },
+    "two_SOURCED_forecast_UTC_hours_are_valid": true,
+    "original_auditor_nested_BEGIN_OperationalError_preserved_and_separately_completed": true,
+    "normal_fresh_weather_receipt_integration": "FUTURE_ONLY_CODE_GAP_NO_BACKFILL",
+    "weather_model_probability_or_challenger_holdout_claim": false
+  },
+  "preservation": {
+    "old_primary_ledger_rows_exact": 4087,
+    "new_generation_rows": 5,
+    "original_prefix_native_exit_code": 1,
+    "original_prefix_failure": "300_SECOND_COMBINED_READ_BUDGET_IN_ARCHIVE_PHASE",
+    "prior_SQL_and_26file_assertions": {
+      "SQL_or_original_reader_reexecution": 0,
+      "all_14577_archive_keys_originally_UNEXAMINED_as_whole_scope": true,
+      "original_DB_snapshot_closed_before_archive_loop": true,
+      "original_after_archive_final_rechecks_were_NOT_reached": true,
+      "original_asserted_1143_1655_1963_matches_AND_lineage": true,
+      "original_asserted_115736_receipt_and_16832_version_prefixes": true,
+      "original_asserted_19raw_271versions_181aliases_314witnesses": true,
+      "original_failure_preserved": true,
+      "original_native_exit_code": 1,
+      "original_observation26_file_hashes_completed_before_trace": true,
+      "original_outcome_at": "2026-10-27T11:03:14.053185+00:00",
+      "proof_role": "CONTROL_FLOW_INFERENCE_UNDER_ORIGINAL_PINNED_SOURCE_AND_NATIVE_INVOCATION_PRECONDITION_NOT_NEW_SQL_READBACK",
+      "run_id": "2026-10-27-d57b8c56e622",
+      "status": "ORIGINAL_COMPLETED_SQL_ASSERTIONS_RECONCILED_BY_PINNED_SOURCE_AND_EXACT_TRACE_NOT_REEXECUTED"
+    },
+    "separate_first_complete_archive_phase_exit_code": 0,
+    "archive_keys_exact": 14577,
+    "archive_bytes_read": 8047709688,
+    "auxiliary_four_stores_old_logical_prefixes": "UNEXAMINED_NO_PREBUSINESS_ROW_PREFIX_OR_WAL_MANIFEST",
+    "current_source1267_and_business12_inputs_final_recheck": "EXACT",
+    "no_old_519_N9_or_receipt_admission_retry": true
+  },
+  "source_authority": {
+    "accepted_source_remote_sha": "90f800cc8de45bd7f18070695d4052e6b26e1a2f",
+    "accepted_source_scope": "actual-money-projection-contract",
+    "source_files": 1267,
+    "historical_source_validation_full": 6373,
+    "source_scope_retagged": false,
+    "this_business_assessment_APP_source_changes_or_new_full_replay_runtime_operations": 0
+  },
+  "daily_enabled": false,
+  "legacy_enabled": false,
+  "automatic_retry": false,
+  "proofs": {
+    "artifacts/roadmap-execution-20261020/normal-quality-current-operator-validation-preflight/business-outcome.json": "d33308f68a62a14e044510205c8a8201f560d1cfbab104d729f9586140dbe9e1",
+    "artifacts/roadmap-execution-20261020/normal-quality-current-operator-validation-preflight/reconciliation.json": "accfb1dfaf66193fa7784801c97da30d7cf07ee1c111b937722ee41989a12df5",
+    "artifacts/roadmap-execution-20261020/normal-quality-current-operator-validation-preflight/reconcile-command-outcome.json": "7a48c2e9c9736fc4c751a71e6cf55f2740ba41a306324a4410117def80708770",
+    "artifacts/roadmap-execution-20261020/normal-quality-post-run-consumption-audit-preparation-v2-streaming/post-run-audit-result.json": "887de28db22ce330d086ec1330306d27fd182f60c8e3e65ce3f291c422254e5d",
+    "artifacts/roadmap-execution-20261020/normal-quality-post-run-consumption-audit-preparation-v2-streaming/post-run-audit-outcome.json": "e3c98f2a38869827a290dcbabce92ff6846a184bd8e035a1953fcce5f4c1a213",
+    "artifacts/roadmap-execution-20261020/normal-quality-selected-weather-transaction-readonly-completion/weather-readonly-result.json": "3e811280691813d2cfc6e8e6c9b6f3bc800e45a99221ee921c89f037d3d0e6a5",
+    "artifacts/roadmap-execution-20261020/normal-quality-selected-weather-transaction-readonly-completion/weather-readonly-outcome.json": "2f323cdf3394533c3a87aa3af3aa5899c59419242d83aea296abc075a1f52040",
+    "artifacts/roadmap-execution-20261020/post-business-prefix-readback-preparation/prefix-outcome.json": "ce16d693eb8dbe3fa699f6376597c647c3e45db6a0c0d2f905d809fe92b4005d",
+    "artifacts/roadmap-execution-20261020/post-business-prefix-readback-preparation/prefix-command-stderr.log": "f504bd82fd0e0b6622ab0f1019429f6c164571bf2a31c464c052f8b8cff0af59",
+    "artifacts/roadmap-execution-20261020/post-business-archive-only-completion-preparation/archive-only-result.json": "9528f2f7844b42649400afc16e7f7a64dd57a00ecde00484255f15a5aa6c5913",
+    "artifacts/roadmap-execution-20261020/post-business-archive-only-completion-preparation/archive-only-key-results.json": "74e09e545254cc7a9ecff6a7b90e28c0365d60f23edb90c12166c29f061e3d37",
+    "artifacts/roadmap-execution-20261020/post-business-archive-only-completion-preparation/archive-only-outcome.json": "c2c828b4880a46ba40a90feb34b487b33fddc0026d2dd33ba414db49e46e0553",
+    "artifacts/roadmap-execution-20261020/astra-core-feedback-budget-readonly/diagnosis.json": "e3dcc66017282468b673717ac9e6c54d87ddf4f81e3a7e1aeeaf399cb447e15f",
+    "artifacts/roadmap-execution-20261020/astra-core-feedback-budget-readonly/outcome.json": "930accdbc4ad9c3390bd4db4be86b6583963f53607ff8ce5542c0c2be651adc6"
+  },
+  "numbered_worklist": {
+    "total": 167,
+    "checked": 136,
+    "open": 31
+  },
+  "additional_unlisted_current_defects": [
+    "CORE_ASTRA_COMPACT_MONETARY_FEEDBACK",
+    "NORMAL_FRESH_WEATHER_AVAILABILITY_RECEIPT_INTEGRATION"
+  ],
+  "final_business_quality_acceptance": false,
+  "profit_PIT_LIVE_or_complete_project_claim": false,
+  "next_single_repair": "astra-feedback-consumption-contract"
+}
