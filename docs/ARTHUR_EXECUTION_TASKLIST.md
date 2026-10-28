@@ -1,5 +1,8 @@
 # Arthur fejlesztési és végrehajtási feladatlista
 
+Aktuális, 2026-10-28: valódi NORMAL 2026-10-28-e2c22516035e, COMPLETE / 2 szelvény (1 DRAFT, 1 READY) / 0 fogadás. Fő Astra, Grok és a konzol szerinti mentés utáni Codex COMPLETE; Grok mindkét szelvénynél fenntartásos, külön concurrence csak a Krónikás két aggályát vizsgálta. Nem profitelfogadás. 1844 retained DB input, 31 fizikai dataset, 120 pontos review-kötés; időjárás45 review-esetben igazolt, kiválasztott direkt numerikus modellhatás UNPROVEN. Daily/legacyOFF. A06+A07 és B11 még telepítendő. [Mai eredmény és pontos hiányok](status/2026-10-28-current-normal-business-assessment/REPORT.md). A korábbi bejegyzések történetiek.
+
+
 Aktuális fejlesztés: HTTP/weather csomag külön emberileg engedélyezett fizikai egyeztetéssel és első OFF-runtime ellenőrzéssel lezárva. Eredeti6445XML PASS, eredeti supervisorTask0xC000013A/full-replaynativeUNRECORDED; nem fakeworker0 és nincs újrafuttatás. A külön reconciliation/closure/runtime saját0; Daily/legacyOFF. Következő: ticket-quality-post-weather-normal-validation-preflight; nem automatikus üzleti engedély. [Lezárt bizonyíték](status/2026-10-27-local-http-auth-rejection-transport-repair/REPORT-CLOSED.md). A korábbi állapotok történetiek.
 
 Aktuális, 2026-10-27: **Daily és legacy OFF.** Egy valódi mai NORMAL elemzés mentve: PARTIAL / 1 DRAFT / 0 fogadás. 1664 retained DB-mérkőzés tényleges modellinput; a fő Astra-review pénzügyi feedback-kerete hibásan túlterhelt. Következő: `astra-feedback-consumption-contract`, majd jövőbeli weather receipt-integráció. [Friss eredmény és pontos új hibák](status/2026-10-27-current-normal-business-assessment/REPORT.md). A lentebbi korábbi Daily ON és korábbi állapotok történeti bejegyzések.
