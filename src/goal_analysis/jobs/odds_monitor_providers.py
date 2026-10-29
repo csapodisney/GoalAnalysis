@@ -246,7 +246,11 @@ def _safe_error(error, now, *, quota_exhausted=False, remaining_quota=None, actu
         code = int(match[1]) if match else None
         if code is None and any(token in str(error).casefold() for token in ("ratelimit", "rate limit")):
             code = 429
-    return MonitorFetchError(status_code=code, retry_after_seconds=retry,
+    # Resources.get returns a static code; TheStatsOddsFeed wraps that exact code.
+    reason = ("QUOTA_TRACKING_UNAVAILABLE"
+              if str(error) == "TheStats odds: QUOTA_TRACKING_UNAVAILABLE"
+              else "PROVIDER_UNAVAILABLE")
+    return MonitorFetchError(reason=reason, status_code=code, retry_after_seconds=retry,
                              quota_exhausted=quota_exhausted or remaining_quota == 0,
                              remaining_quota=remaining_quota, actual_cost=actual_cost,
                              unexpected_cost=(type(actual_cost) is int and actual_cost > estimated_cost))

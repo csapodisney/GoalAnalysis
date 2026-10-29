@@ -160,6 +160,9 @@ class OddsMonitor:
             state.pop("lease_until", None)
             state.pop("lease_token", None)
             if error is not None:
+                state["failure_reason"] = ("QUOTA_TRACKING_UNAVAILABLE"
+                                           if getattr(error, "reason", None) == "QUOTA_TRACKING_UNAVAILABLE"
+                                           else "PROVIDER_UNAVAILABLE")
                 failures = state.get("consecutive_failures", 0) + 1
                 retry_after = getattr(error, "retry_after_seconds", None)
                 status = getattr(error, "status_code", None)
@@ -200,6 +203,7 @@ class OddsMonitor:
                 state.update(status="UPDATED", last_success_at=now.isoformat(), snapshot_id=snapshot_id,
                              quote_count=len(quotes), consecutive_failures=0)
                 state.pop("retry_at", None)
+                state.pop("failure_reason", None)
                 remaining = result.get("remaining_quota")
                 if type(remaining) is int and remaining >= 0:
                     shared.update(remaining_quota=remaining, quota_checked_at=now.isoformat())
@@ -244,9 +248,15 @@ class OddsMonitor:
                 except Exception as error:  # noqa: BLE001 - never persist provider text/credentials
                     status = self._finish(query, token, _aware(self.clock()), error=error)
             results.append({"provider": query["provider"], "query_key": query["query_key"], "status": status})
+        failed = sum(row["status"] == "FETCH_FAILED" for row in results)
+        updated_or_cached = sum(row["status"] in {"UPDATED", "CACHED"} for row in results)
         return {"version": VERSION, "observed_at": _aware(self.clock()).isoformat(),
                 "status": "UPDATED" if any(row["status"] == "UPDATED" for row in results) else "NO_CHANGE",
-                "provider_calls": calls, "queries": results, "astra_calls": 0}
+                "provider_calls": calls, "queries": results, "astra_calls": 0,
+                "query_failure_count": failed, "updated_or_cached_query_count": updated_or_cached,
+                "query_failure_scope": ("PARTIAL_FETCH_FAILURE" if failed and updated_or_cached else
+                                        "FETCH_FAILURE_WITHOUT_UPDATED_OR_CACHED_QUERY" if failed else
+                                        "NO_FETCH_FAILURE_RECORDED")}
 
 
 def _monitor_path(root, shadow):

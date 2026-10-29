@@ -1,3 +1,7 @@
+# Retired Daily223 installer: fail before any credential, shortcut or task operation.
+# Review scripts/install-arthur.ps1 separately; this entry does not delegate or install.
+throw 'DEPRECATED_DAILY223_INSTALLER: This installer is retired. Review scripts/install-arthur.ps1 explicitly. No installation changes were made.'
+# The byte-exact historical body below is deliberately unreachable.
 $ErrorActionPreference = "Stop"
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
 Set-Location $ProjectRoot

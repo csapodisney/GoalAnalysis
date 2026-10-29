@@ -1,3 +1,5 @@
+throw "This retired launcher is disabled. Use scripts/start-arthur.ps1 for the current Arthur dashboard."
+
 $ErrorActionPreference = "Stop"
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
 Set-Location $ProjectRoot

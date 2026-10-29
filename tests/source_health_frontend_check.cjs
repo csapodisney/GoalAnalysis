@@ -46,8 +46,11 @@ const context = {
 vm.createContext(context);
 const sentinel = "  state.today = todayBerlin();";
 assert(source.includes(sentinel), "App initializer test seam changed");
+const statusSource = source.slice(source.indexOf("  async function refreshStatus()"));
+const statusSignature = /const signature = (.+?); const contentChanged/.exec(statusSource)?.[1];
+assert(statusSignature, "Actual status signature is available for the render-only check");
 vm.runInContext(source.replace(sentinel,
-  "  globalThis.T={state,renderSourceHealth,renderExpertAdvisory}; return;\n" + sentinel), context);
+  `  globalThis.T={state,renderSourceHealth,renderExpertAdvisory,renderOddsMonitor,statusSignature:data=>(${statusSignature})}; return;\n` + sentinel), context);
 const T = context.T;
 let checks = 0;
 const ok = (condition, message) => { assert(condition, message); checks++; };
@@ -211,4 +214,62 @@ for (const invalid of [null, [], "not-a-report", {mode: "LIVE", status: "AVAILAB
   ok(!text("source-health-rows").includes(attack), "Invalid projection clears untrusted diagnostic rows");
 }
 ok(requests.length === 0, "All rendering states remain free of requests and writes");
+
+projection.status = "AVAILABLE";
+T.state.data = {source_health: projection};
+T.renderSourceHealth();
+has("source-health-note", "önmagában nem módosítja");
+has("source-health-note", "külön adat- és forrásnyomban");
+ok(!text("source-health-note").includes("Az ajánlók a korábbi, változatlan adatútból dolgoznak"),
+  "SHADOW receipt cannot describe every recommender's effective data path");
+
+const failedMonitor = {status: "AVAILABLE", providers: {}, queries: [{query_key: "owned-query",
+  status: "FETCH_FAILED", failure_reason: "QUOTA_TRACKING_UNAVAILABLE",
+  last_success_at: "2026-10-19T10:00:00+00:00", seconds_since_success: 30}]};
+T.state.data = {runtime: {odds_monitor: failedMonitor}};
+const monitorBefore = JSON.stringify(T.state.data);
+byId("connections").replaceChildren();
+T.renderOddsMonitor();
+has("connections", "mentett árlekérési hiba");
+has("connections", "kvótakövetés nem ellenőrizhető");
+has("connections", "jelenlegi frissessége ismeretlen");
+has("connections", "Lekérési hiba");
+ok(!text("connections").includes("Utolsó sikeres ár"), "Older success does not conceal a saved failure");
+ok(JSON.stringify(T.state.data) === monitorBefore, "Monitor rendering preserves saved evidence");
+
+const genericMonitor = JSON.parse(JSON.stringify(failedMonitor));
+genericMonitor.queries[0].failure_reason = "private error https://provider.invalid/?secret=never-log";
+T.state.data = {runtime: {odds_monitor: genericMonitor}};
+byId("connections").replaceChildren();
+T.renderOddsMonitor();
+has("connections", "Lekérési hiba");
+ok(!text("connections").includes("private error"), "Unrecognized error text is never rendered");
+const successfulMonitor = JSON.parse(JSON.stringify(failedMonitor));
+successfulMonitor.queries[0].status = "UPDATED";
+delete successfulMonitor.queries[0].failure_reason;
+T.state.data = {runtime: {odds_monitor: successfulMonitor}};
+byId("connections").replaceChildren();
+T.renderOddsMonitor();
+has("connections", "Utolsó sikeres árlekérés");
+has("connections", "nem a szolgáltatói ár időbélyege");
+has("connections", "jelenlegi frissességet nem igazolja");
+
+const signatureData = {runtime: {odds_monitor: failedMonitor}, generated_tickets: [{ticket_id: "paper"}],
+  generated_ticket_states: {DRAFT: 1}, generation_capacity: {generated_count: 1, minimum: 15, maximum: 30}};
+const baseSignature = T.statusSignature(signatureData);
+const elapsedOnly = JSON.parse(JSON.stringify(signatureData));
+elapsedOnly.runtime.odds_monitor.queries[0].seconds_since_success += 1;
+ok(T.statusSignature(elapsedOnly) === baseSignature, "Elapsed seconds alone do not force a content render");
+const changedReason = JSON.parse(JSON.stringify(signatureData));
+changedReason.runtime.odds_monitor.queries[0].failure_reason = "PROVIDER_UNAVAILABLE";
+ok(T.statusSignature(changedReason) !== baseSignature, "A monitor-only error reason change triggers rendering");
+const changedStatus = JSON.parse(JSON.stringify(signatureData));
+changedStatus.runtime.odds_monitor.queries[0].status = "UPDATED";
+ok(T.statusSignature(changedStatus) !== baseSignature, "A monitor-only status change triggers rendering");
+for (const key of ["generated_tickets", "generated_ticket_states", "generation_capacity"]) {
+  const changed = JSON.parse(JSON.stringify(signatureData));
+  changed[key] = key === "generated_tickets" ? [] : {};
+  ok(T.statusSignature(changed) !== baseSignature, "B11 retains the canonical " + key + " render signal");
+}
+ok(requests.length === 0, "All B11 states remain render-only without provider or HTTP calls");
 console.log(checks + " source-health frontend assertions passed; no browser, requests, or persistent writes.");
