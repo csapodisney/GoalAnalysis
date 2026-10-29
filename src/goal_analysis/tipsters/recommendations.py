@@ -41,6 +41,66 @@ from .catalog import CATALOG_VERSION, TIPSTER_CATALOG
 
 VERSION = "arthur-tipster-recommendations-v6-fixed-accumulators"
 DIVERSITY_OPTIONS_VERSION = "arthur-club-diversity-options-v5-broader-search"
+CLUB_GATE_SCOPE = 'club_gate_owners_v1'
+_CLUB_GATES = {'HIGH_ODDS', 'LEAGUE_BASE_RATE'}
+_CLUB_IDS = frozenset(p['profile_id'] for p in TIPSTER_CATALOG)
+
+
+def club_gate_owners(context):
+    """Explicit per-gate owners only; legacy display unions grant no authority."""
+    value = context.get(CLUB_GATE_SCOPE) if isinstance(context, dict) else None
+    if (not isinstance(value, dict) or not set(value) <= _CLUB_GATES
+            or not isinstance(context.get('gates'), list)):
+        return None
+    result = {}
+    for gate, owners in value.items():
+        if (gate not in context.get('gates', []) or not isinstance(owners, list)
+                or not 1 <= len(owners) <= 20 or any(not isinstance(p, str) for p in owners)
+                or len(set(owners)) != len(owners) or not set(owners) <= _CLUB_IDS):
+            return None
+        result[gate] = sorted(owners)
+    return result
+
+
+def merge_club_veto_contexts(previous, current):
+    result = {**previous, **current,
+              'gates': sorted(set(previous.get('gates', [])) | set(current.get('gates', []))),
+              'profile_ids': sorted(set(previous.get('profile_ids', [])) | set(current.get('profile_ids', [])))}
+    owners = {}
+    for context in (previous, current):
+        for gate, profiles in (club_gate_owners(context) or {}).items():
+            owners[gate] = sorted(set(owners.get(gate, [])) | set(profiles))
+    if owners:
+        result[CLUB_GATE_SCOPE] = owners
+    else:
+        result.pop(CLUB_GATE_SCOPE, None)
+    return result
+
+
+def _current_persona(persona):
+    return persona.get('operating_contract', {}).get('version') == 2
+
+
+def _profile_override(quote, persona, now):
+    proof = verified_veto_override(quote, now=now)
+    if not proof or not _current_persona(persona):
+        return proof
+    context = quote.get('veto_override_context', {})
+    owners = club_gate_owners(context)
+    binding = quote.get('astra_veto_review', {}).get('club_veto_scope_binding', {})
+    if not isinstance(binding, dict):
+        return None
+    try:
+        context_hash = canonical_sha256(context)
+    except (ValueError, TypeError, RecursionError, OverflowError):
+        return None
+    if (not owners or binding.get('context_sha256') != context_hash
+            or binding.get('owners') != owners
+            or binding.get('catalog_version') != CATALOG_VERSION
+            or not re.fullmatch(r'[a-f0-9]{64}', str(binding.get('actual_wire_sha256', '')))):
+        return None
+    gates = [gate for gate in proof['gates'] if persona['profile_id'] in owners.get(gate, [])]
+    return {**proof, 'gates': gates, 'profile_id': persona['profile_id']} if gates else None
 # Local CPU search only. Shared defaults (including numeric profiles) and the
 # protected DAILY_223 path remain unchanged; persona gates still apply first.
 CLUB_OPTION_BEAM_WIDTH = 128
@@ -291,10 +351,13 @@ def _ranked(base, persona, now, *, require_contrarian_review=True, propose_soft_
             if rejections is not None:
                 rejections[row['quote']['candidate_id']] = 'PERSONA_MARKET_RULE'
             continue
-        override = verified_veto_override(row["quote"], now=now)
+        override = _profile_override(row["quote"], persona, now)
         overridden = set((override or {}).get("gates", []))
         context = row["quote"].get("veto_override_context")
         proposed = set(context.get("gates", [])) if isinstance(context, dict) else set()
+        if _current_persona(persona) and not propose_soft_veto:
+            owners = club_gate_owners(context) or {}
+            proposed = {gate for gate in proposed if persona['profile_id'] in owners.get(gate, [])}
         if (price >= persona["target_odds_band"]["max"] and "HIGH_ODDS" not in overridden
                 and not (propose_soft_veto and "HIGH_ODDS" in proposed)):
             if rejections is not None:
@@ -703,6 +766,11 @@ def club_veto_candidate_context(enriched, model_results, settings, now):
             if league:
                 context.update({key: value for key, value in league.items() if key != "gates"})
                 context["gates"] = sorted(set(context["gates"]) | {"LEAGUE_BASE_RATE"})
+            if current_contract(settings):
+                owners = context.setdefault(CLUB_GATE_SCOPE, {})
+                for gate, applies in (('HIGH_ODDS', high), ('LEAGUE_BASE_RATE', bool(league))):
+                    if applies:
+                        owners[gate] = sorted(set(owners.get(gate, [])) | {persona['profile_id']})
     return contexts
 
 
@@ -730,12 +798,13 @@ def _history_support_details(row, enriched, target, settings, now):
         return None, None, None
 
 
-def _history_option_support(row, enriched, target, settings, now):
+def _history_option_support(row, enriched, target, settings, now, *, persona=None):
     """Preserve hard history gates; override only an evidenced soft rate floor."""
     support, minimum, context = _history_support_details(row, enriched, target, settings, now)
     if support is None:
         return None
-    override = verified_veto_override(row["quote"], now=now)
+    override = (_profile_override(row['quote'], persona, now) if persona is not None
+                else None if current_contract(settings) else verified_veto_override(row['quote'], now=now))
     allowed = context and "LEAGUE_BASE_RATE" in (override or {}).get("gates", [])
     return support if support >= minimum or allowed else None
 
@@ -946,6 +1015,16 @@ def build_tipster_recommendations(
         if current:
             item['selection_diagnostics'].update(_persona_input_trace(
                 enriched, fixtures, base, primary_pool, chosen, rejections, now))
+            unknown = sum(bool(row['quote'].get('veto_override_context'))
+                          and club_gate_owners(row['quote']['veto_override_context']) is None for row in base)
+            capacity = [row['quote']['candidate_id'] for row in base
+                        if row['quote'].get('club_veto_scope_review_status') == 'UNKNOWN_SCOPE_CAPACITY'
+                        and any(profile in ids for ids in (club_gate_owners(row['quote'].get('veto_override_context')) or {}).values())]
+            item['selection_diagnostics']['profile_veto_scope'] = {
+                'unscoped_context_count': unknown, 'review_capacity_unknown_count': len(capacity),
+                'review_capacity_candidate_ids': capacity[:20]}
+            if capacity:
+                item['quality_warnings'].append('Saját soft-vétó review-tulajdonosi kötése UNKNOWN_SCOPE_CAPACITY; nem felmentés.')
             item['selection_diagnostics']['odds_exception'] = fallback
             item['operating_contract_version'] = 2
             item['reasoning'].extend(leg['selection_reason'] for leg in legs)
@@ -979,10 +1058,11 @@ def build_tipster_recommendations(
                 support = None
                 if not row["components"]:
                     source_id = row["quote"]["candidate_id"]
-                    if source_id not in history_support_cache:
-                        history_support_cache[source_id] = _history_option_support(
-                            row, enriched, target, settings, now)
-                    support = history_support_cache[source_id]
+                    cache_key = (profile, source_id) if current else source_id
+                    if cache_key not in history_support_cache:
+                        history_support_cache[cache_key] = _history_option_support(
+                            row, enriched, target, settings, now, persona=persona if current else None)
+                    support = history_support_cache[cache_key]
                     if support is None:
                         continue
                 eligible.append(row)

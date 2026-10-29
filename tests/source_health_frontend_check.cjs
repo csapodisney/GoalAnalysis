@@ -272,4 +272,50 @@ for (const key of ["generated_tickets", "generated_ticket_states", "generation_c
   ok(T.statusSignature(changed) !== baseSignature, "B11 retains the canonical " + key + " render signal");
 }
 ok(requests.length === 0, "All B11 states remain render-only without provider or HTTP calls");
+
+const sourceFailureReceipt = {version: "odds-monitor-attempt-v1", attempt_id: "a".repeat(32),
+  started_at_utc: "2026-10-29T19:00:00+00:00", finished_at_utc: "2026-10-29T19:00:01+00:00",
+  status: "MONITOR_UNAVAILABLE", classified_exit_code: 1, source_read_failure: true,
+  reason: "PRIMARY_RUN_HASH_MISMATCH", source_counts: {runs_selected: 1}, adapter_dispatch_count: 0,
+  query_failure_count: null, updated_or_cached_query_count: null, query_failure_scope: null};
+const bridgeData = {runtime: {odds_monitor: {...successfulMonitor,
+  last_attempt: {status: "AVAILABLE", receipt: sourceFailureReceipt}}},
+  generated_tickets: [{ticket_id: "untouched-paper", status: "DRAFT", publication_scope: "PAPER"}],
+  tickets: []};
+T.state.data = bridgeData;
+const bridgeBefore = JSON.stringify(bridgeData);
+byId("connections").replaceChildren();
+T.renderOddsMonitor();
+has("connections", "Utolsó sikeres árlekérés");
+has("connections", "Legutóbbi mentett ellenőrzés");
+has("connections", "A mentett napi forrásadat nem ellenőrizhető");
+has("connections", "Mentett forráshiba");
+has("connections", "nem igazolja az árak frissességét");
+ok(JSON.stringify(bridgeData) === bridgeBefore, "Primary-attempt rendering does not change query/card/PAPER evidence");
+
+for (const status of ["MISSING", "UNAVAILABLE", "unknown-private-status"]) {
+  T.state.data = {runtime: {odds_monitor: {...successfulMonitor,
+    last_attempt: {status, receipt: {reason: "PRIVATE_TOKEN_MUST_NOT_RENDER"}}}}};
+  byId("connections").replaceChildren();
+  T.renderOddsMonitor();
+  has("connections", "bizonylata hiányzik vagy nem ellenőrizhető");
+  has("connections", "a többi ármegfigyelés ettől külön értékelendő");
+  ok(!text("connections").includes("PRIVATE_TOKEN_MUST_NOT_RENDER"), "Unknown receipt content never reaches the UI");
+}
+T.state.data = {runtime: {odds_monitor: {...successfulMonitor,
+  last_attempt: {status: "STALE", receipt: sourceFailureReceipt}}}};
+byId("connections").replaceChildren();
+T.renderOddsMonitor();
+has("connections", "Korábbi mentett ellenőrzés");
+has("connections", "A jelenlegi állapot nem ismert");
+
+const bridgeSignature = T.statusSignature(bridgeData);
+const newAttempt = JSON.parse(JSON.stringify(bridgeData));
+newAttempt.runtime.odds_monitor.last_attempt.receipt.finished_at_utc = "2026-10-29T19:01:01+00:00";
+ok(T.statusSignature(newAttempt) !== bridgeSignature, "A new saved attempt timestamp triggers rendering");
+const localStale = JSON.parse(JSON.stringify(bridgeData));
+localStale.runtime.odds_monitor.last_attempt.status = "STALE";
+ok(T.statusSignature(localStale) !== bridgeSignature, "A local stale transition triggers rendering once");
+ok(!("age_seconds" in bridgeData.runtime.odds_monitor.last_attempt), "Receipt projection has no per-poll age counter");
+ok(requests.length === 0, "Primary-attempt states remain render-only without actual HTTP or provider calls");
 console.log(checks + " source-health frontend assertions passed; no browser, requests, or persistent writes.");

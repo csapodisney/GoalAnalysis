@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import urllib.parse
@@ -600,6 +601,7 @@ def run_portfolio(
         from goal_analysis.tipsters.recommendations import (
             club_veto_candidate_context,
             contrarian_candidate_context,
+            merge_club_veto_contexts,
         )
 
         historical_runs = []
@@ -624,12 +626,7 @@ def run_portfolio(
             club_enriched, model_results, settings, clock(),
         ).items():
             previous = veto_contexts.get(identifier, {})
-            veto_contexts[identifier] = {
-                **previous, **context,
-                "gates": sorted(set(previous.get("gates", [])) | set(context.get("gates", []))),
-                "profile_ids": sorted(set(previous.get("profile_ids", []))
-                                      | set(context.get("profile_ids", []))),
-            }
+            veto_contexts[identifier] = merge_club_veto_contexts(previous, context)
         for candidate in club_enriched.get("candidates", []):
             if candidate["candidate_id"] in veto_contexts:
                 candidate["veto_override_context"] = deepcopy(veto_contexts[candidate["candidate_id"]])
@@ -719,12 +716,18 @@ def run_portfolio(
                 context_mode = 'UNAVAILABLE'
                 if context_attempt is not None:
                     context_attempt['status'] = 'UNAVAILABLE_NO_AUTOMATIC_SECOND_COLLECTION'
+        feedback = _compact_feedback(ledger) if packets and reviewer is not None else None
+        if current_contract(settings) and packets and reviewer is not None:
+            packets, scope_gaps = _profile_scope_review_packets(reviewer, packets, target_date.isoformat(), feedback)
+            _record_profile_scope_gaps(artifacts, club_enriched, scope_gaps)
+            if context_mode == 'ACTIVE':
+                artifacts['candidate_review_context_packets'] = deepcopy(packets)
         artifacts['candidate_review_actual_packets'] = deepcopy(packets)
         if packets and reviewer is not None:
             review = reviewer.review(
                 packets,
                 target_date.isoformat(),
-                feedback=_compact_feedback(ledger),
+                feedback=feedback,
             )
             if context_attempt is not None:
                 artifacts['candidate_review_response_batches'] = [{
@@ -732,7 +735,7 @@ def run_portfolio(
         contrarian_review_status = _attach_contrarian_reviews(
             club_enriched, packets, review, clock(),
         )
-        _attach_veto_reviews(club_enriched, packets, review, clock())
+        _attach_veto_reviews(club_enriched, packets, review, clock(), profile_scope=current_contract(settings))
         if weather_by_fixture:
             from goal_analysis.providers.open_meteo import weather_context
 
@@ -798,12 +801,16 @@ def run_portfolio(
                 break
             if context_mode == 'ACTIVE':
                 follow_up_packets = context_job.attach(follow_up_packets, candidate_context)
+            feedback = _compact_feedback(ledger)
+            if current_contract(settings):
+                follow_up_packets, scope_gaps = _profile_scope_review_packets(reviewer, follow_up_packets, target_date.isoformat(), feedback)
+                _record_profile_scope_gaps(artifacts, club_enriched, scope_gaps)
             artifacts.setdefault('candidate_review_follow_up_packets', []).append(deepcopy(follow_up_packets))
             daily_follow_up_attempts += 1
             supplement = reviewer.review(
                 follow_up_packets,
                 target_date.isoformat(),
-                feedback=_compact_feedback(ledger),
+                feedback=feedback,
             )
             if context_attempt is not None:
                 artifacts.setdefault('candidate_review_response_batches', []).append({
@@ -882,6 +889,8 @@ def run_portfolio(
             "policy": settings,
         }
     report.update(run_id=run_id, timezone="Europe/Berlin", astra=review, settings=requested_settings)
+    if artifacts.get('profile_veto_scope_review_gaps'):
+        report['profile_veto_scope_review_gaps'] = deepcopy(artifacts['profile_veto_scope_review_gaps'])
     if context_attempt is not None:
         report['candidate_context_attempt'] = context_attempt
         if candidate_context:
@@ -1363,7 +1372,95 @@ def _attach_contrarian_reviews(enriched, packets, review, now):
     return "COMPLETE" if attached else "STRUCTURED_EXPLANATION_MISSING_OR_INVALID"
 
 
-def _attach_veto_reviews(enriched, packets, review, now):
+def _profile_scope_review_packets(reviewer, packets, target_date, feedback):
+    """Only addition-caused wire overflow may omit owner metadata, never facts."""
+    from goal_analysis.agents.astra_review import AstraReviewer, _ReviewError
+    from goal_analysis.tipsters.recommendations import CLUB_GATE_SCOPE, club_gate_owners
+
+    result = deepcopy(packets)
+    owned = [i for i, item in enumerate(result)
+             if club_gate_owners(item.get('veto_override_context'))]
+    if not owned or not isinstance(reviewer, AstraReviewer):
+        return result, []
+
+    def fits(items):
+        try:
+            reviewer._prepare(deepcopy(items), target_date, deepcopy(feedback))
+            return True
+        except _ReviewError as error:
+            if 'exceeded the compact review budget' not in str(error):
+                raise
+            return False
+
+    try:
+        if fits(result):
+            return result, []
+        baseline = deepcopy(result)
+        for i in owned:
+            baseline[i]['veto_override_context'].pop(CLUB_GATE_SCOPE)
+        if not fits(baseline):
+            return result, []  # An unrelated/old overflow is not repaired here.
+        gaps = []
+        for i in reversed(owned):
+            result[i]['veto_override_context'].pop(CLUB_GATE_SCOPE)
+            gaps.append(result[i]['candidate_id'])
+            if fits(result):
+                return result, gaps
+    except (_ReviewError, OSError, ValueError, TypeError):
+        return deepcopy(packets), []  # Preserve the existing review error path.
+    return result, gaps
+
+
+def _record_profile_scope_gaps(artifacts, enriched, identifiers):
+    for identifier in identifiers:
+        record = {'candidate_id': identifier, 'status': 'UNKNOWN_SCOPE_CAPACITY'}
+        if record not in artifacts.setdefault('profile_veto_scope_review_gaps', []):
+            artifacts['profile_veto_scope_review_gaps'].append(record)
+        for candidate in enriched.get('candidates', []):
+            if candidate.get('candidate_id') == identifier:
+                candidate['club_veto_scope_review_status'] = 'UNKNOWN_SCOPE_CAPACITY'
+
+
+def _actual_club_scope_bindings(packets, review):
+    from goal_analysis.agents.astra_review import _expand_shared_facts, _ReviewError, _wire_json
+    from goal_analysis.jobs.profile_context_review import QUOTE_FIELDS
+    from goal_analysis.tipsters.recommendations import CATALOG_VERSION, club_gate_owners
+
+    try:
+        wire = review.get('decision_context_input')
+        if not isinstance(wire, dict):
+            return {}
+        encoded = json.dumps(wire, sort_keys=True, ensure_ascii=False, allow_nan=False).encode()
+        maximum = 360_000 if wire.get('decision_contexts') else 180_000
+        if len(_wire_json(wire).encode()) > maximum:
+            return {}
+        wire_hash = hashlib.sha256(encoded).hexdigest()
+        if wire_hash != review.get('decision_context_input_sha256'):
+            return {}
+        expanded = _expand_shared_facts(wire)
+        requests = expanded.get('candidates', []) if isinstance(expanded, dict) else None
+        if (not isinstance(requests, list) or len(requests) > 40
+                or any(not isinstance(request, dict) for request in requests)):
+            return {}
+        result = {}
+        for packet in packets:
+            matching = [r for r in requests if r.get('candidate_id') == packet['candidate_id']]
+            if len(matching) != 1:
+                continue
+            request = matching[0]
+            context = packet.get('veto_override_context')
+            owners = club_gate_owners(context)
+            if (not owners or request.get('veto_override_context') != context
+                    or any(request.get(key) != packet.get(key) for key in QUOTE_FIELDS)):
+                continue
+            result[packet['candidate_id']] = {'owners': owners, 'context_sha256': canonical_sha256(context),
+                'actual_wire_sha256': wire_hash, 'catalog_version': CATALOG_VERSION}
+        return result
+    except (_ReviewError, KeyError, TypeError, ValueError, AttributeError, RecursionError, OverflowError):
+        return {}  # Optional malformed wire is local UNKNOWN, never a global veto.
+
+
+def _attach_veto_reviews(enriched, packets, review, now, *, profile_scope=False):
     """Bind optional override evidence to this quote and the actual review batch."""
     from goal_analysis.agents.astra_review import _ReviewError, _validate_reviews
     from goal_analysis.engine.veto_overrides import veto_candidate_signature
@@ -1377,17 +1474,31 @@ def _attach_veto_reviews(enriched, packets, review, now):
     except (_ReviewError, KeyError, TypeError, ValueError):
         return
     by_id = {item["candidate_id"]: item for item in enriched.get("candidates", [])}
+    bindings = _actual_club_scope_bindings(packets, review) if profile_scope else {}
     for item in records:
         identifier = item["candidate_id"]
         if item.get("veto_override") is None or identifier not in by_id:
             continue
         candidate = by_id[identifier]
-        candidate["veto_override_context"] = deepcopy(contexts[identifier])
+        from goal_analysis.tipsters.recommendations import club_gate_owners
+
+        current = candidate.get('veto_override_context')
+        if not profile_scope or club_gate_owners(current) is None:
+            candidate["veto_override_context"] = deepcopy(contexts[identifier])
         candidate["astra_veto_review"] = {
             "status": "COMPLETE", "reviewed_at": now.isoformat(),
             "candidate_snapshot_sha256": veto_candidate_signature(candidate),
             "sources": deepcopy(review.get("sources", [])), "reviews": [deepcopy(item)],
         }
+        binding = bindings.get(identifier)
+        try:
+            scope_matches = binding and binding['context_sha256'] == canonical_sha256(candidate['veto_override_context'])
+        except (ValueError, TypeError, RecursionError, OverflowError):
+            scope_matches = False
+        if scope_matches:
+            candidate['astra_veto_review']['club_veto_scope_binding'] = deepcopy(binding)
+        elif profile_scope and club_gate_owners(candidate.get('veto_override_context')):
+            candidate['astra_veto_review']['club_veto_scope_status'] = 'UNKNOWN_ACTUAL_WIRE_OR_SCOPE_BINDING'
 
 
 def _base_diversity_recommendations(options, enriched, settings, now, review, weather):

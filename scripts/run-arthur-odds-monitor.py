@@ -59,6 +59,7 @@ def process_exit_code(result):
 
 
 if __name__ == "__main__":
+    started_at = datetime.now(UTC)
     result = main()
     if result.get("source_read_failure") is True:
         result["prospective_shadow"] = {"status": "SKIPPED_PRIMARY_SOURCE_UNAVAILABLE", "llm_calls": 0, "requests": 0}
@@ -69,5 +70,14 @@ if __name__ == "__main__":
             result['prospective_shadow'] = tick(ROOT)
         except Exception:  # noqa: BLE001 - optional first observations cannot veto daily monitoring
             result['prospective_shadow'] = {'status':'PROSPECTIVE_UNAVAILABLE','llm_calls':0}
+    classified_exit_code = process_exit_code(result)
+    try:
+        from goal_analysis.jobs.monitor_attempt import record_monitor_attempt
+
+        record_monitor_attempt(ROOT, result, started_at=started_at, finished_at=datetime.now(UTC),
+                               classified_exit_code=classified_exit_code)
+        result['monitor_attempt_receipt'] = {'status': 'SAVED'}
+    except Exception:  # noqa: BLE001 - an optional receipt cannot alter the original main exit.
+        result['monitor_attempt_receipt'] = {'status': 'UNAVAILABLE'}
     print(json.dumps(result, ensure_ascii=False, allow_nan=False))
-    sys.exit(process_exit_code(result))
+    sys.exit(classified_exit_code)

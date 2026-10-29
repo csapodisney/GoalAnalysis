@@ -197,7 +197,7 @@ def test_same_quota_reason_does_not_prove_zero_transport(tmp_path, phase, http_c
 def test_primary_cli_classifier_and_a06_source_reader_are_not_replaced_by_visibility():
     source = (ROOT / "scripts/run-arthur-odds-monitor.py").read_bytes()
     assert hashlib.sha256(source).hexdigest() == (
-        "fec261a6c13f4ebd432d2dd09ea2a783ec8e9fafb405d2434c47c772b322420b")
+        "2550028ff794082beb7b894f4294add5ce8f818e6f1957d514956f63528b7e4d")
     node = next(item for item in ast.parse(source).body
                 if isinstance(item, ast.FunctionDef) and item.name == "process_exit_code")
     result = node.body[-1].value

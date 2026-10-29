@@ -258,6 +258,7 @@ class ArthurState:
     def snapshot(self, day: str | None = None, *, full_export: bool = True) -> dict:
         from goal_analysis.agents.expert_registry import network_registry
         from goal_analysis.jobs.expert_advisory import snapshot as expert_snapshot
+        from goal_analysis.jobs.monitor_attempt import monitor_attempt_status
         from goal_analysis.jobs.odds_monitor import monitor_status
 
         today = datetime.now(ZoneInfo("Europe/Berlin")).date().isoformat()
@@ -302,6 +303,7 @@ class ArthurState:
         with self.lock:
             runtime = dict(self.runtime)
         runtime["odds_monitor"] = monitor_status(self.root, now)
+        runtime["odds_monitor"]["last_attempt"] = monitor_attempt_status(self.root, now)
         recommendations = self.ledger.list_recommendations(date=day)
         team = self.team_snapshot(settings)
         expert_advisory = expert_snapshot(self.root, day, runs[0] if runs else None)
