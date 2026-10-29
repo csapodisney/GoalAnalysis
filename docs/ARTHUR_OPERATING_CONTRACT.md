@@ -1,3 +1,7 @@
+> **2026-10-29-i emberi kiegészítés — 30 valóban önálló agent.** Mind a 30 profil saját döntési kontextust, állapotot, eszközhasználatot és végső választást kap; mindenki a teljes célnapi meccskínálatból és az összes elérhető közös adatcsaládból dolgozik. Minden agent ténylegesen kéri és saját döntéséhez köti a historikus és jelenkori szimuláció eredményét vagy annak pontos UNKNOWN-okát. Az első 10 meglévő logika védett. A Tippster Klub 20 helyéhez nyílt forrású módszerjelöltek készültek; ezek nem húsz már telepített, nyereséges botot jelentenek.
+>
+> A gazdasági cél költségek utáni profit, a termékcél továbbra is15–30külön teljes szelvény, elsődlegesen15–40összoddsszal és a már rögzített kivételekkel. A közös adatgyűjtés/modellezés megosztott;30context nem30külön fetch/fit. A konkrét lépések és rendszerpróbák: [30-agent design](ARTHUR_THIRTY_AGENTS_DESIGN_20261029.md); a20jelölt és ellenőrzött forrásai: [Tippster Klub jelöltek](ARTHUR_TIPSTER_20_SOURCE_CANDIDATES_20261029.md). Ez az aktuális fejlesztési követelmény, nem kész runtime-állítás vagy új numerikus modell automatikus aktiválása. Daily/legacyOFF,0wager,5%-os keretstop. Az alábbi régi22%-os számlaadat történeti, nem aktuális kvóta.
+
 # Arthur működési szerződés — jóváhagyott emberi pontosításokkal
 
 
