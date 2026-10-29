@@ -300,3 +300,8 @@ A felhasználó a reklamációs szálat lezárta, további ügyfélszolgálati m
 ## 12. A valódi október29-i próba alapján szükséges natív útvonaljavítás
 
 A futás natív0, de csak6DRAFT: a napi15cél nem teljesült. A 114szolgáltatói eseményből a helyi véges liga-megfeleltetés17-et vitt tovább;97kimaradóból87odds_available=True,40explicitnemsemlegesés3semleges. A14Copa-esemény neutraladata ténylegesNULL, nem javítható False-ra. A megoldás a bizonyítottan megfigyelt natív verseny/mérkőzés/szezonazonosítók külön továbbadása az odds-,detail-,online/retained-history útvonalon; nem kitaláltAPI-FootballID, nem ország/típus/évkövetkeztetés. A27ismert megfeleltetés,v1,modellmatematika,profilküszöbök,READY,keretek,15perces guard és eredetiórák változatlanok. A négy érintett producer: league_scope,the_stats_live,daily_223_live,online_history_venue. A külön részletes DESIGN-ADDENDUM és5TESTONLYkontroll/függetlenreview mármegvan; publicregresszió és valósújforrás-illesztés mégszükséges. A teljes korábbi1189input/6783teszt forrása különZIPben byteexactmegőrzött; nem nevezzük az újforrás teljes tesztsorának. Sem a régi6kártya/95e riport,semE2/D57 nemírhatóát. Újvalódiüzlet csak újacceptedsource+freshclock/ordinarybudgets+explicitRootdöntés és előrerögzített ugyanaznapi eligiblekeyset mellett; nem automatikus retry vagy metadataértszolgáltatóhívás. A javított routing önmagában nembizonyít15szelvényt.
+
+
+### Natív javítás igazolt állapota
+
+2026-10-29:353célteszt+1közvetlen114meccs→30profil rendszerpróba PASS; négyfájlos éles install és megőrzés0,4206régi sor és védettriportexact. Daily/legacyOFF. Korábbi mai6DRAFT továbbra min15alatt; új üzleti futás nem történt. Részletek:docs/ARTHUR_NATIVE_FULL_DAY_REPAIR_20261029.md.
