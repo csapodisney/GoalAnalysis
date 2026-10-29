@@ -14,6 +14,7 @@ from datetime import datetime
 from goal_analysis.config.portfolio import TIPSTER_PROFILE_IDS
 from goal_analysis.engine.publication_window import allows_new_ticket
 from goal_analysis.engine.ticket_scoring import normalize_score
+from goal_analysis.operating_policy import generation_capacity
 
 VERSION = "arthur-soft-ticket-similarity-v3-club-reuse"
 OVERLAP_THRESHOLD = 0.50
@@ -329,7 +330,7 @@ def allocate(report, options, settings, now, *, plan=None):
     main_profiles = [p for p in roster if p in pools and scope(p) == "LIVE" and p != "available"
                      and any("ticket" in o and o["ticket"].get("status") == "READY" for o in pools[p])]
     main_profiles.sort(key=lambda p: (-(bests[p] or 0), order[p]))
-    capacity = max(0, min(settings.get("target_ticket_count", 2), settings.get("max_ticket_count", 5)) - len(daily_tickets))
+    capacity = max(0, generation_capacity(settings) - len(daily_tickets))
     chosen = _main_package(pools, main_profiles, daily_tickets, capacity, daily_anchors)
     main = set(chosen)
     main_order = list(chosen)

@@ -4,10 +4,13 @@ from __future__ import annotations
 
 import json
 import sqlite3
+import stat
+from contextlib import closing
 from dataclasses import dataclass, field
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 from uuid import uuid4
+from zoneinfo import ZoneInfo
 
 from goal_analysis.agents import canonical_sha256
 
@@ -268,36 +271,127 @@ def monitor_history(root, now, lookback_hours=48, *, shadow=False):
         return []
 
 
+class MonitorSourceReadError(RuntimeError):
+    """Static primary-source diagnostics; never expose SQLite text or payloads."""
+
+    def __init__(self, reason, counts=None):
+        allowed = {"PRIMARY_LEDGER_UNREADABLE", "PRIMARY_LEDGER_SCHEMA_INVALID",
+                   "PRIMARY_RUN_IDENTITY_MISMATCH", "PRIMARY_RUN_JSON_INVALID",
+                   "PRIMARY_RUN_HASH_MISMATCH", "PRIMARY_RUN_CLOCK_INVALID",
+                   "PRIMARY_RUN_SHAPE_INVALID", "PRIMARY_FIXTURE_IDENTITY_INVALID",
+                   "PRIMARY_FIXTURE_CLOCK_INVALID", "PRIMARY_FIXTURE_CONFLICT"}
+        self.reason = reason if reason in allowed else "PRIMARY_LEDGER_UNREADABLE"
+        names = {"rows_fetched", "rows_in_scope", "runs_selected",
+                 "rows_outside_date_scope", "empty_report_fallbacks"}
+        self.counts = {key: value for key, value in dict(counts or {}).items()
+                       if key in names and type(value) is int and value >= 0}
+        super().__init__(self.reason)
+
+
 def saved_monitor_input(root, now):
-    """Use the latest existing immutable report for each upcoming Berlin day."""
-    path = Path(root) / "data/arthur/ledger.sqlite3"
-    if not path.is_file():
-        return {"fixtures": [], "recommendations": []}
+    """Read bounded current-day source, distinguishing missing from corrupt."""
     now = _aware(now)
+    path = Path(root).resolve() / "data/arthur/ledger.sqlite3"
+    counts = {"rows_fetched": 0, "rows_in_scope": 0, "runs_selected": 0,
+              "rows_outside_date_scope": 0, "empty_report_fallbacks": 0}
+    def failed(reason):
+        return MonitorSourceReadError(reason, counts)
+    def nonfinite(_value):
+        raise ValueError("NONFINITE")
     try:
-        with sqlite3.connect(path.as_uri() + "?mode=ro", uri=True, timeout=10) as db:
-            rows = db.execute("SELECT date,snapshot_json FROM portfolio_runs ORDER BY observed_at DESC LIMIT 100").fetchall()
+        state = path.stat()
+    except FileNotFoundError:
+        return {"fixtures": [], "recommendations": [],
+                "source_read": {"status": "FIRST_STORE_MISSING", "counts": counts}}
+    except OSError as error:
+        raise failed("PRIMARY_LEDGER_UNREADABLE") from error
+    if not stat.S_ISREG(state.st_mode):
+        raise failed("PRIMARY_LEDGER_UNREADABLE")
+    first_day = (now + timedelta(minutes=15)).astimezone(ZoneInfo("Europe/Berlin")).date()
+    last_day = (now + timedelta(days=2)).astimezone(ZoneInfo("Europe/Berlin")).date()
+    try:
+        with closing(sqlite3.connect(path.as_uri() + "?mode=ro", uri=True, timeout=10)) as db:
+            db.execute("PRAGMA query_only=ON")
+            db.execute("BEGIN")
+            table = db.execute("SELECT type FROM sqlite_master WHERE name='portfolio_runs'").fetchone()
+            columns = {row[1] for row in db.execute("PRAGMA table_info(portfolio_runs)")}
+            if table is None or table[0] != "table" or not {
+                    "run_id", "date", "observed_at", "snapshot_json", "snapshot_hash"} <= columns:
+                raise failed("PRIMARY_LEDGER_SCHEMA_INVALID")
+            rows = db.execute("SELECT run_id,date,observed_at,snapshot_json,snapshot_hash "
+                              "FROM portfolio_runs ORDER BY observed_at DESC,rowid DESC LIMIT 100").fetchall()
+        counts["rows_fetched"] = len(rows)
         seen_days, fixtures, recommendations, quotes = set(), {}, [], []
-        for day, payload in rows:
+        for run_id, day, observed_at, payload, snapshot_hash in rows:
+            try:
+                parsed_day = date.fromisoformat(day)
+            except (TypeError, ValueError) as error:
+                raise failed("PRIMARY_RUN_IDENTITY_MISMATCH") from error
+            if parsed_day.isoformat() != day:
+                raise failed("PRIMARY_RUN_IDENTITY_MISMATCH")
+            if not first_day <= parsed_day <= last_day:
+                counts["rows_outside_date_scope"] += 1
+                continue
             if day in seen_days:
                 continue
-            report = json.loads(payload)
-            if not report.get("fixtures"):
+            counts["rows_in_scope"] += 1
+            try:
+                report = json.loads(payload, parse_constant=nonfinite)
+                if not isinstance(report, dict):
+                    raise TypeError("MAPPING_REQUIRED")
+                json.dumps(report, allow_nan=False)
+            except (TypeError, ValueError, OverflowError) as error:
+                raise failed("PRIMARY_RUN_JSON_INVALID") from error
+            if canonical_sha256(report) != snapshot_hash:
+                raise failed("PRIMARY_RUN_HASH_MISMATCH")
+            if (not isinstance(run_id, str) or not run_id or report.get("run_id") != run_id
+                    or report.get("date") != day):
+                raise failed("PRIMARY_RUN_IDENTITY_MISMATCH")
+            try:
+                observed = _aware(observed_at)
+                if observed != _aware(report["observed_at"]) or observed > now:
+                    raise ValueError("UNOBSERVED")
+                if "finished_at" in report and not observed <= _aware(report["finished_at"]) <= now:
+                    raise ValueError("INVALID_FINISH")
+            except (KeyError, TypeError, ValueError, OverflowError) as error:
+                raise failed("PRIMARY_RUN_CLOCK_INVALID") from error
+            raw_fixtures = report.get("fixtures")
+            if raw_fixtures is None or raw_fixtures == []:
+                counts["empty_report_fallbacks"] += 1
                 continue
+            raw_recommendations = report.get("recommendations", [])
+            snapshot = report.get("odds_history_snapshot", {})
+            if (not isinstance(raw_fixtures, list) or not isinstance(raw_recommendations, list)
+                    or not isinstance(snapshot, dict) or not isinstance(snapshot.get("quotes", []), list)):
+                raise failed("PRIMARY_RUN_SHAPE_INVALID")
             seen_days.add(day)
-            recommendations.extend(report.get("recommendations", []))
-            quotes.extend(report.get("odds_history_snapshot", {}).get("quotes", []))
-            for fixture in report.get("fixtures", []):
+            counts["runs_selected"] += 1
+            recommendations.extend(raw_recommendations)
+            quotes.extend(snapshot.get("quotes", []))
+            for fixture in raw_fixtures:
+                if (not isinstance(fixture, dict) or not isinstance(fixture.get("fixture_id"), str)
+                        or not fixture["fixture_id"]):
+                    raise failed("PRIMARY_FIXTURE_IDENTITY_INVALID")
                 try:
                     kickoff = _aware(fixture["kickoff"])
-                    if now + timedelta(minutes=15) < kickoff <= now + timedelta(days=2):
-                        fixtures.setdefault(fixture["fixture_id"], fixture)
-                except (KeyError, TypeError, ValueError):
-                    continue
+                except (KeyError, TypeError, ValueError, OverflowError) as error:
+                    raise failed("PRIMARY_FIXTURE_CLOCK_INVALID") from error
+                if now + timedelta(minutes=15) < kickoff <= now + timedelta(days=2):
+                    previous = fixtures.get(fixture["fixture_id"])
+                    if previous is not None and previous != fixture:
+                        raise failed("PRIMARY_FIXTURE_CONFLICT")
+                    fixtures.setdefault(fixture["fixture_id"], fixture)
         return {"fixtures": sorted(fixtures.values(), key=lambda fixture: (fixture["kickoff"], fixture["fixture_id"])),
-                "recommendations": recommendations, "odds_history_snapshot": {"quotes": quotes}}
-    except (sqlite3.Error, ValueError, OSError):
-        return {"fixtures": [], "recommendations": []}
+                "recommendations": recommendations, "odds_history_snapshot": {"quotes": quotes},
+                "source_read": {"status": "AVAILABLE", "counts": counts,
+                                "date_scope": [first_day.isoformat(), last_day.isoformat()],
+                                "row_limit": 100, "retained_empty_report_fallback_policy_unchanged": True}}
+    except MonitorSourceReadError:
+        raise
+    except (sqlite3.Error, OSError) as error:
+        raise failed("PRIMARY_LEDGER_UNREADABLE") from error
+
+
 
 
 def saved_monitor_fixtures(root, now):

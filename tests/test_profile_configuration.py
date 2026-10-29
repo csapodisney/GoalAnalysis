@@ -155,7 +155,7 @@ def test_reinitialization_cannot_rewrite_an_existing_shared_container():
 
 def test_daily_data_and_settings_cannot_override_the_personality():
     data, models = enriched(), model_results()
-    settings = {'enabled_profiles': list(TIPSTER_BY_ID)}
+    settings = {'operating_contract_version': 1, 'enabled_profiles': list(TIPSTER_BY_ID)}
     before = build_tipster_recommendations(data, models, settings, NOW)
     assert any(c['legs'] for c in before)
     overrides = {'min_legs': 1, 'target_odds_band': {'min': 1, 'max': 2},
@@ -171,6 +171,8 @@ def test_thin_daily_supply_abstains_without_changing_fixed_thresholds():
     data = enriched()
     data['candidates'] = []
     before = canonical_sha256(TIPSTER_CATALOG)
-    cards = build_tipster_recommendations(data, model_results(), {'enabled_profiles': list(TIPSTER_BY_ID)}, NOW)
+    cards = build_tipster_recommendations(data, model_results(),
+                                         {'operating_contract_version': 1,
+                                          'enabled_profiles': list(TIPSTER_BY_ID)}, NOW)
     assert len(cards) == 20 and all(not c['legs'] and c['status'] == 'ABSTAINED' for c in cards)
     assert canonical_sha256(TIPSTER_CATALOG) == before

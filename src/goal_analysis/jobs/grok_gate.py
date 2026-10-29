@@ -108,6 +108,8 @@ def _native_bound(card, critique, reviewed):
 def _concerns(report, advice, now, *, reviewed=None):
     rows = {r["profile_id"]: r for r in report.get("tickets", [])}
     rows.update({r["profile_id"]: r for r in report.get("recommendations", [])})
+    if 'generated_tickets' in report:
+        rows={r['profile_id']:r for r in report['generated_tickets']}
     result = advice.get("result") or {}
     claims = {r["claim_id"]: r for r in result.get("claims", [])}
     concerns, seen = [], set()

@@ -5,6 +5,7 @@ history remains explicit, and receipt time is never a bookmaker quote time.
 """
 import json
 from collections import Counter
+from copy import deepcopy
 from datetime import datetime, time, timedelta
 from zoneinfo import ZoneInfo
 
@@ -57,9 +58,33 @@ def _identity(row):
     return match, comp, season, home, away
 
 
-def normalize_fixture(row, league, target_date, source):
+def _neutral_venue(row, operating_contract_version):
+    """Preserve legacy bytes; v2 distinguishes observed bool from UNKNOWN."""
+    if type(operating_contract_version) is not int or operating_contract_version not in (1, 2):
+        raise ValueError('Unsupported operating contract version')
+    if operating_contract_version == 1:
+        return row.get('is_neutral', False)
+    value = row.get('is_neutral')
+    return value if type(value) is bool else None
+
+
+def normalize_fixture(row, league, target_date, source, *, operating_contract_version=1, native_route=None):
     match, comp, season, home, away = _identity(row)
-    mapping = LEAGUES[str(league['api_football_id'])]
+    if native_route is not None:
+        if (operating_contract_version != 2 or league is not None
+                or native_route.get('source_provider') != 'the_stats_api'
+                or native_route.get('provider_league_id') != comp
+                or season not in native_route.get('provider_season_ids', [])
+                or 'the_stats_api:' + match not in native_route.get('fixture_ids', [])
+                or native_route.get('routing_key') != 'soccer_the_stats_' + comp
+                or {'source_id': source['source_url'], 'content_hash': source['content_hash']}
+                   not in native_route.get('source_receipts', [])):
+            raise ValueError('Unproven observed native competition route')
+        league = {'api_football_id': None, 'competition_id': comp, 'season': None,
+                  'competition_type': None, 'odds_sport_key': native_route['routing_key']}
+        mapping = (comp, None, None)
+    else:
+        mapping = LEAGUES[str(league['api_football_id'])]
     kickoff = utc(row['utc_date'])
     if comp != mapping[0] or kickoff.astimezone(BERLIN).date() != target_date:
         raise ValueError('Wrong TheStats competition or Berlin day')
@@ -71,17 +96,20 @@ def normalize_fixture(row, league, target_date, source):
     return {'fixture_id': 'the_stats_api:' + match, 'source_provider': 'the_stats_api',
             'provider_fixture_id': match, 'provider_league_id': comp,
             'provider_season_id': season, 'provider_home_team_id': home, 'provider_away_team_id': away,
-            'config_league_id': str(league['api_football_id']),
+            'config_league_id': str(league['api_football_id']) if league['api_football_id'] is not None else None,
             'home_team': row['home_team']['name'], 'away_team': row['away_team']['name'],
             'competition': league['competition_id'], 'competition_type': league['competition_type'],
             'sport_key': league['odds_sport_key'], 'kickoff': kickoff.isoformat(),
             'provider_status': status, 'season': league['season'],
             'venue_name': venue.get('name'), 'venue_city': venue.get('city'), 'venue_country': mapping[2],
-            'neutral_venue': row.get('is_neutral', False), 'target_date': target_date.isoformat(),
-            'source_id': source['source_url'], 'fixture_source': source}
+            'neutral_venue': _neutral_venue(row, operating_contract_version), 'target_date': target_date.isoformat(),
+            'source_id': source['source_url'], 'fixture_source': source,
+            **({'native_competition_route': deepcopy(native_route),
+                'competition_name': native_route.get('competition_name'),
+                'metadata_status': 'UNKNOWN'} if native_route is not None else {})}
 
 
-def normalize_history(row, comp, source, as_of):
+def normalize_history(row, comp, source, as_of, *, operating_contract_version=1):
     match, actual_comp, season, home, away = _identity(row)
     kickoff, observed = utc(row['utc_date']), utc(source['observed_at'])
     if (actual_comp != comp or row.get('status') != 'finished'
@@ -101,7 +129,7 @@ def normalize_history(row, comp, source, as_of):
               'home_team_id': home, 'away_team_id': away, 'source_id': source['source_url'],
               'full_time_home': goals(full, 'home'), 'full_time_away': goals(full, 'away'),
               'first_half_home': goals(half, 'home'), 'first_half_away': goals(half, 'away'),
-              'neutral_venue': row.get('is_neutral', False)}
+              'neutral_venue': _neutral_venue(row, operating_contract_version)}
     for side in ('home', 'away'):
         first, final = result['first_half_' + side], result['full_time_' + side]
         if first is not None and final is not None and first > final:
@@ -163,16 +191,35 @@ def calendar_options(root, config, target_date, clock):
     return result
 
 
-def collect_live(config, client, target_date, clock, *, selected_competition_ids=None, construct_legacy=False):
+def collect_live(config, client, target_date, clock, *, selected_competition_ids=None,
+                 construct_legacy=False, operating_contract_version=1):
     from .league_scope import SERIE_C_GROUPS, _fallback_config
     from .the_stats_context import Resources
 
     resources = Resources(client.root, client, clock, config['max_football_calls'])
     start = utc(clock())
     rows, sources = calendar(resources, target_date)
+    source_by_match, page_receipts = {}, []
+    for source in sources:
+        payload = json.loads(resources.snapshots.read(source['content_hash']))
+        page_receipts.append({**payload.get('meta', {}), 'returned_rows': len(payload['data']),
+                              'source_id': source['source_url'], 'content_hash': source['content_hash']})
+        for row in payload['data']:
+            source_by_match[row.get('id')] = source
     issues = []
     leagues = list(config['leagues'])
-    if selected_competition_ids is not None:
+    full_scope = None
+    if type(operating_contract_version) is not int or operating_contract_version not in (1, 2):
+        raise ValueError('Unsupported operating contract version')
+    if operating_contract_version == 2:
+        from .league_scope import resolve_full_day_scope
+
+        leagues, full_scope = resolve_full_day_scope(
+            rows, target_date, leagues, operating_contract_version=2,
+            selected_competition_ids=selected_competition_ids, page_receipts=page_receipts)
+        issues.extend({'status': 'CALENDAR_SCOPE_PARTIAL', **item}
+                      for item in full_scope['uncovered_competitions'])
+    elif selected_competition_ids is not None:
         requested = set(selected_competition_ids)
         if not requested or len(requested) != len(selected_competition_ids) or len(requested) > 40:
             raise ValueError('Select 1-40 distinct configured competitions')
@@ -194,20 +241,19 @@ def collect_live(config, client, target_date, clock, *, selected_competition_ids
             configured[mapping[0]] = league
         else:
             issues.append({'status': 'NO_VERIFIED_THE_STATS_COMPETITION', 'config_league_id': league['api_football_id']})
+    native_routes = {route['provider_league_id']: route for route in
+                     (full_scope or {}).get('native_competition_routes', [])}
     counts = Counter(row.get('id') for row in rows if isinstance(row, dict))
     fixtures = []
-    source_by_match = {}
-    for source in sources:
-        payload = json.loads(resources.snapshots.read(source['content_hash']))
-        for row in payload['data']:
-            source_by_match[row.get('id')] = source
     for row in rows:
-        if row.get('competition_id') not in configured:
+        if row.get('competition_id') not in configured and row.get('competition_id') not in native_routes:
             continue
         try:
             if counts[row['id']] != 1:
                 raise ValueError('Duplicate calendar identity')
-            fixtures.append(normalize_fixture(row, configured[row['competition_id']], target_date, source_by_match[row['id']]))
+            fixtures.append(normalize_fixture(row, configured.get(row['competition_id']), target_date, source_by_match[row['id']],
+                operating_contract_version=operating_contract_version,
+                native_route=native_routes.get(row['competition_id']) if row['competition_id'] not in configured else None))
         except (ValueError, TypeError, KeyError):
             issues.append({'status': 'INVALID_THE_STATS_FIXTURE'})
     fixture_time = min(utc(source['observed_at']) for source in sources)
@@ -230,7 +276,8 @@ def collect_live(config, client, target_date, clock, *, selected_competition_ids
                 history_sources.append({**source, 'league_id': comp, 'page': page, 'total_pages': total})
                 for row in batch:
                     try:
-                        record = normalize_history(row, comp, source, utc(clock()))
+                        record = normalize_history(row, comp, source, utc(clock()),
+                            operating_contract_version=operating_contract_version)
                         previous = records.get(record['fixture_id'])
                         if previous is not None and previous != record:
                             conflicts.add(record['fixture_id'])
@@ -261,4 +308,7 @@ def collect_live(config, client, target_date, clock, *, selected_competition_ids
     return {'fixtures': {'observed_at': fixture_time.isoformat(), 'records': fixtures},
             'history': history, 'calendar': {'method': 'THE_STATS_NATIVE_DATE_WIDE',
             'date': target_date.isoformat(), 'returned_fixtures': len(rows), 'configured_fixtures': len(fixtures),
-            'sources': sources}, 'sports_primary_usage': resources.usage}
+            'sources': sources, **({'scope_receipt': full_scope} if full_scope is not None else {})},
+            'sports_primary_usage': resources.usage,
+            **({'native_competition_routes': list(native_routes.values())}
+               if operating_contract_version == 2 else {})}

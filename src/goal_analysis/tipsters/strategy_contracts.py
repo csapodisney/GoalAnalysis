@@ -22,6 +22,7 @@ SOURCE_FILES = (
     'engine/ticket_options.py', 'engine/ticket_scoring.py', 'engine/veto_overrides.py',
     'engine/daily_223.py', 'engine/portfolio.py', 'team/metrics.py',
     'normalization/live_identity.py', 'quote_metadata.py',
+    'operating_policy.py', 'generated_tickets.py', 'jobs/profile_scenarios.py',
 )
 
 

@@ -38,6 +38,10 @@ def test_combined_settlement_and_live_preserve_collection_and_failure_status(
     config_path = tmp_path / "config" / "daily223-live.json"
     config_path.parent.mkdir()
     config_path.write_text(json.dumps(config()), encoding="utf-8")
+    # This regression preserves the historical two-ticket collection contract.
+    (config_path.parent / "arthur-settings.json").write_text(
+        json.dumps({"operating_contract_version": 1}), encoding="utf-8"
+    )
 
     ledger = PortfolioLedger(tmp_path / "data" / "arthur" / "ledger.sqlite3", now=lambda: NOW)
     monkeypatch.setattr(cli, "PortfolioLedger", lambda path: ledger)
@@ -62,6 +66,7 @@ def test_combined_settlement_and_live_preserve_collection_and_failure_status(
         diagnostics=[],
         astra={"status": "COMPLETE", "model": "gpt-6-astra"},
         real_wager_placed=False,
+        settings={"operating_contract_version": 1},
     )
     for current in issued["tickets"]:
         for leg in current["legs"]:

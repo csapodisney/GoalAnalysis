@@ -14,7 +14,12 @@ sys.path.insert(0, str(ROOT / "src"))
 
 def main(root=ROOT):
     from goal_analysis.config.daily_223_live import validate_live_config
-    from goal_analysis.jobs.odds_monitor import MonitorPolicy, OddsMonitor, saved_monitor_input
+    from goal_analysis.jobs.odds_monitor import (
+        MonitorPolicy,
+        MonitorSourceReadError,
+        OddsMonitor,
+        saved_monitor_input,
+    )
     from goal_analysis.jobs.odds_monitor_providers import build_monitor_queries, fetch_monitor_query
     from goal_analysis.providers.the_stats_primary import TheStatsPrimaryClient
 
@@ -37,6 +42,11 @@ def main(root=ROOT):
             queries, lambda query: fetch_monitor_query(query, football_client=football,
                                                        now=datetime.now(UTC)),
         )
+    except MonitorSourceReadError as error:
+        return {"status": "MONITOR_UNAVAILABLE", "reason": error.reason,
+                "source_read_failure": True,
+                "source_read": {"status": "UNAVAILABLE", "reason": error.reason, "counts": error.counts},
+                "provider_calls": 0, "astra_calls": 0}
     except Exception:  # noqa: BLE001 - no provider bodies, private paths or credentials
         return {"status": "MONITOR_UNAVAILABLE", "provider_calls": None, "astra_calls": 0}
 
@@ -50,11 +60,14 @@ def process_exit_code(result):
 
 if __name__ == "__main__":
     result = main()
-    try:
-        from goal_analysis.jobs.prospective_odds import tick
+    if result.get("source_read_failure") is True:
+        result["prospective_shadow"] = {"status": "SKIPPED_PRIMARY_SOURCE_UNAVAILABLE", "llm_calls": 0, "requests": 0}
+    else:
+        try:
+            from goal_analysis.jobs.prospective_odds import tick
 
-        result['prospective_shadow'] = tick(ROOT)
-    except Exception:  # noqa: BLE001 - optional first observations cannot veto daily monitoring
-        result['prospective_shadow'] = {'status':'PROSPECTIVE_UNAVAILABLE','llm_calls':0}
+            result['prospective_shadow'] = tick(ROOT)
+        except Exception:  # noqa: BLE001 - optional first observations cannot veto daily monitoring
+            result['prospective_shadow'] = {'status':'PROSPECTIVE_UNAVAILABLE','llm_calls':0}
     print(json.dumps(result, ensure_ascii=False, allow_nan=False))
     sys.exit(process_exit_code(result))

@@ -66,7 +66,7 @@ def test_portfolio_callback_cannot_change_daily(tmp_path):
         report["tickets"][0]["legs"][0]["decimal_price"] = 999
         return report
 
-    bundle = run_portfolio(cfg, {}, football, odds, cache, NOW.date(), RecordedReviewer(),
+    bundle = run_portfolio(cfg, {"operating_contract_version": 1}, football, odds, cache, NOW.date(), RecordedReviewer(),
                            clock=lambda: NOW, package_reviewer=malicious)
     report = bundle["artifacts"]["report"]
     assert len(seen) == 1

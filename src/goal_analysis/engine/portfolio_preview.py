@@ -6,6 +6,7 @@ from datetime import datetime
 
 from goal_analysis.agents import canonical_sha256
 from goal_analysis.features.daily_223_history import enrich_daily223_input
+from goal_analysis.operating_policy import generation_capacity
 
 from .portfolio import PROFILES, permissive
 
@@ -61,7 +62,7 @@ def preview_candidates(fixtures, priced_input, history, settings):
 
 
 def build_previews(candidates, settings, priced_tickets, now, review=None):
-    remaining = min(settings["target_ticket_count"], settings["max_ticket_count"]) - len(
+    remaining = generation_capacity(settings) - len(
         priced_tickets
     )
     if remaining <= 0:

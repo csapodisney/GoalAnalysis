@@ -222,7 +222,7 @@ def test_shared_budget_reserves_odds_before_history_and_never_exceeds_limit(tmp_
     env[0]["max_football_calls"] = 2
     env[5]["events"] = []
     env[5]["football_odds"] = odds_rows()
-    report = run(env, strictness=0)["artifacts"]["report"]
+    report = run(env, operating_contract_version=1, strictness=0)["artifacts"]["report"]
     assert report["tickets"] and report["usage"]["football_calls"] == 2
     assert report["usage"]["football_odds_calls"] == 1
     assert any(i["status"] == "HISTORY_UNAVAILABLE" for i in report["data_issues"])

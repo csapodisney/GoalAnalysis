@@ -20,6 +20,7 @@ from goal_analysis.engine.publication_window import allows_new_leg, allows_new_t
 from goal_analysis.features.daily_223_history import enrich_daily223_input
 from goal_analysis.jobs.daily_223_live import run_daily223_live
 from goal_analysis.jobs.league_scope import MINIMUM_PENDING_FIXTURES, resolve_default_leagues
+from goal_analysis.operating_policy import current_contract
 from goal_analysis.quote_metadata import quote_metadata
 from goal_analysis.tipsters.catalog import TIPSTER_PROFILE_IDS
 
@@ -459,6 +460,10 @@ def run_portfolio(
                   "tickets": [], "recommendations": [], "profiles": [], "settings": requested_settings,
                   "astra": {"status": "NO_DATA", "message": "Nincs aktív vagy próbaidős agent; nem történt API/AI-hívás."},
                   "usage": {}, "real_wager_placed": False}
+        if current_contract(requested_settings):
+            from goal_analysis.generated_tickets import finalize_generated
+
+            finalize_generated(report, requested_settings, team_plan=team_plan)
         apply_publication_policy(report, team_plan)
         attach_strategy_provenance(report, requested_settings)
         report["report_sha256"] = canonical_sha256(report)
@@ -474,6 +479,7 @@ def run_portfolio(
         allow_incomplete=permissive(settings),
         selected_competition_ids=selected_competition_ids,
         calendar_scope=resolve_default_leagues,
+        **({"operating_contract_version": 2} if current_contract(settings) else {}),
     )
     artifacts = bundle["artifacts"]
     legacy = artifacts["report"]
@@ -496,6 +502,10 @@ def run_portfolio(
                   'astra': {'status': 'NOT_REQUESTED', 'usage': {'requests': 0},
                             'message': 'Szorzóforrás-hitelesítési hibánál nem indult fizetett elemzés.'},
                   'usage': legacy['usage'], 'real_wager_placed': False}
+        if current_contract(requested_settings):
+            from goal_analysis.generated_tickets import finalize_generated
+
+            finalize_generated(report, requested_settings, team_plan=team_plan)
         apply_publication_policy(report, team_plan)
         attach_strategy_provenance(report, requested_settings)
         report['report_sha256'] = canonical_sha256(report)
@@ -517,6 +527,8 @@ def run_portfolio(
     enabled_models = tuple(p for p in settings["enabled_profiles"] if p in MODEL_PROFILE_IDS)
     model_cutoff = clock()
     fixture_records = artifacts.get("fixtures", {}).get("records", [])
+    calendar_receipt = artifacts.get("calendar", {}).get("scope_receipt", {})
+    calendar_universe = calendar_receipt.get("events", fixture_records)
     history_records = artifacts.get("history", {}).get("records", [])
     model_results = {}
     enriched = {}
@@ -580,6 +592,9 @@ def run_portfolio(
     history_status = "NO_LEDGER"
     if "candidate_input" in artifacts and "history" in artifacts:
         enriched = enrich_daily223_input(artifacts["candidate_input"], artifacts["history"])
+        if current_contract(settings):
+            enriched["calendar_universe"] = calendar_universe
+            enriched["calendar_scope_receipt"] = calendar_receipt
         from goal_analysis.engine.odds_movement import annotate_odds_movement
         from goal_analysis.engine.portfolio import specialist_veto_override_contexts
         from goal_analysis.tipsters.recommendations import (
@@ -888,7 +903,9 @@ def run_portfolio(
     numeric_recommendations = build_model_recommendations(
         model_results, fixture_records,
         artifacts.get("candidate_input", {}).get("candidates", []),
-        {**settings, "date": target_date.isoformat()}, clock(), review,
+        {**settings, "date": target_date.isoformat(),
+         **({'calendar_scope_receipt':calendar_receipt,'calendar_universe':calendar_universe}
+            if current_contract(requested_settings) else {})}, clock(), review,
         diversity_options=diversity_options,
     )
     report["recommendations"].extend(numeric_recommendations)
@@ -988,6 +1005,11 @@ def run_portfolio(
             "experimental": True,
             "reason": " ".join(recommendation.get("quality_warnings", [])),
         })
+    if current_contract(requested_settings):
+        from goal_analysis.generated_tickets import capture_profile_decisions
+
+        capture_profile_decisions(report)
+        report["full_day_calendar"] = deepcopy(calendar_receipt)
     apply_publication_policy(report, team_plan)
     report["recommendation_overlap"] = recommendation_overlap(report["recommendations"])
     if report["preview_tickets"] and not report["tickets"]:
@@ -1061,6 +1083,19 @@ def run_portfolio(
     published_at = clock()
     report["finished_at"] = published_at.isoformat()
     _guard_final_publication(report, published_at)
+    if current_contract(requested_settings):
+        from goal_analysis.generated_tickets import finalize_generated
+        from goal_analysis.jobs.profile_context_review import attach_decision_inputs
+        from goal_analysis.jobs.profile_scenarios import build_profile_scenario_context
+
+        # Materialized own alternatives, prices and expert changes are now fixed.
+        # Use the actual deduplicated candidate cohort, never the first old alias.
+        finalize_generated(report, requested_settings, team_plan=team_plan, options=diversity_options)
+        scenarios=build_profile_scenario_context(
+            report,artifacts,report['generated_tickets'],as_of=published_at)
+        report['profile_predecision_scenarios']=scenarios
+        artifacts['profile_predecision_scenarios']=deepcopy(scenarios)
+        report,diversity_options=attach_decision_inputs(report,diversity_options,candidate_context,scenarios)
     # Separate exact-source context consideration from independent model ranks.
     # The same frozen source snapshot and original remaining follow-up budget
     # serve all profiles. SHADOW records coverage without changing decisions.
@@ -1089,6 +1124,10 @@ def run_portfolio(
     # independently selected cards. This never promotes a paper profile.
     apply_publication_policy(report, team_plan)
     _guard_final_publication(report, published_at)
+    if current_contract(requested_settings):
+        from goal_analysis.generated_tickets import finalize_generated
+
+        finalize_generated(report, requested_settings, team_plan=team_plan, options=diversity_options)
     if package_reviewer is not None:
         # One package-level second opinion before persistence. The callback may
         # replace only independently disputed non-DAILY cards from this run's
@@ -1096,7 +1135,7 @@ def run_portfolio(
         original = deepcopy(report)
         try:
             checked = package_reviewer(deepcopy(report), diversity_options)
-            for group in ("tickets", "recommendations", "profile_proposals", "preview_tickets", "profiles"):
+            for group in ("tickets", "recommendations", "profile_proposals", "preview_tickets", "profiles", "generated_tickets"):
                 if ([r for r in checked.get(group, []) if r.get("profile_id") == "daily223"]
                         != [r for r in original.get(group, []) if r.get("profile_id") == "daily223"]):
                     raise ValueError("Protected DAILY changed")
@@ -1141,6 +1180,24 @@ def run_portfolio(
         "recommendations": sum(bool(r["legs"]) for r in report["recommendations"]),
     }
     report.setdefault("diagnostics", [])
+    if current_contract(requested_settings):
+        from goal_analysis.generated_tickets import finalize_generated
+
+        # Recheck at the actual final clock, including optional package review time.
+        report["finished_at"] = clock().isoformat()
+        finalize_generated(report, requested_settings, team_plan=team_plan, options=diversity_options)
+        from goal_analysis.jobs.profile_context_review import ensure_final_decision_inputs
+
+        report,diversity_options=ensure_final_decision_inputs(
+            report,diversity_options,artifacts,candidate_context,now=datetime.fromisoformat(report['finished_at']))
+        # Risk grading changes eligibility, never reselects the now-bound cohort.
+        report['tickets']=[card for card in report['generated_tickets']
+                           if card['publication_scope']=='LIVE' and card['status']=='READY']
+        from goal_analysis.generated_tickets import refresh_generation_capacity
+
+        refresh_generation_capacity(report)
+        report['funnel']['generated_tickets']=len(report['generated_tickets'])
+        report['funnel']['tickets']=len(report['tickets'])
     if legacy.get("reason"):
         report["reason"] = safe_error(legacy["reason"])
         report["diagnostics"].append(
@@ -1169,9 +1226,11 @@ def run_portfolio(
     if report["portfolio_objectives"]["capacity_shortfall"]:
         report.setdefault("diagnostics", []).append({
             "code": "CAPACITY_SHORTFALL",
-            "message": "Kevesebb mint 20 READY LIVE ajánlás készült; "
+            "message": ("Kevesebb mint 15 teljes, különböző profilú szelvény készült; "
+                        "a darabszámhiány látható, a DRAFT/PAPER nem válik éles fogadássá."
+                        if current_contract(requested_settings) else "Kevesebb mint 20 READY LIVE ajánlás készült; "
                        "a PAPER ajánlatok külön szerepelnek, nem töltik ki az éles hiányt. "
-                       "A rendszer nem adott gyenge töltelékszelvényt.",
+                       "A rendszer nem adott gyenge töltelékszelvényt."),
             "missing_recommendations": report["portfolio_objectives"]["capacity_shortfall"],
             "ready_live_recommendations": report["portfolio_objectives"]["ready_live_recommendations"],
             "ready_paper_recommendations": report["portfolio_objectives"]["ready_paper_recommendations"],
@@ -1443,12 +1502,14 @@ def write_portfolio_bundle(directory: Path, bundle: dict) -> None:
         f"Astra: {report['astra']['status']}",
         "",
     ]
-    for card_index, ticket in enumerate(report.get("tickets", [])):
+    display_group='generated_tickets' if 'generated_tickets' in report else 'tickets'
+    for card_index, ticket in enumerate(report.get(display_group, [])):
         lines.extend(
             [
                 f"## {ticket['profile_name']} · {ticket['combined_price']:.2f}×",
                 "",
-                f"Iroda: {ticket['bookmaker']} · {ticket['status']}",
+                (f"Iroda: {ticket.get('bookmaker', 'UNKNOWN')} · {ticket['status']} · {ticket.get('publication_scope', 'UNKNOWN')}"
+                 if display_group=='generated_tickets' else f"Iroda: {ticket['bookmaker']} · {ticket['status']}"),
                 "",
             ]
         )
@@ -1456,11 +1517,12 @@ def write_portfolio_bundle(directory: Path, bundle: dict) -> None:
             lines.append(
                 f"- {leg['home_team']} – {leg['away_team']}: {leg['market_key']} / {leg['selection_key']} / {leg['period']} · {leg['decimal_price']:.2f}"
             )
-            lines.extend(markdown_lines(notes[('tickets', card_index, 'legs', leg_index)]))
+            lines.extend(markdown_lines(notes[(display_group, card_index, 'legs', leg_index)]))
         lines.extend(["", *ticket.get("reasoning", []), ""])
         lines.extend("Figyelmeztetés: " + warning for warning in ticket.get("quality_warnings", []))
+        lines.extend(ticket.get('decision_reasoning',{}).get('scenario_risk_facts',[]))
         lines.append("")
-    for card_index, ticket in enumerate(report.get("preview_tickets", [])):
+    for card_index, ticket in enumerate([] if 'generated_tickets' in report else report.get("preview_tickets", [])):
         lines.extend([f"## {ticket['profile_name']} · Szorzóra váró előzetes", ""])
         for leg_index, leg in enumerate(ticket["legs"]):
             lines.append(
@@ -1469,7 +1531,7 @@ def write_portfolio_bundle(directory: Path, bundle: dict) -> None:
             lines.extend(markdown_lines(notes[('preview_tickets', card_index, 'legs', leg_index)]))
         lines.extend("Figyelmeztetés: " + warning for warning in ticket["quality_warnings"])
         lines.append("")
-    for card_index, recommendation in enumerate(report.get("recommendations", [])):
+    for card_index, recommendation in enumerate([] if 'generated_tickets' in report else report.get("recommendations", [])):
         if recommendation.get("profile_id") in TIPSTER_PROFILE_IDS:
             price = recommendation.get("combined_price")
             lines.extend([

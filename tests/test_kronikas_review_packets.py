@@ -121,7 +121,7 @@ def test_coordinator_passes_fixed_specialist_ids_into_contrarian_protection(tmp_
     monkeypatch.setattr(portfolio, "_review_packets", remember_proposals)
     monkeypatch.setattr(portfolio, "_contrarian_review_packets", remember_protection)
     monkeypatch.setattr(tipster_recommendations, "contrarian_candidate_context", one_contrarian_context)
-    portfolio.run_portfolio(config, {"enabled_profiles": ["daily223", "kronikas"]},
+    portfolio.run_portfolio(config, {"operating_contract_version": 1, "enabled_profiles": ["daily223", "kronikas"]},
                             football, odds, cache, NOW.date(), RecordedReviewer(), clock=lambda: NOW)
     assert len(captured["daily223"]) == len(captured["kronikas"]) == 3
     assert captured["kronikas"] - captured["daily223"]  # Not a vacuous DAILY-only assertion.

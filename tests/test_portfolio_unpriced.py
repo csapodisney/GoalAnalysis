@@ -39,7 +39,7 @@ def test_five_fixture_preview_survives_empty_odds_or_missing_key(tmp_path, missi
     reviewer = RecordedReviewer()
     bundle = run_portfolio(
         cfg,
-        {"strictness": 0, "target_ticket_count": 5},
+        {"operating_contract_version": 1, "strictness": 0, "target_ticket_count": 5},
         football,
         odds,
         cache,
@@ -97,7 +97,7 @@ def test_all_competitions_use_one_calendar_call_with_season_and_date_checks(tmp_
     outside["fixture"]["date"] = (NOW + timedelta(days=1)).isoformat()
     state["daily"].append(outside)
     report = run_portfolio(
-        cfg, {"strictness": 0}, football, odds, cache, NOW.date(), clock=lambda: NOW
+        cfg, {"operating_contract_version": 1, "strictness": 0}, football, odds, cache, NOW.date(), clock=lambda: NOW
     )["artifacts"]["report"]
     assert len(calls["football"]) == 1
     assert len(report["fixtures"]) == 3
@@ -112,7 +112,7 @@ def test_previews_do_not_survive_kickoff_during_review(tmp_path):
     clock = [NOW]
     reviewer = RecordedReviewer(lambda: clock.__setitem__(0, NOW + timedelta(hours=7)))
     report = run_portfolio(
-        cfg, {"strictness": 0}, football, odds, cache, NOW.date(), reviewer, clock=lambda: clock[0]
+        cfg, {"operating_contract_version": 1, "strictness": 0}, football, odds, cache, NOW.date(), reviewer, clock=lambda: clock[0]
     )["artifacts"]["report"]
     assert report["preview_tickets"] == [] and report["tickets"] == []
     assert report["fixtures"]  # The collected calendar remains inspectable.
@@ -125,7 +125,7 @@ def test_calendar_error_keeps_specific_cause_but_redacts_provider_key(tmp_path):
         {},
     )
     report = run_portfolio(
-        cfg, {"strictness": 0}, football, odds, cache, NOW.date(), clock=lambda: NOW
+        cfg, {"operating_contract_version": 1, "strictness": 0}, football, odds, cache, NOW.date(), clock=lambda: NOW
     )["artifacts"]["report"]
     assert "Rate limit" in report["reason"]
     assert "football-secret" not in str(report)

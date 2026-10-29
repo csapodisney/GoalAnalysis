@@ -7,15 +7,17 @@ scores and reviewer opinions never enter the ranking or change probabilities.
 from __future__ import annotations
 
 import math
-from collections import Counter
+from collections import Counter, defaultdict
 from copy import deepcopy
 from datetime import datetime
 from urllib.parse import parse_qs, urlsplit
 from zoneinfo import ZoneInfo
 
 from goal_analysis.agents import canonical_sha256
+from goal_analysis.engine.publication_window import allows_new_leg
 from goal_analysis.engine.ticket_options import bounded_ticket_groups
 from goal_analysis.engine.ticket_scoring import normalize_score, ticket_quality
+from goal_analysis.operating_policy import TARGET_MAX_ODDS, TARGET_MIN_ODDS, current_contract
 from goal_analysis.quote_metadata import quote_metadata
 
 VERSION = "arthur-independent-model-recommendations-v3-normalized-tickets"
@@ -167,7 +169,7 @@ def _selection_rank(legs, preferred=()):
     )
 
 
-def _options(priced, unpriced, preferred=(), max_price=50):
+def _options(priced, unpriced, preferred=(), max_price=50, *, min_price=None):
     # Priced and unpriced selection quality never share a cohort. Three is a
     # computational construction ceiling, not a required number of legs.
     return bounded_ticket_groups(
@@ -176,7 +178,7 @@ def _options(priced, unpriced, preferred=(), max_price=50):
         cohort=lambda leg: (leg.get("bookmaker"), leg.get("region"), leg.get("currency")),
         price=lambda leg: leg["decimal_price"],
         identity=lambda leg: (leg["fixture_id"], leg["market_key"], leg["selection_key"], leg["period"]),
-        max_legs=3, max_price=max_price,
+        max_legs=3, max_price=max_price, min_price=min_price,
     )
 
 
@@ -232,6 +234,104 @@ def _leg(profile, fixture, prediction, key, probability, stability, now, quote=N
     return leg
 
 
+def _model_input_trace(settings, fixtures, quotes, predictions, profile, status, upcoming,
+                       modeled, priced, selected, now):
+    supplied = settings.get("calendar_universe")
+    universe = supplied if isinstance(supplied, list) else fixtures
+    events = [event for event in universe if isinstance(event, dict)]
+    ids = sorted({event["fixture_id"] for event in events
+                  if isinstance(event.get("fixture_id"), str) and event["fixture_id"]})
+    receipt = settings.get("calendar_scope_receipt", {})
+    expected = receipt.get("provider_fixture_ids") if isinstance(receipt, dict) else None
+    full = (isinstance(supplied, list) and len(ids) == len(universe)
+            and isinstance(expected, list) and all(isinstance(identifier, str) for identifier in expected)
+            and len(set(expected)) == len(expected) and set(expected) == set(ids)
+            and receipt.get("scope") == "ACCESSIBLE_PROVIDER_FOOTBALL_DAY"
+            and receipt.get("status") == "COMPLETE" and receipt.get("full_product_run") is True
+            and receipt.get("provider_calendar_status") == "COMPLETE")
+    fixture_ids = {fixture.get("fixture_id") for fixture in fixtures}
+    by_quote, by_prediction, ranked, chosen = (defaultdict(list) for _ in range(4))
+    for rows, grouped in ((quotes, by_quote), (predictions, by_prediction), (priced, ranked), (selected, chosen)):
+        for item in rows:
+            if isinstance(item, dict):
+                grouped[item.get("fixture_id")].append(item)
+    rejections, decisions = {}, []
+    for event in events:
+        identifier = event.get("fixture_id")
+        if identifier not in ids:
+            continue
+        reasons = []
+        if event.get("status") == "UNMAPPED_COMPETITION":
+            reasons.append("UNMAPPED_COMPETITION")
+        if identifier not in fixture_ids:
+            reasons.append("NO_VALID_NORMALIZED_FIXTURE")
+        elif identifier not in upcoming:
+            reasons.append("PREMATCH_LOCKOUT" if not allows_new_leg(event, now) else "INVALID_NORMALIZED_FIXTURE")
+        own_predictions = by_prediction[identifier]
+        if status in ERROR_STATUSES:
+            reasons.append("MODEL_UNAVAILABLE:" + status)
+        if not own_predictions:
+            reasons.append("MODEL_PREDICTION_UNKNOWN")
+        elif len(own_predictions) != 1:
+            reasons.append("DUPLICATE_MODEL_PREDICTION")
+        probability_map = _probabilities(own_predictions[0], profile) if len(own_predictions) == 1 else {}
+        variations = own_predictions[0].get("stability") if len(own_predictions) == 1 else None
+        if own_predictions and not probability_map:
+            reasons.append("MODEL_PROBABILITIES_UNKNOWN_OR_INVALID")
+        available = []
+        for quote in by_quote[identifier]:
+            source_id, reason = quote.get("candidate_id"), None
+            key = next((key for key, product in MARKETS.items()
+                        if product == (quote.get("market_key"), quote.get("selection_key"))), None)
+            fixture = upcoming.get(identifier)
+            if (fixture is None or key is None
+                    or not _quote_matches(quote, fixture, *MARKETS[key])):
+                reason = "INVALID_OR_UNMATCHED_QUOTE"
+            else:
+                if isinstance(source_id, str):
+                    available.append(source_id)
+                probability = probability_map.get(key)
+                stability = variations.get(key) if isinstance(variations, dict) else None
+                if profile == "kepler" and key not in {"home", "draw", "away"}:
+                    reason = "MARKET_NOT_ESTIMATED_BY_PROFILE"
+                elif probability is None:
+                    reason = "MODEL_PROBABILITY_UNKNOWN"
+                elif probability < .40:
+                    reason = "MODEL_PROBABILITY_BELOW_FLOOR"
+                elif profile == "gauss" and (not _number(stability) or not 0 <= stability <= .08):
+                    reason = "GAUSS_STABILITY_REQUIRED"
+                elif probability * quote["decimal_price"] - 1 < .03 - 1e-12:
+                    reason = "ESTIMATED_EDGE_BELOW_FLOOR"
+                elif quote["decimal_price"] > TARGET_MAX_ODDS:
+                    reason = "LEG_PRICE_ABOVE_PROFILE_MAXIMUM"
+            if reason:
+                reasons.append(reason)
+                if isinstance(source_id, str):
+                    rejections[source_id] = reason
+        if not available:
+            reasons.append("NO_VALID_QUOTES")
+        decisions.append({
+            "fixture_id": identifier, "provider_league_id": event.get("provider_league_id"),
+            "competition_name": event.get("competition_name"), "source_id": event.get("source_id"),
+            "status": "SELECTED" if chosen[identifier] else "RANKED" if ranked[identifier] else "REJECTED",
+            "model_prediction_available": identifier in modeled,
+            "reasons": sorted(set(reasons)), "available_candidate_ids": sorted(available),
+            "ranked_candidate_ids": [leg["candidate_id"] for leg in ranked[identifier]],
+            "selected_candidate_ids": [leg["candidate_id"] for leg in chosen[identifier]],
+        })
+    return {
+        "input_fixture_ids": ids, "input_fixture_count": len(ids),
+        "input_universe_source": "calendar_universe" if isinstance(supplied, list) else "NORMALIZED_FIXTURES_WITHOUT_FULL_DAY_PROOF",
+        "all_daily_fixtures_considered": full, "fixture_decisions": decisions,
+        "model_input_fixture_ids": sorted(identifier for identifier in fixture_ids if isinstance(identifier, str)),
+        "ranked_candidate_ids": [leg["candidate_id"] for leg in priced],
+        "ranked_fixture_ids": sorted({leg["fixture_id"] for leg in priced}),
+        "selected_source_candidate_ids": [leg["source_candidate_id"] for leg in selected
+                                          if isinstance(leg.get("source_candidate_id"), str)],
+        "candidate_rejections": rejections,
+    }
+
+
 def build_model_recommendations(
     model_results: dict,
     fixtures: list,
@@ -249,12 +349,18 @@ def build_model_recommendations(
     """
     if now.tzinfo is None or now.utcoffset() is None:
         raise ValueError("now must include a timezone")
+    current = current_contract(settings)
     target = settings.get("date") or settings.get("target_date")
     target = str(
         target or next((f.get("target_date") for f in fixtures if f.get("target_date")), "")
     )
     target = target or now.astimezone(ZoneInfo("Europe/Berlin")).date().isoformat()
     counts = Counter(f.get("fixture_id") for f in fixtures)
+    calendar = settings.get("calendar_universe") if current else None
+    calendar_events = {event.get("fixture_id"): event for event in calendar
+                       if isinstance(event, dict)} if isinstance(calendar, list) else None
+    calendar_counts = Counter(event.get("fixture_id") for event in calendar
+                              if isinstance(event, dict)) if isinstance(calendar, list) else None
     upcoming = {}
     for fixture in fixtures:
         stamp = _time(fixture.get("kickoff"))
@@ -265,6 +371,10 @@ def build_model_recommendations(
             and counts[identifier] == 1
             and stamp is not None
             and stamp > now
+            and (not current or allows_new_leg(fixture, now))
+            and (calendar_events is None or identifier in calendar_events
+                 and calendar_counts[identifier] == 1
+                 and _time(calendar_events[identifier].get("kickoff")) == stamp)
             and stamp.astimezone(ZoneInfo("Europe/Berlin")).date().isoformat() == target
             and fixture.get("provider_status") == "NS"
             and _name(fixture.get("home_team"))
@@ -337,14 +447,17 @@ def build_model_recommendations(
                         )
         preferred = [name for name in settings.get("preferred_bookmakers", [])
                      if isinstance(name, str)]
-        options, search = _options(priced, unpriced, preferred, settings.get("target_max_odds", 50))
+        search_priced = [leg for leg in priced if leg["decimal_price"] <= TARGET_MAX_ODDS] if current else priced
+        options, search = _options(search_priced, [] if current else unpriced, preferred,
+                                   TARGET_MAX_ODDS if current else settings.get("target_max_odds", 50),
+                                   min_price=TARGET_MIN_ODDS if current else None)
         legs = list(options[0]) if options else []
         if not upcoming:
             card_status = "NO_FIXTURES"
         elif status in ERROR_STATUSES:
             card_status = status
         elif legs:
-            card_status = "ODDS_PENDING" if legs[0]["decimal_price"] is None else "MODEL_READY"
+            card_status = "DRAFT" if current else "ODDS_PENDING" if legs[0]["decimal_price"] is None else "MODEL_READY"
         else:
             card_status = "NO_STABLE_SELECTION"
         # Reviewer input cannot add prices, probabilities, legs, or ranking features.
@@ -410,7 +523,7 @@ def build_model_recommendations(
             "probability": None,
             "odds_pending": card_status == "ODDS_PENDING",
             "combined_price": math.prod(l["decimal_price"] for l in legs)
-            if legs and card_status == "MODEL_READY"
+            if legs and card_status in {"MODEL_READY", "DRAFT"}
             else None,
             "combined_price_kind": "THEORETICAL_PRODUCT_NOT_BOOKMAKER_COMBO_QUOTE",
             "bookmaker": legs[0]["bookmaker"] if legs else None,
@@ -440,6 +553,22 @@ def build_model_recommendations(
                     [(l["candidate_id"], l["model_probability"], l["decimal_price"]) for l in legs],
                 ]
             )[:24]
+        if current:
+            item.update(operating_contract_version=2, selection_mode="PROFILE_ACCUMULATOR",
+                        target_odds_minimum_enforced=True, minimum_combined_price=TARGET_MIN_ODDS,
+                        maximum_combined_price=TARGET_MAX_ODDS, minimum_legs=1, maximum_legs=3)
+            item["selection_diagnostics"].update(
+                _model_input_trace(settings, fixtures, priced_candidates, predictions, profile, status,
+                                   upcoming, modeled, search_priced, legs, now),
+                selection_mode="PROFILE_ACCUMULATOR", target_odds_minimum_enforced=True,
+                primary_odds_range={"minimum": TARGET_MIN_ODDS, "maximum": TARGET_MAX_ODDS},
+            )
+            item["model_summary"]["compared_selections"] = len(search_priced)
+            item["reasoning"][-1] = "Saját 15–40-es összszorzó, 1–3 külön mérkőzés; az eredeti modellvalószínűség-, előny- és stabilitási feltételek változatlanok."
+            if legs:
+                item["quality_warnings"].append("Opcionális pontos profil-review nélkül DRAFT; a modell becslése ettől nem változik.")
+            else:
+                item["risk_notes"].append("Nincs saját, valódi árú 15–40-es opció; hiányzó modell vagy ár UNKNOWN, nem becsült pótlás.")
         if diversity_options is not None:
             # Complete alternatives keep the original probability/source gates.
             # The coordinator applies ticket similarity and exposure controls.
@@ -454,7 +583,7 @@ def build_model_recommendations(
                     ])
                 pending = selected[0]["decimal_price"] is None
                 option.update(
-                    legs=selected, status="ODDS_PENDING" if pending else "MODEL_READY",
+                    legs=selected, status="DRAFT" if current else "ODDS_PENDING" if pending else "MODEL_READY",
                     odds_pending=pending,
                     combined_price=None if pending else math.prod(leg["decimal_price"] for leg in selected),
                     bookmaker=selected[0]["bookmaker"],
@@ -468,6 +597,16 @@ def build_model_recommendations(
                     diversity_options_version=DIVERSITY_OPTIONS_VERSION,
                     scoring=scoring,
                 )
+                if current:
+                    trace = option["selection_diagnostics"]
+                    trace["selected_source_candidate_ids"] = [leg["source_candidate_id"] for leg in selected
+                                                               if isinstance(leg.get("source_candidate_id"), str)]
+                    selected_ids = defaultdict(list)
+                    for leg in selected:
+                        selected_ids[leg["fixture_id"]].append(leg["candidate_id"])
+                    for decision in trace["fixture_decisions"]:
+                        decision["selected_candidate_ids"] = selected_ids[decision["fixture_id"]]
+                        decision["status"] = "SELECTED" if decision["selected_candidate_ids"] else "RANKED" if decision["ranked_candidate_ids"] else "REJECTED"
                 option["quality_warnings"] = [
                     "Kísérleti modell: a valószínűségek még nem kalibráltak; csak papírteszt."]
                 if pending:

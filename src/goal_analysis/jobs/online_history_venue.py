@@ -94,10 +94,14 @@ def correct_inputs(fixtures, history_packet, *, as_of, source_reader):
                     if kind == 'history':
                         normalized = normalize_history(raw, item['league_id'], source, cutoff)
                     else:
-                        league = {'api_football_id': int(item['config_league_id']), 'season': item['season'],
-                            'competition_id': item['competition'], 'competition_type': item['competition_type'],
-                            'odds_sport_key': item['sport_key']}
-                        normalized = normalize_fixture(raw, league, date.fromisoformat(item['target_date']), source)
+                        if item.get('native_competition_route') is not None:
+                            normalized = normalize_fixture(raw, None, date.fromisoformat(item['target_date']), source,
+                                operating_contract_version=2, native_route=item['native_competition_route'])
+                        else:
+                            league = {'api_football_id': int(item['config_league_id']), 'season': item['season'],
+                                'competition_id': item['competition'], 'competition_type': item['competition_type'],
+                                'odds_sport_key': item['sport_key']}
+                            normalized = normalize_fixture(raw, league, date.fromisoformat(item['target_date']), source)
                     if any(item.get(k) != v for k, v in normalized.items() if k != 'neutral_venue'):
                         raise ValueError('ONLINE_NORMALIZED_RECORD_DIFFERS_FROM_RAW')
                     raw_values.append(raw.get('is_neutral'))

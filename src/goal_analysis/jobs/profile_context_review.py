@@ -14,6 +14,7 @@ from goal_analysis.agents.astra_review import _expand_shared_facts, _ReviewError
 from goal_analysis.engine.publication_window import allows_new_leg
 from goal_analysis.jobs.candidate_context_review import CATEGORIES, attach
 from goal_analysis.normalization.canonical import utc
+from goal_analysis.operating_policy import current_contract
 
 VERSION='profile-context-review-v1'
 QUOTE_FIELDS=('fixture_id','home_team','away_team','kickoff','market_key','selection_key',
@@ -110,6 +111,7 @@ def bindings(artifacts,prepared,quotes):
                 if (packet.get('decision_context')!=context
                         or request.get('decision_context',{}).get('context_id')!=context['context_id']
                         or wire_contexts.get(context['context_id'])!=context
+                        or request.get('profile_scenario_context')!=packet.get('profile_scenario_context')
                         or any(request.get(field)!=packet.get(field) for field in QUOTE_FIELDS)
                         or utc(context['as_of'])>utc(response['reviewed_at'])):
                     raise ValueError('ACTUAL_PROFILE_SOURCE_CONTEXT_BINDING_DIFFERS')
@@ -118,11 +120,18 @@ def bindings(artifacts,prepared,quotes):
                     'fixture_id':packet['fixture_id'],'context_id':context['context_id'],
                     'packet_batch_sha256':batch['packet_sha256'],'actual_wire_sha256':digest,
                     'response_batch_index':number,'answer':deepcopy(answer),
+                    **({'profile_scenario_context_sha256':canonical_sha256(packet['profile_scenario_context'])}
+                       if 'profile_scenario_context' in packet else {}),
                     'sourced_categories':[r['category'] for r in context['categories'] if r['status']=='SOURCED'],
                     'unknown_categories':[r['category'] for r in context['categories'] if r['status']!='SOURCED']}))
             for identifier,record in pending:
                 if identifier in accepted:
-                    ambiguous.add(identifier)
+                    prior=accepted[identifier]
+                    if (record.get('profile_scenario_context_sha256') and not prior.get('profile_scenario_context_sha256')
+                            and record['context_id']==prior['context_id']):
+                        accepted[identifier]=record
+                    else:
+                        ambiguous.add(identifier)
                 else:accepted[identifier]=record
         except (_ReviewError,ValueError,KeyError,TypeError,OverflowError) as error:
             issues.append({'response_batch_index':number,'reason':str(error) or type(error).__name__})
@@ -132,10 +141,16 @@ def bindings(artifacts,prepared,quotes):
 
 
 def cards(report,options):
-    """Primary cards first, then whole alternatives in their original rank order."""
+    """Current canonical cohort first; legacy order and alternative ranks unchanged."""
+    if current_contract(report.get('settings',report.get('policy',{}))):
+        for number,card in enumerate(report.get('generated_tickets',[])):
+            yield ('generated_tickets',number),card
     for group in ('tickets','recommendations','profile_proposals','preview_tickets'):
         for number,card in enumerate(report.get(group,[])):
             yield (group,number),card
+    if current_contract(report.get('settings',report.get('policy',{}))):
+        for number,source in enumerate(report.get('profile_decision_sources',[])):
+            yield ('profile_decision_sources',number,'card'),source['card']
     for profile,values in options.items():
         for number,option in enumerate(values):
             for group in ('recommendation','ticket'):
@@ -147,7 +162,11 @@ def plan(report,options,quotes,prepared,covered,*,now,maximum,remaining_rounds):
     if (type(maximum) is not int or not 1<=maximum<=40
             or type(remaining_rounds) is not int or not 0<=remaining_rounds<=3):
         raise ValueError('INVALID_EXISTING_PROFILE_REVIEW_BUDGET')
-    index=quote_index(quotes);seen=set(covered);batches=[];current=[];gaps=[]
+    scenarios=report.get('profile_predecision_scenarios',{}).get('reviewer_context_by_source_candidate_id',{})
+    index=quote_index(quotes)
+    seen={identifier for identifier,binding in covered.items()
+          if identifier not in scenarios or binding.get('profile_scenario_context_sha256')==canonical_sha256(scenarios[identifier])}
+    batches=[];current=[];gaps=[]
     for location,card in cards(report,options):
         if card.get('profile_id')=='daily223' or not card.get('legs'):continue
         missing=[]
@@ -168,6 +187,11 @@ def plan(report,options,quotes,prepared,covered,*,now,maximum,remaining_rounds):
     if current:batches.append(current)
     assert len(batches)<=remaining_rounds and all(0<len(batch)<=maximum for batch in batches)
     packets=[attach([deepcopy(index[identifier][0]) for identifier in batch],prepared) for batch in batches]
+    for batch in packets:
+        for packet in batch:
+            facts=scenarios.get(packet['candidate_id'])
+            if facts:
+                packet['profile_scenario_context']=deepcopy(facts)
     return {'version':VERSION,'batches':packets,'gaps':gaps,
         'new_quote_count':sum(map(len,packets)),'maximum_candidates':maximum,
         'remaining_followup_rounds':remaining_rounds,'sports_requests':0,'numeric_fits':0,
@@ -177,6 +201,8 @@ def plan(report,options,quotes,prepared,covered,*,now,maximum,remaining_rounds):
 def audit(report,options,quotes,prepared,covered,*,now):
     """Evaluate primary and alternative source coverage without changing choices."""
     index=quote_index(quotes);rows=[]
+    scenarios=(report.get('profile_predecision_scenarios',{}).get('reviewer_context_by_source_candidate_id',{})
+               if current_contract(report.get('settings',report.get('policy',{}))) else {})
     for location,card in cards(report,options):
         if card.get('profile_id')=='daily223' or not card.get('legs'):continue
         legs=[]
@@ -189,6 +215,10 @@ def audit(report,options,quotes,prepared,covered,*,now):
                 if not allows_new_leg(quote,now):raise ValueError('PROFILE_REVIEW_PREMATCH_LOCKOUT')
                 if not binding or binding.get('context_id')!=context['context_id']:
                     raise ValueError('NO_EXACT_SOURCE_BOUND_PROFILE_REVIEW')
+                expected_scenarios=scenarios.get(identifier)
+                if (expected_scenarios is not None and binding.get('profile_scenario_context_sha256')
+                        !=canonical_sha256(expected_scenarios)):
+                    raise ValueError('NO_EXACT_CURRENT_PROFILE_SCENARIO_REVIEW')
                 row.update(status='EXACT_PROFILE_CONTEXT_REVIEW_BOUND',source_candidate_id=identifier,
                     context_id=context['context_id'],actual_wire_sha256=binding['actual_wire_sha256'],
                     packet_batch_sha256=binding['packet_batch_sha256'],
@@ -237,7 +267,8 @@ def apply(report,options,coverage,covered,*,mode,final_review=None):
 
             complete_card(card, final_review if final_review is not None else result.get('astra', {}))
         else:
-            if location[0]=='options':rejected.add((location[1],location[2]))
+            if location[0]=='options' and not current_contract(result.get('settings',result.get('policy',{}))):
+                rejected.add((location[1],location[2]))
             # Preserve the exact independent model/selection in the frozen input
             # and this non-playable card; never upgrade it via attached prose.
             card.update(status='DRAFT',playable=False,selected_for_portfolio=False)
@@ -246,3 +277,106 @@ def apply(report,options,coverage,covered,*,mode,final_review=None):
     for profile,values in pools.items():
         pools[profile]=[option for number,option in enumerate(values) if (profile,number) not in rejected]
     return result,pools
+
+
+def attach_decision_inputs(report,options,prepared,scenarios):
+    """Use source facts in the persona's risk reasoning without inventing weights.
+
+    Choices retain their own strategy and price/model maths. Numerical scenarios
+    are uncalibrated evidence; missing context is explicitly disclosed locally.
+    """
+    assessments={row['profile_id']:row for row in scenarios.get('profiles',[])}
+    from goal_analysis.jobs.profile_scenarios import source_leg_signature
+
+    for _location,card in cards(report,options):
+        if not card.get('legs'):
+            continue
+        assessment=assessments.get(card.get('profile_id'),{})
+        scenario_bound=(assessment.get('source_card_sha256')==canonical_sha256(card)
+                        or assessment.get('source_leg_signature')==source_leg_signature(card))
+        facts=deepcopy(assessment.get('risk_facts',[])) if scenario_bound else []
+        unknowns=deepcopy(assessment.get('uncertainties',[])) if scenario_bound else ['EXACT_PROFILE_SCENARIO_UNAVAILABLE']
+        contexts=[]
+        for fixture in dict.fromkeys(leg.get('fixture_id') for leg in card['legs']):
+            context=(prepared or {}).get('contexts',{}).get(fixture)
+            if not context:
+                unknowns.append(str(fixture)+':OPTIONAL_CONTEXT_UNAVAILABLE')
+                continue
+            contexts.append(deepcopy(context))
+            unknowns.extend(str(fixture)+':'+str(row.get('category'))+':UNKNOWN'
+                            for row in context.get('categories',[]) if row.get('status')!='SOURCED')
+        visible=[]
+        if scenario_bound:
+            for name in ('gauss','kepler','laplace'):
+                model=assessment.get('models',{}).get(name,{})
+                known,unknown=model.get('known_leg_count'),model.get('unknown_leg_count')
+                if (type(known) is not int or type(unknown) is not int
+                        or known<0 or unknown<0 or known+unknown==0):
+                    continue
+                probability=model.get('scenario_model_full_card_probability')
+                sentence=(f'[S07] {name.upper()}: forráskötött, feltételes, nem kalibrált szcenárió; '
+                          f'{known}/{known+unknown} láb modellezett, {unknown} UNKNOWN. ')
+                if (unknown==0 and type(probability) in (int,float)
+                        and math.isfinite(probability) and 0<=probability<=1):
+                    sentence+=f'A teljes szelvény feltételes modell-esélye {100*probability:.2f}%.'
+                else:
+                    sentence+='A teljes szelvény esélye UNKNOWN.'
+                visible.append(sentence)
+        if unknowns:
+            visible.append('[S07] Adat-/szcenárióhiány maradt; a név szerinti UNKNOWN-ok a mentett indoklásban szerepelnek.')
+        previous=card.get('decision_reasoning',{}).get('visible_scenario_lines',[])
+        original_reasoning=card.get('reasoning',[])
+        base=deepcopy(original_reasoning) if isinstance(original_reasoning,list) else [deepcopy(original_reasoning)]
+        card['reasoning']=[line for line in base if line not in previous]+visible
+        card['decision_reasoning']={
+            'phase':'BEFORE_FINAL_PROFILE_DECISION','choice':'RETAIN_OWN_STRATEGY_WITH_SOURCE_RISK_DISCLOSURE',
+            'strategy':{key:deepcopy(card[key]) for key in ('method_kind','method_version','strategy_version','catalog_version') if key in card},
+            'source_contexts':contexts,'scenario_risk_facts':facts,
+            'scenario_context_sha256':assessment.get('context_sha256') if scenario_bound else None,
+            'source_leg_signature':assessment.get('source_leg_signature') if scenario_bound else None,
+            'visible_scenario_lines':deepcopy(visible),
+            'uncertainties':sorted(set(unknowns)),
+            'numeric_probability_or_rank_changed':False,'missing_context_is_neutral':False,
+        }
+    return report,options
+
+
+def ensure_final_decision_inputs(report,options,artifacts,prepared,*,now):
+    """Bind late own choices once, using existing predictions and no new requests.
+
+    Allocation, an optional package reviewer or final lockout can change a
+    tentative choice. Its old review cannot silently cover new scenario facts.
+    """
+    from goal_analysis.jobs.profile_scenarios import (
+        build_profile_scenario_context,
+        source_leg_signature,
+    )
+
+    prior=report.get('profile_predecision_scenarios',{})
+    by_profile={row['profile_id']:row for row in prior.get('profiles',[])}
+    changed=[card for card in report.get('generated_tickets',[])
+             if by_profile.get(card['profile_id'],{}).get('source_leg_signature')!=source_leg_signature(card)]
+    if changed:
+        actual=build_profile_scenario_context(report,artifacts,changed,as_of=now)
+        identities={card['profile_id'] for card in changed}
+        merged=deepcopy(prior)
+        merged['profiles']=[row for row in merged.get('profiles',[]) if row['profile_id'] not in identities]+actual['profiles']
+        contexts={identifier:[row for row in rows if row['profile_id'] not in identities]
+                  for identifier,rows in merged.get('reviewer_context_by_source_candidate_id',{}).items()}
+        for identifier,rows in actual['reviewer_context_by_source_candidate_id'].items():
+            contexts.setdefault(identifier,[]).extend(rows)
+        merged['reviewer_context_by_source_candidate_id']={key:value for key,value in contexts.items() if value}
+        merged.setdefault('late_rebindings',[]).append(actual)
+        merged['sha256']=canonical_sha256({key:value for key,value in merged.items() if key!='sha256'})
+        report['profile_predecision_scenarios']=merged
+        artifacts['profile_predecision_scenarios']=deepcopy(merged)
+    # Also refresh materialized aliases when their economic choice is unchanged.
+    report,options=attach_decision_inputs(report,options,prepared,report.get('profile_predecision_scenarios',{}))
+    if changed:
+        quotes=artifacts.get('candidate_input',{}).get('candidates',[])
+        covered,issues=bindings(artifacts,prepared or {},quotes)
+        coverage=audit(report,options,quotes,prepared or {},covered,now=now)
+        report,options=apply(report,options,coverage,covered,mode='ACTIVE',final_review=report.get('astra',{}))
+        report['final_scenario_rebinding']={'profiles':sorted(identities),'llm_requests':0,'model_fits':0,
+            'actual_existing_review_only':True,'unseen_new_facts_remain_DRAFT':True,'binding_issues':issues}
+    return report,options

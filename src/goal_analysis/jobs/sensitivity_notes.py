@@ -13,7 +13,7 @@ from goal_analysis.jobs import profile_context_review as binding
 
 VERSION = 'arthur-source-bound-sensitivity-export-v1'
 ARTIFACT_NAME = 'report-sensitivity-notes'
-GROUPS = ('tickets', 'recommendations', 'profile_proposals', 'preview_tickets')
+GROUPS = ('tickets', 'recommendations', 'profile_proposals', 'preview_tickets', 'generated_tickets')
 LABELS = {'players': 'játékos- és keretadat', 'xg': 'xG', 'schedule': 'csapatnaptár',
           'travel': 'utazás', 'rotation': 'rotáció', 'weather': 'időjárás'}
 

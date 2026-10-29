@@ -53,7 +53,7 @@ def test_probation_persisted_and_frozen_but_never_live_wager(tmp_path):
     cfg, football, odds, cache, _, _, _ = environment(tmp_path)
     roster = plan({"daily223": "PROBATION", "laplace": "PROBATION"})
     # This fixture tests audition persistence, independently of the default 10x band.
-    report = run_portfolio(cfg, {"target_min_odds": 2}, football, odds, cache, NOW.date(), RecordedReviewer(),
+    report = run_portfolio(cfg, {"operating_contract_version": 1, "target_min_odds": 2}, football, odds, cache, NOW.date(), RecordedReviewer(),
                            clock=lambda: NOW, model_predictor=predictor_fixture,
                            team_plan=roster)["artifacts"]["report"]
     papers = [r for r in report["recommendations"] if r["publication_scope"] == "PAPER_AUDITION"]
@@ -102,7 +102,7 @@ def test_probation_only_numeric_does_not_spend_a_review(tmp_path):
     cfg, football, odds, cache, _, _, _ = environment(tmp_path)
     reviewer = RecordedReviewer()
     roster = plan({**{p: "SUSPENDED" for p in PROFILE_IDS}, "laplace": "PROBATION"})
-    report = run_portfolio(cfg, {}, football, odds, cache, NOW.date(), reviewer,
+    report = run_portfolio(cfg, {"operating_contract_version": 1}, football, odds, cache, NOW.date(), reviewer,
                            clock=lambda: NOW, model_predictor=predictor_fixture,
                            team_plan=roster)["artifacts"]["report"]
     assert not reviewer.calls and not report["tickets"]
@@ -181,7 +181,7 @@ def test_laplace_real_library_fit_and_temporal_boundary():
 
 def test_promoted_laplace_has_live_authority_but_cannot_bypass_diversity(tmp_path):
     cfg, football, odds, cache, _, _, _ = environment(tmp_path)
-    report = run_portfolio(cfg, {}, football, odds, cache, NOW.date(), clock=lambda: NOW,
+    report = run_portfolio(cfg, {"operating_contract_version": 1}, football, odds, cache, NOW.date(), clock=lambda: NOW,
                            model_predictor=predictor_fixture,
                            team_plan=plan({"laplace": "ACTIVE"}))["artifacts"]["report"]
     promoted = next(r for r in report["recommendations"] if r["profile_id"] == "laplace")

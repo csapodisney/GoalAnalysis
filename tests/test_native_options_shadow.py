@@ -8,6 +8,7 @@ import pytest
 from test_player_specialist_shadow import NOW, environment
 
 from goal_analysis.agents import canonical_sha256
+from goal_analysis.config.portfolio import validate_settings
 from goal_analysis.jobs import native_options_shadow as module
 
 
@@ -28,7 +29,8 @@ def test_real_options_to_real_player_review_and_each_leg_bound_to_same_model_and
     report = {'recommendations': [{'profile_id': 'daily223', 'legs': []}], 'sentinel': 'LIVE_UNCHANGED'}
     with pytest.MonkeyPatch.context() as net:
         net.setattr(socket, 'socket', Mock(side_effect=AssertionError('NO_NETWORK')))
-        result = module.replay_native_options(tmp_path, report, data, {}, as_of=NOW,
+        result = module.replay_native_options(tmp_path, report, data,
+                                               validate_settings({'operating_contract_version': 1}), as_of=NOW,
                                                profiles=('gauss', 'laplace'))
     options = result['options_shadow']
     assert fit.call_count == 1 and result['numeric_models'] == models and data == original
@@ -153,7 +155,8 @@ def test_thin_control_can_supply_own_option_but_not_positive_two_model_player_vo
     run = {'numeric_models': models, 'source_view': {'fixtures': data['fixtures'],
             'dataset': {'manifest': {'dataset_id': '1'*64}}}}
     monkeypatch.setattr(module, 'replay_native_history', lambda *_a, **_k: deepcopy(run))
-    result = module.replay_native_options(tmp_path, {}, data, {}, as_of=NOW)['options_shadow']
+    result = module.replay_native_options(tmp_path, {}, data,
+        validate_settings({'operating_contract_version': 1}), as_of=NOW)['options_shadow']
     assert result['summary']['complete_in_band_options'] > 0
     assert result['summary']['player_supported_selections'] == 0
     assert result['player_review']['summary']['hypothetically_weighted_options'] == 0

@@ -46,7 +46,7 @@ def test_slow_persona_selection_cannot_publish_locked_legacy_model_or_persona_pi
     monkeypatch.setattr(portfolio_job, "_guard_final_publication", capture_guard)
     reviewer = RecordedReviewer()
     report = portfolio_job.run_portfolio(
-        config, {}, football, odds, cache, NOW.date(), reviewer,
+        config, {"operating_contract_version": 1}, football, odds, cache, NOW.date(), reviewer,
         clock=lambda: clock[0], model_predictor=predictor_fixture,
     )["artifacts"]["report"]
 

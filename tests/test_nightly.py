@@ -9,7 +9,7 @@ import pytest
 from test_daily_223_live import config
 from test_portfolio_ledger import Football, fixture
 
-from goal_analysis.config.portfolio import DEFAULT_SETTINGS
+from goal_analysis.config.portfolio import DEFAULT_SETTINGS, validate_settings
 from goal_analysis.jobs.nightly import (
     JobStore,
     NightlyWorkflow,
@@ -317,7 +317,7 @@ def test_shared_manual_run_lock_defers_daily_without_new_job(tmp_path):
 
 def test_existing_manual_freeze_preserved_and_disabled_profiles_respected(tmp_path):
     workflow, _, _ = setup_workflow(tmp_path)
-    settings = deepcopy(DEFAULT_SETTINGS)
+    settings = validate_settings({"operating_contract_version": 1})
     settings["enabled_profiles"] = ["daily223", "gauss"]
     (tmp_path / "config/arthur-settings.json").write_text(json.dumps(settings), "utf-8")
     old = workflow.generator(date(2026, 10, 8), settings, {})["artifacts"]["report"]

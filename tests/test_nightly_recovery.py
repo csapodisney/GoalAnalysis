@@ -10,7 +10,7 @@ from test_daily_223_live import config
 from test_portfolio_ledger import ticket
 
 from goal_analysis.agents import canonical_sha256
-from goal_analysis.config.portfolio import DEFAULT_SETTINGS
+from goal_analysis.config.portfolio import validate_settings
 from goal_analysis.jobs.background_history import publication_gate
 from goal_analysis.jobs.nightly import JobStore, NightlyWorkflow, execution_deadline, schedule_plan
 from goal_analysis.jobs.nightly_recovery import (
@@ -31,7 +31,8 @@ OBSERVED = NOW - timedelta(hours=10)
 def saved(tmp_path):
     cfg = tmp_path / 'config'
     cfg.mkdir()
-    settings = {**deepcopy(DEFAULT_SETTINGS), 'enabled_profiles': ['daily223']}
+    settings = {**validate_settings({'operating_contract_version': 1}),
+                'enabled_profiles': ['daily223']}
     (cfg / 'arthur-settings.json').write_text(json.dumps(settings), encoding='utf-8')
     (cfg / 'daily223-live.json').write_text(json.dumps(config()), encoding='utf-8')
     issued = ticket('synthetic-recovery-ticket', 'daily223', date=NOW.date().isoformat(),

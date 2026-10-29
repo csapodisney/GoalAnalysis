@@ -25,7 +25,8 @@ def _database_rows(path):
 
 def test_read_only_paper_view_uses_current_daily_records_not_archive_duplicates(tmp_path):
     config, football, odds, cache, _, _, _ = environment(tmp_path)
-    report = run_portfolio(config, {}, football, odds, cache, NOW.date(), RecordedReviewer(),
+    report = run_portfolio(config, {"operating_contract_version": 1}, football, odds, cache,
+                           NOW.date(), RecordedReviewer(),
                            clock=lambda: NOW, model_predictor=predictor_fixture)["artifacts"]["report"]
     ledger = PortfolioLedger(tmp_path / "data/arthur/ledger.sqlite3", now=lambda: NOW)
     ledger.save_run(report)

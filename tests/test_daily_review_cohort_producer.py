@@ -38,7 +38,7 @@ def run(tmp_path, monkeypatch, *, mode='ACTIVE', failure=False, stage=False):
             return super().review(candidates, target_date, feedback)
 
     reviewer = Reviewer()
-    bundle = portfolio.run_portfolio(cfg, {'enabled_profiles': ['daily223']}, football, odds,
+    bundle = portfolio.run_portfolio(cfg, {'operating_contract_version': 1, 'enabled_profiles': ['daily223']}, football, odds,
         cache, NOW.date(), reviewer, ledger, clock=lambda: NOW)
     return bundle, reviewer, remaining
 
@@ -106,7 +106,7 @@ def test_reselection_after_three_cohort_rounds_stays_draft_without_fourth_call(t
             return result
 
     reviewer = CautiousReviewer()
-    bundle = portfolio.run_portfolio(cfg, {'enabled_profiles': ['daily223']}, football, odds,
+    bundle = portfolio.run_portfolio(cfg, {'operating_contract_version': 1, 'enabled_profiles': ['daily223']}, football, odds,
         cache, NOW.date(), reviewer, ledger, clock=lambda: NOW)
     report = bundle['artifacts']['report']
     assert len(reviewer.calls) == 4  # One primary plus the original three follow-up attempts.

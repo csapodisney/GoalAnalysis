@@ -59,7 +59,7 @@ def attach_strategy_provenance(report: dict, settings: dict) -> dict:
     manifest = strategy_manifest(settings)
     report["strategy_manifest"] = manifest
     report["application_version"] = APPLICATION_VERSION
-    for group in ("tickets", "preview_tickets", "recommendations"):
+    for group in ("tickets", "preview_tickets", "recommendations", "generated_tickets"):
         for item in report.get(group, []):
             profile = manifest["profiles"].get(item.get("profile_id"))
             if profile:

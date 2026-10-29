@@ -347,7 +347,7 @@ def _fixture_extra(report, now):
             if clean:
                 extra["weather"] = clean
         result[row["fixture_id"]] = extra
-    for group in ("recommendations", "tickets"):
+    for group in (("generated_tickets",) if "generated_tickets" in report else ("recommendations", "tickets")):
         for card in report.get(group, []):
             for leg in card.get("legs", []) if isinstance(card, dict) else []:
                 if not isinstance(leg, dict) or leg.get("fixture_id") not in result:
@@ -431,7 +431,7 @@ def _packet(report, now):
     if not isinstance(target, str) or date.fromisoformat(target).isoformat() != target:
         raise ValueError("INVALID_DATE")
     rows, grouped = [], {}
-    for field in ("recommendations", "tickets"):
+    for field in (("generated_tickets",) if "generated_tickets" in report else ("recommendations", "tickets")):
         source = report.get(field, [])
         if not isinstance(source, list) or len(source) > 1000:
             raise ValueError("INVALID_RECOMMENDATIONS")

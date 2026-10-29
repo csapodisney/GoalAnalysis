@@ -53,7 +53,7 @@ def _history_usage(report, artifacts, models, history):
     history_hash = artifacts.get('history', {}).get('snapshot_sha256')
     daily_evidence = set()
     if history and _digest(history_hash):
-        for group in ('tickets', 'recommendations', 'profile_proposals', 'preview_tickets'):
+        for group in ('tickets', 'recommendations', 'profile_proposals', 'preview_tickets', 'generated_tickets'):
             for card in report.get(group, []):
                 if card.get('profile_id') != 'daily223':
                     continue
@@ -140,7 +140,7 @@ def _local_odds_history_usage(report, movement_candidates):
         if (identifier := _movement_evidence_id(candidate.get("odds_movement")))
     }
     selected = set()
-    for group in ("tickets", "recommendations", "profile_proposals", "preview_tickets"):
+    for group in ("tickets", "recommendations", "profile_proposals", "preview_tickets", "generated_tickets"):
         for item in report.get(group, []) or []:
             for leg in item.get("legs", []):
                 analysis = leg.get("contrarian_analysis")

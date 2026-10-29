@@ -19,7 +19,7 @@ def unpriced_run(tmp_path, strictness=100, reviewer=None):
     reviewer = reviewer or RecordedReviewer()
     report = run_portfolio(
         cfg,
-        {"strictness": strictness, "target_ticket_count": 2},
+        {"operating_contract_version": 1, "strictness": strictness, "target_ticket_count": 2},
         football,
         odds,
         cache,

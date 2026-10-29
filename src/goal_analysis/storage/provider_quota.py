@@ -7,6 +7,7 @@ usage; the optional background policy alone applies reservation gates.
 import json
 import math
 import sqlite3
+import stat
 from contextlib import closing
 from dataclasses import asdict
 from datetime import UTC, datetime, timedelta
@@ -30,15 +31,40 @@ def validate_policy(policy):
 
 def activation(root):
     path = Path(root) / 'data/arthur/historical-background/activation.json'
-    if not path.is_file():
+    try:
+        info = path.lstat()
+    except FileNotFoundError:
         return {}
-    value = json.loads(path.read_bytes())
-    if (value.get('version') != 'historical-background-v1'
-            or type(value.get('tracking_enabled')) is not bool
-            or type(value.get('background_enabled')) is not bool):
-        raise ValueError('INVALID_BACKGROUND_ACTIVATION')
-    utc(value['activated_at'])
+    except OSError:
+        raise ValueError('INVALID_BACKGROUND_ACTIVATION') from None
+    try:
+        if not stat.S_ISREG(info.st_mode):
+            raise ValueError
+        value = json.loads(path.read_bytes())
+        if (not isinstance(value, dict)
+                or value.get('version') != 'historical-background-v1'
+                or type(value.get('tracking_enabled')) is not bool
+                or type(value.get('background_enabled')) is not bool):
+            raise ValueError
+        utc(value['activated_at'])
+    except (ValueError, OSError, KeyError, TypeError, RecursionError, OverflowError):
+        raise ValueError('INVALID_BACKGROUND_ACTIVATION') from None
     return value
+
+
+class _BlockedQuotaObserver:
+    """Keep cache-only clients usable without allowing an untracked request."""
+
+    def begin(self):
+        raise ValueError('INVALID_INSTALLED_QUOTA_ACTIVATION')
+
+    def finish(self, identifier, receipt, usage):
+        raise ValueError('INVALID_INSTALLED_QUOTA_ACTIVATION')
+
+    def legacy_state(self):
+        # No valid activation means no quota evidence. Cached historical pages
+        # can still be checked; begin() never permits a fresh untracked request.
+        return None
 
 
 def observer_for(root, *, kind='daily', clock=None):
@@ -48,7 +74,7 @@ def observer_for(root, *, kind='daily', clock=None):
         armed = activation(root)
         enabled = armed.get('tracking_enabled') is True
     except (ValueError, OSError, KeyError):
-        enabled = False
+        return _BlockedQuotaObserver()
     if not enabled:
         return None
     if kind == 'history':

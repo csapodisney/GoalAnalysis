@@ -57,7 +57,7 @@ def test_collection_respects_ready_exposure_and_persistent_dashboard(tmp_path):
     ledger = PortfolioLedger(tmp_path / "data/arthur/ledger.sqlite3", now=lambda: NOW)
     reviewer = RecordedReviewer()
     bundle = run_portfolio(
-        cfg, {}, football, odds, cache, NOW.date(), reviewer, ledger, clock=lambda: NOW
+        cfg, {'operating_contract_version': 1}, football, odds, cache, NOW.date(), reviewer, ledger, clock=lambda: NOW
     )
     report = bundle["artifacts"]["report"]
     # DAILY consumes all three available fixtures; with two READY tickets the
@@ -101,7 +101,7 @@ def test_history_failure_still_reviews_all_profile_recommendations(tmp_path):
     cfg, football, odds, cache, _calls, state, _db = environment(tmp_path)
     state["history_failure"] = True
     reviewer = RecordedReviewer()
-    report = run_portfolio(cfg, {}, football, odds, cache, NOW.date(), reviewer, clock=lambda: NOW)[
+    report = run_portfolio(cfg, {'operating_contract_version': 1}, football, odds, cache, NOW.date(), reviewer, clock=lambda: NOW)[
         "artifacts"
     ]["report"]
     assert report["construction_status"] == "CONSTRUCTION_INCOMPLETE"

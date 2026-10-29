@@ -8,8 +8,10 @@ from __future__ import annotations
 
 from collections import Counter, defaultdict
 from collections.abc import Mapping
+from copy import deepcopy
 from datetime import date
 from decimal import Decimal
+from itertools import combinations
 from math import log2
 from zoneinfo import ZoneInfo
 
@@ -26,9 +28,22 @@ from goal_analysis.engine.daily_223 import (
     _timestamp,
     diversified_daily223_pool,
 )
+from goal_analysis.engine.publication_window import allows_new_leg
 from goal_analysis.engine.specialist_contracts import SPECIALIST_CONTRACTS, contract_metadata
 from goal_analysis.engine.ticket_scoring import ticket_quality
 from goal_analysis.engine.veto_overrides import league_base_rate_context, verified_veto_override
+from goal_analysis.operating_policy import (
+    EXCEPTIONAL_MIN_ODDS,
+    MAX_GENERATED_TICKETS,
+    MIN_DAILY_TICKETS,
+    OPERATING_CONTRACT_VERSION,
+    TARGET_MAX_ODDS,
+    TARGET_MIN_ODDS,
+    cautious_fallback_allowed,
+    current_contract,
+    generation_capacity,
+    generation_limits,
+)
 from goal_analysis.tipsters.catalog import TIPSTER_CATALOG, TIPSTER_PROFILE_IDS
 
 PROFILES = {
@@ -88,26 +103,192 @@ def prepare_portfolio_candidate(candidate, target, now, policy, settings):
     return item
 
 
+def _core_universe(enriched, raw):
+    supplied = enriched.get("calendar_universe")
+    universe = supplied if isinstance(supplied, list) else enriched.get("fixtures")
+    source = "calendar_universe" if isinstance(supplied, list) else "NORMALIZED_FIXTURES_WITHOUT_FULL_DAY_PROOF"
+    if not isinstance(universe, list):
+        universe = list({item.get("fixture_id"): item for item in raw
+                         if isinstance(item.get("fixture_id"), str)}.values())
+        source = "CANDIDATE_FIXTURES_WITHOUT_FULL_DAY_PROOF"
+    events = [item for item in universe if isinstance(item, Mapping)]
+    ids = sorted({item["fixture_id"] for item in events
+                  if isinstance(item.get("fixture_id"), str) and item["fixture_id"]})
+    receipt = enriched.get("calendar_scope_receipt", enriched.get("scope_receipt", {}))
+    expected = receipt.get("provider_fixture_ids") if isinstance(receipt, Mapping) else None
+    full = (isinstance(supplied, list) and len(ids) == len(universe)
+            and isinstance(expected, list) and all(isinstance(item, str) for item in expected)
+            and len(set(expected)) == len(expected) and set(expected) == set(ids)
+            and receipt.get("scope") == "ACCESSIBLE_PROVIDER_FOOTBALL_DAY"
+            and receipt.get("status") == "COMPLETE" and receipt.get("full_product_run") is True
+            and receipt.get("provider_calendar_status") == "COMPLETE")
+    return events, ids, source, full
+
+
+def _core_pool(raw, target, now, policy, settings, analyses, products, identifiers, universe, review):
+    """Prepare truthful legal products without a shared history or quality veto."""
+    prepared, rejected = [], {}
+    events = {item["fixture_id"]: item for item in universe
+              if isinstance(item.get("fixture_id"), str)}
+    reviews = {item.get("candidate_id"): item for item in (review or {}).get("reviews", [])}
+    for candidate in raw:
+        identifier = candidate.get("candidate_id")
+        try:
+            if not isinstance(identifier, str) or not identifier:
+                raise ValueError("INVALID_CANDIDATE_ID")
+            if products[_product_key(candidate)] > 1 or identifiers[identifier] != 1:
+                raise ValueError("DUPLICATE_CURRENT_PRODUCT")
+            if events and candidate.get("fixture_id") not in events:
+                raise ValueError("NOT_IN_RECEIVED_CALENDAR")
+            event = events.get(candidate.get("fixture_id"), candidate)
+            if not allows_new_leg(event, now) or not allows_new_leg(candidate, now):
+                raise ValueError("PREMATCH_LOCKOUT")
+            if event.get("kickoff") and _timestamp(event["kickoff"]) != _timestamp(candidate["kickoff"]):
+                raise ValueError("CALENDAR_KICKOFF_MISMATCH")
+            source = dict(candidate)
+            if source.get("evidence") is None:
+                source["evidence"] = []
+            if not source.get("sensitivity_note"):
+                source["sensitivity_note"] = "Érzékenységi háttérelemzés: UNKNOWN."
+            item = _prepare(source, target, now, policy, require_history=False)
+            missing = sum(WEIGHTS[key] for key in item["missing_support"])
+            penalty = missing / 100 * settings["strictness"] * 0.30
+            caution = (review or {}).get("status") == "COMPLETE" and reviews.get(identifier, {}).get("assessment") == "caution"
+            review_penalty = settings["strictness"] * 0.1 if caution else 0
+            item.update(uncertainty_penalty=round(penalty, 6), astra_caution_penalty=round(review_penalty, 6),
+                        weighted_support_score=round(max(0, item["support_score"] - penalty - review_penalty), 6),
+                        history_analysis=analyses.get(identifier), quality_warnings=[])
+            if item["missing_support"]:
+                item["quality_warnings"].append(
+                    "Nem forrásolt háttér: " + ", ".join(item["missing_support"]) + "; UNKNOWN.")
+            if candidate.get("fixture_snapshot_stale"):
+                item["requires_refresh"] = True
+                item["quality_warnings"].append("A mentett mérkőzésállapot frissítést igényel.")
+            for key in (
+                "api_football_fixture_id", "api_football_home_team_id", "api_football_away_team_id",
+                "source_provider", "provider_fixture_id", "provider_home_team_id", "provider_away_team_id",
+                "provider_league_id", "provider_season_id", "config_league_id", "quote_observed_at",
+                "quote_source_sha256", "quote_time_basis", "provider_bookmaker",
+            ):
+                if key in candidate:
+                    item[key] = candidate[key]
+            prepared.append(item)
+        except (ValueError, TypeError, KeyError, OverflowError) as error:
+            if isinstance(identifier, str):
+                rejected[identifier] = str(error)
+    return sorted(prepared, key=_quality), rejected
+
+
+def _core_trace(raw, available, ranked, selected, rejected, universe_info, now, *, searched_ids=None):
+    universe, ids, source, full = universe_info
+    indexed = [defaultdict(list) for _ in range(4)]
+    for rows, target in zip((raw, available, ranked, selected), indexed, strict=True):
+        for item in rows:
+            if isinstance(item.get("candidate_id"), str):
+                target[item.get("fixture_id")].append(item["candidate_id"])
+    decisions = []
+    for event in universe:
+        identifier = event.get("fixture_id")
+        if identifier not in ids:
+            continue
+        reasons = []
+        if event.get("status") == "UNMAPPED_COMPETITION":
+            reasons.append("UNMAPPED_COMPETITION")
+        if not allows_new_leg(event, now):
+            reasons.append("PREMATCH_LOCKOUT")
+        if not indexed[1][identifier]:
+            reasons.append("NO_VALID_QUOTES")
+        reasons.extend(rejected[candidate] for candidate in indexed[0][identifier] if candidate in rejected)
+        decisions.append({
+            "fixture_id": identifier, "provider_league_id": event.get("provider_league_id"),
+            "competition_name": event.get("competition_name"), "source_id": event.get("source_id"),
+            "status": "SELECTED" if indexed[3][identifier] else "RANKED" if indexed[2][identifier] else "REJECTED",
+            "reasons": sorted(set(reasons)), "source_candidate_ids": sorted(indexed[0][identifier]),
+            "available_candidate_ids": sorted(indexed[1][identifier]),
+            "ranked_candidate_ids": sorted(indexed[2][identifier]),
+            "selected_candidate_ids": sorted(indexed[3][identifier]),
+        })
+    if searched_ids is None:
+        cohorts = defaultdict(list)
+        for item in ranked:
+            cohorts[(item["bookmaker"], item["region"], item["currency"])].append(item)
+        searched_ids = {item["candidate_id"] for cohort in cohorts.values() for item in _specialist_pool(cohort)}
+    return {
+        "input_fixture_ids": ids, "input_fixture_count": len(ids), "input_universe_source": source,
+        "all_daily_fixtures_considered": full, "fixture_decisions": decisions,
+        "ranked_candidate_ids": [item["candidate_id"] for item in ranked],
+        "ranked_fixture_ids": sorted({item["fixture_id"] for item in ranked}),
+        "selected_source_candidate_ids": [item["candidate_id"] for item in selected],
+        "candidate_rejections": deepcopy(rejected),
+        "searched_candidate_ids": sorted(searched_ids),
+        "deferred_candidate_ids": sorted({item["candidate_id"] for item in ranked} - searched_ids),
+        "search_method": "BOUNDED_DIVERSIFIED_BEAM_NOT_EXHAUSTIVE_OPTIMUM",
+    }
+
+
+def _effective_core_contract(profile, settings, *, fallback=False):
+    result = contract_metadata(profile)
+    if not current_contract(settings) or profile == "daily223":
+        return result
+    minimum = EXCEPTIONAL_MIN_ODDS if fallback else TARGET_MIN_ODDS
+    maximum = TARGET_MIN_ODDS if fallback else TARGET_MAX_ODDS
+    result.update(minimum_combined_price=minimum, maximum_combined_price=maximum,
+                  minimum_legs=SPECIALIST_CONTRACTS.get(profile, {}).get("min_legs", 2),
+                  maximum_legs=6, operating_contract_version=OPERATING_CONTRACT_VERSION)
+    result.setdefault("selection_mode", "PROFILE_ACCUMULATOR")
+    if "construction_contract" in result:
+        result["construction_contract"].update(min_price=minimum, max_price=maximum,
+                                                operating_contract_version=OPERATING_CONTRACT_VERSION)
+    return result
+
+
+def _primary_absence_proven(matching):
+    """A bounded search miss cannot authorize the cautious exception by itself."""
+    groups = defaultdict(list)
+    for item in matching:
+        if item["decimal_price"] <= TARGET_MAX_ODDS:
+            groups[(item["bookmaker"], item["region"], item["currency"])].append(item)
+    for cohort in groups.values():
+        prices = sorted(Decimal(str(item["decimal_price"])) for item in cohort)
+        if len(prices) < 2:
+            continue
+        if prices[0] * prices[1] > Decimal(str(TARGET_MAX_ODDS)):
+            continue
+        upper = Decimal(1)
+        for price in prices[-6:]:
+            upper *= price
+        if upper < Decimal(str(TARGET_MIN_ODDS)):
+            continue
+        if len(cohort) > 6:
+            return False
+        if any(TARGET_MIN_ODDS <= _product(legs) <= TARGET_MAX_ODDS
+               for length in range(2, len(cohort) + 1) for legs in combinations(cohort, length)
+               if len({leg["fixture_id"] for leg in legs}) == len(legs)):
+            return False
+    return True
+
+
 def _settings(settings: dict) -> dict:
+    current = current_contract(settings)
     result = {
         "strictness": 35,
-        "target_ticket_count": 2,
-        "max_ticket_count": 5,
+        "target_ticket_count": MIN_DAILY_TICKETS if current else 2,
+        "max_ticket_count": MAX_GENERATED_TICKETS if current else 5,
         "stake_eur": 1.0,
-        "target_min_odds": 10.0,
-        "target_max_odds": 50.0,
-        "enabled_profiles": list(DEFAULT_PROFILES),
+        "target_min_odds": TARGET_MIN_ODDS if current else 10.0,
+        "target_max_odds": TARGET_MAX_ODDS if current else 50.0,
+        "enabled_profiles": [p for p in PROFILES if p != "available"] if current else list(DEFAULT_PROFILES),
     }
     result.update({key: settings[key] for key in result if key in settings})
+    if current:
+        result["operating_contract_version"] = OPERATING_CONTRACT_VERSION
     _number(result["strictness"], "strictness", 0, 100)
     _number(result["stake_eur"], "stake_eur", 0.01, 100000)
     _number(result["target_min_odds"], "target_min_odds", 1.01, 1000)
     _number(result["target_max_odds"], "target_max_odds", result["target_min_odds"], 1000)
-    for key in ("target_ticket_count", "max_ticket_count"):
-        if type(result[key]) is not int or not 1 <= result[key] <= 5:
-            raise ValueError(f"{key} must be an integer from 1 to 5")
-    if result["target_ticket_count"] > result["max_ticket_count"]:
-        raise ValueError("target_ticket_count cannot exceed max_ticket_count")
+    if current and not TARGET_MIN_ODDS <= result["target_min_odds"] <= result["target_max_odds"] <= TARGET_MAX_ODDS:
+        raise ValueError("Current primary odds range must stay within 15–40")
+    generation_limits(result)
     enabled = result["enabled_profiles"]
     if not isinstance(enabled, list) or any(
         key not in PROFILES or key == "available" for key in enabled
@@ -414,6 +595,9 @@ def _ticket(
     *, quality_first: bool = False,
 ) -> dict:
     quality_first = quality_first and profile != "daily223"
+    current = current_contract(settings)
+    exceptional = current and quality_first and profile == "orszem" and _product(legs) < TARGET_MIN_ODDS
+    metadata = _effective_core_contract(profile, settings, fallback=exceptional)
     records = {item.get("candidate_id"): item for item in (review or {}).get("reviews", [])}
     successful = (review or {}).get("status") == "COMPLETE"
     reviewed = successful and all(leg["candidate_id"] in records for leg in legs)
@@ -436,10 +620,16 @@ def _ticket(
         risks.append(
             "Első félidős profil: historikus H1-szorzós nyereségessége még nincs igazolva."
         )
+    if current and profile != "daily223":
+        reasons.append(
+            f"{PROFILES[profile]['name']}: saját {PROFILES[profile]['market'][0]}/"
+            f"{PROFILES[profile]['market'][1] or 'home/away'}/{PROFILES[profile]['market'][2]} "
+            "piac, külön mérkőzések és a ténylegesen jegyzett árak; "
+            "a meglévő bizonyítottsági pontszám rangsorol, a hiányzó háttér UNKNOWN.")
     warnings = list(
         dict.fromkeys(message for leg in legs for message in leg.get("quality_warnings", []))
     )
-    fallback = profile != "daily223" and (
+    fallback = exceptional or profile != "daily223" and (
         profile == "available"
         or (not quality_first and (
             _product(legs) < Decimal(str(settings["target_min_odds"]))
@@ -453,6 +643,9 @@ def _ticket(
             if quality_first else
             "Tartalék összeállítás: a megadott célhoz nincs elegendő megfelelő választás. A ténylegesen elérhető mérkőzések és szorzók szerepelnek rajta."
         )
+    if exceptional:
+        warnings.append("CAUTIOUS_ODDS_EXCEPTION_AFTER_FULL_DAY_SEARCH")
+        reasons.append("Kivételes óvatos 5–15-ös sáv: a teljes napi bemeneten nem volt saját 15–40-es opció.")
     risks.extend(warnings)
     output_legs = []
     for leg in legs:
@@ -475,7 +668,7 @@ def _ticket(
     }
     if quality_first:
         identity["selection_mode"] = "EVIDENCE_FIRST_NO_MINIMUM_ODDS"
-        identity.update(contract_metadata(profile))
+        identity.update(metadata)
         identity["ticket_scoring"] = _specialist_scoring(legs)
     return {
         "ticket_id": "ticket-" + canonical_sha256(identity)[:24],
@@ -498,7 +691,7 @@ def _ticket(
             "minimum_legs": 1,
             "selection_diagnostics": {"ticket_scoring": _specialist_scoring(legs)}}
            if quality_first else {}),
-        **contract_metadata(profile),
+        **metadata,
         "requires_refresh": any(leg.get("requires_refresh", False) for leg in legs),
         "legs": output_legs,
         "support_score": round(sum(leg["support_score"] for leg in legs) / len(legs), 6),
@@ -527,6 +720,7 @@ def build_portfolio(
     whether the optional Astra review covered every selected leg.
     """
     settings = _settings(settings)
+    current = current_contract(settings)
     if allowed_profiles is not None:
         if any(p not in PROFILES or p == "available" for p in allowed_profiles):
             raise ValueError("Unknown managed profile")
@@ -542,11 +736,16 @@ def build_portfolio(
         for item in enriched_input.get("history_analysis", {}).get("candidates", [])
     }
     products = Counter(_product_key(item) for item in raw)
-    identifiers = Counter(item.get("candidate_id") for item in raw)
+    identifiers = Counter(item.get("candidate_id") if isinstance(item.get("candidate_id"), str) else None
+                          for item in raw) if current else Counter(item.get("candidate_id") for item in raw)
     prepared, daily_prepared, diagnostics = [], [], list(enriched_input.get("data_issues", []))
     loose = permissive(settings)
     minimum_quality = 0 if loose else 3 + settings["strictness"] * 0.12
     reviews = {item.get("candidate_id"): item for item in (astra_review or {}).get("reviews", [])}
+    universe_info = _core_universe(enriched_input, raw) if current else None
+    core_prepared, core_rejected = _core_pool(
+        raw, target, now, policy, settings, analyses, products, identifiers, universe_info[0], astra_review
+    ) if current else ([], {})
     for candidate in raw:
         identifier = candidate.get("candidate_id")
         try:
@@ -589,6 +788,8 @@ def build_portfolio(
             # Ranking retains the existing uncertainty/caution adjustments.
             if "daily223" in settings["enabled_profiles"]:
                 daily_prepared.append(item)
+            if current:
+                continue  # The six specialists use their independent legal-price pool below.
             if item["weighted_support_score"] < minimum_quality:
                 context = league_base_rate_context(
                     candidate, item.get("history_analysis"), item["weighted_support_score"], minimum_quality,
@@ -617,12 +818,15 @@ def build_portfolio(
             prepared.append(item)
         except (ValueError, TypeError, KeyError, OverflowError) as error:
             diagnostics.append({"candidate_id": identifier, "status": str(error)})
+    if current:
+        prepared = core_prepared
     prepared.sort(key=_quality)
     preferred = enriched_input.get("preferred_bookmakers", ["betano"])
     profiles, proposals, profile_alternatives = [], {}, {}
+    profile_inputs, profile_rejections, odds_exceptions = {}, {}, {}
     # DAILY_223 receives its own original eligible pool, before the unrelated
     # specialist score floor. Its hard identity/history/price guards remain.
-    daily_options = []
+    daily_options, daily_search_ids = [], set()
     groups = sorted({(item["bookmaker"], item["region"], item["currency"]) for item in prepared})
     daily_groups = sorted({(item["bookmaker"], item["region"], item["currency"]) for item in daily_prepared})
     daily_by_id = {item["candidate_id"]: item for item in daily_prepared}
@@ -636,6 +840,7 @@ def build_portfolio(
             if (item["bookmaker"], item["region"], item["currency"]) == group
         ]
         search, pruning = diversified_daily223_pool(scoped, policy.tolerance)
+        daily_search_ids.update(item["candidate_id"] for item in search)
         diagnostics.extend(pruning)
         chosen, band = _choose(search, Decimal(0)), "STRICT"
         if chosen is None and policy.tolerance:
@@ -679,6 +884,25 @@ def build_portfolio(
         if identifier == "daily223" or identifier in SEPARATE_PROFILE_IDS:
             continue
         matching = [item for item in prepared if _matches_profile(item, identifier)]
+        if current:
+            rejected = {**core_rejected, **{
+                item["candidate_id"]: "PROFILE_MARKET_MISMATCH" for item in prepared
+                if not _matches_profile(item, identifier)
+            }}
+            rejected.update({item["candidate_id"]: "LEG_PRICE_ABOVE_PROFILE_MAXIMUM" for item in matching
+                             if item["decimal_price"] > TARGET_MAX_ODDS})
+            matching = [item for item in matching if item["decimal_price"] <= TARGET_MAX_ODDS]
+            if identifier == "h1_over05":
+                if not loose:
+                    rejected.update({item["candidate_id"]: "FIRST_HALF_HISTORY_REQUIRED" for item in matching
+                                     if not _half_history_verified(item["history_analysis"])})
+                    matching = [item for item in matching if _half_history_verified(item["history_analysis"])]
+                else:
+                    matching = [deepcopy(item) for item in matching]
+                    for item in matching:
+                        if not _half_history_verified(item["history_analysis"]):
+                            item["quality_warnings"].append("Félidős történeti minta: UNKNOWN; nem teljes idejű helyettesítő adat.")
+            profile_inputs[identifier], profile_rejections[identifier] = matching, rejected
         options = []
         for group in groups:
             scoped = [
@@ -700,11 +924,32 @@ def build_portfolio(
                 continue
             contract = SPECIALIST_CONTRACTS.get(identifier)
             options.extend(_specialist_options(
-                scoped, min(settings["target_max_odds"], contract["max_price"]) if contract
+                scoped, TARGET_MAX_ODDS if current else min(settings["target_max_odds"], contract["max_price"]) if contract
                 else settings["target_max_odds"],
-                **({"minimum": contract["min_price"], "min_legs": contract["min_legs"],
+                **({"minimum": TARGET_MIN_ODDS, "min_legs": contract["min_legs"] if contract else 2,
+                    "max_legs": contract["max_legs"] if contract else 6} if current else
+                   {"minimum": contract["min_price"], "min_legs": contract["min_legs"],
                     "max_legs": contract["max_legs"]} if contract else {}),
             ))
+        if current:
+            full_day = universe_info[3]
+            exception = {"status": "PRIMARY_RANGE" if options else "NOT_AUTHORIZED",
+                         "primary_options_count": len(options), "full_day_coverage": full_day,
+                         "applied": False}
+            if cautious_fallback_allowed(identifier, settings, options,
+                                         all_daily_fixtures_considered=full_day):
+                proven = _primary_absence_proven(matching)
+                exception["primary_absence_proven"] = proven
+                if proven:
+                    options = [legs for group in groups for legs in _specialist_options(
+                        [item for item in matching if (item["bookmaker"], item["region"], item["currency"]) == group],
+                        TARGET_MIN_ODDS, minimum=EXCEPTIONAL_MIN_ODDS, min_legs=2,
+                    ) if _product(legs) < TARGET_MIN_ODDS]
+                    exception.update(status="APPLIED" if options else "NO_FALLBACK_OPTION",
+                                     applied=bool(options), reason="NO_OWN_15_40_OPTION_AFTER_FULL_DAY_SEARCH")
+                else:
+                    exception["reason"] = "PRIMARY_SEARCH_COMPLETENESS_NOT_PROVEN"
+            odds_exceptions[identifier] = exception
         option_key = lambda legs: (
             *_specialist_rank(legs)[:3],
             _bookmaker_rank(legs[0]["bookmaker"], preferred),
@@ -742,10 +987,11 @@ def build_portfolio(
                 "reason": ""
                 if options
                 else "Nincs a profil bizonyítottsági, adat- és kombinációs feltételeinek megfelelő szelvény.",
-                **contract_metadata(identifier),
+                **_effective_core_contract(identifier, settings,
+                                           fallback=odds_exceptions.get(identifier, {}).get("applied", False)),
             }
         )
-    if loose and not proposals and prepared and allowed_profiles is None:
+    if not current and loose and not proposals and prepared and allowed_profiles is None:
         options = [
             legs
             for group in groups
@@ -798,6 +1044,28 @@ def build_portfolio(
                     "reason": "A szigorú profilok helyett a ténylegesen elérhető választásokból készült tartalék.",
                 }
             )
+    def annotate(ticket):
+        identifier = ticket["profile_id"]
+        ranked = daily_prepared if identifier == "daily223" else profile_inputs[identifier]
+        rejected = ({item["candidate_id"]: item.get("status", item.get("code", "UNKNOWN_REJECTION")) for item in diagnostics
+                     if isinstance(item, Mapping) and isinstance(item.get("candidate_id"), str)
+                     and item["candidate_id"] not in {row["candidate_id"] for row in daily_prepared}}
+                    if identifier == "daily223" else profile_rejections[identifier])
+        trace = _core_trace(raw, daily_prepared if identifier == "daily223" else prepared,
+                            ranked, ticket.get("legs", []), rejected, universe_info, now,
+                            searched_ids=daily_search_ids if identifier == "daily223" else None)
+        if identifier == "daily223":
+            trace["search_method"] = "PROTECTED_DAILY223_ORIGINAL_ROLE_SOLVER"
+        else:
+            trace["odds_exception"] = deepcopy(odds_exceptions[identifier])
+        ticket.setdefault("selection_diagnostics", {}).update(trace)
+        return trace
+
+    if current:
+        for profile in profiles:
+            identifier = profile["profile_id"]
+            source_card = proposals.get(identifier, {"profile_id": identifier, "legs": []})
+            profile["selection_diagnostics"] = deepcopy(annotate(source_card))
     tickets = [proposals["daily223"]] if "daily223" in proposals else []
     specialists = sorted(
         (ticket for key, ticket in proposals.items() if key != "daily223"),
@@ -833,14 +1101,17 @@ def build_portfolio(
                     ticket["profile_id"], replacement, target.isoformat(), now.isoformat(),
                     settings, astra_review, quality_first=True,
                 )
-                proposals[ticket["profile_id"]] = ticket
+                if current:
+                    annotate(ticket)
+                else:
+                    proposals[ticket["profile_id"]] = ticket
         if exposure(ticket) in exposures:
             duplicate_profiles.add(ticket["profile_id"])
             diagnostics.append(
                 {"profile_id": ticket["profile_id"], "status": "DUPLICATE_TICKET_EXPOSURE"}
             )
             continue
-        if len(tickets) >= min(settings["target_ticket_count"], settings["max_ticket_count"]):
+        if len(tickets) >= generation_capacity(settings):
             continue
         tickets.append(ticket)
         exposures.add(exposure(ticket))
@@ -889,19 +1160,22 @@ def build_portfolio(
             "strategy_version": "arthur-portfolio-v3-independent-daily223",
             "daily223_eligibility": "INDEPENDENT_VALIDATED_HISTORY_POOL_BEFORE_SPECIALIST_SCORE_FLOOR",
             "specialist_selection": {
-                "mode": "EVIDENCE_FIRST_NO_MINIMUM_ODDS", "minimum_combined_price": None,
-                "maximum_combined_price": settings["target_max_odds"], "minimum_legs": 1,
+                "mode": "PROFILE_ACCUMULATOR" if current else "EVIDENCE_FIRST_NO_MINIMUM_ODDS",
+                "minimum_combined_price": TARGET_MIN_ODDS if current else None,
+                "maximum_combined_price": TARGET_MAX_ODDS if current else settings["target_max_odds"], "minimum_legs": 2 if current else 1,
                 "maximum_legs": 6, "legacy_target_min_odds_applied": False,
                 "ranking": "MEAN_NORMALIZED_EVIDENCE_TIMES_SQRT_DISTINCT_FIXTURE_COUNT",
                 "normalization_scale": 100.0,
                 "score_is_probability": False,
-                "profile_contracts": {key: contract_metadata(key) for key in settings["enabled_profiles"]
+                "profile_contracts": {key: _effective_core_contract(key, settings) for key in settings["enabled_profiles"]
                                       if key in SPECIALIST_CONTRACTS},
             },
-            "data_veto_enabled": not loose,
-            "fallback_enabled": loose,
+            "data_veto_enabled": not loose if not current else False,
+            "fallback_enabled": loose if not current else any(item["applied"] for item in odds_exceptions.values()),
+            **({"specialist_eligibility": "PROFILE_LOCAL;DAILY223_UNCHANGED",
+                "fallback_policy": "CAUTIOUS_PROVEN_FULL_DAY_ONLY"} if current else {}),
             "score_kind": "EVIDENCE_HEURISTIC_NOT_PROBABILITY",
-            "minimum_weighted_support": round(minimum_quality, 6),
+            "minimum_weighted_support": round(minimum_quality, 6) if not current else None,
             "uncertainty_penalty_formula": "missing_weight / 100 * strictness * 0.30",
             "astra_caution_penalty_formula": "strictness * 0.10 for reviewed caution",
             "search_method": "BOUNDED_DIVERSIFIED_BEAM_NOT_EXHAUSTIVE_OPTIMUM",

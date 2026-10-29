@@ -57,7 +57,7 @@ def test_models_receive_whole_calendar_and_do_not_add_wagers_or_ai_calls(tmp_pat
 
     reviewer = RecordedReviewer()
     bundle = run_portfolio(
-        cfg, {}, football, odds, cache, NOW.date(), reviewer,
+        cfg, {"operating_contract_version": 1}, football, odds, cache, NOW.date(), reviewer,
         clock=lambda: NOW, model_predictor=predictor,
     )
     report = bundle["artifacts"]["report"]
@@ -97,7 +97,7 @@ def test_distinct_numeric_recommendation_remains_immutable_in_ledger_and_settles
     roster = generation_plan(enabled, {"members": [{"profile_id": "daily223", "status": "SUSPENDED"}]})
     reviewer = RecordedReviewer()
     report = run_portfolio(
-        cfg, {"enabled_profiles": enabled}, football, odds, cache, NOW.date(), reviewer,
+        cfg, {"operating_contract_version": 1, "enabled_profiles": enabled}, football, odds, cache, NOW.date(), reviewer,
         clock=lambda: NOW, model_predictor=predictor_fixture, team_plan=roster,
     )["artifacts"]["report"]
     gauss = next(r for r in report["recommendations"] if r["profile_id"] == "gauss")
@@ -160,7 +160,8 @@ def test_disabled_models_are_not_invoked(tmp_path):
 
 def test_old_settings_gain_paper_profiles_without_reenabling_legacy_profiles(tmp_path):
     path = tmp_path / "settings.json"
-    original = json.dumps({"schema_version": 3, "enabled_profiles": ["daily223", "merlin"]})
+    original = json.dumps({"operating_contract_version": 1, "schema_version": 3,
+                           "enabled_profiles": ["daily223", "merlin"]})
     path.write_text(original, encoding="utf-8")
     settings = load_settings(path)
     assert settings["enabled_profiles"] == ["daily223", "merlin", "gauss", "kepler", "laplace", *TIPSTER_PROFILE_IDS]

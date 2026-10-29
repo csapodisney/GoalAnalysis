@@ -12,7 +12,10 @@ class TheStatsPrimaryClient(TheStatsApiClient):
         from goal_analysis.storage.provider_quota import observer_for
 
         self.root = Path(root)
-        kwargs.setdefault('quota_observer', observer_for(root, clock=kwargs.get('clock')))
+        # An explicit observer owns its tracking policy. None uses the ordinary
+        # factory too, so it cannot silently bypass installed tracking.
+        if kwargs.get('quota_observer') is None:
+            kwargs['quota_observer'] = observer_for(root, clock=kwargs.get('clock'))
         super().__init__(**kwargs)
 
     def request(self, endpoint, params=None):

@@ -35,6 +35,7 @@ OLD_PROFILES = [*LEGACY_PROFILE_IDS, *MODEL_PROFILE_IDS]
 ])
 def test_effective_upgrade_adds_only_new_twenty_and_never_rewrites_file(tmp_path, saved, expected_old):
     path = tmp_path / "settings.json"
+    saved = {"operating_contract_version": 1, **saved}
     path.write_text(json.dumps(saved), encoding="utf-8")
     before = path.read_bytes()
     result = load_settings(path)
@@ -47,7 +48,8 @@ def test_effective_upgrade_adds_only_new_twenty_and_never_rewrites_file(tmp_path
 
 def test_saved_v4_disabled_new_profiles_stay_disabled(tmp_path):
     path = tmp_path / "settings.json"
-    saved = {"profile_registry_version": 4, "enabled_profiles": ["daily223", TIPSTER_PROFILE_IDS[4]]}
+    saved = {"operating_contract_version": 1, "profile_registry_version": 4,
+             "enabled_profiles": ["daily223", TIPSTER_PROFILE_IDS[4]]}
     path.write_text(json.dumps(saved), encoding="utf-8")
     assert load_settings(path)["enabled_profiles"] == saved["enabled_profiles"]
     assert load_settings(path)["enabled_profiles"] == saved["enabled_profiles"]

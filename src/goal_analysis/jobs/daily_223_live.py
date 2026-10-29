@@ -133,6 +133,23 @@ def _build_for_one_bookmaker(candidate_input: dict, history: dict) -> tuple[dict
     return report, selection
 
 
+def _odds_leagues(config, fixtures, *, stats_primary, operating_contract_version):
+    """Route observed native competitions only to the native odds adapter."""
+    leagues = list(config['leagues'])
+    if not stats_primary or operating_contract_version != 2:
+        return leagues
+    present = {league['odds_sport_key'] for league in leagues}
+    for fixture in fixtures:
+        route = fixture.get('native_competition_route')
+        if (fixture.get('source_provider') == 'the_stats_api' and isinstance(route, dict)
+                and route.get('provider_league_id') == fixture.get('provider_league_id')
+                and fixture.get('sport_key') == route.get('routing_key')
+                and fixture['sport_key'] not in present):
+            leagues.append({'odds_sport_key': fixture['sport_key']})
+            present.add(fixture['sport_key'])
+    return leagues
+
+
 def run_daily223_live(
     config: dict,
     football_client,
@@ -145,6 +162,7 @@ def run_daily223_live(
     allow_incomplete: bool = False,
     selected_competition_ids: list[int] | None = None,
     calendar_scope=None,
+    operating_contract_version: int = 1,
 ) -> dict:
     started = clock()
     aware_time(started.isoformat())
@@ -178,7 +196,8 @@ def run_daily223_live(
 
             stage = 'fixtures_and_history'
             artifacts.update(collect_live(config, budget, target_date, clock,
-                selected_competition_ids=selected_competition_ids, construct_legacy=construct_legacy))
+                selected_competition_ids=selected_competition_ids, construct_legacy=construct_legacy,
+                operating_contract_version=operating_contract_version))
             fixtures = artifacts['fixtures']['records']
             fixture_time = aware_time(artifacts['fixtures']['observed_at'])
             fixture_issues = []
@@ -287,7 +306,9 @@ def run_daily223_live(
             odds_feed.bind_fixtures(fixtures)
         events, base_issues = [], []
         artifacts["odds_bulk"] = {}
-        for league in config["leagues"]:
+        for league in _odds_leagues(config, fixtures,
+                                   stats_primary=stats_primary and getattr(odds_feed, 'provider', None) == 'the_stats_api',
+                                   operating_contract_version=operating_contract_version):
             if league["odds_sport_key"].startswith("soccer_arthur_") and getattr(odds_feed, 'provider', None) != 'the_stats_api':
                 # The Odds API has no verified key for this newly selected competition.
                 # API-Football fixture-level recovery still runs below.
@@ -324,6 +345,14 @@ def run_daily223_live(
                 continue
             artifacts["odds_bulk"][league["odds_sport_key"]] = payload
             events.extend(payload)
+            native_usage = getattr(getattr(odds_feed, 'resources', None), 'usage', {})
+            if stats_primary and operating_contract_version == 2 and native_usage.get('stopped_reason'):
+                returned = {event.get('id') for event in payload}
+                base_issues.extend({'fixture_id': item['fixture_id'],
+                    'sport_key': item['sport_key'], 'status': 'BASE_MARKETS_BUDGET_UNAVAILABLE',
+                    'reason': native_usage['stopped_reason']} for item in fixtures
+                    if item['sport_key'] == league['odds_sport_key']
+                    and item.get('provider_fixture_id') not in returned)
             if not payload:
                 base_issues.append(
                     {

@@ -12,6 +12,7 @@ import sys
 import threading
 import time
 import webbrowser
+from copy import deepcopy
 from datetime import UTC, date, datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from importlib import metadata
@@ -24,6 +25,7 @@ from goal_analysis.config.portfolio import load_settings, save_settings, validat
 from goal_analysis.jobs.league_scope import MINIMUM_PENDING_FIXTURES
 from goal_analysis.jobs.nightly import automation_snapshot
 from goal_analysis.jobs.portfolio import RunLock, safe_error, validate_target_day
+from goal_analysis.operating_policy import current_contract, effective_persona
 from goal_analysis.quote_metadata import quote_metadata
 from goal_analysis.storage.portfolio_ledger import PortfolioLedger
 from goal_analysis.strategy_provenance import APPLICATION_VERSION
@@ -176,20 +178,34 @@ def _german_market(leg: dict) -> str:
     return prefix + _one_line(leg.get("selection_label") or choice or market, "Auswahl")
 
 
+def _generated_cards(report):
+    if not isinstance(report, dict) or "generated_tickets" not in report:
+        return None
+    if not isinstance(report["generated_tickets"], list):
+        raise TypeError("generated_tickets must be a list")
+    return deepcopy(report["generated_tickets"])
+
+
 def german_ticket_text(snapshot: dict) -> str:
     """Render the Results-page ticket set as terse German plain text."""
-    recommendations = snapshot.get("recommendations") or (snapshot.get("latest") or {}).get(
-        "recommendations", []
-    )
-    linked = {
-        item.get("portfolio_ticket_id")
-        for item in recommendations
-        if item.get("portfolio_ticket_id")
-    }
-    entries = [*recommendations]
-    entries.extend(
-        item for item in snapshot.get("tickets", []) if item.get("ticket_id") not in linked
-    )
+    generated = _generated_cards(snapshot.get("latest"))
+    if generated is None:
+        generated = _generated_cards(snapshot)
+    if generated is not None:
+        entries = generated
+    else:
+        recommendations = snapshot.get("recommendations") or (snapshot.get("latest") or {}).get(
+            "recommendations", []
+        )
+        linked = {
+            item.get("portfolio_ticket_id")
+            for item in recommendations
+            if item.get("portfolio_ticket_id")
+        }
+        entries = [*recommendations]
+        entries.extend(
+            item for item in snapshot.get("tickets", []) if item.get("ticket_id") not in linked
+        )
     blocks = []
     seen = set()
     for ticket in entries:
@@ -207,6 +223,9 @@ def german_ticket_text(snapshot: dict) -> str:
             ticket.get("profile_id"), _one_line(ticket.get("profile_name"), "Tippschein")
         )
         rows = [profile]
+        if generated is not None:
+            scope = "LIVE" if ticket.get("publication_scope") == "LIVE" else "PAPER"
+            rows.append(f"{ticket.get('status', 'UNKNOWN')} · {scope}")
         for leg in legs:
             home = _one_line(leg.get("home_team"), "Heimteam")
             away = _one_line(leg.get("away_team"), "Auswärtsteam")
@@ -255,6 +274,24 @@ class ArthurState:
             settings, config_error = validate_settings({}), safe_error(error)
         runs = self.ledger.list_runs(date=day, limit=50)
         tickets = self.ledger.list_tickets(date=day, monetary_contract="CURRENT_HASH_V2")
+        generated = _generated_cards(runs[0] if runs else None)
+        generated_projection = {}
+        if generated is not None:
+            identifiers = {ticket["ticket_id"] for ticket in generated}
+            state_fields = (
+                "ticket_id", "active", "played", "wager", "financial", "settlement", "outcome",
+                "snapshot_sha256", "bookmaker_return_contract",
+            )
+            generated_projection = {
+                "generated_tickets": generated,
+                "generated_ticket_states": [
+                    {key: ticket[key] for key in state_fields if key in ticket}
+                    for ticket in tickets if ticket["ticket_id"] in identifiers
+                ],
+            }
+            if "generation_capacity" in runs[0]:
+                generated_projection["generation_capacity"] = deepcopy(runs[0]["generation_capacity"])
+            tickets = [ticket for ticket in tickets if ticket.get("publication_scope") == "LIVE"]
         now = datetime.now(UTC)
         for ticket in tickets:
             ticket["from_previous_run"] = bool(runs and ticket.get("run_id") != runs[0]["run_id"])
@@ -312,6 +349,7 @@ class ArthurState:
             "latest": runs[0] if runs else None,
             "history": runs,
             "tickets": tickets,
+            **generated_projection,
             "recommendations": recommendations,
             "recommendation_archive": (
                 self.ledger.list_recommendations(date=day, archive=True) if full_export else []
@@ -367,7 +405,9 @@ class ArthurState:
             # Read-only metadata must never hide already saved tickets.
             contracts = {"status": "UNAVAILABLE", "mode": "SHADOW_DECLARATION", "contracts": [],
                          "reason": "STRATEGY_CONTRACT_PROJECTION_FAILED", "decision_effect": False}
-        current = {r["profile_id"]: r for r in recommendations if r["profile_id"] in TIPSTER_PROFILE_IDS}
+        generated = _generated_cards(runs[0] if runs else None)
+        sources = recommendations if generated is None else generated
+        current = {r["profile_id"]: r for r in sources if r["profile_id"] in TIPSTER_PROFILE_IDS}
         # Abstentions have no legs and are stored in the immutable report, not as wagers.
         # The ledger withdraws ordinary unstarted/unwagered explicit abstentions;
         # actual-wager or already-started historical evidence may remain visible.
@@ -375,7 +415,8 @@ class ArthurState:
             if item["profile_id"] in TIPSTER_PROFILE_IDS and not item.get("legs"):
                 current.setdefault(item["profile_id"], item)
         return {
-            "catalogue": get_catalogue(), "recommendations": list(current.values()),
+            "catalogue": [effective_persona(persona, settings) for persona in get_catalogue()],
+            "recommendations": list(current.values()),
             "strategy_contracts": contracts,
             "enabled_profiles": [p for p in settings["enabled_profiles"] if p in TIPSTER_PROFILE_IDS],
             "overlap": recommendation_overlap(list(current.values())),
@@ -537,7 +578,14 @@ class ArthurState:
                 if name in payload
             }
             settings = validate_settings({**settings, **overrides})
-            selected = payload.get("competition_ids")
+            manual_research = payload.get("manual_research", False)
+            if type(manual_research) is not bool:
+                raise ValueError("manual_research: logikai érték szükséges.")
+            selected = payload.get("competition_ids") if (
+                manual_research or not current_contract(settings)
+            ) else None
+            if manual_research and selected is None:
+                raise ValueError("A kézi kutatáshoz válassz 1–40 különböző sorozatot.")
             if selected is not None and (
                 not isinstance(selected, list)
                 or not 1 <= len(selected) <= 40
@@ -778,6 +826,9 @@ def make_handler(state: ArthurState, token: str):
                         "date": snapshot["selected_date"],
                         "reports": snapshot["history"],
                         "tickets": snapshot["tickets"],
+                        **{key: snapshot[key] for key in (
+                            "generated_tickets", "generated_ticket_states", "generation_capacity"
+                        ) if key in snapshot},
                         "recommendations": snapshot["recommendations"],
                         "recommendation_archive": snapshot["recommendation_archive"],
                         "freezes": snapshot["freezes"],

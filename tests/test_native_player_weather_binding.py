@@ -15,6 +15,7 @@ import test_native_weather_shadow as weather_fixtures
 from test_player_specialist_shadow import NOW, environment
 
 from goal_analysis.agents import canonical_sha256
+from goal_analysis.config.portfolio import validate_settings
 from goal_analysis.jobs import native_options_shadow as pipeline
 from goal_analysis.jobs import weather_option_shadow
 
@@ -81,7 +82,8 @@ def test_each_nonempty_player_leg_receives_exact_weather_context_without_effect(
 def test_abstained_player_keeps_empty_binding_without_filler(tmp_path, monkeypatch):
     data, models, _, fit = setup(tmp_path, monkeypatch)
     models.pop('gauss')
-    result = pipeline.replay_native_options(tmp_path, {}, data, {}, as_of=NOW)['options_shadow']
+    result = pipeline.replay_native_options(tmp_path, {}, data,
+        validate_settings({'operating_contract_version': 1}), as_of=NOW)['options_shadow']
     assert fit.call_count == 1
     assert result['player_review']['specialist']['candidate_legs'] == []
     assert result['weather_review']['specialist_reviews']['player'] == []

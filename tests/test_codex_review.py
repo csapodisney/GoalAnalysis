@@ -193,6 +193,7 @@ def test_existing_settings_migrate_without_openai_key_and_api_backend_is_rejecte
         (Path(__file__).parents[1] / "config/arthur-settings.example.json").read_text()
     )
     old["openai"].pop("backend")
+    old["operating_contract_version"] = 1
     assert validate_settings(old)["openai"]["backend"] == "codex_chatgpt"
     blocked = copy.deepcopy(old)
     blocked["openai"]["backend"] = "openai_api"

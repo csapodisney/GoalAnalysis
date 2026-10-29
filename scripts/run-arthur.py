@@ -128,7 +128,7 @@ def main(argv=None) -> int:
                 name for name in ("THE_STATS_API_KEY",) if not os.environ.get(name, "").strip()
             ]
             print(
-                f"Config valid: {len(config['leagues'])} competitions; backend=codex_chatgpt; model={settings['openai']['model']}; tickets={settings['target_ticket_count']}; maximum=5; stake=EUR1"
+                f"Config valid: {len(config['leagues'])} competitions; backend=codex_chatgpt; model={settings['openai']['model']}; tickets={settings['target_ticket_count']}; maximum_generated={settings['max_ticket_count']}; maximum_wagers=5; stake=EUR1"
             )
             print("Missing environment variables: " + (", ".join(missing) or "none"))
             print(

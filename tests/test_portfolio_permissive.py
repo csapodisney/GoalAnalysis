@@ -35,7 +35,7 @@ def test_missing_history_does_not_veto_an_available_single(strictness):
 
 def test_low_odds_research_single_is_not_padded_to_the_legacy_target():
     rows = [candidate(str(i), 1.4, evidence=[], market_key="btts", selection_key="yes") for i in range(3)]
-    report = build_portfolio(source(rows), {"strictness": 0})
+    report = build_portfolio(source(rows), {"operating_contract_version": 1, "strictness": 0})
     ticket = report["tickets"][0]
     assert ticket["profile_id"] == "ritmusor" and not ticket["fallback"]
     assert len(ticket["legs"]) == 1 and ticket["combined_price"] == 1.4
@@ -45,7 +45,7 @@ def test_low_odds_research_single_is_not_padded_to_the_legacy_target():
 
 def test_available_market_outside_specialist_profiles_gets_explicit_fallback():
     row = candidate("other-line", 1.8, market_key="totals_3_5", evidence=[])
-    ticket = build_portfolio(source([row]), {"strictness": 0})["tickets"][0]
+    ticket = build_portfolio(source([row]), {"operating_contract_version": 1, "strictness": 0})["tickets"][0]
     assert ticket["profile_id"] == "available" and ticket["fallback"]
     assert ticket["legs"][0]["market_key"] == "totals_3_5"
 
@@ -62,7 +62,7 @@ def test_available_market_outside_specialist_profiles_gets_explicit_fallback():
 )
 def test_veto_off_still_rejects_invalid_prices_or_unavailable_events(changes):
     row = candidate("bad", 2, evidence=[], **changes)
-    assert not build_portfolio(source([row]), {"strictness": 0})["tickets"]
+    assert not build_portfolio(source([row]), {"operating_contract_version": 1, "strictness": 0})["tickets"]
 
 
 def test_half_time_without_samples_stays_an_explicit_experimental_draft():
@@ -87,7 +87,7 @@ def test_full_flow_keeps_quotes_and_tickets_when_history_fails_today_or_saturday
         event["bookmakers"][0]["last_update"] = (NOW - timedelta(hours=6)).isoformat()
     reviewer = RecordedReviewer()
     bundle = run_portfolio(
-        cfg, {"strictness": 0}, football, odds, cache, target, reviewer, clock=lambda: NOW
+        cfg, {"operating_contract_version": 1, "strictness": 0}, football, odds, cache, target, reviewer, clock=lambda: NOW
     )
     report = bundle["artifacts"]["report"]
     # Preserve the protected DAILY draft verbatim, but do not select another
@@ -114,7 +114,7 @@ def test_history_budget_exhaustion_preserves_the_fixture_query(tmp_path):
     cfg, football, odds, cache, calls, _state, _db = environment(tmp_path)
     cfg["max_football_calls"] = 1
     report = run_portfolio(
-        cfg, {"strictness": 0}, football, odds, cache, NOW.date(), clock=lambda: NOW
+        cfg, {"operating_contract_version": 1, "strictness": 0}, football, odds, cache, NOW.date(), clock=lambda: NOW
     )["artifacts"]["report"]
     assert report["tickets"] and report["usage"]["football_calls"] == 1
     assert len(calls["football"]) == 1 and "date=" in calls["football"][0]
@@ -145,7 +145,7 @@ def test_no_quote_feed_produces_previews_without_fabricating_prices(tmp_path):
     state["events"] = []
     reviewer = RecordedReviewer()
     report = run_portfolio(
-        cfg, {"strictness": 0}, football, odds, cache, NOW.date(), reviewer, clock=lambda: NOW
+        cfg, {"operating_contract_version": 1, "strictness": 0}, football, odds, cache, NOW.date(), reviewer, clock=lambda: NOW
     )["artifacts"]["report"]
     assert not report["tickets"] and len(reviewer.calls) == 1
     assert not report["preview_tickets"]

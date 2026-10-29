@@ -23,6 +23,8 @@ from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
 
+from goal_analysis.operating_policy import MAX_GENERATED_TICKETS, current_contract
+
 from .monetary_projection import project_recorded_cohort, project_recorded_wager
 from .recommendation_ledger import RecommendationLedger
 
@@ -70,6 +72,25 @@ def _day(value: str | Date | None) -> str | None:
     return Date.fromisoformat(str(value)).isoformat() if value is not None else None
 
 
+def _generated_contract(report: Mapping[str, Any]) -> bool:
+    settings = report.get("settings", {})
+    if not isinstance(settings, Mapping):
+        raise TypeError("Run settings must be an object")
+    return current_contract(settings)
+
+
+def _publication_sources(report: Mapping[str, Any]) -> list:
+    """Use the same immutable collection for ticket, recommendation and freeze views."""
+    if _generated_contract(report):
+        sources = report.get("generated_tickets")
+        if not isinstance(sources, list):
+            raise ValueError("Current runs require a generated_tickets list")
+        return sources
+    sources = report.get("recommendations")
+    return (report.get("tickets", []) + report.get("preview_tickets", [])
+            if sources is None else sources)
+
+
 def _bookmaker_return_provenance(db, ticket_id, settlement_hash):
     legacy = {"payout_basis": "LEGACY_REPORTED_RETURN_BASIS_UNSPECIFIED", "fee_tax_inclusion": "UNKNOWN", "provenance_status": "LEGACY_UNSPECIFIED"}
     exists = db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='portfolio_bookmaker_return_provenance'").fetchone()
@@ -107,11 +128,15 @@ class PortfolioLedger(RecommendationLedger):
         *,
         now: Callable[[], datetime] | None = None,
         max_daily_tickets: int = 5,
+        max_generated_tickets: int = MAX_GENERATED_TICKETS,
         refresh_call_limit: int = 20,
         correction_window_hours: int = 48,
     ) -> None:
         if type(max_daily_tickets) is not int or not 1 <= max_daily_tickets <= 5:
             raise ValueError("Daily ticket cap must be between 1 and 5")
+        if (type(max_generated_tickets) is not int
+                or not 1 <= max_generated_tickets <= MAX_GENERATED_TICKETS):
+            raise ValueError("Generated ticket cap must be between 1 and 30")
         if type(refresh_call_limit) is not int or not 1 <= refresh_call_limit <= 100:
             raise ValueError("Result refresh call limit must be between 1 and 100")
         if type(correction_window_hours) is not int or not 48 <= correction_window_hours <= 720:
@@ -120,6 +145,7 @@ class PortfolioLedger(RecommendationLedger):
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.now = now or (lambda: datetime.now(UTC))
         self.max_daily_tickets = max_daily_tickets
+        self.max_generated_tickets = max_generated_tickets
         self.refresh_call_limit = refresh_call_limit
         self.correction_window_hours = correction_window_hours
         with self._connection() as db:
@@ -205,6 +231,16 @@ class PortfolioLedger(RecommendationLedger):
         finally:
             db.close()
 
+    def _save_recommendations(self, db, report, saved):
+        if _generated_contract(report):
+            # Also used when importing older saved runs into a missing index.
+            # Withdrawals remain explicit; unpriced previews are not generated cards.
+            abstentions = [item for item in report.get("recommendations", [])
+                           if isinstance(item, Mapping) and item.get("status") == "ABSTAINED"
+                           and item.get("legs") == []]
+            report = {**report, "recommendations": [*_publication_sources(report), *abstentions]}
+        return super()._save_recommendations(db, report, saved)
+
     def save_run(self, report: dict[str, Any], *, _transaction=None) -> dict[str, Any]:
         """Freeze a run; preserve played tickets and replace unplayed suggestions.
 
@@ -217,9 +253,31 @@ class PortfolioLedger(RecommendationLedger):
         day = _day(report["date"])
         observed = _stamp(report["observed_at"])
         saved = _stamp(self.now()).isoformat()
-        tickets = report.get("tickets", [])
+        generated = _generated_contract(report)
+        publication_cutoff = _stamp(report.get("finished_at", report["observed_at"])) if generated else observed
+        if generated and publication_cutoff < observed:
+            raise ValueError("Final publication cannot precede the run observation")
+        tickets = _publication_sources(report) if generated else report.get("tickets", [])
         if not isinstance(tickets, list):
             raise ValueError("tickets must be a list")  # noqa: TRY004 - API validation contract.
+        if generated:
+            if len(tickets) > self.max_generated_tickets:
+                raise ValueError("Generated ticket capacity exceeded")
+            if any(not isinstance(ticket, Mapping) for ticket in tickets):
+                raise ValueError("Generated tickets must be objects")
+            profiles = [ticket.get("profile_id") for ticket in tickets]
+            if (any(not isinstance(profile, str) or not profile for profile in profiles)
+                    or len({profile.casefold() for profile in profiles}) != len(profiles)):
+                raise ValueError("A generated run can contain only one ticket per profile")
+            compatibility = report.get("tickets", [])
+            if not isinstance(compatibility, list):
+                raise ValueError("tickets must be a list")
+            by_id = {ticket.get("ticket_id"): ticket for ticket in tickets}
+            for ticket in compatibility:
+                if (not isinstance(ticket, Mapping)
+                        or ticket.get("publication_scope") != "LIVE"
+                        or by_id.get(ticket.get("ticket_id")) != ticket):
+                    raise ValueError("Legacy tickets must be an exact LIVE generated-ticket view")
         if len({str(t["ticket_id"]) for t in tickets}) != len(tickets):
             raise ValueError("Duplicate ticket_id in run")
         if _transaction is not None and not _transaction.in_transaction:
@@ -243,7 +301,7 @@ class PortfolioLedger(RecommendationLedger):
                 (run_id, day, observed.isoformat(), saved, snapshot, _hash(report)),
             )
             for ticket in tickets:
-                self._validate_ticket(ticket, day, observed)
+                self._validate_ticket(ticket, day, publication_cutoff, generated=generated)
                 frozen = _json(ticket)
                 existing = db.execute(
                     "SELECT snapshot_json FROM portfolio_tickets WHERE ticket_id=?",
@@ -287,7 +345,8 @@ class PortfolioLedger(RecommendationLedger):
                     (day,),
                 ).fetchall()
                 occupied = {row[0] for row in locked}
-                slots = max(0, self.max_daily_tickets - len(locked))
+                capacity = self.max_generated_tickets if generated else self.max_daily_tickets
+                slots = max(0, capacity - len(locked))
                 priority = sorted(
                     enumerate(tickets),
                     key=lambda x: (x[1]["profile_id"].upper() != "DAILY_223", x[0]),
@@ -311,7 +370,20 @@ class PortfolioLedger(RecommendationLedger):
         )
 
     @staticmethod
-    def _validate_ticket(ticket: Mapping[str, Any], day: str, observed: datetime) -> None:
+    def _validate_ticket(
+        ticket: Mapping[str, Any], day: str, observed: datetime, *, generated: bool = False
+    ) -> None:
+        if generated:
+            if ticket.get("status") not in {"DRAFT", "READY"}:
+                raise ValueError("Generated tickets require an honest DRAFT or READY status")
+            if ticket.get("publication_scope") not in {"LIVE", "PAPER", "PAPER_AUDITION", "RESEARCH"}:
+                raise ValueError("Generated tickets require an explicit publication scope")
+            if type(ticket.get("playable")) is not bool:
+                raise ValueError("Generated tickets require explicit playable eligibility")
+            if ticket["playable"] and (
+                ticket["status"] != "READY" or ticket["publication_scope"] != "LIVE"
+            ):
+                raise ValueError("Only a READY LIVE ticket can be playable")
         if not isinstance(ticket.get("ticket_id"), str) or not ticket["ticket_id"]:
             raise ValueError("ticket_id is required")
         if not isinstance(ticket.get("profile_id"), str) or not ticket["profile_id"]:
@@ -323,9 +395,16 @@ class PortfolioLedger(RecommendationLedger):
         if len({leg["fixture_id"] for leg in ticket["legs"]}) != len(ticket["legs"]):
             raise ValueError("Each ticket leg must refer to a distinct fixture")
         _amount(ticket["combined_price"], "combined_price", minimum=Decimal(1))
-        _amount(ticket.get("stake_eur", 1), "stake_eur")
+        proposed_stake = ticket.get("stake_eur", 1)
+        if not generated or proposed_stake is not None:
+            amount = _amount(proposed_stake, "stake_eur")
+            if generated and amount != Decimal(1):
+                raise ValueError("Generated tickets retain the fixed 1 EUR proposed stake")
+        elif ticket["playable"]:
+            raise ValueError("A playable ticket requires its fixed proposed stake")
         if _stamp(ticket.get("created_at", observed.isoformat())) > observed:
-            raise ValueError("Ticket creation cannot be later than the run observation")
+            raise ValueError("Ticket creation cannot be later than final publication" if generated
+                             else "Ticket creation cannot be later than the run observation")
         for leg in ticket["legs"]:
             kickoff = _stamp(leg["kickoff"])
             if kickoff <= observed:
@@ -523,9 +602,7 @@ class PortfolioLedger(RecommendationLedger):
                 raise ValueError("Nincs rögzíthető szelvény vagy profilajánlat ebben a futásban.")
             # Bind the materialized index to the complete immutable publication;
             # a missing row or altered leg must never silently shrink a correction.
-            sources = report.get("recommendations")
-            if sources is None:
-                sources = report.get("tickets", []) + report.get("preview_tickets", [])
+            sources = _publication_sources(report)
             expected = []
             try:
                 for source in sources:
@@ -798,6 +875,19 @@ class PortfolioLedger(RecommendationLedger):
                         "An immutable wager is already recorded with different amounts"
                     )
                 return ticket
+            stored_report = db.execute(
+                "SELECT snapshot_json FROM portfolio_runs WHERE run_id=?", (row["run_id"],)
+            ).fetchone()
+            generated = _generated_contract(json.loads(stored_report[0]))
+            scope = ticket.get("publication_scope")
+            if ((scope is not None and scope != "LIVE")
+                    or ("playable" in ticket and ticket["playable"] is not True)):
+                raise ValueError("Stored PAPER/research or nonplayable tickets cannot become wagers")
+            if generated and (
+                scope != "LIVE" or ticket.get("status") != "READY"
+                or ticket.get("playable") is not True
+            ):
+                raise ValueError("A generated wager requires stored READY LIVE playable eligibility")
             if not ticket["active"]:
                 raise ValueError("This ticket is superseded or outside the daily cap")
             if ticket.get("status", "READY") != "READY" and actual_combined_price is None:
@@ -1337,6 +1427,13 @@ def _financial(ticket: Mapping[str, Any], *, monetary_contract="LEGACY_RECORDED_
         return project_recorded_wager(ticket, contract=monetary_contract,
             allow_estimated_price_arithmetic=monetary_contract == "LEGACY_RECORDED_V1")
     wager = ticket.get("wager")
+    if ticket.get("stake_eur", 1) is None:
+        return {
+            "stake_eur": 0.0, "payout_eur": 0.0, "net_eur": 0.0,
+            "open_stake_eur": 0.0, "cash_flow_eur": 0.0,
+            "settled": ticket.get("outcome", "PENDING") in TERMINAL,
+            "basis": "RESEARCH_NO_STAKE",
+        }
     stake = Decimal(str(wager["stake_eur"] if wager else ticket.get("stake_eur", 1)))
     settlement = ticket.get("settlement")
     outcome = ticket.get("outcome", "PENDING")

@@ -24,10 +24,16 @@ from goal_analysis.engine.model_recommendations import (
     _quote_matches,
     _time,
 )
+from goal_analysis.engine.publication_window import allows_new_leg
 from goal_analysis.engine.ticket_options import bounded_ticket_groups
 from goal_analysis.engine.ticket_scoring import normalize_score
 from goal_analysis.engine.veto_overrides import league_base_rate_context, verified_veto_override
 from goal_analysis.normalization.live_identity import fixture_identity
+from goal_analysis.operating_policy import (
+    cautious_fallback_allowed,
+    current_contract,
+    effective_persona,
+)
 from goal_analysis.quote_metadata import quote_metadata
 from goal_analysis.team.metrics import _quote_valid
 
@@ -274,13 +280,16 @@ def _contrarian_analysis(row, persona, now, *, require_review=True):
     }
 
 
-def _ranked(base, persona, now, *, require_contrarian_review=True, propose_soft_veto=False):
+def _ranked(base, persona, now, *, require_contrarian_review=True, propose_soft_veto=False,
+            rejections=None):
     policy = persona["selection_policy"]
     output = []
     for row in base:
         price, key = row["quote"]["decimal_price"], row["key"]
         allowed = policy.get("allowed_market_keys")
         if allowed is not None and key not in allowed:
+            if rejections is not None:
+                rejections[row['quote']['candidate_id']] = 'PERSONA_MARKET_RULE'
             continue
         override = verified_veto_override(row["quote"], now=now)
         overridden = set((override or {}).get("gates", []))
@@ -288,9 +297,13 @@ def _ranked(base, persona, now, *, require_contrarian_review=True, propose_soft_
         proposed = set(context.get("gates", [])) if isinstance(context, dict) else set()
         if (price >= persona["target_odds_band"]["max"] and "HIGH_ODDS" not in overridden
                 and not (propose_soft_veto and "HIGH_ODDS" in proposed)):
+            if rejections is not None:
+                rejections[row['quote']['candidate_id']] = 'PERSONA_PRICE_LIMIT'
             continue
         if ("LEAGUE_BASE_RATE" in proposed and "LEAGUE_BASE_RATE" not in overridden
                 and not propose_soft_veto):
+            if rejections is not None:
+                rejections[row['quote']['candidate_id']] = 'UNVERIFIED_LEAGUE_RATE_OVERRIDE'
             continue
         components = {source: result["values"][key] for source, result in row["models"].items()
                       if key in result["values"] and persona["model_weights"][source] > 0}
@@ -301,19 +314,27 @@ def _ranked(base, persona, now, *, require_contrarian_review=True, propose_soft_
         edge = probability * price - 1 if probability is not None else None
         fair = row["market_context"].get("fair_probability")
         market_disagreement = probability - fair if probability is not None and fair is not None else None
-        if (len(components) < policy["min_models"]
-                or any(source not in components for source in policy.get("required_models", []))
-                or (probability is not None and probability < policy["min_probability"] - 1e-12)
-                or (spread is not None and spread > policy["max_model_spread"])
-                or (policy["min_edge"] is not None and (edge is None or edge < policy["min_edge"] - 1e-12))
-                or (policy["min_market_disagreement"] is not None and (
-                    market_disagreement is None
-                    or market_disagreement < policy["min_market_disagreement"] - 1e-12))
-                or (probability is None and row["history"] + row["venue"] <= 0)):
+        failed = (
+            'REQUIRED_MODEL_UNKNOWN' if len(components) < policy['min_models']
+            or any(source not in components for source in policy.get('required_models', []))
+            else 'PERSONA_MINIMUM_PROBABILITY' if probability is not None
+            and probability < policy['min_probability'] - 1e-12
+            else 'PERSONA_MODEL_DISAGREEMENT' if spread is not None and spread > policy['max_model_spread']
+            else 'PERSONA_MINIMUM_VALUE' if policy['min_edge'] is not None
+            and (edge is None or edge < policy['min_edge'] - 1e-12)
+            else 'PERSONA_MARKET_DISAGREEMENT' if policy['min_market_disagreement'] is not None
+            and (market_disagreement is None or market_disagreement < policy['min_market_disagreement'] - 1e-12)
+            else 'NO_HISTORY_OR_MODEL_EVIDENCE' if probability is None and row['history'] + row['venue'] <= 0
+            else None)
+        if failed:
+            if rejections is not None:
+                rejections[row['quote']['candidate_id']] = failed
             continue
         case = _contrarian_analysis({**row, "probability": probability, "components": components},
                                     persona, now, require_review=require_contrarian_review)
         if case is None:
+            if rejections is not None:
+                rejections[row['quote']['candidate_id']] = 'REQUIRED_PRICE_MOVEMENT_OR_VALUE_CASE_UNKNOWN'
             continue
         # Every channel is dimensionless before applying persona weights.
         # Model probabilities remain unchanged in their own diagnostic fields;
@@ -396,6 +417,7 @@ def _scoring(rows, persona):
 
 
 def _options(ranked, persona, preferred=(), *, fixture_coverage=False):
+    current = persona.get('operating_contract', {}).get('version') == 2
     options, search = bounded_ticket_groups(
         ranked, rank=lambda rows: _ticket_rank(rows, persona, preferred),
         fixture=lambda row: row["quote"]["fixture_id"],
@@ -409,12 +431,12 @@ def _options(ranked, persona, preferred=(), *, fixture_coverage=False):
         fixture_coverage=fixture_coverage,
         # A candidate-specific exception authorizes that selection alone; it
         # cannot silently approve an arbitrarily larger combined ticket price.
-        allow_price_overflow=lambda group: len(group) == 1 and "HIGH_ODDS" in (
+        allow_price_overflow=lambda group: not current and len(group) == 1 and "HIGH_ODDS" in (
             (group[0].get("veto_override") or {}).get("gates", [])),
     )
     # A verified individual HIGH_ODDS exception remains a singleton only;
     # it cannot authorize extra legs or bypass the other evidence requirements.
-    if persona["min_legs"] > 1:
+    if not current and persona["min_legs"] > 1:
         exceptions = [(row,) for row in ranked
                       if row["quote"]["decimal_price"] > persona["target_odds_band"]["max"]
                       and "HIGH_ODDS" in ((row.get("veto_override") or {}).get("gates", []))]
@@ -479,7 +501,7 @@ def _select(ranked, persona, preferred=()):
             search["bookmaker_pools_searched"])
 
 
-def _leg(row, persona, now):
+def _leg(row, persona, now, enriched=None):
     quote = row["quote"]
     leg = deepcopy(quote)
     identity = [persona["profile_id"], quote["candidate_id"]]
@@ -516,7 +538,106 @@ def _leg(row, persona, now):
             **deepcopy(row["veto_override"]), "profile_upper_price": persona["target_odds_band"]["max"],
             "raw_decimal_price": quote["decimal_price"],
         }
+    if persona.get('operating_contract', {}).get('version') == 2:
+        used = [name for name, term in row['score_terms'].items() if term != 0]
+        available = {name: deepcopy(quote[name]) for name in
+                     ('fixture_context', 'weather_forecast', 'odds_movement', 'contrarian_review')
+                     if name in quote}
+        history = (enriched or {}).get('history_analysis') or {}
+        history_rows = history.get('candidates', []) if isinstance(history, dict) else []
+        history_rows = history_rows if isinstance(history_rows, list) else []
+        historical = next((item for item in history_rows if isinstance(item, dict)
+                           and item.get('candidate_id') == quote['candidate_id']), None)
+        if historical is not None:
+            available['historical_analysis'] = deepcopy(historical)
+        leg['decision_context'] = {
+            'score_terms': deepcopy(row['score_terms']), 'ranking_channels_used': used,
+            'model_probabilities': deepcopy(components),
+            'historical_support': row['history'] if any(item['category'] == 'historical'
+                                                       for item in row['evidence']) else None,
+            'venue_support': row['venue'] if any(item['category'] == 'venue_form'
+                                                for item in row['evidence']) else None,
+            'quote_source_id': quote['quote_source_id'],
+            'evidence_source_ids': sorted({item['source_id'] for item in row['evidence']}),
+            'model_source_details': {source: deepcopy(row['models'][source]['details']) for source in components},
+            'available_context': available,
+            'context_ranking_effect': 'ONLY_DECLARED_SCORE_TERMS_AND_ESSENTIAL_STRATEGY_GATES',
+            'uncertainties': ['UNCALIBRATED_MODEL_OR_HEURISTIC',
+                              *(['MODEL_PROBABILITY_UNKNOWN'] if row['probability'] is None else []),
+                              *(['OPTIONAL_CONTEXT_UNKNOWN'] if not available else [])],
+            'counterarguments': ['MODEL_CALIBRATION_UNVALIDATED',
+                                 *(['NEGATIVE_ESTIMATED_EDGE'] if row['edge'] is not None
+                                   and row['edge'] < 0 else []),
+                                 *(['MODEL_DISAGREEMENT_PRESENT'] if row['spread'] else [])],
+        }
+        strongest = max(row['score_terms'], key=lambda name: abs(row['score_terms'][name]))
+        leg['selection_reason'] = (
+            f"{persona['name']}: {quote['home_team']} – {quote['away_team']}, "
+            f"{quote['market_key']}/{quote['selection_key']}, "
+            f"ár {quote['decimal_price']:g}; legerősebb súlyozott szempont: "
+            f"{strongest}={row['score_terms'][strongest]:.4f}. "
+            f"Felhasznált modellbecslések: {', '.join(components) or 'UNKNOWN'}. "
+            'Az alátámasztási pontszám heurisztika; a kalibráció nem igazolt.')
     return leg
+
+
+def _full_day_input(enriched):
+    supplied = enriched.get('calendar_universe')
+    universe = supplied if isinstance(supplied, list) else enriched.get('fixtures', [])
+    universe = [event for event in universe if isinstance(event, dict)] if isinstance(universe, list) else []
+    identifiers = sorted({event['fixture_id'] for event in universe
+                          if isinstance(event.get('fixture_id'), str)})
+    receipt = enriched.get('calendar_scope_receipt', {})
+    expected = receipt.get('provider_fixture_ids') if isinstance(receipt, dict) else None
+    full = (isinstance(supplied, list) and isinstance(expected, list)
+            and all(isinstance(identifier, str) for identifier in expected)
+            and receipt.get('status') == 'COMPLETE' and receipt.get('full_product_run') is True
+            and receipt.get('provider_calendar_status') == 'COMPLETE'
+            and receipt.get('scope') == 'ACCESSIBLE_PROVIDER_FOOTBALL_DAY'
+            and set(expected) == set(identifiers))
+    return universe, identifiers, full
+
+
+def _persona_input_trace(enriched, fixtures, base, ranked, chosen, rejections, now):
+    universe, identifiers, full = _full_day_input(enriched)
+    available, own_ranked, selected = defaultdict(list), defaultdict(list), defaultdict(list)
+    for source, target in ((base, available), (ranked, own_ranked), (chosen, selected)):
+        for row in source:
+            target[row['quote']['fixture_id']].append(row['quote']['candidate_id'])
+    decisions = []
+    for event in universe:
+        identifier = event.get('fixture_id')
+        reasons = []
+        if not isinstance(identifier, str):
+            continue
+        if event.get('status') == 'UNMAPPED_COMPETITION':
+            reasons.append('UNMAPPED_COMPETITION')
+        if identifier not in fixtures:
+            reasons.append('PREMATCH_LOCKOUT' if not allows_new_leg(event, now)
+                           else 'NO_VALID_NORMALIZED_FIXTURE')
+        if not available[identifier]:
+            reasons.append('NO_VALID_QUOTES')
+        own_reasons = sorted({rejections[candidate] for candidate in available[identifier]
+                              if candidate in rejections})
+        reasons.extend(own_reasons)
+        status = ('SELECTED' if selected[identifier] else 'RANKED' if own_ranked[identifier]
+                  else 'REJECTED')
+        decisions.append({
+            'fixture_id': identifier, 'provider_league_id': event.get('provider_league_id'),
+            'competition_name': event.get('competition_name'), 'source_id': event.get('source_id'),
+            'status': status, 'reasons': reasons,
+            'available_candidate_ids': sorted(available[identifier]),
+            'ranked_candidate_ids': sorted(own_ranked[identifier]),
+            'selected_candidate_ids': sorted(selected[identifier]),
+        })
+    return {'input_fixture_ids': identifiers, 'input_fixture_count': len(identifiers),
+            'input_universe_source': 'calendar_universe' if isinstance(enriched.get('calendar_universe'), list)
+            else 'NORMALIZED_FIXTURES_WITHOUT_FULL_DAY_PROOF',
+            'all_daily_fixtures_considered': full, 'fixture_decisions': decisions,
+            'ranked_candidate_ids': [row['quote']['candidate_id'] for row in ranked],
+            'ranked_fixture_ids': sorted(identifier for identifier, values in own_ranked.items() if values),
+            'selected_source_candidate_ids': [row['quote']['candidate_id'] for row in chosen],
+            'candidate_rejections': deepcopy(rejections)}
 
 
 def contrarian_candidate_context(enriched, model_results, settings, now):
@@ -534,6 +655,7 @@ def contrarian_candidate_context(enriched, model_results, settings, now):
     enabled = set(settings.get("enabled_profiles", []))
     contexts = {}
     for persona in TIPSTER_CATALOG:
+        persona = effective_persona(persona, settings)
         if persona["profile_id"] not in enabled or not persona["selection_policy"].get("contrarian_value"):
             continue
         for row in _ranked(base, persona, now, require_contrarian_review=False, propose_soft_veto=True):
@@ -559,6 +681,7 @@ def club_veto_candidate_context(enriched, model_results, settings, now):
     for row in proposed:
         row["quote"]["veto_override_context"] = {"gates": ["HIGH_ODDS"]}
     for persona in TIPSTER_CATALOG:
+        persona = effective_persona(persona, settings)
         if persona["profile_id"] not in enabled:
             continue
         for row in _ranked(proposed, persona, now, require_contrarian_review=False, propose_soft_veto=True):
@@ -617,10 +740,10 @@ def _history_option_support(row, enriched, target, settings, now):
     return support if support >= minimum or allowed else None
 
 
-def _diversity_template(item, rows, persona, target, now, history_support):
+def _diversity_template(item, rows, persona, target, now, history_support, enriched=None):
     """A complete, detached ticket; allocation belongs to the coordinator."""
     result = deepcopy(item)
-    legs = [_leg(row, persona, now) for row in rows]
+    legs = [_leg(row, persona, now, enriched) for row in rows]
     result.update(legs=legs, status="READY", reason_code=None, abstention_reason=None,
                   combined_price=math.prod(leg["decimal_price"] for leg in legs),
                   bookmaker=legs[0]["bookmaker"])
@@ -641,6 +764,19 @@ def _diversity_template(item, rows, persona, target, now, history_support):
     result["recommendation_id"] = canonical_sha256(
         [VERSION, target, persona["profile_id"], now.isoformat(),
          [(leg["candidate_id"], leg["decimal_price"], leg["model_probability"]) for leg in legs]])[:24]
+    if persona.get('operating_contract', {}).get('version') == 2:
+        previous_reasons = {leg.get('selection_reason') for leg in item.get('legs', [])}
+        result['reasoning'] = [text for text in result['reasoning'] if text not in previous_reasons]
+        result['reasoning'].extend(leg['selection_reason'] for leg in legs)
+        selected = defaultdict(list)
+        for row in rows:
+            selected[row['quote']['fixture_id']].append(row['quote']['candidate_id'])
+        result['selection_diagnostics']['selected_source_candidate_ids'] = [
+            row['quote']['candidate_id'] for row in rows]
+        for decision in result['selection_diagnostics'].get('fixture_decisions', []):
+            decision['selected_candidate_ids'] = sorted(selected[decision['fixture_id']])
+            decision['status'] = ('SELECTED' if decision['selected_candidate_ids'] else 'RANKED'
+                                  if decision['ranked_candidate_ids'] else 'REJECTED')
     return result
 
 
@@ -670,17 +806,23 @@ def build_tipster_recommendations(
     if option_search_mode == "ACTIVE" and support_guard_mode != "LIVE":
         raise ValueError("ACTIVE coverage requires the enforced support guard")
     target = str(settings.get("date") or enriched.get("date") or now.astimezone(BERLIN).date())
+    current = current_contract(settings)
     fixtures = _fixtures(enriched.get("fixtures", []), target, now)
+    if current:
+        fixtures = {identifier: fixture for identifier, fixture in fixtures.items()
+                    if allows_new_leg(fixture, now)}
     models = _models(model_results, fixtures, now)
     base, quote_count = _pool(enriched, fixtures, models, now)
     enabled = set(settings.get("enabled_profiles", []))
     output = []
     history_support_cache = {}
-    for persona in TIPSTER_CATALOG:
+    for source_persona in TIPSTER_CATALOG:
+        persona = effective_persona(source_persona, settings)
         profile = persona["profile_id"]
         if profile not in enabled:
             continue
-        ranked = _ranked(base, persona, now)
+        rejections = {} if current else None
+        ranked = _ranked(base, persona, now, rejections=rejections)
         supported = [row for row in ranked if _positive_support(row)]
         excluded = [row["quote"]["candidate_id"] for row in ranked if not _positive_support(row)]
         preferred = [name for name in enriched.get("preferred_bookmakers", []) if isinstance(name, str)]
@@ -696,8 +838,41 @@ def build_tipster_recommendations(
         search_active = None
         if option_search_mode == "ACTIVE":
             options, search, search_active = _coverage_active(primary_pool, persona, preferred, options, search)
+        primary_search = deepcopy(search)
+        primary_options_count = len(options)
+        fallback = None
+        if current:
+            _, _, full_day = _full_day_input(enriched)
+            allowed = cautious_fallback_allowed(profile, settings, options,
+                                                all_daily_fixtures_considered=full_day)
+            fallback = {'status': 'PRIMARY_RANGE' if options else 'NOT_AUTHORIZED',
+                        'primary_options_count': primary_options_count,
+                        'primary_search': primary_search,
+                        'full_day_coverage': full_day, 'applied': False}
+            if allowed:
+                fallback_persona = effective_persona(source_persona, settings, cautious_fallback=True)
+                fallback_rejections = {}
+                fallback_ranked = _ranked(base, fallback_persona, now, rejections=fallback_rejections)
+                fallback_supported = [row for row in fallback_ranked if _positive_support(row)]
+                fallback_pool = fallback_supported if support_guard_mode == 'LIVE' else fallback_ranked
+                fallback_options, fallback_search = _options(fallback_pool, fallback_persona, preferred)
+                fallback_active = None
+                if option_search_mode == 'ACTIVE':
+                    fallback_options, fallback_search, fallback_active = _coverage_active(
+                        fallback_pool, fallback_persona, preferred, fallback_options, fallback_search)
+                fallback.update(status='APPLIED' if fallback_options else 'NO_FALLBACK_OPTION',
+                                applied=bool(fallback_options), search=deepcopy(fallback_search),
+                                reason='NO_OWN_15_40_OPTION_AFTER_FULL_DAY_SEARCH',
+                                target_odds_band={'min': 5.0, 'max': 15.0})
+                if fallback_options:
+                    persona, ranked, supported = fallback_persona, fallback_ranked, fallback_supported
+                    primary_pool, options, search = fallback_pool, fallback_options, fallback_search
+                    rejections, search_active = fallback_rejections, fallback_active
+                    excluded = [row['quote']['candidate_id'] for row in ranked if not _positive_support(row)]
+            if rejections is not None:
+                rejections.update({identifier: 'NONPOSITIVE_PERSONA_SUPPORT' for identifier in excluded})
         chosen = list(options[0]) if options else []
-        legs = [_leg(row, persona, now) for row in chosen]
+        legs = [_leg(row, persona, now, enriched if current else None) for row in chosen]
         reason = (None if legs else "NO_FIXTURES" if not fixtures else "NO_VALID_QUOTES" if not quote_count
                   else "INSUFFICIENT_EVIDENCE" if not primary_pool else "NO_COMPLIANT_COMBINATION")
         warnings = [
@@ -768,6 +943,16 @@ def build_tipster_recommendations(
             item["recommendation_id"] = canonical_sha256(
                 [VERSION, target, profile, now.isoformat(),
                  [(leg["candidate_id"], leg["decimal_price"], leg["model_probability"]) for leg in legs]])[:24]
+        if current:
+            item['selection_diagnostics'].update(_persona_input_trace(
+                enriched, fixtures, base, primary_pool, chosen, rejections, now))
+            item['selection_diagnostics']['odds_exception'] = fallback
+            item['operating_contract_version'] = 2
+            item['reasoning'].extend(leg['selection_reason'] for leg in legs)
+            if fallback and fallback['applied']:
+                item['reasoning'].append(
+                    'Kivételes óvatos 5–15-ös sáv: a teljes napi bemeneten a saját 15–40-es keresés nem adott opciót.')
+                item['quality_warnings'].append('CAUTIOUS_ODDS_EXCEPTION_AFTER_FULL_DAY_SEARCH')
         if search_shadow is not None:
             item["selection_diagnostics"]["option_search_shadow"] = search_shadow
         if search_active is not None:
@@ -811,7 +996,8 @@ def build_tipster_recommendations(
             for rows in eligible_options:
                 supports = [history_support[row["quote"]["candidate_id"]] for row in rows]
                 support = min((value for value in supports if value is not None), default=None)
-                recommendation = _diversity_template(item, rows, persona, target, now, support)
+                recommendation = _diversity_template(item, rows, persona, target, now, support,
+                                                    enriched if current else None)
                 recommendation["selection_diagnostics"]["alternative_search"] = option_search
                 if alternative_active is not None:
                     recommendation["selection_diagnostics"]["alternative_search_active"] = alternative_active
