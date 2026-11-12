@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 import urllib.parse
 from contextlib import AbstractContextManager
 from copy import deepcopy
@@ -416,8 +417,16 @@ def run_portfolio(
     native_history_shadow_root: Path | None = None,
     native_option_shadow: bool = False,
     normal_history_root: Path | None = None,
+    agent_executor=None,
+    publication_run_id: str | None = None,
 ) -> dict:
     """Injectable coordinator. No wager is ever placed or marked automatically."""
+    if publication_run_id is not None:
+        day = re.escape(target_date.isoformat())
+        if (not isinstance(publication_run_id, str) or len(publication_run_id) > 160
+                or re.fullmatch(rf'(?:{day}-[A-Za-z0-9][A-Za-z0-9_.-]*|nightly-{day}-a[1-3])',
+                                publication_run_id) is None):
+            raise ValueError('SAFE_TARGET_DAY_PUBLICATION_RUN_ID_REQUIRED')
     from goal_analysis.engine.diversification import allocate
     from goal_analysis.engine.model_recommendations import build_model_recommendations
     from goal_analysis.engine.portfolio import build_portfolio, permissive
@@ -431,6 +440,11 @@ def run_portfolio(
     if type(native_option_shadow) is not bool or native_option_shadow and native_history_shadow_root is None:
         raise ValueError('native_option_shadow requires a boolean and explicit native history root')
     settings = validate_settings(settings)
+    if agent_executor is not None:
+        if not callable(agent_executor) or not current_contract(settings):
+            raise ValueError('Ten-agent execution requires the current contract and explicit executor')
+        if selected_competition_ids is not None:
+            raise ValueError('Independent agents require the full accessible day, not manual league scope')
     from goal_analysis.tipsters.coverage_search import policy as club_coverage_policy
 
     club_coverage_mode = (club_coverage_policy(Path(ledger.path).resolve().parents[2])
@@ -451,7 +465,7 @@ def run_portfolio(
     construction_kwargs = {"allowed_profiles": team_plan["live_profiles"]} if governed else {}
     started = clock()
     validate_target_day(target_date, started)
-    run_id = f"{target_date.isoformat()}-{uuid4().hex[:12]}"
+    run_id = publication_run_id or f"{target_date.isoformat()}-{uuid4().hex[:12]}"
     if not settings["enabled_profiles"]:
         from goal_analysis.strategy_provenance import attach_strategy_provenance
 
@@ -483,6 +497,8 @@ def run_portfolio(
         **({"operating_contract_version": 2} if current_contract(settings) else {}),
     )
     artifacts = bundle["artifacts"]
+    if agent_executor is not None and 'candidate_input' not in artifacts:
+        raise ValueError('TEN_AGENT_PRICE_INPUT_ENVELOPE_MISSING_NO_LEGACY_FALLBACK')
     legacy = artifacts["report"]
     if (artifacts.get('odds_access', {}).get('status') == 'AUTH_REQUIRED'
             and not artifacts.get('candidate_input', {}).get('candidates')):
@@ -525,7 +541,8 @@ def run_portfolio(
     profile_context_mode = 'OFF'
     # Both numerical agents see the full selected fixture calendar and shared history.
     # They never inherit Arthur's shortlist, heuristic rankings, or LLM-adjusted scores.
-    enabled_models = tuple(p for p in settings["enabled_profiles"] if p in MODEL_PROFILE_IDS)
+    enabled_models = (tuple(MODEL_PROFILE_IDS) if agent_executor is not None else
+                      tuple(p for p in settings["enabled_profiles"] if p in MODEL_PROFILE_IDS))
     model_cutoff = clock()
     fixture_records = artifacts.get("fixtures", {}).get("records", [])
     calendar_receipt = artifacts.get("calendar", {}).get("scope_receipt", {})
@@ -591,8 +608,16 @@ def run_portfolio(
     veto_contexts = {}
     contrarian_review_status = "NOT_REQUESTED"
     history_status = "NO_LEDGER"
-    if "candidate_input" in artifacts and "history" in artifacts:
-        enriched = enrich_daily223_input(artifacts["candidate_input"], artifacts["history"])
+    if "candidate_input" in artifacts and ("history" in artifacts or agent_executor is not None):
+        if 'history' in artifacts:
+            enriched = enrich_daily223_input(artifacts["candidate_input"], artifacts["history"])
+        else:
+            enriched = deepcopy(artifacts['candidate_input'])
+            for row in enriched.get('candidates', []):
+                row['evidence'] = [item for item in row.get('evidence', [])
+                                   if item.get('category') not in {'historical', 'venue_form'}]
+            enriched['history_analysis'] = {'status': 'UNKNOWN', 'candidates': [],
+                                           'reason': 'NO_COLLECTED_HISTORY_ENVELOPE'}
         if current_contract(settings):
             enriched["calendar_universe"] = calendar_universe
             enriched["calendar_scope_receipt"] = calendar_receipt
@@ -633,36 +658,42 @@ def run_portfolio(
         contrarian_contexts = contrarian_candidate_context(
             club_enriched, model_results, settings, clock(),
         )
-        preliminary_options = {}
-        preliminary = build_portfolio(enriched, settings, diversity_options=preliminary_options,
-                                      **construction_kwargs)
-        _guard_final_publication(preliminary, clock())
-        allocate(preliminary, preliminary_options, settings, clock(), plan=team_plan)
-        packets = _review_packets(enriched, preliminary, settings["openai"]["max_candidates"]) if any(
-            p not in (*MODEL_PROFILE_IDS, *TIPSTER_PROFILE_IDS) for p in settings["enabled_profiles"]
-        ) else []
-        unpriced = preview_candidates(
-            artifacts.get("fixtures", {}).get("records", []),
-            artifacts["candidate_input"],
-            artifacts["history"],
-            settings,
-        )
-        recommendations = build_recommendations(enriched, unpriced, settings, clock(), preliminary)
-        packets = recommendation_packets(
-            recommendations, packets, settings["openai"]["max_candidates"]
-        )
-        if contrarian_contexts or veto_contexts:
-            from goal_analysis.engine.specialist_contracts import SPECIALIST_CONTRACTS
-
-            daily_ids = {leg["candidate_id"] for item in preliminary.get("profile_proposals", [])
-                         if item["profile_id"] == "daily223" for leg in item.get("legs", [])}
-            fixed_specialist_ids = {leg["candidate_id"] for item in preliminary.get("profile_proposals", [])
-                                    if item["profile_id"] in SPECIALIST_CONTRACTS
-                                    for leg in item.get("legs", [])}
-            packets = _contrarian_review_packets(
-                packets, club_enriched, contrarian_contexts, daily_ids | fixed_specialist_ids,
-                settings["openai"]["max_candidates"], veto_contexts=veto_contexts,
+        if agent_executor is not None:
+            # Shared collection covers all supplied priced candidates. This is
+            # not an owner shortlist; unpriced calendar fixtures remain in the
+            # snapshot and receive explicit local limitations.
+            packets = deepcopy(enriched.get('candidates', []))
+        else:
+            preliminary_options = {}
+            preliminary = build_portfolio(enriched, settings, diversity_options=preliminary_options,
+                                          **construction_kwargs)
+            _guard_final_publication(preliminary, clock())
+            allocate(preliminary, preliminary_options, settings, clock(), plan=team_plan)
+            packets = _review_packets(enriched, preliminary, settings["openai"]["max_candidates"]) if any(
+                p not in (*MODEL_PROFILE_IDS, *TIPSTER_PROFILE_IDS) for p in settings["enabled_profiles"]
+            ) else []
+            unpriced = preview_candidates(
+                artifacts.get("fixtures", {}).get("records", []),
+                artifacts["candidate_input"],
+                artifacts["history"],
+                settings,
             )
+            recommendations = build_recommendations(enriched, unpriced, settings, clock(), preliminary)
+            packets = recommendation_packets(
+                recommendations, packets, settings["openai"]["max_candidates"]
+            )
+            if contrarian_contexts or veto_contexts:
+                from goal_analysis.engine.specialist_contracts import SPECIALIST_CONTRACTS
+
+                daily_ids = {leg["candidate_id"] for item in preliminary.get("profile_proposals", [])
+                             if item["profile_id"] == "daily223" for leg in item.get("legs", [])}
+                fixed_specialist_ids = {leg["candidate_id"] for item in preliminary.get("profile_proposals", [])
+                                        if item["profile_id"] in SPECIALIST_CONTRACTS
+                                        for leg in item.get("legs", [])}
+                packets = _contrarian_review_packets(
+                    packets, club_enriched, contrarian_contexts, daily_ids | fixed_specialist_ids,
+                    settings["openai"]["max_candidates"], veto_contexts=veto_contexts,
+                )
         review_cutoff = clock()
         packets = [item for item in packets if allows_new_leg(item, review_cutoff)]
         context_root = None
@@ -716,7 +747,37 @@ def run_portfolio(
                 context_mode = 'UNAVAILABLE'
                 if context_attempt is not None:
                     context_attempt['status'] = 'UNAVAILABLE_NO_AUTOMATIC_SECOND_COLLECTION'
-        feedback = _compact_feedback(ledger) if packets and reviewer is not None else None
+        feedback = _compact_feedback(ledger) if packets and (reviewer is not None or agent_executor is not None) else None
+        if agent_executor is not None:
+            # Independent owners are the sole selection authority on this path.
+            # No legacy builder, follow-up, stylist or allocator runs afterwards.
+            report = agent_executor(
+                run_id=run_id, target_date=target_date, as_of=clock(), artifacts=artifacts,
+                fixture_records=fixture_records, enriched=enriched, club_enriched=club_enriched,
+                candidate_context=candidate_context, weather_by_fixture=weather_by_fixture,
+                historical_runs=historical_runs, feedback=feedback,
+                settings=requested_settings, team_plan=team_plan,
+            )
+            if (not isinstance(report, dict) or report.get('run_id') != run_id
+                    or report.get('date') != target_date.isoformat()
+                    or report.get('real_wager_placed') is not False):
+                raise ValueError('Invalid independent-agent report identity')
+            report['full_day_calendar'] = deepcopy(calendar_receipt)
+            report['calendar'] = deepcopy(artifacts.get('calendar', {}))
+            report['numeric_models'] = deepcopy(model_results)
+            report['model_cutoff'] = model_cutoff.isoformat()
+            report['finished_at'] = clock().isoformat()
+            report['preview'] = target_date > started.astimezone(BERLIN).date()
+            report['data_issues'] = deepcopy(legacy.get('data_issues', []))
+            from goal_analysis.jobs.ten_agent_ticket_evidence import (
+                attach_ten_agent_ticket_evidence,
+            )
+
+            attach_ten_agent_ticket_evidence(report, artifacts)
+            report['report_sha256'] = canonical_sha256({k: v for k, v in report.items() if k != 'report_sha256'})
+            artifacts['daily223_report'] = legacy
+            artifacts['report'] = report
+            return {'schema_version': 3, 'artifacts': artifacts}
         if current_contract(settings) and packets and reviewer is not None:
             packets, scope_gaps = _profile_scope_review_packets(reviewer, packets, target_date.isoformat(), feedback)
             _record_profile_scope_gaps(artifacts, club_enriched, scope_gaps)
@@ -1630,6 +1691,15 @@ def write_portfolio_bundle(directory: Path, bundle: dict) -> None:
             )
             lines.extend(markdown_lines(notes[(display_group, card_index, 'legs', leg_index)]))
         lines.extend(["", *ticket.get("reasoning", []), ""])
+        decision = ticket.get('agent_decision')
+        if isinstance(decision, dict):
+            lines.extend(['Saját választás indoka: ' + str(decision.get('option_reason', 'UNKNOWN')),
+                          'Végső döntés: ' + str(decision.get('reason', 'UNKNOWN'))])
+            for receipt in decision.get('tool_receipts', []):
+                role = {'candidate_scenarios': 'Szelvényszcenáriók',
+                        'historical_strategy_evaluation': 'Történeti stratégiaellenőrzés'}.get(receipt.get('role'))
+                if role is not None:
+                    lines.append(f"{role}: {receipt.get('status', 'UNKNOWN')} — {receipt.get('interpretation', 'UNKNOWN')}")
         lines.extend("Figyelmeztetés: " + warning for warning in ticket.get("quality_warnings", []))
         lines.extend(ticket.get('decision_reasoning',{}).get('scenario_risk_facts',[]))
         lines.append("")

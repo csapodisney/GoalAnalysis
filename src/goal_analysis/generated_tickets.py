@@ -263,11 +263,103 @@ def _materialize(card, source_group, report, plan):
     return result
 
 
+def _finalize_agent_generated(report, settings, plan):
+    """Publish only exact owner-selected variants; never substitute alternatives."""
+    from goal_analysis.agents.profile_decision import SIMULATOR_ROLES, option_exposure
+    from goal_analysis.agents.profile_roster import AGENT_IDS, get_agent_definition
+    from goal_analysis.jobs.agent_portfolio import option_legs
+    from goal_analysis.jobs.agent_snapshot import FAMILIES, digest, identifiers, require
+
+    run = report['ten_agent_decisions']
+    require(isinstance(run, dict) and run.get('version') == 'ten-agent-decision-run-v1'
+            and run.get('agent_count') == len(AGENT_IDS), 'TEN_AGENT_RUN_REQUIRED')
+    owners = run.get('owners')
+    require(isinstance(owners, list) and len(owners) == len(AGENT_IDS)
+            and {row.get('agent_id') for row in owners} == set(AGENT_IDS), 'EXACT_TEN_OWNER_OUTCOMES_REQUIRED')
+    cutoff = datetime.fromisoformat(report.get('finished_at', report['observed_at']))
+    require(cutoff.tzinfo is not None and cutoff.utcoffset() is not None, 'AWARE_PUBLICATION_CUTOFF_REQUIRED')
+    generated, excluded, exposures, ticket_ids = [], [], set(), set()
+    for outcome in owners:
+        owner = outcome['agent_id']
+        if outcome.get('status') != 'DECISION_COMPLETED':
+            excluded.append({'profile_id': owner, 'reason': 'OWNER_DECISION_INCOMPLETE'})
+            continue
+        decision = outcome.get('decision', {})
+        require(all(decision.get(key) == outcome.get(key) for key in ('agent_id', 'session_id', 'snapshot_id'))
+                and decision.get('snapshot_id') == run.get('snapshot_id')
+                and decision.get('method_version') == get_agent_definition(owner).method_version,
+                'FOREIGN_FINAL_OWNER_DECISION')
+        selected = decision.get('selected_options')
+        require(isinstance(selected, list) and len(selected) <= get_agent_definition(owner).max_variants
+                and list(identifiers(decision.get('option_ids'))) == [row.get('option_id') for row in selected],
+                'INVALID_SELECTED_OWNER_VARIANTS')
+        require(set(decision.get('family_uses', {})) == set(FAMILIES), 'ALL_FAMILY_STATES_REQUIRED')
+        receipts = decision.get('tool_receipts', [])
+        require(isinstance(receipts, list) and all(row.get('option_hash') == decision.get('option_hash')
+                    for row in receipts) and set(SIMULATOR_ROLES) <= {row.get('role') for row in receipts},
+                'MISSING_CURRENT_OWNER_TOOL_RECEIPT')
+        if (owner in plan.get('blocked_profiles', [])
+                or plan.get('profile_states', {}).get(owner) == 'SUSPENDED'):
+            excluded.append({'profile_id': owner, 'reason': 'SUSPENDED_PROFILE'})
+            continue
+        if not selected:
+            excluded.append({'profile_id': owner, 'reason': 'OWNER_ABSTAINED'})
+        own_exposures = set()
+        for option in selected:
+            identifier = option.get('option_id')
+            card = option.get('canonical_card')
+            binding = card.get('agent_product_binding', {}) if isinstance(card, dict) else {}
+            require(option.get('agent_id') == owner and option.get('snapshot_id') == run['snapshot_id']
+                    and isinstance(card, dict) and card.get('profile_id') == owner
+                    and option.get('canonical_card_sha256') == digest(card)
+                    and option.get('legs') == option_legs(card)
+                    and all(binding.get(key) == value for key, value in (
+                        ('agent_id', owner), ('option_id', identifier), ('snapshot_id', run['snapshot_id']),
+                        ('run_id', report['run_id']), ('target_date', report['date']))),
+                    'UNBOUND_AGENT_CANONICAL_PRODUCT')
+            require(all(any(row.get('role') == role and row.get('agent_id') == owner
+                        and row.get('snapshot_id') == run['snapshot_id']
+                        and (row.get('status') == 'UNKNOWN' or identifier in row.get('own_option_ids', []))
+                        for row in receipts) for role in SIMULATOR_ROLES), 'SELECTED_VARIANT_TOOL_NOT_COVERED')
+            exposure = option_exposure(option)
+            require(exposure not in own_exposures, 'DUPLICATE_SELECTED_OWNER_EXPOSURE')
+            own_exposures.add(exposure)
+            failure = _invalid(card, report, cutoff)
+            signature = ticket_signature(card) if failure is None else None
+            if failure is None and signature in exposures:
+                failure = 'DUPLICATE_FULL_BET_SIGNATURE'
+            if failure is not None:
+                excluded.append({'profile_id': owner, 'option_id': identifier, 'reason': failure})
+                continue
+            ticket = _materialize(card, 'ten_agent_decisions', report, plan)
+            if ticket['ticket_id'] in ticket_ids:
+                excluded.append({'profile_id': owner, 'option_id': identifier, 'reason': 'DUPLICATE_TICKET_ID'})
+                continue
+            require(len(generated) < MAX_GENERATED_TICKETS, 'AGENT_CARD_CAPACITY_EXCEEDED')
+            ticket['agent_decision'] = {'agent_id': owner, 'session_id': decision['session_id'],
+                'snapshot_id': run['snapshot_id'], 'method_version': decision['method_version'],
+                'option_id': identifier, 'decision_sha256': digest(decision),
+                'canonical_source_card_sha256': option['canonical_card_sha256'],
+                'reason': decision['reason'], 'option_reason': option.get('reason'),
+                'family_uses': deepcopy(decision['family_uses']), 'tool_receipts': deepcopy(receipts),
+                'selection_authority': 'OWN_FINAL_DECISION_NO_COORDINATOR_RESELECTION'}
+            exposures.add(signature)
+            ticket_ids.add(ticket['ticket_id'])
+            generated.append(ticket)
+    report['generated_tickets'] = generated
+    report['tickets'] = [card for card in generated if card['status'] == 'READY'
+                         and card['publication_scope'] == 'LIVE']
+    refresh_generation_capacity(report, excluded=excluded)
+    return report
+
+
 def finalize_generated(report, settings, *, team_plan=None, options=None):
     """Build one counted collection, retaining paper decisions and truthful readiness."""
     if not current_contract(settings):
         return report
     report.setdefault('settings', deepcopy(settings))
+    if 'ten_agent_decisions' in report:
+        return _finalize_agent_generated(report, settings, team_plan or report.get('team', {}))
     capture_profile_decisions(report)
     plan, options = team_plan or report.get('team', {}), options or {}
     cutoff = datetime.fromisoformat(report.get('finished_at', report['observed_at']))

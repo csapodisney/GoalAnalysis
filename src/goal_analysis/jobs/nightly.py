@@ -15,6 +15,7 @@ from goal_analysis.agents import canonical_sha256
 from goal_analysis.config.daily_223_live import validate_live_config
 from goal_analysis.config.portfolio import load_settings
 from goal_analysis.jobs.portfolio import RunLock, run_portfolio, write_portfolio_bundle
+from goal_analysis.operating_policy import MIN_DAILY_TICKETS, current_contract
 from goal_analysis.storage.portfolio_ledger import PortfolioLedger, _hash
 from goal_analysis.strategy_provenance import attach_strategy_provenance, strategy_manifest
 
@@ -333,6 +334,12 @@ class NightlyWorkflow:
                          last_finished_at=self._stamp())
             self._save(job)
             return
+        if (name == "generation" and current_contract(job["settings"])
+                and stage["attempts"] > 0 and not reuse_generation):
+            stage.update(status="BLOCKED", reason="TEN_AGENT_GENERATION_NO_AUTOMATIC_RETRY",
+                         last_finished_at=self._stamp(), next_retry_at=None)
+            self._save(job)
+            return
         if stage["attempts"] >= MAX_ATTEMPTS:
             stage.update(status="FAILED", reason="RETRY_EXHAUSTED", last_finished_at=self._stamp())
             self._save(job)
@@ -388,6 +395,8 @@ class NightlyWorkflow:
             stage.update(status=status, result=result, reason="BACKLOG_OR_COVERAGE" if status == "PARTIAL" else None)
         except Exception as error:  # noqa: BLE001 - isolate stages, never publish provider/CLI raw errors
             reason, retryable = failure_reason(error)
+            if name == "generation" and current_contract(job["settings"]):
+                retryable = False
             retry = retryable and stage["attempts"] < MAX_ATTEMPTS
             stage.update(status="RETRY_WAIT" if retry else "FAILED" if retryable else "BLOCKED",
                          reason=reason, next_retry_at=(now + timedelta(minutes=15 * stage["attempts"])).isoformat() if retry else None)
@@ -406,26 +415,42 @@ class NightlyWorkflow:
                     raise WorkflowError("STRATEGY_CHANGED_DURING_RETRY", retryable=False)
                 bundle = self.generator(date.fromisoformat(job["target_date"]), job["settings"], job)
                 report = bundle["artifacts"]["report"]
-                report["run_id"] = run_id
+                agent_mode = current_contract(job["settings"])
+                if agent_mode:
+                    failed = report.get("construction_status") == "DATA_BLOCKED" and report.get("reason")
+                    paused = report.get("construction_status") == "TEAM_PAUSED"
+                    if (report.get("run_id") != run_id or report.get("date") != job["target_date"]
+                            or ("ten_agent_decisions" not in report and not (
+                                (failed or paused) and report.get("generated_tickets") == []))):
+                        raise WorkflowError("TEN_AGENT_BOUND_GENERATION_IDENTITY_REQUIRED", retryable=False)
+                else:
+                    report["run_id"] = run_id
                 report["automation"] = {"job_id": job["job_id"], "slot_date": job["slot_date"],
                                         "attempt": stage["attempts"], "scheduled_at": job["scheduled_at"]}
-                from goal_analysis.engine.portfolio import PROFILES
+                if agent_mode:
+                    # Owner-selected cards and their source hashes are already sealed.
+                    # Record source provenance on the report, without relabelling cards.
+                    manifest = strategy_manifest(job["settings"])
+                    report["strategy_manifest"] = manifest
+                    report["application_version"] = manifest["application_version"]
+                else:
+                    from goal_analysis.engine.portfolio import PROFILES
 
-                covered = {item["profile_id"] for item in report.get("recommendations", [])}
-                for profile in job["settings"]["enabled_profiles"]:
-                    if profile not in covered:
-                        report.setdefault("recommendations", []).append({
-                            "profile_id": profile, "profile_name": PROFILES[profile]["name"],
-                            "status": "DATA_BLOCKED" if report.get("reason") else "NO_FIXTURES",
-                            "execution_status": "NO_USABLE_INPUT", "legs": [],
-                            "combined_price": None, "stake_eur": None, "playable": False,
-                            "quality_warnings": ["A profilhoz nem volt feldolgozható bemenet; nem készült választás."],
-                        })
-                attach_strategy_provenance(report, job["settings"])
-                from goal_analysis.team.routing import apply_publication_policy
+                    covered = {item["profile_id"] for item in report.get("recommendations", [])}
+                    for profile in job["settings"]["enabled_profiles"]:
+                        if profile not in covered:
+                            report.setdefault("recommendations", []).append({
+                                "profile_id": profile, "profile_name": PROFILES[profile]["name"],
+                                "status": "DATA_BLOCKED" if report.get("reason") else "NO_FIXTURES",
+                                "execution_status": "NO_USABLE_INPUT", "legs": [],
+                                "combined_price": None, "stake_eur": None, "playable": False,
+                                "quality_warnings": ["A profilhoz nem volt feldolgozható bemenet; nem készült választás."],
+                            })
+                    attach_strategy_provenance(report, job["settings"])
+                    from goal_analysis.team.routing import apply_publication_policy
 
-                if job.get("team_plan"):
-                    apply_publication_policy(report, job["team_plan"])
+                    if job.get("team_plan"):
+                        apply_publication_policy(report, job["team_plan"])
                 from goal_analysis.jobs.ticket_evidence import (
                     build_ticket_evidence,
                     validate_ticket_evidence,
@@ -437,9 +462,16 @@ class NightlyWorkflow:
                 unavailable_evidence = {"mode": "AUDIT_ONLY", "status": "UNAVAILABLE",
                     "reason": "FINAL_TICKET_EVIDENCE_FAILED", "decision_effect": "NONE"}
                 try:
-                    evidence = build_ticket_evidence(report, bundle["artifacts"])
-                    validate_ticket_evidence(evidence, report, bundle["artifacts"])
-                    report["ticket_evidence"] = evidence
+                    if agent_mode:
+                        from goal_analysis.jobs.ten_agent_ticket_evidence import (
+                            attach_ten_agent_ticket_evidence,
+                        )
+
+                        attach_ten_agent_ticket_evidence(report, bundle["artifacts"])
+                    else:
+                        evidence = build_ticket_evidence(report, bundle["artifacts"])
+                        validate_ticket_evidence(evidence, report, bundle["artifacts"])
+                        report["ticket_evidence"] = evidence
                 except Exception:  # noqa: BLE001 - an optional audit cannot veto stable selections
                     report["ticket_evidence"] = dict(unavailable_evidence)
                 report.pop("report_sha256", None)
@@ -467,6 +499,8 @@ class NightlyWorkflow:
                     # request after a disk/serialization failure of a computed run.
                     raise WorkflowError("UNKNOWN_EXECUTION_REQUIRES_REVIEW", retryable=False) from error
             report = bundle["artifacts"]["report"]
+            if "ten_agent_decisions" in report and report.get("run_id") != run_id:
+                raise WorkflowError("TEN_AGENT_BOUND_GENERATION_IDENTITY_REQUIRED", retryable=False)
             self.ledger.save_run(report)
         # The immutable ledger is canonical. A crash before file export is resumable.
         directory = self.root / "reports/arthur" / run_id
@@ -481,6 +515,35 @@ class NightlyWorkflow:
         if report.get("construction_status") == "DATA_BLOCKED" and report.get("reason"):
             reason, retry = failure_reason(RuntimeError(report["reason"]))
             raise WorkflowError(reason, retryable=retry)
+        if (current_contract(job["settings"])
+                and report.get("construction_status") == "TEAM_PAUSED"
+                and report.get("generated_tickets") == []):
+            return {"run_id": run_id, "recommendations": 0, "generated_count": 0,
+                    "profile_count": len(job["settings"]["enabled_profiles"]),
+                    "completed_owner_count": 0, "minimum_generated": MIN_DAILY_TICKETS,
+                    "suspended_profiles": sorted(job.get("team_plan", {}).get("blocked_profiles", [])),
+                    "reason": "TEAM_PAUSED", "report_sha256": report.get("report_sha256"),
+                    "astra_status": report.get("astra", {}).get("status")}, "PARTIAL"
+        if "ten_agent_decisions" in report:
+            from goal_analysis.agents.profile_roster import AGENT_IDS
+
+            owners = report["ten_agent_decisions"].get("owners", [])
+            if (len(owners) != len(AGENT_IDS)
+                    or {owner.get("agent_id") for owner in owners} != set(AGENT_IDS)):
+                raise WorkflowError("INCOMPLETE_AGENT_OWNER_OUTCOMES", retryable=False)
+            participating = set(AGENT_IDS) - set(job.get("team_plan", {}).get("blocked_profiles", []))
+            count = sum(card["profile_id"] in participating for card in report["generated_tickets"])
+            completed = {owner["agent_id"] for owner in owners if owner.get("status") == "DECISION_COMPLETED"}
+            result = {"run_id": run_id, "recommendations": count, "generated_count": count,
+                      "profile_count": len(participating), "completed_owner_count": len(completed),
+                      "minimum_generated": MIN_DAILY_TICKETS,
+                      "suspended_profiles": sorted(set(AGENT_IDS) - participating),
+                      "report_sha256": report.get("report_sha256"),
+                      "astra_status": report.get("astra", {}).get("status")}
+            status = "SUCCESS" if (count >= MIN_DAILY_TICKETS and participating <= completed
+                and report["ten_agent_decisions"].get("status") == "COMPLETE"
+                and result["astra_status"] == "COMPLETE") else "PARTIAL"
+            return result, status
         recommendations = report.get("recommendations", [])
         covered = {r["profile_id"] for r in recommendations}
         if set(job["settings"]["enabled_profiles"]) - covered:
@@ -513,7 +576,9 @@ class NightlyWorkflow:
             if context_proof['status'] != 'DISABLED':
                 job['canonical_contexts'] = context_proof
                 self._save(job, event=False)
-        if not report or not any(r.get("legs") for r in report.get("recommendations", [])):
+        recommendations = (report.get("generated_tickets", []) if report and "ten_agent_decisions" in report
+                           else report.get("recommendations", []) if report else [])
+        if not report or not any(r.get("legs") for r in recommendations):
             return {"run_id": run_id, "reason": "NO_RECOMMENDATIONS", "immutable_report_saved": bool(report)}, "PARTIAL"
         existing = self.ledger.list_freezes(date=job["target_date"])
         if existing:
@@ -521,7 +586,7 @@ class NightlyWorkflow:
             return {"run_id": run_id, "frozen_run_id": existing[0]["run_id"],
                     "reason": "ALREADY_FROZEN" if same else "EXISTING_FREEZE_PRESERVED"}, "SUCCESS" if same else "PARTIAL"
         if any(datetime.fromisoformat(leg["kickoff"]) <= aware(self.clock())
-               for r in report.get("recommendations", []) for leg in r.get("legs", [])):
+               for r in recommendations for leg in r.get("legs", [])):
             return {"run_id": run_id, "reason": "KICKOFF_PASSED", "immutable_report_saved": True}, "PARTIAL"
         return self.ledger.freeze_run(run_id), "SUCCESS"
 
@@ -706,10 +771,14 @@ class NightlyWorkflow:
         from goal_analysis.jobs.grok_gate import review_and_repair
         from goal_analysis.jobs.nemotron_tickets import curate as curate_nemotron_tickets
         from goal_analysis.jobs.sports_context_archive import make_weather_provider
+        from goal_analysis.jobs.ten_agent_normal import make_normal_agent_executor
         from goal_analysis.providers.the_stats_odds import TheStatsOddsFeed
         from goal_analysis.storage import CacheStore, Database
 
         config = deepcopy(job["config"])
+        agent_mode = current_contract(settings)
+        publication = {"publication_run_id": self._stage(job, "generation")["run_id"]} if agent_mode else {}
+        agent_executor = make_normal_agent_executor(self.root, settings, clock=self.clock) if agent_mode else None
         used = job["usage"].get("generation_football_calls", 0)
         if used >= config["max_football_calls"]:
             raise WorkflowError("DAILY_REQUEST_BUDGET", retryable=False)
@@ -735,12 +804,13 @@ class NightlyWorkflow:
                                      - job['usage'].get('generation_football_calls', 0)))),
                              model_artifact_dir=self.root / "data/arthur/models",
                              normal_history_root=self.root,
+                             agent_executor=agent_executor,
                              team_plan=job.get("team_plan"),
                              nemotron_stylist=lambda options, cards, day, now: curate_nemotron_tickets(
                                  self.root, options, cards, day, now),
                              package_reviewer=lambda report, options: refresh_news(self.root,
                                  review_and_repair(self.root, report, options, clock=self.clock),
-                                 clock=self.clock))
+                                 clock=self.clock), **publication)
 
     def _learn(self, as_of):
         from goal_analysis.learning import LearningAgent

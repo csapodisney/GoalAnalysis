@@ -91,6 +91,149 @@ def _publication_sources(report: Mapping[str, Any]) -> list:
             if sources is None else sources)
 
 
+def _agent_variant_keys(report: Mapping[str, Any]) -> dict[str, str] | None:
+    """Bind stored variants to completed current owners, without selecting a bet.
+
+    Publication may honestly omit an unpublishable selected option. It cannot
+    add a choice, rename its owner, or alter its selected source product.
+    """
+    if "ten_agent_decisions" not in report:
+        return None
+    from goal_analysis.agents.profile_decision import option_exposure
+    from goal_analysis.agents.profile_roster import AGENT_IDS, get_agent_definition
+    from goal_analysis.generated_tickets import _materialize
+
+    run = report["ten_agent_decisions"]
+    if (not _generated_contract(report) or not isinstance(run, Mapping)
+            or run.get("version") != "ten-agent-decision-run-v1"
+            or type(run.get("agent_count")) is not int or run["agent_count"] != len(AGENT_IDS)
+            or not isinstance(run.get("snapshot_id"), str) or not run["snapshot_id"]):
+        raise ValueError("CURRENT_TEN_AGENT_RUN_REQUIRED")
+    outcomes = run.get("owners")
+    if (not isinstance(outcomes, list) or len(outcomes) != len(AGENT_IDS)
+            or any(not isinstance(row, Mapping) for row in outcomes)
+            or {row.get("agent_id") for row in outcomes} != set(AGENT_IDS)):
+        raise ValueError("EXACT_TEN_OWNER_OUTCOMES_REQUIRED")
+    selected = {}
+    for outcome in outcomes:
+        if outcome.get("status") != "DECISION_COMPLETED":
+            continue
+        owner = outcome["agent_id"]
+        definition = get_agent_definition(owner)
+        decision = outcome.get("decision")
+        if (not isinstance(decision, Mapping)
+                or decision.get("version") != "profile-owner-decision-v2-ten-agents"
+                or decision.get("method_version") != definition.method_version
+                or not isinstance(decision.get("session_id"), str) or not decision["session_id"]
+                or decision.get("snapshot_id") != run["snapshot_id"]
+                or any(decision.get(key) != outcome.get(key)
+                       for key in ("agent_id", "session_id", "snapshot_id"))):
+            raise ValueError("FOREIGN_FINAL_OWNER_DECISION")
+        options = decision.get("selected_options")
+        identifiers = decision.get("option_ids")
+        if (not isinstance(options, list) or len(options) > definition.max_variants
+                or not isinstance(identifiers, list)
+                or any(not isinstance(key, str) or not key for key in identifiers)
+                or len(set(identifiers)) != len(identifiers)
+                or any(not isinstance(option, Mapping) for option in options)
+                or identifiers != [option.get("option_id") for option in options]
+                or decision.get("status") != ("FINAL_DECISION" if options else "ABSTAIN")):
+            raise ValueError("INVALID_SELECTED_OWNER_VARIANTS")
+        exposures = set()
+        for option in options:
+            card = option.get("canonical_card")
+            binding = card.get("agent_product_binding") if isinstance(card, Mapping) else None
+            if (not isinstance(card, Mapping) or not isinstance(binding, Mapping)
+                    or not isinstance(card.get("legs"), list) or not card["legs"]
+                    or any(not isinstance(leg, Mapping) for leg in card["legs"])
+                    or card.get("profile_id") != owner or option.get("agent_id") != owner
+                    or option.get("snapshot_id") != run["snapshot_id"]
+                    or option.get("canonical_card_sha256") != _hash(card)
+                    or binding.get("version") != "ten-agent-canonical-product-bridge-v1"
+                    or any(binding.get(key) != value for key, value in (
+                        ("agent_id", owner), ("option_id", option["option_id"]),
+                        ("snapshot_id", run["snapshot_id"]), ("run_id", report["run_id"]),
+                        ("target_date", report["date"])))):
+                raise ValueError("UNBOUND_AGENT_CANONICAL_PRODUCT")
+            expected_legs = [{key: value for key, value in leg.items()
+                              if key not in {"model_probability", "model_probability_id"}}
+                             for leg in card["legs"]]
+            if option.get("legs") != expected_legs:
+                raise ValueError("UNBOUND_AGENT_OPTION_LEGS")
+            exposure = option_exposure(option)
+            if exposure in exposures:
+                raise ValueError("DUPLICATE_SELECTED_OWNER_EXPOSURE")
+            exposures.add(exposure)
+            selected[(owner, option["option_id"])] = (decision, option)
+    keys, choices, exposures = {}, set(), set()
+    for ticket in _publication_sources(report):
+        if not isinstance(ticket, Mapping):
+            raise TypeError("AGENT_VARIANT_OBJECT_REQUIRED")
+        if "agent_decision" not in ticket:
+            raise ValueError("BOUND_AGENT_VARIANT_REQUIRED")
+        if not isinstance(ticket["agent_decision"], Mapping):
+            raise TypeError("BOUND_AGENT_DECISION_OBJECT_REQUIRED")
+        binding = ticket["agent_decision"]
+        choice = (ticket.get("profile_id"), binding.get("option_id"))
+        if choice not in selected or choice in choices:
+            raise ValueError("FOREIGN_OR_DUPLICATE_AGENT_VARIANT")
+        decision, option = selected[choice]
+        expected = {
+            "agent_id": choice[0], "session_id": decision["session_id"],
+            "snapshot_id": run["snapshot_id"], "method_version": decision["method_version"],
+            "option_id": choice[1], "decision_sha256": _hash(decision),
+            "canonical_source_card_sha256": option["canonical_card_sha256"],
+            "reason": decision.get("reason"), "option_reason": option.get("reason"),
+            "family_uses": decision.get("family_uses"), "tool_receipts": decision.get("tool_receipts"),
+            "selection_authority": "OWN_FINAL_DECISION_NO_COORDINATOR_RESELECTION",
+        }
+        if binding != expected or ticket.get("generation_source_group") != "ten_agent_decisions":
+            raise ValueError("MISMATCHED_AGENT_DECISION_BINDING")
+        source = option["canonical_card"]
+        materialized = _materialize(source, "ten_agent_decisions", report, report.get("team", {}))
+        if ticket != {**materialized, "agent_decision": expected}:
+            raise ValueError("SELECTED_AGENT_PRODUCT_CHANGED")
+        identifier = ticket.get("ticket_id")
+        if not isinstance(identifier, str) or not identifier or identifier in keys:
+            raise ValueError("DUPLICATE_OR_MISSING_AGENT_TICKET_ID")
+        exposure = option_exposure(option)
+        if exposure in exposures:
+            raise ValueError("DUPLICATE_GENERATED_AGENT_EXPOSURE")
+        keys[identifier] = choice[1]
+        choices.add(choice)
+        exposures.add(exposure)
+    return keys
+
+
+def _recommendation_id(report, record, variant_keys):
+    if variant_keys is None:
+        return _hash([report["run_id"], record["profile_id"]])[:24]
+    identifier = record.get("portfolio_ticket_id", record.get("ticket_id"))
+    return _hash(["ten-agent-variant", report["run_id"], record["profile_id"],
+                  variant_keys[identifier]])[:24]
+
+
+def _agent_blocked_profiles(db, report, saved):
+    """A started, played or newer active old choice locks the whole owner."""
+    cutoff = _stamp(report.get("finished_at", report["observed_at"]))
+    current = max(cutoff, _stamp(saved))
+    blocked = set()
+    for table in ("portfolio_tickets", "portfolio_recommendations"):
+        for row in db.execute(
+            f"SELECT profile_id,created_at,snapshot_json FROM {table} "
+            "WHERE date=? AND run_id<>? AND active=1", (report["date"], report["run_id"]),
+        ).fetchall():
+            source = json.loads(row["snapshot_json"])
+            ticket_id = source.get("portfolio_ticket_id", source.get("ticket_id"))
+            played = ticket_id and db.execute(
+                "SELECT 1 FROM portfolio_wagers WHERE ticket_id=?", (ticket_id,),
+            ).fetchone()
+            if (played or _stamp(row["created_at"]) > cutoff
+                    or any(_stamp(leg["kickoff"]) <= current for leg in source["legs"])):
+                blocked.add(row["profile_id"])
+    return blocked
+
+
 def _bookmaker_return_provenance(db, ticket_id, settlement_hash):
     legacy = {"payout_basis": "LEGACY_REPORTED_RETURN_BASIS_UNSPECIFIED", "fee_tax_inclusion": "UNKNOWN", "provenance_status": "LEGACY_UNSPECIFIED"}
     exists = db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='portfolio_bookmaker_return_provenance'").fetchone()
@@ -254,6 +397,7 @@ class PortfolioLedger(RecommendationLedger):
         observed = _stamp(report["observed_at"])
         saved = _stamp(self.now()).isoformat()
         generated = _generated_contract(report)
+        variant_keys = _agent_variant_keys(report)
         publication_cutoff = _stamp(report.get("finished_at", report["observed_at"])) if generated else observed
         if generated and publication_cutoff < observed:
             raise ValueError("Final publication cannot precede the run observation")
@@ -267,7 +411,8 @@ class PortfolioLedger(RecommendationLedger):
                 raise ValueError("Generated tickets must be objects")
             profiles = [ticket.get("profile_id") for ticket in tickets]
             if (any(not isinstance(profile, str) or not profile for profile in profiles)
-                    or len({profile.casefold() for profile in profiles}) != len(profiles)):
+                    or (variant_keys is None
+                        and len({profile.casefold() for profile in profiles}) != len(profiles))):
                 raise ValueError("A generated run can contain only one ticket per profile")
             compatibility = report.get("tickets", [])
             if not isinstance(compatibility, list):
@@ -296,6 +441,7 @@ class PortfolioLedger(RecommendationLedger):
                 "SELECT observed_at FROM portfolio_runs WHERE date=?", (day,)
             ).fetchall()
             activate = not latest or observed >= max(_stamp(r[0]) for r in latest)
+            blocked = _agent_blocked_profiles(db, report, saved) if variant_keys is not None else set()
             db.execute(
                 "INSERT INTO portfolio_runs VALUES (?,?,?,?,?,?)",
                 (run_id, day, observed.isoformat(), saved, snapshot, _hash(report)),
@@ -327,6 +473,7 @@ class PortfolioLedger(RecommendationLedger):
                 )
             self._save_recommendations(db, report, saved)
             if activate and tickets:
+                replacing_profiles = {ticket["profile_id"] for ticket in tickets}
                 old_active = db.execute(
                     """SELECT ticket_id,snapshot_json FROM portfolio_tickets
                     WHERE date=? AND active=1 AND ticket_id NOT IN
@@ -335,6 +482,13 @@ class PortfolioLedger(RecommendationLedger):
                 ).fetchall()
                 for row in old_active:
                     frozen_ticket = json.loads(row[1])
+                    if variant_keys is not None and (
+                        frozen_ticket["profile_id"] in blocked
+                        or frozen_ticket["profile_id"] not in replacing_profiles
+                    ):
+                        # A different owner's completed choice cannot withdraw
+                        # this owner's prior cards after a missing/abstaining run.
+                        continue
                     # Once a match starts its published suggestion remains counted.
                     # A later rerun must not hide losing research recommendations.
                     if all(_stamp(leg["kickoff"]) > _stamp(saved) for leg in frozen_ticket["legs"]):
@@ -344,7 +498,7 @@ class PortfolioLedger(RecommendationLedger):
                     WHERE date=? AND active=1""",
                     (day,),
                 ).fetchall()
-                occupied = {row[0] for row in locked}
+                occupied = {row[0] for row in locked} | blocked
                 capacity = self.max_generated_tickets if generated else self.max_daily_tickets
                 slots = max(0, capacity - len(locked))
                 priority = sorted(
@@ -355,7 +509,8 @@ class PortfolioLedger(RecommendationLedger):
                     if slots <= 0 or ticket["profile_id"] in occupied:
                         continue
                     self._active(db, ticket["ticket_id"], True, saved, run_id)
-                    occupied.add(ticket["profile_id"])
+                    if variant_keys is None:
+                        occupied.add(ticket["profile_id"])
                     slots -= 1
         return {"run_id": run_id, "saved": True, "ticket_count": len(tickets)}
 
@@ -603,6 +758,7 @@ class PortfolioLedger(RecommendationLedger):
             # Bind the materialized index to the complete immutable publication;
             # a missing row or altered leg must never silently shrink a correction.
             sources = _publication_sources(report)
+            variant_keys = _agent_variant_keys(report)
             expected = []
             try:
                 for source in sources:
@@ -614,12 +770,13 @@ class PortfolioLedger(RecommendationLedger):
                     if record.get("ticket_id"):
                         record.setdefault("portfolio_ticket_id", record.pop("ticket_id"))
                     record.update(
-                        recommendation_id=_hash([run_id, record["profile_id"]])[:24],
+                        recommendation_id=_recommendation_id(report, record, variant_keys),
                         date=row["date"], run_id=run_id, created_at=finished.isoformat(),
                     )
                     expected.append(record)
                 matching = (
-                    len({item["profile_id"] for item in expected}) == len(expected)
+                    len({item["profile_id"] if variant_keys is None else item["recommendation_id"]
+                         for item in expected}) == len(expected)
                     and sorted(_json(item) for item in expected)
                     == sorted(_json(item) for item in recommendations)
                 )

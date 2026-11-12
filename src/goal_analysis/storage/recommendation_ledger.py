@@ -41,13 +41,25 @@ class RecommendationLedger:
             self._save_recommendations(db, json.loads(row[0]), row[1])
 
     def _save_recommendations(self, db, report, saved):
-        from .portfolio_ledger import _hash, _json, _stamp
+        from .portfolio_ledger import (
+            _agent_blocked_profiles,
+            _agent_variant_keys,
+            _json,
+            _recommendation_id,
+            _stamp,
+        )
 
+        variant_keys = _agent_variant_keys(report)
+        blocked = _agent_blocked_profiles(db, report, saved) if variant_keys is not None else set()
         records = report.get("recommendations")
         if records is None:
             records = report.get("tickets", []) + report.get("preview_tickets", [])
         cutoff = _stamp(report.get("finished_at", report["observed_at"]))
-        for profile in abstention_profiles(report):
+        retention_cutoff = max(cutoff, _stamp(saved)) if variant_keys is not None else cutoff
+        # Current owner abstention is a new decision, not authority to erase its
+        # prior active choices. Only a newly published own card replaces them.
+        withdrawn_profiles = abstention_profiles(report) if variant_keys is None else set()
+        for profile in withdrawn_profiles:
             previous = db.execute(
                 "SELECT recommendation_id,created_at,snapshot_json FROM portfolio_recommendations "
                 "WHERE date=? AND profile_id=? AND active=1", (report["date"], profile),
@@ -81,20 +93,26 @@ class RecommendationLedger:
                 raise ValueError("Recommendation fixtures must be distinct")
             profile = record["profile_id"]
             record.update(
-                recommendation_id=_hash([report["run_id"], profile])[:24],
+                recommendation_id=_recommendation_id(report, record, variant_keys),
                 date=report["date"],
                 run_id=report["run_id"],
                 created_at=cutoff.isoformat(),
             )
             previous = db.execute(
-                "SELECT recommendation_id,created_at,snapshot_json FROM portfolio_recommendations WHERE date=? AND profile_id=? AND active=1",
+                "SELECT recommendation_id,run_id,created_at,snapshot_json FROM portfolio_recommendations WHERE date=? AND profile_id=? AND active=1",
                 (report["date"], profile),
             ).fetchall()
-            active = True
+            active = profile not in blocked
             for old in previous:
+                if variant_keys is not None and (profile in blocked or old["run_id"] == report["run_id"]):
+                    continue
                 old_snapshot = json.loads(old["snapshot_json"])
-                if _stamp(old["created_at"]) > cutoff or any(
-                    _stamp(l["kickoff"]) <= cutoff for l in old_snapshot["legs"]
+                old_ticket_id = old_snapshot.get("portfolio_ticket_id", old_snapshot.get("ticket_id"))
+                played = (variant_keys is not None and old_ticket_id and db.execute(
+                    "SELECT 1 FROM portfolio_wagers WHERE ticket_id=?", (old_ticket_id,),
+                ).fetchone())
+                if played or _stamp(old["created_at"]) > cutoff or any(
+                    _stamp(l["kickoff"]) <= retention_cutoff for l in old_snapshot["legs"]
                 ):
                     active = False
                 else:

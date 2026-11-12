@@ -89,11 +89,11 @@ def with_unknown_result(state, snapshot, role):
                               interpretation='Result unavailable; no profit or probability claim')
 
 
-def test_snapshot_and_thirty_sessions_have_no_mutable_alias_or_shared_transcript():
+def test_snapshot_and_ten_sessions_have_no_mutable_alias_or_shared_transcript():
     inputs = snapshot_inputs()
     snapshot = build_snapshot(**inputs)
     states = start_sessions(snapshot, {owner: f'baseline:{owner}' for owner in OWNER_IDS})
-    assert len({state.session_id for state in states}) == 30
+    assert len({state.session_id for state in states}) == 10
     inputs['fixtures'][0]['home'] = 'MUTATED'
     inputs['family_values']['weather']['value']['wind_kmh'] = 99
     inputs['model_probabilities']['gauss:native:1:over25']['value'] = 0.9
@@ -337,7 +337,7 @@ def test_nonfinite_values_and_unknown_false_are_rejected_without_false_probabili
     assert build_snapshot(**inputs).data()['families']['retained_history']['value'] is False
 
 
-def test_one_owner_failure_does_not_prevent_other_thirty_contract_outputs():
+def test_one_owner_failure_does_not_prevent_other_ten_contract_outputs():
     snapshot = build_snapshot(**snapshot_inputs())
     versions = {owner: f'protected-baseline:{owner}' for owner in OWNER_IDS}
     states = start_sessions(snapshot, versions)
@@ -354,6 +354,6 @@ def test_one_owner_failure_does_not_prevent_other_thirty_contract_outputs():
                                         reason='TESTONLY contract output; no inference executed')
         outputs.append(decision.data())
     assert {row['agent_id'] for row in outputs} == set(OWNER_IDS)
-    assert len({row['session_id'] for row in outputs}) == 30
+    assert len({row['session_id'] for row in outputs}) == 10
     assert all(len(row['tool_receipts']) == 2 for row in outputs)
     assert states[0].transcript == states[1].transcript == ()

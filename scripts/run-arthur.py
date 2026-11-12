@@ -28,6 +28,7 @@ from goal_analysis.jobs.portfolio import (
     write_portfolio_bundle,
 )
 from goal_analysis.jobs.sports_context_archive import make_weather_provider
+from goal_analysis.operating_policy import current_contract
 from goal_analysis.providers.the_stats_odds import TheStatsOddsFeed
 from goal_analysis.providers.the_stats_primary import TheStatsPrimaryClient
 from goal_analysis.storage import CacheStore, Database
@@ -89,6 +90,17 @@ def review_package(report, options):
     return refresh_news(ROOT, review_grok_package(ROOT, report, options))
 
 
+def validate_agent_scope(settings, selected_competitions):
+    """Reject an incompatible day/owner request before any producer or ledger starts."""
+    if current_contract(settings):
+        from goal_analysis.agents.profile_roster import AGENT_IDS
+
+        if selected_competitions is not None:
+            raise ValueError('Independent agents require the full accessible day, not manual league scope')
+        if not set(AGENT_IDS) <= set(settings['enabled_profiles']):
+            raise ValueError('All ten independent agent owners must be present in the current configuration')
+
+
 def main(argv=None) -> int:
     args = parser().parse_args(argv)
     os.chdir(ROOT)
@@ -112,6 +124,8 @@ def main(argv=None) -> int:
         if args.ticket_count is not None:
             settings["target_ticket_count"] = args.ticket_count
         settings = validate_settings(settings)
+        if args.live:
+            validate_agent_scope(settings, selected_competitions)
         if args.check_codex_login:
             result = make_reviewer(settings).login_status()
             print(json.dumps(result))
@@ -149,6 +163,8 @@ def main(argv=None) -> int:
             if args.ticket_count is not None:
                 settings["target_ticket_count"] = args.ticket_count
             settings = validate_settings(settings)
+            if args.live:
+                validate_agent_scope(settings, selected_competitions)
             config = validate_live_config(json.loads(args.config.read_text("utf-8-sig")))
             ledger = PortfolioLedger(ROOT / "data/arthur/ledger.sqlite3")
             db = Database(ROOT / "data/goal_analysis.sqlite3")
@@ -186,6 +202,8 @@ def main(argv=None) -> int:
                 weather = make_weather_provider(ROOT, f'{day}-{datetime.now(UTC).isoformat()}',
                     root_run_lock=normal_weather_lock)
                 cache = CacheStore(db)
+                from goal_analysis.jobs.ten_agent_normal import make_normal_agent_executor
+
                 bundle = run_portfolio(
                     config,
                     settings,
@@ -203,6 +221,8 @@ def main(argv=None) -> int:
                             - report.get('usage', {}).get('football_calls', 0)))),
                     model_artifact_dir=ROOT / "data/arthur/models",
                     normal_history_root=ROOT,
+                    agent_executor=(make_normal_agent_executor(ROOT, settings, clock=lambda: datetime.now(UTC))
+                                    if current_contract(settings) else None),
                     team_plan=team_plan,
                     nemotron_stylist=lambda options, cards, target, now: curate_nemotron_tickets(
                         ROOT, options, cards, target, now),
@@ -232,6 +252,11 @@ def main(argv=None) -> int:
                     "usage": {},
                     "real_wager_placed": False,
                 }
+                if current_contract(settings):
+                    from goal_analysis.generated_tickets import refresh_generation_capacity
+
+                    report['generated_tickets'] = []
+                    refresh_generation_capacity(report)
                 bundle = {"schema_version": 3, "artifacts": {"report": report}}
             report = bundle["artifacts"]["report"]
             if settlement_diagnostic:
@@ -258,12 +283,12 @@ def main(argv=None) -> int:
             )
             print("Astra: " + report["astra"].get("message", report["astra"]["status"]))
             print(
-                f"ARTHUR: {report['construction_status']}; tickets={len(report['tickets'])}; previews={len(report.get('preview_tickets', []))}; Astra={report['astra']['status']}; output={output.relative_to(ROOT)}"
+                f"ARTHUR: {report['construction_status']}; generated={len(report.get('generated_tickets', []))}; tickets={len(report['tickets'])}; previews={len(report.get('preview_tickets', []))}; Astra={report['astra']['status']}; output={output.relative_to(ROOT)}"
             )
             if report.get("reason"):
                 print(report["reason"])
             print("No wager was placed. Actual wagers must be marked in the dashboard.")
-            delivered = (
+            delivered = len(report['generated_tickets']) if 'generated_tickets' in report else (
                 len(report["tickets"])
                 + len(report.get("preview_tickets", []))
                 + sum(bool(r["legs"]) for r in report.get("recommendations", []))

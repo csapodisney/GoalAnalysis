@@ -15,6 +15,8 @@ from goal_analysis.strategy_provenance import attach_strategy_provenance
 
 def workflow(root):
     flow,clock,calls=setup_workflow(root)
+    # This is the unchanged legacy evidence-seal path, explicitly selected.
+    flow.settings_path.write_text(json.dumps({"operating_contract_version": 1}), encoding="utf-8")
     generate=flow.generator
     original_build=evidence_module.build_ticket_evidence
     generated=[]

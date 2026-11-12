@@ -407,7 +407,47 @@ class ArthurState:
             # Read-only metadata must never hide already saved tickets.
             contracts = {"status": "UNAVAILABLE", "mode": "SHADOW_DECLARATION", "contracts": [],
                          "reason": "STRATEGY_CONTRACT_PROJECTION_FAILED", "decision_effect": False}
-        generated = _generated_cards(runs[0] if runs else None)
+        report = runs[0] if runs else {}
+        generated = _generated_cards(report)
+        decisions = report.get("ten_agent_decisions")
+        if isinstance(decisions, dict) and decisions.get("version") == "ten-agent-decision-run-v1":
+            from goal_analysis.agents.profile_roster import ACTIVE_AGENTS, AGENT_IDS
+
+            # Display the canonical saved variants, never a stale recommendation
+            # fallback or a profile-keyed last-card-wins projection.
+            cards = [card for card in (generated or []) if card.get("profile_id") in AGENT_IDS]
+            personas = {persona["profile_id"]: persona for persona in get_catalogue()}
+            catalogue = []
+            for agent in ACTIVE_AGENTS:
+                persona = personas.get(agent.agent_id, {
+                    "profile_id": agent.agent_id,
+                    "preferences": ["Teljes napi kínálatból saját választás",
+                                    "Közös adatforrások, saját döntés"],
+                })
+                catalogue.append(effective_persona({
+                    **persona, "name": agent.name, "personality": agent.personality,
+                    "agent_method_version": agent.method_version,
+                    "max_variants": agent.max_variants,
+                }, settings))
+            return {
+                "catalogue": catalogue, "recommendations": cards,
+                "owner_states": deepcopy([
+                    row for row in report.get("profiles", [])
+                    if isinstance(row, dict) and row.get("profile_id") in AGENT_IDS
+                ]),
+                "decision_mode": "TEN_INDEPENDENT_OWNERS", "agent_count": len(AGENT_IDS),
+                "strategy_contracts": contracts,
+                "enabled_profiles": [p for p in settings["enabled_profiles"] if p in AGENT_IDS],
+                "overlap": recommendation_overlap(cards),
+                "max_daily": sum(agent.max_variants for agent in ACTIVE_AGENTS),
+                "existing_profile_count": 0,
+                "members": [deepcopy(m) for m in team.get("members", [])
+                            if m.get("profile_id") in AGENT_IDS],
+                "metrics_as_of": (team.get("latest_evaluation") or {}).get("as_of"),
+                "selection_basis": "OWN_DECISIONS_FROM_FULL_DAILY_SHARED_DATA",
+                "independent_decision_owners": True,
+                "independent_models": False, "automatic_wager_changes": False,
+            }
         sources = recommendations if generated is None else generated
         current = {r["profile_id"]: r for r in sources if r["profile_id"] in TIPSTER_PROFILE_IDS}
         # Abstentions have no legs and are stored in the immutable report, not as wagers.

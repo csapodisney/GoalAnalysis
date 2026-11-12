@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, replace
 
+from goal_analysis.agents.profile_roster import AGENT_COUNT, get_agent_definition
 from goal_analysis.jobs.agent_snapshot import (
     FAMILIES,
     SharedSnapshot,
@@ -66,7 +67,7 @@ class OwnerDecision:
 
 
 def _check(state: ProfileState, snapshot: SharedSnapshot) -> dict:
-    data = snapshot.data()
+    data = snapshot.decision_data()
     require(state.agent_id in data['owner_ids'] and state.snapshot_id == snapshot.snapshot_id
             and state.session_id == digest([state.agent_id, state.method_version, snapshot.snapshot_id]),
             'FOREIGN_OWNER_OR_SNAPSHOT')
@@ -81,10 +82,10 @@ def _event(state: ProfileState, value: dict, **updates) -> ProfileState:
 
 
 def start_sessions(snapshot: SharedSnapshot, method_versions: dict[str, str]) -> tuple[ProfileState, ...]:
-    owners = snapshot.data()['owner_ids']
-    require(set(method_versions) == set(owners) and len(method_versions) == 30
+    owners = snapshot.decision_data()['owner_ids']
+    require(set(method_versions) == set(owners) and len(method_versions) == AGENT_COUNT
             and all(isinstance(value, str) and value for value in method_versions.values()),
-            'EXACT_THIRTY_METHOD_OWNERS_REQUIRED')
+            'EXACT_TEN_METHOD_OWNERS_REQUIRED')
     return tuple(ProfileState(owner, digest([owner, method_versions[owner], snapshot.snapshot_id]),
                               method_versions[owner], snapshot.snapshot_id) for owner in owners)
 
@@ -166,8 +167,9 @@ def request_tool(state: ProfileState, snapshot: SharedSnapshot, role: str,
                   requests=(*state.requests, request.payload_json)), request
 
 
-def record_tool_result(state: ProfileState, snapshot: SharedSnapshot, request: ToolRequest,
-                       result: dict, *, interpretation: str) -> ProfileState:
+def validate_tool_result(state: ProfileState, snapshot: SharedSnapshot, request: ToolRequest,
+                         result: dict) -> None:
+    """Check an untrusted tool envelope before it can enter the owner's prompt."""
     _check(state, snapshot)
     payload = request.data()
     require(request.payload_json in state.requests and payload['agent_id'] == state.agent_id
@@ -176,8 +178,7 @@ def record_tool_result(state: ProfileState, snapshot: SharedSnapshot, request: T
     require(isinstance(result, dict) and result.get('request_id') == payload['request_id']
             and result.get('agent_id') == state.agent_id and result.get('snapshot_id') == snapshot.snapshot_id
             and result.get('option_hash') == payload['option_hash'], 'FOREIGN_TOOL_RESULT')
-    require(result.get('status') in {'AVAILABLE', 'CACHED', 'UNKNOWN'}
-            and isinstance(interpretation, str) and bool(interpretation), 'EXPLICIT_TOOL_RESULT_REQUIRED')
+    require(result.get('status') in {'AVAILABLE', 'CACHED', 'UNKNOWN'}, 'EXPLICIT_TOOL_RESULT_REQUIRED')
     links = identifiers(result.get('own_option_ids', []))
     risk = result.get('risk')
     require(set(links) <= set(payload['own_option_ids'])
@@ -194,6 +195,13 @@ def record_tool_result(state: ProfileState, snapshot: SharedSnapshot, request: T
                     and bool(result['cached_from_result_id']), 'CACHE_PROVENANCE_REQUIRED')
     require(not any(json.loads(row)['request_id'] == payload['request_id'] for row in state.receipts),
             'NO_DUPLICATE_TOOL_RECEIPT')
+
+
+def record_tool_result(state: ProfileState, snapshot: SharedSnapshot, request: ToolRequest,
+                       result: dict, *, interpretation: str) -> ProfileState:
+    validate_tool_result(state, snapshot, request, result)
+    require(isinstance(interpretation, str) and bool(interpretation), 'EXPLICIT_TOOL_RESULT_REQUIRED')
+    payload = request.data()
     receipt = {**json.loads(json_text(result)), 'role': payload['role'],
                'interpretation': interpretation, 'result_sha256': digest(result)}
     return _event(state, {'type': 'TOOL_RESULT', 'request_id': payload['request_id']},
@@ -202,19 +210,59 @@ def record_tool_result(state: ProfileState, snapshot: SharedSnapshot, request: T
 
 def finalize_decision(state: ProfileState, snapshot: SharedSnapshot, *, option_id: str | None,
                       reason: str) -> tuple[ProfileState, OwnerDecision]:
+    """Compatibility entry point for one own variant or an explicit abstention."""
+    return finalize_decisions(state, snapshot,
+                              option_ids=() if option_id is None else (option_id,), reason=reason)
+
+
+def option_exposure(option: dict) -> str:
+    """Economic selections, independent of owner/name, prose, price refresh and order."""
+    rows = [{
+        'fixture_id': leg.get('fixture_id'),
+        'market': leg.get('market_key', leg.get('market')),
+        'outcome': leg.get('selection_key', leg.get('outcome')),
+        'period': leg.get('period'), 'line': leg.get('line'), 'handicap': leg.get('handicap'),
+    } for leg in option['legs']]
+    return digest(sorted(rows, key=json_text))
+
+
+def finalize_decisions(state: ProfileState, snapshot: SharedSnapshot, *, option_ids,
+                       reason: str) -> tuple[ProfileState, OwnerDecision]:
+    """Freeze up to three distinct own variants after both tools and input accounting.
+
+    This authenticates the decision contract, not quotes, payout eligibility or
+    the strategy's economic edge. Those remain the canonical product gates.
+    """
     data = _check(state, snapshot)
     options = json.loads(state.options_json)
     option_hash = digest(options)
-    require(option_id is None or option_id in {row['option_id'] for row in options}, 'FOREIGN_FINAL_OPTION')
+    selected_ids = identifiers(option_ids)
+    require(len(selected_ids) <= get_agent_definition(state.agent_id).max_variants,
+            'OWNER_VARIANT_LIMIT_EXCEEDED')
+    require(set(selected_ids) <= {row['option_id'] for row in options}, 'FOREIGN_FINAL_OPTION')
+    selected = [next(row for row in options if row['option_id'] == key) for key in selected_ids]
+    require(len({option_exposure(row) for row in selected}) == len(selected),
+            'DUPLICATE_SELECTED_EXPOSURE')
+    require(len(selected) <= 1 or all(isinstance(row.get('reason'), str)
+                                     and row['reason'].strip() for row in selected),
+            'EACH_SELECTED_VARIANT_REASON_REQUIRED')
     require(isinstance(reason, str) and bool(reason), 'FINAL_REASON_REQUIRED')
     roles = {json.loads(row)['role'] for row in state.receipts
              if json.loads(row)['option_hash'] == option_hash}
     require(set(SIMULATOR_ROLES) <= roles, 'MISSING_SIMULATION_RECEIPT')
+    current_receipts = [json.loads(row) for row in state.receipts
+                        if json.loads(row)['option_hash'] == option_hash]
+    for role in SIMULATOR_ROLES:
+        covered = set()
+        for receipt in current_receipts:
+            if receipt['role'] == role:
+                covered.update(selected_ids if receipt['status'] == 'UNKNOWN'
+                               else receipt.get('own_option_ids', []))
+        require(set(selected_ids) <= covered, 'SELECTED_VARIANT_SIMULATION_NOT_COVERED')
     reviews = json.loads(state.fixture_reviews_json)
     require(set(reviews) == set(data['fixture_ids']), 'FULL_CALENDAR_NOT_CONSIDERED')
-    selected = next((row for row in options if row['option_id'] == option_id), None)
-    require(selected is None or all(not reviews[leg['fixture_id']]['rejected']
-                                   for leg in selected['legs']), 'SELECTED_FIXTURE_REJECTED')
+    require(all(not reviews[leg['fixture_id']]['rejected']
+                for option in selected for leg in option['legs']), 'SELECTED_FIXTURE_REJECTED')
     uses = json.loads(state.family_uses_json)
     require(set(uses) == set(FAMILIES), 'ALL_FAMILY_STATES_REQUIRED')
     require(all(set(value['option_ids']) <= {row['option_id'] for row in options}
@@ -222,12 +270,16 @@ def finalize_decision(state: ProfileState, snapshot: SharedSnapshot, *, option_i
     current_hashes = {row['option_id']: digest(row) for row in options}
     require(all(value['option_hashes'] == {key: current_hashes[key] for key in value['option_ids']}
                 for value in uses.values()), 'STALE_FAMILY_OPTION_CONTENT')
-    final = {'agent_id': state.agent_id, 'session_id': state.session_id,
+    final = {'version': 'profile-owner-decision-v2-ten-agents',
+        'agent_id': state.agent_id, 'session_id': state.session_id,
         'snapshot_id': snapshot.snapshot_id, 'method_version': state.method_version,
-        'status': 'ABSTAIN' if option_id is None else 'FINAL_DECISION', 'option_id': option_id,
+        'status': 'ABSTAIN' if not selected_ids else 'FINAL_DECISION',
+        'option_id': selected_ids[0] if len(selected_ids) == 1 else None,
+        'option_ids': list(selected_ids), 'selected_options': selected,
         'option_hash': option_hash, 'reason': reason, 'family_uses': uses,
         'tool_receipts': [json.loads(row) for row in state.receipts
                           if json.loads(row)['option_hash'] == option_hash],
         'execution_evidence': 'CONTRACT_ONLY_NOT_INFERENCE_OR_RUNTIME_PROOF'}
     decision = OwnerDecision(json_text(final))
-    return _event(state, {'type': 'FINAL', 'option_id': option_id}, final_json=decision.payload_json), decision
+    return _event(state, {'type': 'FINAL', 'option_ids': list(selected_ids)},
+                  final_json=decision.payload_json), decision

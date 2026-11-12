@@ -1,0 +1,196 @@
+"""Explicit NORMAL integration of the ten independent supplied-data owners."""
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+import sys
+from copy import deepcopy
+from datetime import timedelta
+from pathlib import Path
+
+from goal_analysis.agents.profile_decision_runner import (
+    CodexDecisionHost,
+    DecisionBudget,
+    DecisionJournal,
+    ProfileDecisionRunner,
+)
+from goal_analysis.agents.profile_roster import AGENT_IDS
+from goal_analysis.agents.profile_tools import ProfileToolService
+from goal_analysis.jobs.agent_snapshot import build_normal_snapshot, require
+from goal_analysis.jobs.profile_historical_scenarios import build_history_view
+
+
+def make_normal_agent_executor(root, settings, *, clock, stop_requested=lambda: False):
+    """Use the existing saved-login host; this factory itself performs no I/O."""
+    from goal_analysis.agents.codex_review import CodexReviewer
+    from goal_analysis.jobs.agent_evidence import read_current_news
+    from goal_analysis.operating_policy import current_contract
+
+    require(current_contract(settings) and set(AGENT_IDS) <= set(settings['enabled_profiles']),
+            'TEN_AGENT_SETTINGS_REQUIRED_BEFORE_ACQUISITION')
+    root = Path(root)
+    ai = settings['openai']
+
+    def reviewer_factory():
+        return CodexReviewer(model=ai['model'], reasoning_effort=ai['reasoning_effort'],
+            web_search=False, max_output_tokens=ai['max_output_tokens'],
+            cache_dir=root / 'data/arthur/codex-cache')
+
+    return NormalAgentExecutor(host=CodexDecisionHost(reviewer_factory),
+        journal_root=root / 'data/arthur/agent-decisions', clock=clock,
+        stop_requested=stop_requested, enable_source_access=True,
+        news_reader=lambda **kwargs: read_current_news(root / 'data/goal_analysis.sqlite3', **kwargs))
+
+
+class NormalAgentExecutor:
+    """Construction is inert; invocation belongs to a new authorized NORMAL run.
+
+    Optional source readers receive the current full fixture list and cutoff.
+    They must return already validated evidence, never perform a fit or replay.
+    Missing historical evaluation remains explicit UNKNOWN; it is not a fabricated
+    backtest. The ordinary collectors and model run precede this callback.
+    """
+
+    def __init__(self, *, host, journal_root, clock, stop_requested=lambda: False,
+                 news_reader=None, historical_reader=None, max_requests=20,
+                 timeout_seconds=3600, enable_source_access=False):
+        require(callable(host) and callable(clock), 'EXPLICIT_HOST_AND_CLOCK_REQUIRED')
+        require(type(timeout_seconds) is int and 0 < timeout_seconds <= 3600,
+                'FINITE_NORMAL_AGENT_DEADLINE_REQUIRED')
+        require(type(max_requests) is int and 0 <= max_requests <= 20,
+                'FINITE_NORMAL_AGENT_REQUEST_BUDGET_REQUIRED')
+        require(type(enable_source_access) is bool, 'EXPLICIT_SOURCE_ACCESS_MODE_REQUIRED')
+        self.host, self.clock, self.stop_requested = host, clock, stop_requested
+        self.journal_root = Path(journal_root)
+        self.news_reader, self.historical_reader = news_reader, historical_reader
+        self.max_requests, self.timeout_seconds = max_requests, timeout_seconds
+        self.enable_source_access = enable_source_access
+
+    @staticmethod
+    def _stage_source_access(journal, snapshot):
+        """One exact owned bundle, shared by all phase capabilities; no host call."""
+        from goal_analysis.agents import profile_source_access, profile_source_stdio
+        from goal_analysis.agents.profile_input import decision_view
+
+        bundle = profile_source_access.SourceBundle.from_snapshot(snapshot, decision_view(snapshot))
+        owned_root = (journal.directory / 'source-access').resolve()
+        require(owned_root.is_relative_to(journal.directory.resolve()), 'SOURCE_ACCESS_ROOT_OUTSIDE_RUN')
+        owned_root.mkdir(exist_ok=False)
+        bundle_path = owned_root / 'bundle.json'
+        checksum, written = hashlib.sha256(), 0
+        encoder = json.JSONEncoder(sort_keys=True, ensure_ascii=False, allow_nan=False, separators=(',', ':'))
+        with bundle_path.open('xb') as stream:
+            for part in encoder.iterencode(bundle.as_dict()):
+                encoded = part.encode('utf-8')
+                written += len(encoded)
+                require(written <= 536_870_912, 'SOURCE_BUNDLE_STORAGE_BOUND_EXCEEDED_BEFORE_HOST')
+                stream.write(encoded)
+                checksum.update(encoded)
+            stream.flush()
+            os.fsync(stream.fileno())
+        server, kernel = Path(profile_source_stdio.__file__).resolve(), Path(profile_source_access.__file__).resolve()
+        scope_args = {'owned_root': owned_root, 'bundle_path': bundle_path,
+            'bundle_sha256': checksum.hexdigest(),
+            'python_executable': Path(sys.executable).resolve(), 'server_script': server,
+            'server_sha256': hashlib.sha256(server.read_bytes()).hexdigest(),
+            'kernel_source': kernel, 'kernel_sha256': hashlib.sha256(kernel.read_bytes()).hexdigest()}
+        journal.write_once('source-access-bundle.json', {
+            'snapshot_id': snapshot.snapshot_id, 'view_sha256': bundle.view_sha256,
+            'bundle_sha256': scope_args['bundle_sha256'],
+            'bundle_bytes': written, 'bundle_byte_limit': 536_870_912,
+            'access_semantics': 'AVAILABLE_TO_ALL_OWNERS_NOT_AN_ACTUAL_READ_CLAIM'})
+        return bundle, scope_args
+
+    @staticmethod
+    def _read_optional(reader, *, fixture_ids, as_of):
+        if reader is None:
+            return [], {'status': 'UNKNOWN', 'reason': 'NO_BOUND_SOURCE_READER'}
+        try:
+            rows = reader(fixture_ids=tuple(fixture_ids), as_of=as_of)
+            require(isinstance(rows, (tuple, list)), 'SOURCE_READER_SEQUENCE_REQUIRED')
+            return deepcopy(list(rows)), {'status': 'RETURNED', 'count': len(rows)}
+        except Exception as error:  # noqa: BLE001 - optional source errors remain local UNKNOWN.
+            return [], {'status': 'UNKNOWN', 'reason': 'SOURCE_READER_FAILED',
+                        'error_type': type(error).__name__}
+
+    def __call__(self, *, run_id, target_date, as_of, artifacts, fixture_records,
+                 enriched, club_enriched, candidate_context, weather_by_fixture,
+                 historical_runs, feedback, settings, team_plan):
+        from goal_analysis.jobs.agent_portfolio import (
+            build_agent_option_builder,
+            publish_agent_decisions,
+        )
+
+        require(Path(run_id).name == run_id and run_id not in {'', '.', '..'}, 'LOCAL_RUN_ID_REQUIRED')
+        require(set(AGENT_IDS) <= set(settings['enabled_profiles']), 'TEN_AGENT_SETTINGS_REQUIRED')
+        require(not self.stop_requested(), 'HUMAN_OR_ACCOUNT_STOP')
+        full_ids = artifacts.get('calendar', {}).get('scope_receipt', {}).get('provider_fixture_ids', [])
+        news, news_status = self._read_optional(self.news_reader, fixture_ids=full_ids, as_of=as_of)
+        history, history_status = self._read_optional(self.historical_reader, fixture_ids=full_ids, as_of=as_of)
+        historical_view = build_history_view(artifacts, as_of=as_of.isoformat())
+        snapshot = build_normal_snapshot(run_id=run_id, target_date=target_date.isoformat(),
+            snapshot_as_of=as_of.isoformat(), artifacts=artifacts, fixture_records=fixture_records,
+            enriched=enriched, club_enriched=club_enriched, candidate_context=candidate_context,
+            weather_by_fixture=weather_by_fixture, historical_runs=historical_runs,
+            feedback=feedback, news_envelopes=news, historical_view=historical_view)
+        report = {'schema_version': 3, 'module': 'ARTHUR_PORTFOLIO', 'run_id': run_id,
+            'date': target_date.isoformat(), 'observed_at': as_of.isoformat(),
+            'finished_at': as_of.isoformat(), 'settings': deepcopy(settings),
+            'tickets': [], 'recommendations': [], 'profile_proposals': [], 'preview_tickets': [],
+            'profiles': [], 'fixtures': deepcopy(fixture_records), 'diagnostics': [],
+            'real_wager_placed': False, 'construction_status': 'AGENT_DECISIONS_PENDING',
+            'agent_source_readers': {'news': news_status, 'historical_strategy': history_status,
+                'descriptive_recorded_results': {'source': 'ALREADY_COLLECTED_NORMAL_INPUT',
+                    'source_view_sha256': historical_view['source_view_sha256'],
+                    'admitted_record_count': len(historical_view['records']),
+                    'physical_source_validation': 'NOT_PERFORMED', 'profit_or_PIT_claim': False}}}
+        journal = DecisionJournal(self.journal_root / run_id, snapshot)
+        journal.write_once('shared-data.json', snapshot.data())
+        journal.write_once('descriptive-history-input.json', historical_view)
+        source_bundle, source_scope_args = (self._stage_source_access(journal, snapshot)
+                                           if self.enable_source_access else (None, None))
+        tools = ProfileToolService(snapshot, artifacts=artifacts, historical_evaluations=history,
+                                   historical_view=historical_view)
+        builder = build_agent_option_builder(report, artifacts, enriched, club_enriched, settings, as_of)
+        blocked = set(team_plan.get('blocked_profiles', []))
+
+        def owner_host(request, *, timeout):
+            require(request['agent_id'] not in blocked, 'OWNER_PAUSED_BY_TEAM_POLICY')
+            if self.enable_source_access:
+                from goal_analysis.agents.profile_source_host import SourceAccessScope
+
+                binding = {key: request[key] for key in ('agent_id', 'session_id', 'snapshot_id', 'phase')}
+                scope = SourceAccessScope(**source_scope_args, binding=binding)
+                return self.host(request, timeout=timeout, source_access=scope)
+            return self.host(request, timeout=timeout)
+
+        result = ProfileDecisionRunner(host=owner_host, tools=tools, option_builder=builder,
+            journal=journal, source_bundle=source_bundle, budget=DecisionBudget(self.max_requests,
+                self.clock() + timedelta(seconds=self.timeout_seconds),
+                clock=self.clock, stop_requested=self.stop_requested)).run(snapshot)
+        artifacts['independent_agent_snapshot'] = snapshot.data()
+        artifacts['independent_agent_decisions'] = deepcopy(result)
+        publish_agent_decisions(report, result, settings, self.clock(), team_plan=team_plan)
+        usages = [value for owner in result['owners'] for value in owner.get('observed_host_usage', [])]
+        complete_requests = bool(usages) and all(isinstance(value, dict)
+            and type(value.get('requests')) is int for value in usages)
+        complete_usage = complete_requests and all(value.get('usage_complete') is True for value in usages)
+        known_requests = sum(value['requests'] for value in usages if isinstance(value, dict)
+                             and type(value.get('requests')) is int)
+        usage = {'requests': known_requests if complete_requests else None,
+            'known_requests': known_requests, 'host_requests_reserved': result['host_requests_reserved'],
+            'cost_amount': None, 'cost_currency': 'USD', 'usage_complete': complete_usage}
+        for field in ('input_tokens', 'output_tokens', 'total_tokens', 'cached_tokens', 'reasoning_tokens'):
+            known = [value[field] for value in usages if isinstance(value, dict)
+                     and type(value.get(field)) is int]
+            usage[field] = sum(known) if usages and len(known) == len(usages) else None
+        report['astra'] = {'status': 'COMPLETE' if result['status'] == 'COMPLETE' else 'PARTIAL',
+            'mode': 'TEN_INDEPENDENT_OWNER_DECISIONS', 'reviews': [], 'usage': usage,
+            'message': 'Tíz külön döntési út; a hiányzó vagy félbeszakadt eredmények agentenként láthatók.',
+            'legacy_candidate_review_performed': False}
+        report['usage'] = {**deepcopy(artifacts.get('report', {}).get('usage', {})),
+                           'openai': usage, 'llm_calls': usage['requests']}
+        report['policy'] = deepcopy(settings)
+        report['finished_at'] = self.clock().isoformat()
+        return report

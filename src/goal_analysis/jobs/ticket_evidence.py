@@ -277,6 +277,15 @@ def _preselection_review(report, artifacts, leg, sources):
 
 
 def build_ticket_evidence(report: dict, artifacts: dict) -> dict:
+    owner_run = report.get("ten_agent_decisions")
+    if isinstance(owner_run, dict) and owner_run.get("version") == "ten-agent-decision-run-v1":
+        from goal_analysis.jobs.ten_agent_ticket_evidence import build_ten_agent_ticket_evidence
+
+        return build_ten_agent_ticket_evidence(report, artifacts)
+    return _build_ticket_evidence(report, artifacts)
+
+
+def _build_ticket_evidence(report: dict, artifacts: dict, *, groups=GROUPS) -> dict:
     """Bind every final card/leg, including abstentions and previews, additively.
 
     RETAINED/RANKING_TRACE records describe existing selector outputs. Available
@@ -298,7 +307,7 @@ def build_ticket_evidence(report: dict, artifacts: dict) -> dict:
                         for name in ("weather", "motivation")}
     entries = []
     history_checked, history_context = False, None
-    for group in GROUPS:
+    for group in groups:
         for card_index, card in enumerate(report.get(group, []) or []):
             card_path = (group, card_index)
             legs = []
