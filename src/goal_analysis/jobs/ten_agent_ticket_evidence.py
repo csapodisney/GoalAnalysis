@@ -432,10 +432,35 @@ def build_ten_agent_ticket_evidence(report, artifacts):
             require(snapshot is not None, 'SAVED_SNAPSHOT_NOT_BOUND')
             require(isinstance(card, dict) and isinstance(card.get('ticket_id'), str)
                     and counts[card['ticket_id']] == 1, 'UNIQUE_CANONICAL_TICKET_ID_REQUIRED')
-            owner = next(row for row in report['ten_agent_decisions']['owners'] if row['agent_id'] == card['profile_id'])
-            entry['own_selection'] = _canonical_card(card, owner, report, snapshot.snapshot_id,
-                                                      shared['candidate_input_sha256'])
-            entry['owner_evidence'] = result['owner_checks'][owner['agent_id']]
+            if 'channel_id' in card:
+                from goal_analysis.companion_tickets import validate_companion_cards
+
+                require(card['ticket_id'] in validate_companion_cards(report), 'COMPANION_BINDING_NOT_FOUND')
+                produced = artifacts['companion_producer_results'][card['channel_id']]['report']
+                channel = next(row for row in report['companion_ticket_channels']['channels']
+                               if row['channel_id'] == card['channel_id'])
+                require(digest(produced) == card['companion_decision']['producer_report_sha256']
+                        and produced == channel['producer_report'], 'COMPANION_PRODUCER_RESULT_CHANGED')
+                actual_inputs = {'candidate_input': digest(artifacts['candidate_input']),
+                    'history': digest(artifacts['history']),
+                    'enriched': digest(data['families']['odds_and_price_history']['value']['enriched']),
+                    'settings': digest(report['settings'])}
+                chosen_ids = {leg['candidate_id'] for leg in card['legs']}
+                actual_selected_rows = [row for row in artifacts['candidate_input']['candidates']
+                                        if row['candidate_id'] in chosen_ids]
+                require(channel['input_hashes'] == actual_inputs
+                        and channel['calendar_ids'] == data['fixture_ids']
+                        and channel['selected_source_rows'] == actual_selected_rows,
+                        'COMPANION_SHARED_INPUT_CHANGED')
+                entry['own_selection'] = {'status': 'BOUND_PROTECTED_CONSTRUCTOR_PRODUCT',
+                    'channel_id': card['channel_id'], 'not_agent_reasoning': True}
+                entry['owner_evidence'] = {'status': 'NOT_APPLICABLE_PROTECTED_CONSTRUCTOR',
+                    'all_families_causally_used': False, 'model_or_simulator_use': 'NOT_EVALUATED'}
+            else:
+                owner = next(row for row in report['ten_agent_decisions']['owners'] if row['agent_id'] == card['profile_id'])
+                entry['own_selection'] = _canonical_card(card, owner, report, snapshot.snapshot_id,
+                                                          shared['candidate_input_sha256'])
+                entry['owner_evidence'] = result['owner_checks'][owner['agent_id']]
             entry['snapshot_sources'] = _snapshot_links(card, data, source_context)
         except (KeyError, TypeError, ValueError, AttributeError, StopIteration) as error:
             entry['own_selection'] = _unknown(str(error), error)

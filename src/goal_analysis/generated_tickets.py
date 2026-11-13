@@ -359,7 +359,12 @@ def finalize_generated(report, settings, *, team_plan=None, options=None):
         return report
     report.setdefault('settings', deepcopy(settings))
     if 'ten_agent_decisions' in report:
-        return _finalize_agent_generated(report, settings, team_plan or report.get('team', {}))
+        result = _finalize_agent_generated(report, settings, team_plan or report.get('team', {}))
+        if 'companion_ticket_channels' in report:
+            from goal_analysis.companion_tickets import append_companion_cards
+
+            return append_companion_cards(result)
+        return result
     capture_profile_decisions(report)
     plan, options = team_plan or report.get('team', {}), options or {}
     cutoff = datetime.fromisoformat(report.get('finished_at', report['observed_at']))
@@ -453,4 +458,8 @@ def refresh_generation_capacity(report, *, excluded=None):
         'draft_count': sum(ticket['status'] == 'DRAFT' for ticket in generated),
         'excluded_profiles': excluded, 'financial_wager_cap_changed': False,
     }
+    if 'companion_ticket_channels' in report:
+        from goal_analysis.companion_tickets import refresh_companion_capacity
+
+        refresh_companion_capacity(report)
     return report

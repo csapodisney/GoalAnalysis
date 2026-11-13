@@ -92,6 +92,28 @@ def _publication_sources(report: Mapping[str, Any]) -> list:
 
 
 def _agent_variant_keys(report: Mapping[str, Any]) -> dict[str, str] | None:
+    if 'companion_ticket_channels' not in report:
+        if any('channel_id' in row for row in _publication_sources(report)):
+            raise ValueError('COMPANION_MARKER_REQUIRED')
+        return _ten_agent_variant_keys(report)
+    from goal_analysis.companion_tickets import validate_companion_cards
+
+    companions = validate_companion_cards(report)
+    agents = {**report, 'generated_tickets': [row for row in _publication_sources(report)
+                                           if 'channel_id' not in row]}
+    own = _ten_agent_variant_keys(agents)
+    if own is None or set(own) & set(companions):
+        raise ValueError('UNBOUND_OR_DUPLICATE_COMPANION_TICKET')
+    return {**own, **companions}
+
+
+def _publication_identity(card):
+    from goal_analysis.companion_tickets import publication_identity
+
+    return publication_identity(card)
+
+
+def _ten_agent_variant_keys(report: Mapping[str, Any]) -> dict[str, str] | None:
     """Bind stored variants to completed current owners, without selecting a bet.
 
     Publication may honestly omit an unpublishable selected option. It cannot
@@ -230,7 +252,7 @@ def _agent_blocked_profiles(db, report, saved):
             ).fetchone()
             if (played or _stamp(row["created_at"]) > cutoff
                     or any(_stamp(leg["kickoff"]) <= current for leg in source["legs"])):
-                blocked.add(row["profile_id"])
+                blocked.add(_publication_identity(source))
     return blocked
 
 
@@ -405,7 +427,8 @@ class PortfolioLedger(RecommendationLedger):
         if not isinstance(tickets, list):
             raise ValueError("tickets must be a list")  # noqa: TRY004 - API validation contract.
         if generated:
-            if len(tickets) > self.max_generated_tickets:
+            companion_count = sum("channel_id" in item for item in tickets) if "companion_ticket_channels" in report else 0
+            if len(tickets) - companion_count > self.max_generated_tickets or companion_count > 2:
                 raise ValueError("Generated ticket capacity exceeded")
             if any(not isinstance(ticket, Mapping) for ticket in tickets):
                 raise ValueError("Generated tickets must be objects")
@@ -473,7 +496,7 @@ class PortfolioLedger(RecommendationLedger):
                 )
             self._save_recommendations(db, report, saved)
             if activate and tickets:
-                replacing_profiles = {ticket["profile_id"] for ticket in tickets}
+                replacing_profiles = {_publication_identity(ticket) for ticket in tickets}
                 old_active = db.execute(
                     """SELECT ticket_id,snapshot_json FROM portfolio_tickets
                     WHERE date=? AND active=1 AND ticket_id NOT IN
@@ -483,8 +506,8 @@ class PortfolioLedger(RecommendationLedger):
                 for row in old_active:
                     frozen_ticket = json.loads(row[1])
                     if variant_keys is not None and (
-                        frozen_ticket["profile_id"] in blocked
-                        or frozen_ticket["profile_id"] not in replacing_profiles
+                        _publication_identity(frozen_ticket) in blocked
+                        or _publication_identity(frozen_ticket) not in replacing_profiles
                     ):
                         # A different owner's completed choice cannot withdraw
                         # this owner's prior cards after a missing/abstaining run.
@@ -494,24 +517,37 @@ class PortfolioLedger(RecommendationLedger):
                     if all(_stamp(leg["kickoff"]) > _stamp(saved) for leg in frozen_ticket["legs"]):
                         self._active(db, row[0], False, saved, run_id)
                 locked = db.execute(
-                    """SELECT profile_id FROM portfolio_tickets
+                    """SELECT profile_id,snapshot_json FROM portfolio_tickets
                     WHERE date=? AND active=1""",
                     (day,),
                 ).fetchall()
-                occupied = {row[0] for row in locked} | blocked
+                occupied = {_publication_identity(json.loads(row[1])) for row in locked} | blocked
                 capacity = self.max_generated_tickets if generated else self.max_daily_tickets
                 slots = max(0, capacity - len(locked))
                 priority = sorted(
                     enumerate(tickets),
                     key=lambda x: (x[1]["profile_id"].upper() != "DAILY_223", x[0]),
                 )
+                companion_mode = "companion_ticket_channels" in report
+                if companion_mode:
+                    agent_slots = max(0, self.max_generated_tickets - sum(
+                        "channel_id" not in json.loads(row[1]) for row in locked))
+                    companion_slots = max(0, 2 - sum(
+                        "channel_id" in json.loads(row[1]) for row in locked))
                 for _, ticket in priority:
-                    if slots <= 0 or ticket["profile_id"] in occupied:
+                    identity = _publication_identity(ticket)
+                    remaining = (companion_slots if "channel_id" in ticket else agent_slots) if companion_mode else slots
+                    if remaining <= 0 or identity in occupied:
                         continue
                     self._active(db, ticket["ticket_id"], True, saved, run_id)
-                    if variant_keys is None:
-                        occupied.add(ticket["profile_id"])
+                    if variant_keys is None or "channel_id" in ticket:
+                        occupied.add(identity)
                     slots -= 1
+                    if companion_mode:
+                        if "channel_id" in ticket:
+                            companion_slots -= 1
+                        else:
+                            agent_slots -= 1
         return {"run_id": run_id, "saved": True, "ticket_count": len(tickets)}
 
     @staticmethod

@@ -45,6 +45,7 @@ class RecommendationLedger:
             _agent_blocked_profiles,
             _agent_variant_keys,
             _json,
+            _publication_identity,
             _recommendation_id,
             _stamp,
         )
@@ -102,11 +103,14 @@ class RecommendationLedger:
                 "SELECT recommendation_id,run_id,created_at,snapshot_json FROM portfolio_recommendations WHERE date=? AND profile_id=? AND active=1",
                 (report["date"], profile),
             ).fetchall()
-            active = profile not in blocked
+            identity = _publication_identity(record)
+            active = identity not in blocked
             for old in previous:
-                if variant_keys is not None and (profile in blocked or old["run_id"] == report["run_id"]):
-                    continue
                 old_snapshot = json.loads(old["snapshot_json"])
+                if _publication_identity(old_snapshot) != identity:
+                    continue
+                if variant_keys is not None and (identity in blocked or old["run_id"] == report["run_id"]):
+                    continue
                 old_ticket_id = old_snapshot.get("portfolio_ticket_id", old_snapshot.get("ticket_id"))
                 played = (variant_keys is not None and old_ticket_id and db.execute(
                     "SELECT 1 FROM portfolio_wagers WHERE ticket_id=?", (old_ticket_id,),
