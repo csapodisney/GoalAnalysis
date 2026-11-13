@@ -21,7 +21,7 @@ Ezeket a futásokat nem írjuk át vagy ismételjük változatlanul. A helyi fix
 ## Következő, még nem kész
 
 1. A mentett második adatcsomag pontos, korlátozott rekonstrukciója új döntési futáshoz. Eredeti forrás-/ár-/időjárásórák és származási hivatkozások megmaradnak; új lekérés vagy modellillesztés nem szükséges. Az eltelt idő miatti érvénytelenséget a jelenlegi idővel kell ellenőrizni.
-2. Egyetlen agent teljes PLAN→saját eszközök→FINAL útja először; csak ténylegesen igazolt, szabályos saját termék után indulhat a másik kilenc. Az új adatolvasási igazolás valódi reasoning-klienssel még nem elfogadott.
+2. Egyetlen agent teljes PLAN→saját eszközök→FINAL útja először; csak ténylegesen igazolt, szabályos saját termék után indulhat a másik kilenc. Ennek választható vezérlése már elkészült a munkapéldányban (`bd2a336`): 4/4 célzott eset PASS, natív0, nulla tiltott művelet. Élesben még nincs telepítve; nincs tényleges új modellhívás. Az első új teszt forrásának Ruff I001 formázási hibája megőrzött; külön, azonos AST-jű tesztforráson Ruff0 és az első tényleges négyes futás sikeres. Az új adatolvasási igazolás valódi reasoning-klienssel még nem elfogadott.
 3. Valódi mentett kártyákon teljes forrás→DatasetStore/modell→termék/ár→időjárás/hír/review→szcenárió ellenőrzés. Adat hozzáférhetősége önmagában nem tényleges olvasás vagy oksági hatás.
 4. Az aktuálisan megfigyelt időjárás UNKNOWN: a meccsekhez nem volt igazolt pontos stadionkoordináta. A friss hírolvasó nulla hírt adott; a friss hírelőállítás bekötése nyitott. Ezt a mentett adat újragondolása nem pótolja.
 
