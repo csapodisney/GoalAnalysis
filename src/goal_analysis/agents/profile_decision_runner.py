@@ -185,7 +185,16 @@ class ProfileDecisionRunner:
         try:
             plan_view = view if self.source_bundle is None else source_seed
             require(isinstance(plan_view, dict), 'BOUND_PLAN_VIEW_REQUIRED')
-            plan = self._call(state, 'PLAN', {'snapshot': plan_view}, source_records=source_records)
+            plan_data = {'snapshot': plan_view}
+            describe_construction = getattr(self.option_builder, 'construction_contract', None)
+            if callable(describe_construction):
+                contract = json.loads(json_text(describe_construction(state.agent_id)))
+                require(isinstance(contract, dict) and contract.get('agent_id') == state.agent_id
+                        and contract.get('run_id') == plan_view.get('run_id')
+                        and contract.get('target_date') == plan_view.get('target_date'),
+                        'OWN_CONSTRUCTION_CONTRACT_BINDING_MISMATCH')
+                plan_data['own_construction_contract'] = contract
+            plan = self._call(state, 'PLAN', plan_data, source_records=source_records)
             observed_usage.append(plan.get('host_usage'))
             require(isinstance(plan.get('options'), list) and len(plan['options']) <= 6,
                     'BOUNDED_OWN_PROPOSALS_REQUIRED')

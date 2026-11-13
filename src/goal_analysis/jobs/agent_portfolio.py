@@ -21,6 +21,7 @@ from goal_analysis.generated_tickets import CORE_MARKETS, QUOTE_FIELDS, _invalid
 from goal_analysis.jobs.agent_snapshot import SharedSnapshot, digest, identifiers, require
 from goal_analysis.normalization.live_identity import fixture_identity
 from goal_analysis.operating_policy import (
+    CAUTIOUS_PROFILE_IDS,
     cautious_fallback_allowed,
     current_contract,
     effective_persona,
@@ -262,6 +263,61 @@ def _club_card(owner, selected, enriched, settings, now, models):
                                  'selected_source_candidate_ids': list(selected)}}
 
 
+def _own_construction_contract(owner, settings, report, now):
+    """Describe existing gates before reasoning; never grant admission or select rows."""
+    definition = get_agent_definition(owner)
+    cautious = owner in CAUTIOUS_PROFILE_IDS
+    if owner in CORE_MARKETS:
+        primary = core._effective_core_contract(owner, settings)
+        exceptional = core._effective_core_contract(owner, settings, fallback=True) if cautious else None
+        market, selection, period = CORE_MARKETS[owner]
+        products = [{'market_key': market, 'selection_key': choice, 'period': period}
+                    for choice in ([selection] if selection is not None else ['home', 'away'])]
+        policy = {'source': 'core._effective_core_contract + CORE_MARKETS',
+                  'effective_policy': primary, 'allowed_products': products,
+                  'required_candidate_metadata': {'competition_type': 'NONEMPTY_STRING_REQUIRED_BY_EXISTING_CORE_POOL'},
+                  'eligibility': 'Existing own core pool, source/quote, prematch and product validation remain required.'}
+        minimum, maximum = primary['minimum_legs'], primary['maximum_legs']
+        odds = {'min': primary['minimum_combined_price'], 'max': primary['maximum_combined_price']}
+        fallback_odds = ({'min': exceptional['minimum_combined_price'],
+                          'max': exceptional['maximum_combined_price']} if exceptional else None)
+    else:
+        primary = effective_persona(TIPSTER_BY_ID[owner], settings)
+        exceptional = effective_persona(TIPSTER_BY_ID[owner], settings, cautious_fallback=True) if cautious else None
+        policy = {'source': 'effective_persona(TIPSTER_BY_ID[owner], settings)',
+                  'effective_policy': primary,
+                  'eligibility': 'Existing own model/history support, positive support, source/quote, prematch and product validation remain required.'}
+        minimum, maximum = primary['min_legs'], min(6, primary['max_legs'])
+        odds = primary['target_odds_band']
+        fallback_odds = exceptional['target_odds_band'] if exceptional else None
+    return {
+        'version': 'own-complete-ticket-construction-v1', 'agent_id': owner,
+        'method_version': definition.method_version, 'run_id': report['run_id'],
+        'target_date': report['date'], 'source_as_of': now.isoformat(), 'settings_sha256': digest(settings),
+        'option_means': 'ONE_COMPLETE_ACCUMULATOR_NOT_ONE_RESEARCH_LEG',
+        'instruction': 'For each option, select every leg of one complete ticket. Compute the product of its exact source decimal prices and satisfy this own construction policy before proposing it. Seek two or three genuinely distinct legal own tickets; never pad output or assume a rejected single leg will later be combined automatically.',
+        'source_candidate_ids_mean': 'All legs of this ONE ticket, using exact original source candidate IDs.',
+        'minimum_legs': minimum, 'maximum_legs': maximum, 'maximum_source_candidate_ids': 6,
+        'primary_combined_price': odds, 'combined_price_rule': 'PRODUCT_OF_EXACT_SOURCE_DECIMAL_PRICES',
+        'combined_price_kind': 'THEORETICAL_PRODUCT_NOT_BOOKMAKER_COMBO_QUOTE',
+        'distinct_fixtures_required': True, 'same_quote_cohort_fields': ['bookmaker', 'region', 'currency'],
+        'preferred_distinct_variants': [2, 3], 'maximum_proposals': 6,
+        'maximum_final_variants': definition.as_dict()['max_variants'],
+        'cautious_exception': {
+            'owner_eligible': cautious, 'combined_price': fallback_odds,
+            'authorization': 'NOT_GRANTED_BY_THIS_DESCRIPTION',
+            'conditions': ['All daily fixtures considered.',
+                           'Existing builder must independently establish the required absence of a legal primary option.',
+                           'All own leg, market, model/history, quote and publication conditions still apply.'],
+        },
+        'own_policy': policy, 'candidate_filter_applied': False,
+        'source_record_instruction': 'Read every complete original candidate record before proposing it. Check mandatory raw identity, quote, kickoff and own-policy metadata. An invalid or missing mandatory field makes that candidate ineligible: do not propose it or invent/backfill the field; continue considering other fixtures. A proposed invalid candidate can still stop this owner under the existing builder.',
+        'missing_optional_data': 'Keep local UNKNOWN; do not fabricate neutral values or waive mandatory product rules.',
+        'admission_authority': 'UNCHANGED_EXISTING_PRODUCT_BUILDER_AND_CANONICAL_VALIDATION',
+        'fallback_or_reselection_by_application': False, 'ready_or_profit_guarantee': False,
+    }
+
+
 def build_agent_option_builder(report, artifacts, enriched, club_enriched, settings, as_of):
     """Return an owner/proposal/snapshot callable over detached NORMAL inputs.
 
@@ -273,6 +329,9 @@ def build_agent_option_builder(report, artifacts, enriched, club_enriched, setti
     require(current_contract(settings), 'CURRENT_OPERATING_CONTRACT_REQUIRED')
     report, artifacts, enriched, club_enriched = deepcopy((report, artifacts, enriched, club_enriched))
     settings = core._settings(deepcopy(settings))
+    construction_contracts = {owner: json.dumps(
+        _own_construction_contract(owner, settings, report, now),
+        sort_keys=True, ensure_ascii=False, allow_nan=False) for owner in AGENT_IDS}
     bound_snapshot = None
     bound_data = None
     admitted_models = None
@@ -334,6 +393,11 @@ def build_agent_option_builder(report, artifacts, enriched, club_enriched, setti
             'snapshot_id': snapshot.snapshot_id, 'legs': option_legs(card),
             'canonical_card': card, 'canonical_card_sha256': digest(card)}
 
+    def construction_contract(owner):
+        get_agent_definition(owner)
+        return json.loads(construction_contracts[owner])
+
+    build.construction_contract = construction_contract
     return build
 
 
