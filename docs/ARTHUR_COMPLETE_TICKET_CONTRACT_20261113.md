@@ -13,3 +13,13 @@ A meglévő matematika, súly, minimum, eredeti ár, fixture/quote-azonosság, R
 Ellenőrzés: ROOT alap Ruff PASS a végleges forráson;10 új eset ténylegesen PASS, minden setup/call/teardown és saját worker0,0tiltott művelet. A valódi pure termékbuilder4×2=16 kombinációját elfogadja, single-legjét elutasítja; mind10 saját szabály és80meccs átadása, módosíthatatlan másolat, idegen kötés tiltása és négy mentett FINAL-hiba ellenőrzött. Ez fixturebizonyíték, nem valódi új szelvény vagy nyereségállítás. A korábbi I001 importformázási native1 és minden korábbi üzleti native2 megmarad.
 
 Élesítés után külön friss üzleti döntés, tényleges kanonikus mentés és teljes újkohorsz egyeztetés szükséges. Daily/legacy OFF,0fogadás,5%-os keretstop,17UTC emberi határidő. A mai ad2bf9 eredeti0kártyás riport változatlan; nem javítjuk visszamenőleg.
+
+## Teljes, szűretlen ajánlatkatalógus és adatútmutató
+
+A tíz agent következő pontosítása ugyanazon teljes3154eredeti sorból, azonos sorrendben kap olvasható, veszteségmentes katalógust; a72meccses naptár külön megmarad. Nincs jogosultsági szűrés vagy közös rövidlista. A duplikált ID, hiányzó és ténylegesen null óra külön megmarad; javaslat előtt továbbra kötelező a teljes eredeti kandidátum olvasása. A konkrét mentett teljes PLAN290558UTF8byte, a változatlan360000karakteres bemeneti korlát alatt.
+
+A corev2-ben a7.2-es örökölt veto-override magyarázómező rangsorolási háttér, nem új befogadási vétó; a provider quoted_at hiánya önmagában szintén nem általános tiltás. Az eredeti ár-, forrás-, kickoff- és saját klubmodellkapuk változatlanok. A tényleges ID-kulcsos valószínűségcím raw/model_probabilities/<id>; a view változat név szerinti oszloptábla.
+
+A4új eset ténylegesen PASS/native0/0tiltott művelet: mind10owner teljes katalógusa és másolatfüggetlenség; duplikált ID/hiányzó-null óra; helyes probability-adatcím és megmaradt klubkövetelmény; a valódi corebuilder négymeccses16-os DRAFT-ot elfogad NULL provideróra és alacsony magyarázó support mellett. Ez fixtureeredmény, nem új valódi szelvény. A korábbi importformázási I001/native1 külön megőrzött; a végleges forrás alap Ruff PASS.
+
+A f8f7 valódi üzleti futás eredeti0szelvénye és native2 eredménye változatlan. A tényleges pooldiagnózis1432befogadható kandidátumot és49hiányos competition_type naptársort talált; a hiányos adat nem kitöltött, a pool nem jelent kanonikus vagy READY elfogadást. A következő valódi futás csak friss óra/adat/keretek/új döntés mellett indulhat.

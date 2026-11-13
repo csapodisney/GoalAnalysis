@@ -12,6 +12,7 @@ from collections import Counter
 from copy import deepcopy
 from datetime import date, datetime
 
+from goal_analysis.agents.profile_input import encode_table
 from goal_analysis.agents.profile_roster import AGENT_IDS, get_agent_definition
 from goal_analysis.agents.profile_tools import ProfileToolService
 from goal_analysis.engine import portfolio as core
@@ -263,6 +264,30 @@ def _club_card(owner, selected, enriched, settings, now, models):
                                  'selected_source_candidate_ids': list(selected)}}
 
 
+def _full_candidate_catalog(candidate_input):
+    """All original source rows, compactly addressable without admitting any row."""
+    rows = candidate_input.get('candidates', [])
+    require(isinstance(rows, list), 'SOURCE_CANDIDATES_REQUIRED')
+    fields = ('candidate_id', 'fixture_id', 'market_key', 'selection_key', 'period',
+              'decimal_price', 'bookmaker', 'region', 'currency', 'competition_type',
+              'kickoff', 'quote_available', 'quoted_at', 'quote_timestamp_raw',
+              'quote_timestamp_status', 'quote_observed_at', 'quote_time_basis')
+    projected = [({'source_row_index': index, **{key: row[key] for key in fields if key in row}}
+                  if isinstance(row, dict) else
+                  {'source_row_index': index, 'malformed_source_row': deepcopy(row)})
+                 for index, row in enumerate(rows)]
+    counts = Counter(row['candidate_id'] for row in rows
+                     if isinstance(row, dict) and isinstance(row.get('candidate_id'), str))
+    return {'version': 'all-source-candidate-navigation-v1',
+            'source_rows_sha256': digest(rows), 'source_row_count': len(rows),
+            'unique_candidate_id_count': len(counts),
+            'ambiguous_candidate_ids': {key: value for key, value in counts.items() if value > 1},
+            'table': encode_table(projected), 'candidate_filter_applied': False,
+            'full_calendar_replaced_by_priced_candidates': False,
+            'full_record_read_proven': False,
+            'instruction': 'All source rows are shown in original order, without ranking or eligibility filtering. Read each proposed ID completely through candidates/[candidate_id], following every text page. The catalogue does not replace this mandatory read, resolve duplicate IDs, or remove unpriced full-calendar fixtures.'}
+
+
 def _own_construction_contract(owner, settings, report, now):
     """Describe existing gates before reasoning; never grant admission or select rows."""
     definition = get_agent_definition(owner)
@@ -310,6 +335,19 @@ def _own_construction_contract(owner, settings, report, now):
                            'Existing builder must independently establish the required absence of a legal primary option.',
                            'All own leg, market, model/history, quote and publication conditions still apply.'],
         },
+        'evidence_interpretation': {
+            'core_weighted_support': ('RANKING_AND_EXPLANATORY_METADATA_NOT_A_MINIMUM_ADMISSION_GATE'
+                                      if owner in CORE_MARKETS else 'OWN_CLUB_POLICY_REMAINS_REQUIRED'),
+            'legacy_veto_override_minimum': 'Do not apply an inherited veto_override_context.minimum_weighted_support such as 7.2 as a new current-contract gate. Use this own_policy and the unchanged builder; club min_models, required_models, probability, edge and spread requirements remain mandatory.',
+            'quote_clock': 'quoted_at=null or MISSING remains unknown and is not by itself a universal rejection of an otherwise source-verified product. Never invent a timestamp. Existing identity, quote availability, price, prematch and non-null clock validation still apply.',
+            'profit_and_pit': 'Unproved profit or point-in-time history is uncertainty, not a newly invented universal admission requirement. Preserve any actual own-policy historical/model condition and explain missing evidence locally.',
+        },
+        'source_navigation': {
+            'probability_by_id': {'namespace': 'raw', 'path': ['model_probabilities', '<model_probability_id>']},
+            'probability_view': {'namespace': 'view', 'path': ['model_probabilities'],
+                                 'format': 'NAMED_COLUMNS_V1', 'identifier_column': 'probability_id'},
+            'instruction': 'The view table is not an ID-keyed object. Use raw/model_probabilities/<model_probability_id> for a direct original admitted probability. Keep missing probabilities UNKNOWN. Budget reads for complete candidate records before proposing full own tickets; optional evidence gaps need not stop valid alternatives.',
+        },
         'own_policy': policy, 'candidate_filter_applied': False,
         'source_record_instruction': 'Read every complete original candidate record before proposing it. Check mandatory raw identity, quote, kickoff and own-policy metadata. An invalid or missing mandatory field makes that candidate ineligible: do not propose it or invent/backfill the field; continue considering other fixtures. A proposed invalid candidate can still stop this owner under the existing builder.',
         'missing_optional_data': 'Keep local UNKNOWN; do not fabricate neutral values or waive mandatory product rules.',
@@ -329,6 +367,8 @@ def build_agent_option_builder(report, artifacts, enriched, club_enriched, setti
     require(current_contract(settings), 'CURRENT_OPERATING_CONTRACT_REQUIRED')
     report, artifacts, enriched, club_enriched = deepcopy((report, artifacts, enriched, club_enriched))
     settings = core._settings(deepcopy(settings))
+    catalogue_json = json.dumps(_full_candidate_catalog(artifacts.get('candidate_input', {})),
+                                sort_keys=True, ensure_ascii=False, allow_nan=False)
     construction_contracts = {owner: json.dumps(
         _own_construction_contract(owner, settings, report, now),
         sort_keys=True, ensure_ascii=False, allow_nan=False) for owner in AGENT_IDS}
@@ -395,7 +435,9 @@ def build_agent_option_builder(report, artifacts, enriched, club_enriched, setti
 
     def construction_contract(owner):
         get_agent_definition(owner)
-        return json.loads(construction_contracts[owner])
+        result = json.loads(construction_contracts[owner])
+        result['full_candidate_catalog'] = json.loads(catalogue_json)
+        return result
 
     build.construction_contract = construction_contract
     return build
