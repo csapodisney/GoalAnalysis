@@ -27,8 +27,14 @@ Hibás lekérdezés javítható a meglévő kereten belül. Opcionális adat hi�
 
 1. A teljes napot elakasztó numerikus bemeneti korlát javítása: globális identitás-, idő- és konfliktusvédelem után versenysorozatonkénti kapacitás; minden megmaradó adat elszámolva.
 2. Célzott kereső, javítható lekérdezések és időtúllépéskor résznapló-megőrzés. Izolált tesztek, majd tényleges mentett bemenetes ellenőrzés modell/provider újrafuttatás nélkül.
-3. Minimális rendszerillesztés, friss védettadat-ellenőrzés, új forrás elfogadása; csak ezután új valódi napi üzleti futás és a mentett eredmény ellenőrzése.
-4. Daily/legacy csatornaazonosság, mentés, ajánlatindex, export és szimulációs diagnosztika illesztése; régi jelentések változatlan ágon maradnak.
+3. Minimális rendszerillesztés, friss védettadat-ellenőrzés, új forrás elfogadása. Az új fizetett napi futás előtt a következő pont két csatornáját és a városi fallbacket is illesztjük, hogy ne kelljen egy újabb, eleve hiányos csomagot ismét előállítani.
+4. Daily/legacy csatornaazonosság, mentés, ajánlatindex, export és szimulációs diagnosztika illesztése; régi jelentések változatlan ágon maradnak. Ezek rendszerellenőrzése után új valódi napi üzleti futás és a mentett eredmény ellenőrzése.
 5. Új dashboard és közös kézi/08:00 út; rendszer- és böngészőteszt, valós kártyák és grafikonok visszaellenőrzése. Ekkor zárható a jelenlegi termékfázis.
 
 Pontos source-terv: `artifacts/dashboard-renewal-after-ten-agents-20261113/companion-ticket-channels-source-review-v1/DESIGN-AMENDMENT.md`. A napi aktuális állapotot a saját futás kimenete és a `CONTINUATION.md` teteje adja; a tervek jelenléte nem telepítési bizonyíték.
+
+## Városi időjárás-közelítés
+
+A pontos stadionág elsőbbséget élvez. Ennek hiányában a szolgáltató által gyűjtött, az adott meccshez kötött város és — ha ismert — ország alapján egyértelmű geokódolás használható. A kapott értékek CITY_APPROXIMATION jelzéssel kerülnek az agentek közös adatcsomagjába. Nem készül belőlük szigorú stadion-receipt vagy visszamenőleges időjárássor.
+
+A városi ág közös, monoton órával mért 120 másodperces keret után nem indít új hálózati kérést; a már meglévő cache eredeti időbélyeggel használható. A már megkezdett kérés túlfutása nem garantáltan korlátos összidő: az eredeti socket-timeout marad. Az ismeretlen város, kétértelmű találat vagy lejárt keret helyi hiány; más meccs és más adatcsalád feldolgozása folytatódhat. A forráskód- és tesztellenőrzés nem bizonyít tényleges új szolgáltatói előrejelzést.

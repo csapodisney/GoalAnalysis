@@ -168,4 +168,9 @@ class OpenMeteoForecast:
 
 
 def weather_context(weather: dict) -> dict:
-    return {"fixture_id": weather["fixture_id"], "topic": "weather", "status": weather["status"], "summary": weather["summary"], "source_urls": [weather["source_url"]] if weather.get("source_url") else []}
+    result = {"fixture_id": weather["fixture_id"], "topic": "weather", "status": weather["status"], "summary": weather["summary"], "source_urls": [weather["source_url"]] if weather.get("source_url") else []}
+    if weather.get('location_precision') == 'CITY_APPROXIMATION':
+        result.update({key: deepcopy(weather.get(key)) for key in (
+            'location_precision', 'strict_stadium_forecast', 'city_approximation_reason',
+            'availability_status', 'observed_at', 'forecast_time', 'probability_effect')})
+    return result
