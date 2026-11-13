@@ -54,18 +54,21 @@ class NormalAgentExecutor:
 
     def __init__(self, *, host, journal_root, clock, stop_requested=lambda: False,
                  news_reader=None, historical_reader=None, max_requests=20,
-                 timeout_seconds=3600, enable_source_access=False):
+                 timeout_seconds=3600, enable_source_access=False, pilot_agent_id=None):
         require(callable(host) and callable(clock), 'EXPLICIT_HOST_AND_CLOCK_REQUIRED')
         require(type(timeout_seconds) is int and 0 < timeout_seconds <= 3600,
                 'FINITE_NORMAL_AGENT_DEADLINE_REQUIRED')
         require(type(max_requests) is int and 0 <= max_requests <= 20,
                 'FINITE_NORMAL_AGENT_REQUEST_BUDGET_REQUIRED')
         require(type(enable_source_access) is bool, 'EXPLICIT_SOURCE_ACCESS_MODE_REQUIRED')
+        require(pilot_agent_id is None or isinstance(pilot_agent_id, str) and pilot_agent_id in AGENT_IDS,
+                'VALID_PILOT_AGENT_REQUIRED')
         self.host, self.clock, self.stop_requested = host, clock, stop_requested
         self.journal_root = Path(journal_root)
         self.news_reader, self.historical_reader = news_reader, historical_reader
         self.max_requests, self.timeout_seconds = max_requests, timeout_seconds
         self.enable_source_access = enable_source_access
+        self.pilot_agent_id = pilot_agent_id
 
     @staticmethod
     def _stage_source_access(journal, snapshot):
@@ -168,10 +171,17 @@ class NormalAgentExecutor:
         result = ProfileDecisionRunner(host=owner_host, tools=tools, option_builder=builder,
             journal=journal, source_bundle=source_bundle, budget=DecisionBudget(self.max_requests,
                 self.clock() + timedelta(seconds=self.timeout_seconds),
-                clock=self.clock, stop_requested=self.stop_requested)).run(snapshot)
+                clock=self.clock, stop_requested=self.stop_requested)).run(snapshot,
+                    **({'pilot_agent_id': self.pilot_agent_id} if self.pilot_agent_id is not None else {}))
         artifacts['independent_agent_snapshot'] = snapshot.data()
         artifacts['independent_agent_decisions'] = deepcopy(result)
-        publish_agent_decisions(report, result, settings, self.clock(), team_plan=team_plan)
+        if result.get('unattempted_agent_ids'):
+            report.update(construction_status='PARTIAL', generated_tickets=[],
+                          ten_agent_decisions=deepcopy(result), team=deepcopy(team_plan),
+                          unattempted_agent_ids=list(result['unattempted_agent_ids']))
+            report['diagnostics'].append('A pilot nem adott saját szelvényválasztást; a többi agent nem indult el.')
+        else:
+            publish_agent_decisions(report, result, settings, self.clock(), team_plan=team_plan)
         usages = [value for owner in result['owners'] for value in owner.get('observed_host_usage', [])]
         complete_requests = bool(usages) and all(isinstance(value, dict)
             and type(value.get('requests')) is int for value in usages)
@@ -191,6 +201,8 @@ class NormalAgentExecutor:
             'legacy_candidate_review_performed': False}
         report['usage'] = {**deepcopy(artifacts.get('report', {}).get('usage', {})),
                            'openai': usage, 'llm_calls': usage['requests']}
+        if result.get('unattempted_agent_ids'):
+            report['astra']['message'] = 'Csak a kijelölt pilot futott; a többi kilenc döntési út nem indult el.'
         report['policy'] = deepcopy(settings)
         report['finished_at'] = self.clock().isoformat()
         return report

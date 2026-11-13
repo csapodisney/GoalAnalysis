@@ -303,7 +303,9 @@ class ProfileDecisionRunner:
         self.journal.write_once(f'{original.session_id}.owner.json', outcome)
         return outcome
 
-    def run(self, snapshot):
+    def run(self, snapshot, *, pilot_agent_id=None):
+        require(pilot_agent_id is None or isinstance(pilot_agent_id, str)
+                and pilot_agent_id in {row.agent_id for row in ACTIVE_AGENTS}, 'VALID_PILOT_AGENT_REQUIRED')
         # A partial or completed run is never silently resubmitted. The caller
         # can inspect existing outcomes without constructing a fresh operation.
         self.journal.write_once('run.claim.json', {'snapshot_id': snapshot.snapshot_id,
@@ -320,8 +322,28 @@ class ProfileDecisionRunner:
             source_seed = build_source_seed(snapshot, view)
         else:
             view, source_seed = decision_view(snapshot), None
-        with ThreadPoolExecutor(max_workers=2) as executor:
-            outcomes = list(executor.map(lambda state: self._owner(state, snapshot, view, source_seed), states))
+        pilot = None
+        unattempted = []
+        if pilot_agent_id is None:
+            with ThreadPoolExecutor(max_workers=2) as executor:
+                outcomes = list(executor.map(lambda state: self._owner(state, snapshot, view, source_seed), states))
+        else:
+            pilot_state = next(state for state in states if state.agent_id == pilot_agent_id)
+            remaining = [state for state in states if state.agent_id != pilot_agent_id]
+            first = self._owner(pilot_state, snapshot, view, source_seed)
+            admitted = (first['status'] == 'DECISION_COMPLETED'
+                        and bool(first.get('decision', {}).get('selected_options')))
+            pilot = {'agent_id': pilot_agent_id, 'status': 'PASSED' if admitted else 'STOPPED_NO_SELECTED_DECISION',
+                     'owner_status': first['status'], 'remaining_agent_ids': [state.agent_id for state in remaining]}
+            self.journal.write_once('pilot-gate.json', pilot)
+            outcomes = [first]
+            if admitted:
+                with ThreadPoolExecutor(max_workers=2) as executor:
+                    outcomes.extend(executor.map(lambda state: self._owner(state, snapshot, view, source_seed), remaining))
+                by_owner = {row['agent_id']: row for row in outcomes}
+                outcomes = [by_owner[state.agent_id] for state in states]
+            else:
+                unattempted = [state.agent_id for state in remaining]
         cards, duplicate_links, seen = [], [], {}
         for outcome in outcomes:
             for option in outcome.get('decision', {}).get('selected_options', []):
@@ -336,12 +358,15 @@ class ProfileDecisionRunner:
                         'publication_status': 'REQUIRES_CANONICAL_PRODUCT_VALIDATION',
                         'playable': False})
         result = {'version': 'ten-agent-decision-run-v1', 'snapshot_id': snapshot.snapshot_id,
-            'status': 'COMPLETE' if all(row['status'] == 'DECISION_COMPLETED' for row in outcomes) else 'PARTIAL',
+            'status': ('COMPLETE' if len(outcomes) == len(ACTIVE_AGENTS)
+                       and all(row['status'] == 'DECISION_COMPLETED' for row in outcomes) else 'PARTIAL'),
             'agent_count': len(outcomes), 'owners': outcomes, 'distinct_decisions': cards,
             'duplicate_exposures': duplicate_links, 'distinct_decision_count': len(cards),
             'minimum15_decision_count_met': len(cards) >= 15, 'canonical_ticket_count': None,
             'host_requests_reserved': self.budget.used_requests,
             'financial_approval': False, 'wagers': 0}
+        if pilot is not None:
+            result.update(pilot_gate=pilot, unattempted_agent_ids=unattempted)
         self.journal.write_once('decision-run.json', result)
         return result
 
