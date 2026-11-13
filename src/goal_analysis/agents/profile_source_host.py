@@ -11,6 +11,7 @@ import os
 import re
 from collections import Counter
 from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
 
 SERVER_NAME = 'arthur_data'
@@ -168,7 +169,7 @@ def source_config(prepared):
         f'{prefix}.cwd': prepared['document']['phase_root'],
         f'{prefix}.env_vars': [], f'{prefix}.required': True,
         f'{prefix}.enabled_tools': [TOOL_NAME],
-        f'{prefix}.startup_timeout_sec': 10, f'{prefix}.tool_timeout_sec': 10,
+        f'{prefix}.startup_timeout_sec': 60, f'{prefix}.tool_timeout_sec': 10,
     }
 
 
@@ -251,18 +252,52 @@ def _native_calls(events):
     return list(calls.values())
 
 
+def _validate_live_checkpoints(checkpoints, receipt, binding):
+    require(isinstance(checkpoints, list) and 2 <= len(checkpoints) <= 165,
+            'SOURCE_CHECKPOINT_CHAIN_REQUIRED')
+    tail, previous_time = None, None
+    for index, record in enumerate(checkpoints):
+        require(isinstance(record, dict) and record.get('version') == 'profile-source-checkpoint-v1'
+                and record.get('sequence') == index + 1
+                and record.get('previous_checkpoint_sha256') == tail
+                and record.get('forbidden_operations') == []
+                and isinstance(record.get('receipt'), dict)
+                and record['receipt'].get('binding') == binding and record['receipt'].get('status') == 'OPEN',
+                'SOURCE_CHECKPOINT_CHAIN_OR_ERROR')
+        stamp = datetime.fromisoformat(record['observed_at'])
+        require(stamp.tzinfo is not None and stamp.utcoffset() is not None
+                and (previous_time is None or stamp >= previous_time), 'SOURCE_CHECKPOINT_CLOCK')
+        require(record.get('stage') == ('KERNEL_READY' if index == 0 else 'BEFORE_WIRE_FLUSH')
+                and type(record.get('protocol_ready')) is bool
+                and (index != 0 or record['protocol_ready'] is False), 'SOURCE_CHECKPOINT_STAGE')
+        tail, previous_time = sha(record), stamp
+    require(checkpoints[-1]['protocol_ready'] is True and checkpoints[-1]['receipt'] == receipt,
+            'SOURCE_PROTOCOL_READY_CHECKPOINT_REQUIRED')
+    require(not any(key in receipt for key in ('stdio_closed', 'stdio_outcome')),
+            'SOURCE_LIVE_RECEIPT_MUST_NOT_CLAIM_EXIT')
+
+
 def validate_source_evidence(evidence, *, request, reply, bundle):
     """Pure caller-envelope reconciliation; never authenticates causal model use."""
     binding = {key: request.get(key) for key in IDENTITY}
     request_sha256, reply_sha256 = sha(request), sha(reply)
-    require(isinstance(evidence, dict) and evidence.get('version') == 'profile-source-host-evidence-v1'
+    require(isinstance(evidence, dict) and evidence.get('version') in {
+                'profile-source-host-evidence-v1', 'profile-source-host-evidence-v2'}
             and evidence.get('binding') == binding and evidence.get('request_sha256') == request_sha256
             and evidence.get('reply_sha256') == reply_sha256, 'SOURCE_EVIDENCE_BINDING_CHANGED')
     receipt, records, calls = evidence['receipt'], evidence['journal_records'], evidence['native_calls']
-    require(receipt['binding'] == binding and receipt['status'] == 'OPEN'
-            and receipt.get('stdio_closed') is True and receipt.get('stdio_outcome') == 0
-            and receipt.get('protocol_error_type') is None and receipt.get('forbidden_operations') == [],
-            'SOURCE_PHASE_NOT_CLEANLY_CLOSED')
+    if evidence['version'] == 'profile-source-host-evidence-v1':
+        require(receipt['binding'] == binding and receipt['status'] == 'OPEN'
+                and receipt.get('stdio_closed') is True and receipt.get('stdio_outcome') == 0
+                and receipt.get('protocol_error_type') is None and receipt.get('forbidden_operations') == [],
+                'SOURCE_PHASE_NOT_CLEANLY_CLOSED')
+    else:
+        lifecycle = evidence.get('lifecycle', {})
+        require(lifecycle.get('mode') == 'LIVE_CHECKPOINT'
+                and type(lifecycle.get('cli_native_exit')) is int and lifecycle['cli_native_exit'] == 0
+                and lifecycle.get('server_native_exit') is None
+                and lifecycle.get('server_exit_status') == 'UNRECORDED', 'SOURCE_TRUSTED_CLI_ZERO_REQUIRED')
+        _validate_live_checkpoints(evidence.get('checkpoint_records'), receipt, binding)
     from goal_analysis.agents.profile_source_access import validate_read_journal
 
     source_summary = validate_read_journal(records, receipt, binding=binding, bundle=bundle)
@@ -290,7 +325,7 @@ def validate_source_evidence(evidence, *, request, reply, bundle):
         'all_raw_rows_read': False, 'causal_feature_use_proven': False}
 
 
-def finish_source_evidence(prepared, events, request, reply):
+def finish_source_evidence(prepared, events, request, reply, *, cli_native_exit=None):
     document = prepared['document']
     require(hashlib.sha256(prepared['binding_path'].read_bytes()).hexdigest()
             == prepared['binding_sha256'], 'SOURCE_PHASE_BINDING_FILE_CHANGED')
@@ -303,10 +338,26 @@ def finish_source_evidence(prepared, events, request, reply):
             'SOURCE_JOURNAL_MISSING_OR_OVERSIZE')
     records = [json.loads(line) for line in journal.read_text('utf-8').splitlines() if line.strip()]
     receipt_path = prepared['receipt_path']
-    require(receipt_path.is_file() and receipt_path.stat().st_size <= 16_384,
-            'SOURCE_RECEIPT_MISSING_OR_OVERSIZE')
-    receipt = json.loads(receipt_path.read_text('utf-8'))
-    evidence = {'version': 'profile-source-host-evidence-v1', 'binding': document['binding'],
+    extra = {}
+    if receipt_path.exists():
+        require(receipt_path.is_file() and receipt_path.stat().st_size <= 16_384,
+                'SOURCE_RECEIPT_MISSING_OR_OVERSIZE')
+        receipt = json.loads(receipt_path.read_text('utf-8'))
+        version = 'profile-source-host-evidence-v1'
+    else:
+        require(type(cli_native_exit) is int and cli_native_exit == 0, 'SOURCE_TRUSTED_CLI_ZERO_REQUIRED')
+        checkpoint_path = prepared['binding_path'].parent / 'receipt-checkpoints.jsonl'
+        require(checkpoint_path.is_file() and 0 < checkpoint_path.stat().st_size <= 262144,
+                'SOURCE_CHECKPOINT_FILE_REQUIRED')
+        raw_checkpoints = checkpoint_path.read_text('utf-8')
+        require(raw_checkpoints.endswith('\n') and all(raw_checkpoints.splitlines()),
+                'SOURCE_CHECKPOINT_PARTIAL_RECORD')
+        checkpoints = [json.loads(line) for line in raw_checkpoints.splitlines()]
+        receipt = checkpoints[-1]['receipt']
+        version = 'profile-source-host-evidence-v2'
+        extra = {'checkpoint_records': checkpoints, 'lifecycle': {'mode': 'LIVE_CHECKPOINT',
+            'cli_native_exit': cli_native_exit, 'server_native_exit': None, 'server_exit_status': 'UNRECORDED'}}
+    evidence = {'version': version, 'binding': document['binding'], **extra,
         'request_sha256': sha(request), 'reply_sha256': sha(reply),
         'bundle_sha256': document['bundle_sha256'], 'view_sha256': prepared['bundle_view_sha256'],
         'journal_records': records, 'receipt': receipt, 'native_calls': _native_calls(events),

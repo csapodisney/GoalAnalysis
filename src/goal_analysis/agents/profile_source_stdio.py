@@ -50,6 +50,20 @@ def tool_schema():
         'annotations': {'readOnlyHint': True, 'destructiveHint': False, 'openWorldHint': False}}
 
 
+def _append_checkpoint(stream, kernel, state, stage, protocol_ready, forbidden):
+    record = {'version': 'profile-source-checkpoint-v1', 'sequence': state['count'] + 1,
+        'observed_at': datetime.now(UTC).isoformat(), 'stage': stage,
+        'protocol_ready': protocol_ready, 'receipt': kernel.receipt(),
+        'forbidden_operations': list(forbidden), 'previous_checkpoint_sha256': state['tail']}
+    wire = canonical(record) + '\n'
+    size = len(wire.encode('utf-8'))
+    require(state['count'] < 165 and state['bytes'] + size <= 262144, 'SOURCE_CHECKPOINT_BOUND')
+    stream.write(wire)
+    stream.flush()
+    os.fsync(stream.fileno())
+    state.update(count=state['count'] + 1, bytes=state['bytes'] + size, tail=digest(record))
+
+
 def serve(input_stream, output_stream, kernel):
     """Pure stream adapter for inert protocol fixtures and the fixed native entry."""
     initialized = ready = False
@@ -93,6 +107,9 @@ def serve(input_stream, output_stream, kernel):
                 response = kernel.read_data(params['arguments'], rpc_id=rpc_id)
             else:
                 raise ValueError('SOURCE_RPC_METHOD_NOT_ALLOWLISTED')
+        checkpoint = getattr(kernel, '_stdio_checkpoint', None)
+        if checkpoint is not None:
+            checkpoint('BEFORE_WIRE_FLUSH', ready)
         # read_data already counted this exact serialization and newline.
         output_stream.write(canonical(response) + '\n')
         output_stream.flush()
@@ -121,7 +138,7 @@ def _pinned(path, expected, limit):
     return b''.join(chunks)
 
 
-def _guard(receipt_path, forbidden):
+def _guard(receipt_path, forbidden, on_forbidden=None):
     permitted = str(receipt_path.resolve()).casefold()
 
     def audit(event, args):
@@ -135,6 +152,8 @@ def _guard(receipt_path, forbidden):
                 and str(Path(os.fsdecode(path)).resolve()).casefold() == permitted)
         if denied:
             forbidden.append(event)
+            if on_forbidden is not None:
+                on_forbidden()
             raise RuntimeError('SOURCE_STDIO_FORBIDDEN_OPERATION')
 
     sys.addaudithook(audit)
@@ -161,7 +180,9 @@ def main(argv=None):
     require(_inside(args.binding, phase).name == 'binding.json', 'SOURCE_BINDING_PATH_CHANGED')
     journal = _inside(document['journal_path'], phase)
     receipt_path = _inside(document['receipt_path'], phase)
-    require(not journal.exists() and not receipt_path.exists(), 'SOURCE_PHASE_ALREADY_USED')
+    checkpoint_path = phase / 'receipt-checkpoints.jsonl'
+    require(not journal.exists() and not receipt_path.exists() and not checkpoint_path.exists(),
+            'SOURCE_PHASE_ALREADY_USED')
     bundle_path = _inside(document['bundle_path'], document['owned_root'])
     bundle_raw = _pinned(bundle_path, document['bundle_sha256'], 536_870_912)
     _pinned(document['kernel_source'], document['kernel_sha256'], 524_288)
@@ -177,7 +198,8 @@ def main(argv=None):
     bundle = module.SourceBundle(**json.loads(bundle_raw.decode('utf-8')))
     require(bundle.snapshot_id == document['binding']['snapshot_id'], 'SOURCE_BUNDLE_BINDING_CHANGED')
     forbidden, outcome, error_type = [], 1, None
-    with journal.open('x', encoding='utf-8', newline='\n') as stream:
+    with journal.open('x', encoding='utf-8', newline='\n') as stream, checkpoint_path.open(
+            'x', encoding='utf-8', newline='\n') as checkpoint_stream:
         def append(record):
             stream.write(canonical(record) + '\n')
             stream.flush()
@@ -186,12 +208,20 @@ def main(argv=None):
 
         kernel = module.SourceAccessKernel(bundle, document['binding'], append,
                                            lambda: datetime.now(UTC))
-        _guard(receipt_path, forbidden)
+        checkpoint_state = {'count': 0, 'bytes': 0, 'tail': None}
+
+        def checkpoint(stage, protocol_ready):
+            _append_checkpoint(checkpoint_stream, kernel, checkpoint_state, stage, protocol_ready, forbidden)
+
+        kernel._stdio_checkpoint = checkpoint
+        _guard(receipt_path, forbidden, lambda: checkpoint('FORBIDDEN_OPERATION', False))
+        checkpoint('KERNEL_READY', False)
         try:
             outcome = serve(sys.stdin, sys.stdout, kernel)
         except Exception as error:  # noqa: BLE001 - one source phase is fail-closed.
             error_type = type(error).__name__
             outcome = 1
+            checkpoint('PROTOCOL_ERROR', False)
         finally:
             receipt = {**kernel.receipt(), 'stdio_closed': True,
                 'stdio_protocol': PROTOCOL_VERSION, 'stdio_outcome': outcome,

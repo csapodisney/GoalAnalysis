@@ -381,7 +381,8 @@ class CodexReviewer(AstraReviewer):
         if prepared_source is not None:
             try:
                 evidence = finish_source_evidence(prepared_source,
-                    response.get('_arthur_profile_source_events', []), request, answer)
+                    response.get('_arthur_profile_source_events', []), request, answer,
+                    cli_native_exit=response.get('_arthur_profile_source_native_exit'))
             except Exception as error:
                 error.host_usage = _profile_usage(usage)
                 raise
@@ -559,6 +560,7 @@ class CodexReviewer(AstraReviewer):
                 _add_usage(usage, response)
             else:
                 response['_arthur_profile_source_events'] = source_events
+                response['_arthur_profile_source_native_exit'] = done.returncode
             if '_arthur_profile_timeout' in body and prepared_source is None:
                 observed_fields = {'input_tokens': 'input_tokens', 'output_tokens': 'output_tokens',
                                    'cached_tokens': 'cached_input_tokens',
