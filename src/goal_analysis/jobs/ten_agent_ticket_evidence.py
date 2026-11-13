@@ -45,6 +45,33 @@ def _unknown(reason, error=None):
             **({'error_type': type(error).__name__} if error is not None else {})}
 
 
+def _plan_auxiliary_inputs(evidence, state, snapshot):
+    """Reconstruct only saved exact own PLAN fields; never infer missing old inputs."""
+    envelope = evidence.get('plan_auxiliary_inputs')
+    if envelope is None:
+        return {}  # Historical protocol remains historical, including original gaps.
+    require(isinstance(envelope, dict) and set(envelope) == {'version', 'values', 'sha256'}
+            and envelope['version'] == 'owner-plan-auxiliary-inputs-v1'
+            and isinstance(envelope['values'], dict)
+            and set(envelope['values']) <= {'own_construction_contract', 'own_strategy_search'}
+            and digest(envelope['values']) == envelope['sha256'], 'SAVED_PLAN_AUXILIARY_INPUTS_CHANGED')
+    values = envelope['values']
+    data = snapshot.data()
+    contract = values.get('own_construction_contract')
+    if contract is not None:
+        require(isinstance(contract, dict) and contract.get('agent_id') == state.agent_id
+                and contract.get('method_version') == state.method_version
+                and contract.get('run_id') == data['run_id'] and contract.get('target_date') == data['target_date']
+                and contract.get('source_as_of') == data['as_of'], 'FOREIGN_SAVED_CONSTRUCTION_CONTRACT')
+    search = values.get('own_strategy_search')
+    if search is not None:
+        require(isinstance(search, dict) and search.get('agent_id') == state.agent_id
+                and search.get('session_id') == state.session_id and search.get('snapshot_id') == snapshot.snapshot_id
+                and search.get('version') == 'own-strategy-search-plan-seeds-v1',
+                'FOREIGN_SAVED_STRATEGY_SEARCH_INPUT')
+    return deepcopy(values)
+
+
 def _owner_evidence(owner, snapshot, shared):
     """Rebind saved calls using the original pure contracts; never call a tool."""
     require(owner.get('status') == 'DECISION_COMPLETED', 'OWNER_DECISION_INCOMPLETE')
@@ -88,7 +115,8 @@ def _owner_evidence(owner, snapshot, shared):
         require(isinstance(proofs, dict) and set(proofs) == {'PLAN', 'FINAL'},
                 'BOTH_VERIFIED_SOURCE_PHASE_PROOFS_REQUIRED')
         phase_data = {
-            'PLAN': {'snapshot': shared['source_seed']},
+            'PLAN': {'snapshot': shared['source_seed'],
+                     **_plan_auxiliary_inputs(evidence, state, snapshot)},
             'FINAL': {'snapshot': shared['source_final_shared'], 'own_plan': plan,
                 'validated_own_options': options,
                 'tool_results': public_tool_results(evidence['tool_results']),

@@ -178,10 +178,55 @@ class ProfileDecisionRunner:
         })
         return reply
 
+    def _own_strategy_seeds(self, state, snapshot):
+        search = getattr(self.option_builder, 'strategy_search', None)
+        if not callable(search):
+            return None  # Explicit old injected fixture-builder compatibility.
+        result = json.loads(json_text(search(state.agent_id, snapshot)))
+        data = snapshot.data()
+        require(isinstance(result, dict) and result.get('agent_id') == state.agent_id
+                and result.get('method_version') == state.method_version
+                and result.get('snapshot_id') == snapshot.snapshot_id
+                and result.get('run_id') == data['run_id'] and result.get('target_date') == data['target_date']
+                and result.get('source_as_of') == data['as_of']
+                and result.get('full_fixture_ids') == list(data['fixture_ids'])
+                and result.get('result_id') == digest({key: value for key, value in result.items()
+                                                       if key != 'result_id'}),
+                'OWN_STRATEGY_SEARCH_BINDING_MISMATCH')
+        alternatives = result.get('alternatives')
+        require(isinstance(alternatives, list) and all(isinstance(row, dict) for row in alternatives)
+                and result.get('status') in {'AVAILABLE', 'NO_COMPLIANT_OPTION', 'UNKNOWN'},
+                'OWN_STRATEGY_SEARCH_SHAPE_INVALID')
+        identifiers([row.get('search_option_id') for row in alternatives])
+        for row in alternatives:
+            identifiers(row.get('source_candidate_ids'))
+        record = {'version': 'own-strategy-search-journal-v1', **_identity(state),
+                  'result_sha256': digest(result), 'result': result}
+        name = f'{state.session_id}.strategy-search.json'
+        self.journal.write_once(name, record)
+        diagnostics = result.get('diagnostics') or {}
+        return {'version': 'own-strategy-search-plan-seeds-v1', **_identity(state),
+            'status': result['status'], 'reason': result.get('reason'),
+            'result_id': result['result_id'], 'full_result_sha256': digest(result),
+            'full_result_count': len(alternatives), 'suggested_count': min(6, len(alternatives)),
+            'suggestions': alternatives[:6],
+            'seed_policy': 'FIRST_UP_TO_SIX_ORIGINAL_OWN_RANKED_OPTIONS_NOT_COMMON_PREFILTER',
+            'full_result_journal': {'file': name, 'record_sha256': digest(record)},
+            'coverage': {'full_fixture_count': len(data['fixture_ids']),
+                'source_candidate_rows': result.get('source_candidate_rows'),
+                'search_method': result.get('search_method'),
+                'own_searched_candidate_count': (len(diagnostics['searched_candidate_ids'])
+                    if isinstance(diagnostics.get('searched_candidate_ids'), list) else None),
+                'own_deferred_candidate_count': (len(diagnostics['deferred_candidate_ids'])
+                    if isinstance(diagnostics.get('deferred_candidate_ids'), list) else None)},
+            'full_search_result_read_by_host': False, 'actual_host_tool_invocation': False,
+            'instruction': 'These are optional complete-accumulator suggestions from YOUR existing deterministic strategy search, in its original rank. They are not a shared shortlist, an agent decision, calibrated profit, or READY approval. You may choose, modify or reject them, or choose other original candidate IDs from the unchanged full daily calendar and full quote catalogue. Every chosen raw candidate record must still be fully read through read_data; inspect the relevant connected evidence. Explain your own choice or abstention. Both candidate_scenarios and historical_strategy_evaluation remain mandatory, and every selected option must pass the unchanged product gates. Do not automatically select a suggestion or invent missing data.'}
+
     def _owner(self, state, snapshot, view, source_seed=None):
         original = state
         observed_usage = []
         source_records = {}
+        auxiliary = None
         try:
             plan_view = view if self.source_bundle is None else source_seed
             require(isinstance(plan_view, dict), 'BOUND_PLAN_VIEW_REQUIRED')
@@ -194,6 +239,12 @@ class ProfileDecisionRunner:
                         and contract.get('target_date') == plan_view.get('target_date'),
                         'OWN_CONSTRUCTION_CONTRACT_BINDING_MISMATCH')
                 plan_data['own_construction_contract'] = contract
+            strategy = self._own_strategy_seeds(state, snapshot)
+            if strategy is not None:
+                plan_data['own_strategy_search'] = strategy
+            values = json.loads(json_text({key: value for key, value in plan_data.items() if key != 'snapshot'}))
+            auxiliary = {'version': 'owner-plan-auxiliary-inputs-v1', 'values': values,
+                         'sha256': digest(values)}
             plan = self._call(state, 'PLAN', plan_data, source_records=source_records)
             observed_usage.append(plan.get('host_usage'))
             require(isinstance(plan.get('options'), list) and len(plan['options']) <= 6,
@@ -297,6 +348,7 @@ class ProfileDecisionRunner:
                                    'admission_sha256': digest(admission)},
                            },
                            'plan': plan, 'validated_own_options': options,
+                           'plan_auxiliary_inputs': auxiliary,
                            'own_option_admission': admission,
                            'tool_results': tool_results, 'final': final,
                            **({'source_access': source_records} if self.source_bundle is not None else {}),
@@ -308,6 +360,8 @@ class ProfileDecisionRunner:
             outcome = {'status': 'INCOMPLETE_NO_RETRY', **_identity(original),
                        'error_type': type(error).__name__, 'reason': str(error)[:300],
                        'state_transcript': list(state.transcript)}
+        if auxiliary is not None:
+            outcome['plan_auxiliary_inputs_sha256'] = auxiliary['sha256']
         outcome['observed_host_usage'] = observed_usage
         self.journal.write_once(f'{original.session_id}.owner.json', outcome)
         return outcome

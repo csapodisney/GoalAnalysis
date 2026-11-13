@@ -665,7 +665,7 @@ def final_shared_reference(snapshot: SharedSnapshot, plan_view: dict) -> dict:
 
 
 def public_tool_results(tool_results):
-    """Only raw sample manifests leave the prompt; original results stay authoritative."""
+    """Bound raw manifests and losslessly reuse exact own profiles and source legs."""
     public = deepcopy(tool_results)
     for original, projected in zip(tool_results, public, strict=True):
         result = projected['result']
@@ -685,6 +685,69 @@ def public_tool_results(tool_results):
                                               for key, rows in manifests.items()}
             container['sample_manifests'] = reference
             replacements.append(f'{location}/sample_manifests')
+        value = result.get('value')
+        if result.get('role') == 'candidate_scenarios' and isinstance(value, dict):
+            by_option, producer = value.get('by_option'), value.get('producer_result')
+            profiles = producer.get('profiles') if isinstance(producer, dict) else None
+            if (isinstance(by_option, dict) and by_option and isinstance(profiles, list)
+                    and profiles and all(isinstance(row, dict) for row in profiles)):
+                canonical_options = {json_text(row): key for key, row in by_option.items()
+                                     if isinstance(key, str) and isinstance(row, dict)}
+                references = [canonical_options.get(json_text(row)) for row in profiles]
+                if all(key is not None for key in references):
+                    producer['profiles'] = {
+                        'encoding': 'EXACT_BY_OPTION_PROFILE_REFERENCES_V1',
+                        'ordered_option_ids': references,
+                        'source_profiles_sha256': digest(profiles),
+                        'source_profile_count': len(profiles),
+                        'reconstruction': 'Replace this object with [result.value.by_option[id] for each id in ordered_option_ids]. Preserve order and duplicate references. These are exact full values already supplied in this same result, not omitted raw evidence.',
+                    }
+                    replacements.append('value/producer_result/profiles')
+            # Only these two producer schemas contain copies of full source legs.
+            # The table is local to this result; no value is fetched or omitted.
+            if 'exact_leg_values' not in value:
+                bindings = []
+
+                def add_bindings(container, path, bindings=bindings):
+                    rows = container.get('leg_bindings') if isinstance(container, dict) else None
+                    if isinstance(rows, list):
+                        for index, row in enumerate(rows):
+                            if isinstance(row, dict) and isinstance(row.get('leg'), dict):
+                                bindings.append((row, f'{path}/leg_bindings/{index}/leg'))
+
+                for option_id, profile in (by_option.items() if isinstance(by_option, dict) else []):
+                    models = profile.get('models') if isinstance(profile, dict) else None
+                    for model, model_result in (models.items() if isinstance(models, dict) else []):
+                        add_bindings(model_result, f'value/by_option/{option_id}/models/{model}')
+                kernel = producer.get('existing_kernel_result') if isinstance(producer, dict) else None
+                models = kernel.get('models') if isinstance(kernel, dict) else None
+                for model, model_result in (models.items() if isinstance(models, dict) else []):
+                    cards = model_result.get('cards') if isinstance(model_result, dict) else None
+                    for index, card in enumerate(cards if isinstance(cards, list) else []):
+                        add_bindings(card, f'value/producer_result/existing_kernel_result/models/{model}/cards/{index}')
+                # A producer-owned reserved marker must never be decoded as ours.
+                if any(binding['leg'].get('encoding') == 'EXACT_SCENARIO_LEG_REFERENCE_V1'
+                       for binding, _ in bindings):
+                    bindings = []
+                groups = {}
+                for binding, path in bindings:
+                    groups.setdefault(json_text(binding['leg']), []).append((binding, path))
+                entries = {}
+                for rows in groups.values():
+                    if len(rows) < 2:
+                        continue
+                    leg = rows[0][0]['leg']
+                    key = f'leg-{len(entries)}'
+                    entries[key] = deepcopy(leg)
+                    reference = {'encoding': 'EXACT_SCENARIO_LEG_REFERENCE_V1',
+                        'table_key': key, 'source_leg_sha256': digest(leg)}
+                    for binding, path in rows:
+                        binding['leg'] = deepcopy(reference)
+                        replacements.append(path)
+                if entries:
+                    value['exact_leg_values'] = {'encoding': 'EXACT_SCENARIO_LEG_VALUES_V1',
+                        'values': entries,
+                        'reconstruction': 'Within this result only, replace each EXACT_SCENARIO_LEG_REFERENCE_V1 at the two declared leg_bindings paths with a detached copy of values[table_key], verifying source_leg_sha256. Preserve every binding and list position. Restore these legs before expanding EXACT_BY_OPTION_PROFILE_REFERENCES_V1; then remove exact_leg_values. Full leg values are supplied here unchanged, including UNKNOWN and clocks.'}
         if replacements:
             result['prompt_projection'] = {'original_result_sha256': digest(original['result']),
                 'replaced_paths': replacements, 'original_result_validation_unchanged': True,

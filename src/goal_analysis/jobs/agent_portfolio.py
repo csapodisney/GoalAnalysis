@@ -356,6 +356,93 @@ def _own_construction_contract(owner, settings, report, now):
     }
 
 
+def _core_strategy_search(owner, source, settings, now, universe):
+    """Existing own specialist search; bounded alternatives, never publication."""
+    raw = source['candidates']
+    require(isinstance(raw, list) and all(isinstance(row, dict) for row in raw),
+            'STRATEGY_SOURCE_CANDIDATES_REQUIRED')
+    history = source.get('history_analysis')
+    history_rows = history.get('candidates', []) if isinstance(history, dict) else []
+    history_rows = history_rows if isinstance(history_rows, list) else []
+    analyses = {row.get('candidate_id'): row for row in history_rows if isinstance(row, dict)}
+    prepared, rejected = core._core_pool(raw, date.fromisoformat(source['date']), now,
+        Daily223Policy(**source.get('policy', {})), settings, analyses,
+        Counter(_product_key(row) for row in raw), Counter(row.get('candidate_id') for row in raw),
+        universe, None)
+    matching = [row for row in prepared if core._matches_profile(row, owner)
+                and row['decimal_price'] <= core.TARGET_MAX_ODDS]
+    rejected.update({row['candidate_id']: 'PROFILE_MARKET_MISMATCH' for row in prepared
+                     if not core._matches_profile(row, owner)})
+    rejected.update({row['candidate_id']: 'LEG_PRICE_ABOVE_PROFILE_MAXIMUM' for row in prepared
+                     if core._matches_profile(row, owner) and row['decimal_price'] > core.TARGET_MAX_ODDS})
+    groups = sorted({(row['bookmaker'], row['region'], row['currency']) for row in prepared})
+    contract = core._effective_core_contract(owner, settings)
+    options = []
+    for group in groups:
+        scoped = [row for row in matching
+                  if (row['bookmaker'], row['region'], row['currency']) == group]
+        options.extend(core._specialist_options(scoped, core.TARGET_MAX_ODDS,
+            minimum=core.TARGET_MIN_ODDS, min_legs=contract['minimum_legs'],
+            max_legs=contract['maximum_legs']))
+    full = core._core_universe(source, raw)
+    fallback = {'status': 'PRIMARY_RANGE' if options else 'NOT_AUTHORIZED',
+                'primary_options_count': len(options), 'full_day_coverage': full[3], 'applied': False}
+    if cautious_fallback_allowed(owner, settings, options, all_daily_fixtures_considered=full[3]):
+        proven = core._primary_absence_proven(matching)
+        fallback['primary_absence_proven'] = proven
+        if proven:
+            options = [legs for group in groups for legs in core._specialist_options(
+                [row for row in matching if (row['bookmaker'], row['region'], row['currency']) == group],
+                core.TARGET_MIN_ODDS, minimum=core.EXCEPTIONAL_MIN_ODDS, min_legs=2)
+                if core._product(legs) < core.TARGET_MIN_ODDS]
+            fallback.update(status='APPLIED' if options else 'NO_FALLBACK_OPTION',
+                applied=bool(options), reason='NO_OWN_15_40_OPTION_AFTER_FULL_DAY_SEARCH')
+        else:
+            fallback['reason'] = 'PRIMARY_SEARCH_COMPLETENESS_NOT_PROVEN'
+    preferred = source.get('preferred_bookmakers', ['betano'])
+    def rank(legs):
+        return (*core._specialist_rank(legs)[:3], core._bookmaker_rank(legs[0]['bookmaker'], preferred),
+                len(legs), -core._product(legs), core._specialist_rank(legs)[-1])
+    options.sort(key=rank)
+    options = [legs for legs in options if len(legs) == 1] + core._bounded_specialist_combinations(options)
+    options.sort(key=rank)
+    trace = core._core_trace(raw, prepared, matching, [], rejected, full, now)
+    return {'alternatives': [{'source_candidate_ids': [row['candidate_id'] for row in legs],
+        'fixture_ids': [row['fixture_id'] for row in legs], 'combined_price': float(core._product(legs)),
+        'quote_cohort': {key: legs[0][key] for key in ('bookmaker', 'region', 'currency')},
+        'scoring': core._specialist_scoring(legs),
+        'quality_warnings': [warning for row in legs for warning in row.get('quality_warnings', [])]}
+        for legs in options], 'diagnostics': trace, 'odds_exception': fallback,
+        'search_method': 'EXISTING_OWN_SPECIALIST_BOUNDED_DIVERSIFIED_BEAM',
+        'source_producer': 'engine.portfolio._core_pool/_specialist_options/_specialist_rank'}
+
+
+def _club_strategy_search(owner, source, settings, now, models):
+    """Existing own persona alternatives, with no report or automatic choice published."""
+    own_settings = {**deepcopy(settings), 'enabled_profiles': [owner]}
+    alternatives = {}
+    results = club.build_tipster_recommendations(source, models, own_settings, now,
+        diversity_options=alternatives, support_guard_mode='LIVE', option_search_mode='OFF')
+    own = [row for row in results if row.get('profile_id') == owner]
+    require(len(own) == 1 and set(alternatives) <= {owner}, 'EXACT_OWN_PERSONA_SEARCH_REQUIRED')
+    rows = []
+    for item in alternatives.get(owner, []):
+        card = item['recommendation']
+        require(card['profile_id'] == owner, 'FOREIGN_PERSONA_SEARCH_RESULT')
+        chosen = card['selection_diagnostics']['selected_source_candidate_ids']
+        require(len(chosen) == len(card['legs']), 'OWN_SEARCH_SOURCE_ID_COUNT')
+        rows.append({'source_candidate_ids': list(chosen),
+            'fixture_ids': [leg['fixture_id'] for leg in card['legs']],
+            'combined_price': card['combined_price'],
+            'quote_cohort': {key: card['legs'][0][key] for key in ('bookmaker', 'region', 'currency')},
+            'scoring': deepcopy(item['scoring']), 'quality_warnings': deepcopy(card['quality_warnings'])})
+    return {'alternatives': rows, 'diagnostics': deepcopy(own[0]['selection_diagnostics']),
+        'odds_exception': deepcopy(own[0]['selection_diagnostics'].get('odds_exception')),
+        'search_method': 'EXISTING_OWN_PERSONA_BOUNDED_TICKET_GROUPS',
+        'source_producer': 'tipsters.recommendations.build_tipster_recommendations/diversity_options',
+        'shadow_challenger_executed': False, 'legacy_chosen_card_published': False}
+
+
 def build_agent_option_builder(report, artifacts, enriched, club_enriched, settings, as_of):
     """Return an owner/proposal/snapshot callable over detached NORMAL inputs.
 
@@ -376,7 +463,9 @@ def build_agent_option_builder(report, artifacts, enriched, club_enriched, setti
     bound_data = None
     admitted_models = None
 
-    def build(owner, proposal, snapshot):
+    search_cache = {}
+
+    def bind_snapshot(owner, snapshot):
         nonlocal bound_snapshot, bound_data, admitted_models
         get_agent_definition(owner)
         require(isinstance(snapshot, SharedSnapshot), 'SHARED_SNAPSHOT_REQUIRED')
@@ -392,6 +481,9 @@ def build_agent_option_builder(report, artifacts, enriched, club_enriched, setti
             admitted_models = ProfileToolService(snapshot)._admitted_models(raw_models)
             bound_snapshot, bound_data = snapshot.snapshot_id, data
         require(snapshot.snapshot_id == bound_snapshot, 'PRODUCT_BUILDER_SNAPSHOT_CHANGED')
+
+    def build(owner, proposal, snapshot):
+        bind_snapshot(owner, snapshot)
         require(isinstance(proposal, dict) and set(proposal) == {'option_id', 'source_candidate_ids', 'reason'}
                 and isinstance(proposal['option_id'], str) and bool(proposal['option_id'])
                 and isinstance(proposal['reason'], str) and bool(proposal['reason'].strip()),
@@ -439,7 +531,54 @@ def build_agent_option_builder(report, artifacts, enriched, club_enriched, setti
         result['full_candidate_catalog'] = json.loads(catalogue_json)
         return result
 
+    def strategy_search(owner, snapshot):
+        """Callable construction aid; no host invocation or selected-card authority."""
+        bind_snapshot(owner, snapshot)
+        if owner in search_cache:
+            return json.loads(search_cache[owner])
+        data = bound_data
+        universe = data['families']['calendar']['value']
+        source = enriched if owner in CORE_MARKETS else club_enriched
+        source = {**deepcopy(source), 'date': report['date'], 'fixtures': deepcopy(universe),
+                  'calendar_universe': deepcopy(universe),
+                  'calendar_scope_receipt': deepcopy(data['calendar_receipt']['producer_receipt'])}
+        result = {'version': 'own-existing-strategy-search-v1', 'agent_id': owner,
+            'method_version': get_agent_definition(owner).method_version,
+            'run_id': data['run_id'], 'target_date': data['target_date'],
+            'snapshot_id': snapshot.snapshot_id, 'source_as_of': data['as_of'],
+            'evaluation_as_of': now.isoformat(), 'settings_sha256': digest(settings),
+            'original_producer_observed_at': source.get('observed_at'),
+            'full_fixture_ids': list(data['fixture_ids']),
+            'source_candidate_rows': len(artifacts['candidate_input']['candidates']),
+            'source_candidate_input_sha256': digest(artifacts['candidate_input']),
+            'own_enriched_input_sha256': digest(source), 'source_manifest_sha256': digest(data['source_manifest']),
+            'all_family_states': {name: {key: envelope.get(key) for key in ('status', 'value_sha256')}
+                                  for name, envelope in data['families'].items()},
+            'common_shortlist_applied': False, 'agent_may_reject_modify_or_choose_outside_results': True,
+            'canonical_admission_still_required': True, 'selected_raw_record_reads_still_required': True,
+            'both_simulations_still_required': True, 'automatic_selection_or_publication': False,
+            'calibrated_profit_or_exhaustive_optimum_claim': False,
+            'search_data_usage': 'EXISTING_DECLARED_SCORE_TERMS_AND_GATES_NOT_ALL_FAMILY_CAUSAL_USE',
+            'actual_host_tool_invocation': False, 'transport_binding': 'RUNNER_PRECOMPUTED_OWN_PLAN_CONTEXT_NOT_MCP_TOOL'}
+        try:
+            produced = (_core_strategy_search(owner, source, settings, now, universe)
+                        if owner in CORE_MARKETS else
+                        _club_strategy_search(owner, source, settings, now, admitted_models))
+            result.update(produced)
+            for row in result['alternatives']:
+                chosen = identifiers(row['source_candidate_ids'])
+                row['search_option_id'] = digest([owner, snapshot.snapshot_id, list(chosen)])
+            result['status'] = 'AVAILABLE' if result['alternatives'] else 'NO_COMPLIANT_OPTION'
+            result['reason'] = None if result['alternatives'] else 'OWN_EXISTING_SEARCH_RETURNED_NO_OPTION'
+        except (ValueError, KeyError, TypeError, OverflowError) as error:
+            result.update(status='UNKNOWN', reason='OWN_SEARCH_SOURCE_OR_POLICY_UNAVAILABLE',
+                          error_type=type(error).__name__, source_error=str(error)[:240], alternatives=[])
+        result['result_id'] = digest(result)
+        search_cache[owner] = json.dumps(result, sort_keys=True, ensure_ascii=False, allow_nan=False)
+        return json.loads(search_cache[owner])
+
     build.construction_contract = construction_contract
+    build.strategy_search = strategy_search
     return build
 
 
