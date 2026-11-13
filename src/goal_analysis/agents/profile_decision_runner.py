@@ -22,8 +22,11 @@ from goal_analysis.agents.profile_decision import (
     validate_tool_result,
 )
 from goal_analysis.agents.profile_input import (
+    FINAL_REQUEST_PROJECTION,
+    SOURCE_DETAILS_POLICY,
     decision_view,
     final_option_details,
+    final_request_data,
     final_shared_reference,
     public_tool_results,
 )
@@ -137,7 +140,8 @@ class ProfileDecisionRunner:
 
     def _call(self, state, phase, data, *, source_records=None):
         body = {**_identity(state), 'phase': phase,
-                'persona': get_agent_definition(state.agent_id).as_dict(), 'data': data}
+                'persona': get_agent_definition(state.agent_id).as_dict(),
+                'data': final_request_data(data) if phase == 'FINAL' else data}
         require(len(json_text(body)) <= self.max_input_chars, 'OWNER_INPUT_BUDGET_EXCEEDED')
         timeout = self.budget.reserve()
         key = self.journal.claim(body)
@@ -305,7 +309,8 @@ class ProfileDecisionRunner:
                 'snapshot': (source_final_reference(snapshot, plan_view) if self.source_bundle is not None
                              else final_shared_reference(snapshot, view)), 'own_plan': plan,
                 'validated_own_options': options, 'tool_results': public_tool_results(tool_results),
-                'own_source_details': final_option_details(snapshot, state.agent_id, options),
+                'own_source_details': final_option_details(snapshot, state.agent_id, options,
+                    source_access=self.source_bundle is not None),
                 'own_option_admission': admission,
             }
             final = self._call(state, 'FINAL', final_data, source_records=source_records)
@@ -336,6 +341,9 @@ class ProfileDecisionRunner:
                            'version': ('owner-decision-evidence-v3-source-access'
                                if self.source_bundle is not None else 'owner-decision-evidence-v2-compact-views'),
                            'snapshot_id': snapshot.snapshot_id,
+                           'final_request_projection': FINAL_REQUEST_PROJECTION,
+                           **({'source_details_policy': SOURCE_DETAILS_POLICY}
+                              if self.source_bundle is not None else {}),
                            'input_views': {
                                'PLAN': {'kind': ('profile_source_access.build_source_seed'
                                    if self.source_bundle is not None else 'profile_input.decision_view'),

@@ -19,8 +19,11 @@ from goal_analysis.agents.profile_decision import (
     start_sessions,
 )
 from goal_analysis.agents.profile_input import (
+    FINAL_REQUEST_PROJECTION,
+    SOURCE_DETAILS_POLICY,
     decision_view,
     final_option_details,
+    final_request_data,
     final_shared_reference,
     public_tool_results,
 )
@@ -77,12 +80,19 @@ def _owner_evidence(owner, snapshot, shared):
     require(owner.get('status') == 'DECISION_COMPLETED', 'OWNER_DECISION_INCOMPLETE')
     evidence = owner.get('decision_evidence')
     require(isinstance(evidence, dict), 'OWN_REQUEST_REPLY_ENVELOPE_NOT_SAVED')
+    projection = evidence.get('final_request_projection')
+    require(projection in {None, FINAL_REQUEST_PROJECTION}, 'UNKNOWN_FINAL_REQUEST_PROJECTION')
+    source_policy = evidence.get('source_details_policy')
+    require(source_policy in {None, SOURCE_DETAILS_POLICY}, 'UNKNOWN_SOURCE_DETAILS_POLICY')
     source_mode = evidence.get('version') == 'owner-decision-evidence-v3-source-access'
+    require(source_policy is None or source_mode, 'SOURCE_DETAILS_REQUIRE_SOURCE_ACCESS')
     require(evidence.get('version') in {'owner-decision-evidence-v2-compact-views',
                                       'owner-decision-evidence-v3-source-access'}
             and evidence.get('snapshot_id') == snapshot.snapshot_id, 'OWN_INPUT_VIEW_BINDING_CHANGED')
     state = shared['states'][owner['agent_id']]
     plan, final, options = evidence['plan'], evidence['final'], evidence['validated_own_options']
+    details = final_option_details(snapshot, owner['agent_id'], options,
+        source_access=source_policy == SOURCE_DETAILS_POLICY)
     proposals = plan['options']
     admission = evidence.get('own_option_admission')
     if admission is not None:
@@ -99,7 +109,7 @@ def _owner_evidence(owner, snapshot, shared):
         'FINAL': {'kind': ('profile_decision_runner.source_final_reference+own_details' if source_mode
                            else 'profile_input.final_shared_reference+own_details'),
             'shared_sha256': shared['source_final_shared_sha256'] if source_mode else shared['final_shared_sha256'],
-            'own_details_sha256': digest(final_option_details(snapshot, owner['agent_id'], options)),
+            'own_details_sha256': digest(details),
             'public_tools_sha256': digest(public_tool_results(evidence['tool_results'])),
             **({'admission_sha256': digest(admission)} if admission is not None else {})}},
         'OWN_PLAN_OR_FINAL_INPUT_BINDING_CHANGED')
@@ -120,9 +130,11 @@ def _owner_evidence(owner, snapshot, shared):
             'FINAL': {'snapshot': shared['source_final_shared'], 'own_plan': plan,
                 'validated_own_options': options,
                 'tool_results': public_tool_results(evidence['tool_results']),
-                'own_source_details': final_option_details(snapshot, owner['agent_id'], options),
+                'own_source_details': details,
                 'own_option_admission': admission},
         }
+        if projection == FINAL_REQUEST_PROJECTION:
+            phase_data['FINAL'] = final_request_data(phase_data['FINAL'])
         source_checks = {}
         for phase, reply in (('PLAN', plan), ('FINAL', final)):
             request = {**{key: getattr(state, key) for key in ('agent_id', 'session_id', 'snapshot_id')},

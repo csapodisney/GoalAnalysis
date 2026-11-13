@@ -8,6 +8,8 @@ from datetime import UTC, datetime
 from goal_analysis.jobs.agent_snapshot import SharedSnapshot, digest, json_text, require
 
 VIEW_VERSION = 'ten-agent-readable-decision-tables-v3'
+FINAL_REQUEST_PROJECTION = 'FINAL_EXACT_SUBTREES_V1'
+SOURCE_DETAILS_POLICY = 'READ_DATA_EXACT_ROWS_V1'
 
 
 def encode_table(records):
@@ -565,12 +567,14 @@ def _source_candidate_id(leg, owner_id):
     return source
 
 
-def final_option_details(snapshot: SharedSnapshot, owner_id: str, options: list[dict]) -> dict:
+def final_option_details(snapshot: SharedSnapshot, owner_id: str, options: list[dict], *,
+                         source_access: bool = False) -> dict:
     """Readable facts for this owner's already proposed options, without reselection.
 
     PLAN used the entire day. This expansion is never a shared candidate filter.
     Its payload still passes the runner's unchanged FINAL character limit.
     """
+    require(type(source_access) is bool, 'SOURCE_ACCESS_FLAG_MUST_BE_BOOLEAN')
     original = snapshot.data()
     require(owner_id in original['owner_ids'] and isinstance(options, list)
             and all(isinstance(option, dict) and option.get('agent_id') == owner_id
@@ -634,7 +638,7 @@ def final_option_details(snapshot: SharedSnapshot, owner_id: str, options: list[
         contexts[family] = {'status': envelope['status'], 'reason': envelope.get('reason'),
             'source_refs': deepcopy(envelope['source_refs']), 'original_value_sha256': envelope['value_sha256'],
             'selected_fixture_values': selected}
-    return {'version': 'owner-selected-readable-details-v1', 'owner_id': owner_id,
+    result = {'version': 'owner-selected-readable-details-v1', 'owner_id': owner_id,
         'snapshot_id': snapshot.snapshot_id, 'option_ids': [row['option_id'] for row in options],
         'candidate_ids': sorted(candidate_ids), 'fixture_ids': sorted(fixture_ids),
         'selection_basis': 'THIS_OWNER_ALREADY_PROPOSED_OPTIONS_AFTER_FULL_CALENDAR_PLAN',
@@ -643,6 +647,34 @@ def final_option_details(snapshot: SharedSnapshot, owner_id: str, options: list[
         'model_probabilities': {key: deepcopy(row) for key, row in original['model_probabilities'].items()
                                 if row['fixture_id'] in fixture_ids},
         'new_probability_or_price_created': False}
+
+    if source_access:
+        def row_reference(row, path):
+            return {'format': SOURCE_DETAILS_POLICY, 'candidate_id': row['candidate_id'],
+                **({'fixture_id': deepcopy(row['fixture_id'])} if 'fixture_id' in row else {}),
+                'namespace': 'raw', 'path': path,
+                'source_value_sha256': digest(row), 'total_chars': len(json_text(row))}
+
+        selected_candidates, selected_history = {}, {}
+        for producer in candidates:
+            container = odds[producer]
+            path = ['families', 'odds_and_price_history', 'value', producer]
+            rows = container.get('candidates')
+            selected_candidates[producer] = [row_reference(row, [*path, 'candidates', index])
+                for index, row in enumerate(rows if isinstance(rows, list) else [])
+                if isinstance(row, dict) and row.get('candidate_id') in candidate_ids]
+            if producer in history:
+                rows = container['history_analysis']['candidates']
+                selected_history[producer] = [row_reference(row, [*path, 'history_analysis', 'candidates', index])
+                    for index, row in enumerate(rows)
+                    if isinstance(row, dict) and row.get('candidate_id') in candidate_ids]
+        result['source_candidates_by_producer'] = selected_candidates
+        result['history_features_by_producer'] = selected_history
+        result['source_details_policy'] = {
+            'version': SOURCE_DETAILS_POLICY,
+            'instructions': 'These two producer groups contain exact original raw-row locators, not inline row values. Use read_data with this namespace/path, your current agent/session/snapshot/phase identity, mode=text, offset=0 and bounded limit; follow next_offset until complete. Verify source_value_sha256 and total_chars. Original UNKNOWN values, clocks and full historical membership remain in the immutable raw bundle. Read any detail you need before relying on it. A locator is availability, not proof that the row was read or influenced your choice.',
+            'raw_rows_preserved_in_shared_bundle': True, 'all_raw_rows_read_by_host': False}
+    return result
 
 
 def final_shared_reference(snapshot: SharedSnapshot, plan_view: dict) -> dict:
@@ -662,6 +694,71 @@ def final_shared_reference(snapshot: SharedSnapshot, plan_view: dict) -> dict:
             'full_raw_values_read_by_host': 'NOT_CLAIMED'},
         'families': {name: {key: deepcopy(item) for key, item in envelope.items() if key != 'value'}
                      for name, envelope in original['families'].items()}}
+
+
+def final_request_data(data):
+    """Lossless FINAL-wire duplicates only; original evidence is never rewritten."""
+    require(isinstance(data, dict), 'FINAL_DATA_OBJECT_REQUIRED')
+    reference_key = '__arthur_final_ref__'
+
+    def reserved(value):
+        if isinstance(value, dict):
+            return reference_key in value or any(reserved(row) for row in value.values())
+        return isinstance(value, list) and any(reserved(row) for row in value)
+
+    if {'exact_values', 'final_data_projection'}.intersection(data) or reserved(data):
+        return deepcopy(data)  # Original cap still applies; no ambiguous decoding.
+
+    def untouched(path):
+        if path and path[0] in {'snapshot', 'own_plan', 'own_option_admission'}:
+            return True
+        return (len(path) >= 3 and path[0] == 'tool_results'
+                and (path[2] == 'request' or len(path) >= 4
+                     and path[2] == 'result' and path[3] not in {'value', 'diagnostics'}))
+
+    def protected(path):
+        return (len(path) <= 1 or path[0] == 'validated_own_options' and len(path) == 2
+                or path[0] == 'tool_results' and len(path) <= 3)
+
+    counts = Counter()
+
+    def scan(value, path):
+        if not isinstance(value, (dict, list)) or untouched(path):
+            return
+        if not protected(path):
+            raw = json_text(value)
+            if len(raw) >= 256:
+                counts[raw] += 1
+        for key, row in (value.items() if isinstance(value, dict) else enumerate(value)):
+            scan(row, (*path, key))
+
+    scan(data, ())
+    values, originals = {}, {}
+
+    def project(value, path, inline=False):
+        if not isinstance(value, (dict, list)) or untouched(path):
+            return deepcopy(value)
+        raw = json_text(value)
+        if not inline and not protected(path) and counts[raw] > 1:
+            key = digest(value)
+            require(key not in originals or originals[key] == raw, 'EXACT_SUBTREE_HASH_COLLISION')
+            if key not in values:
+                originals[key] = raw
+                values[key] = {'source_value_sha256': key, 'value': project(value, path, True)}
+            return {reference_key: key}
+        if isinstance(value, dict):
+            return {key: project(row, (*path, key)) for key, row in value.items()}
+        return [project(row, (*path, index)) for index, row in enumerate(value)]
+
+    result = project(data, ())
+    if not values:
+        return deepcopy(data)
+    result['exact_values'] = values
+    result['final_data_projection'] = {
+        'version': FINAL_REQUEST_PROJECTION, 'source_data_sha256': digest(data),
+        'reconstruction': 'In the six original data fields, recursively replace exact one-key __arthur_final_ref__ objects with exact_values[key].value, expanding nested references first. Verify each restored value SHA256 against its table key and source_value_sha256; remove exact_values and final_data_projection to recover the original data and verify source_data_sha256. All values are supplied in this same request; order, UNKNOWN, clocks and numbers are unchanged. This is not extra source-read or profit evidence.',
+        'original_evidence_and_tools_unchanged': True}
+    return result if len(json_text(result)) < len(json_text(data)) else deepcopy(data)
 
 
 def public_tool_results(tool_results):
