@@ -6,7 +6,7 @@ import json
 import os
 import sys
 from copy import deepcopy
-from datetime import timedelta
+from datetime import datetime, timedelta
 from pathlib import Path
 
 from goal_analysis.agents.profile_decision_runner import (
@@ -17,7 +17,7 @@ from goal_analysis.agents.profile_decision_runner import (
 )
 from goal_analysis.agents.profile_roster import AGENT_IDS
 from goal_analysis.agents.profile_tools import ProfileToolService
-from goal_analysis.jobs.agent_snapshot import build_normal_snapshot, require
+from goal_analysis.jobs.agent_snapshot import build_normal_snapshot, digest, json_text, require
 from goal_analysis.jobs.profile_historical_scenarios import build_history_view
 
 
@@ -37,10 +37,17 @@ def make_normal_agent_executor(root, settings, *, clock, stop_requested=lambda: 
             web_search=False, max_output_tokens=ai['max_output_tokens'],
             cache_dir=root / 'data/arthur/codex-cache')
 
+    def news_producer(*, fixtures, target_date):
+        return CodexReviewer(model=ai['model'], reasoning_effort=ai['reasoning_effort'],
+            web_search=True, max_output_tokens=ai['max_output_tokens'],
+            cache_dir=root / 'data/arthur/codex-cache').research_fixtures(
+                fixtures, target_date, clock=clock)
+
     return NormalAgentExecutor(host=CodexDecisionHost(reviewer_factory),
         journal_root=root / 'data/arthur/agent-decisions', clock=clock,
         stop_requested=stop_requested, enable_source_access=True,
-        news_reader=lambda **kwargs: read_current_news(root / 'data/goal_analysis.sqlite3', **kwargs))
+        news_reader=lambda **kwargs: read_current_news(root / 'data/goal_analysis.sqlite3', **kwargs),
+        news_producer=news_producer if ai.get('web_search') is True else None)
 
 
 class NormalAgentExecutor:
@@ -53,7 +60,7 @@ class NormalAgentExecutor:
     """
 
     def __init__(self, *, host, journal_root, clock, stop_requested=lambda: False,
-                 news_reader=None, historical_reader=None, max_requests=20,
+                 news_reader=None, historical_reader=None, news_producer=None, max_requests=20,
                  timeout_seconds=3600, enable_source_access=False, pilot_agent_id=None):
         require(callable(host) and callable(clock), 'EXPLICIT_HOST_AND_CLOCK_REQUIRED')
         require(type(timeout_seconds) is int and 0 < timeout_seconds <= 3600,
@@ -66,6 +73,8 @@ class NormalAgentExecutor:
         self.host, self.clock, self.stop_requested = host, clock, stop_requested
         self.journal_root = Path(journal_root)
         self.news_reader, self.historical_reader = news_reader, historical_reader
+        require(news_producer is None or callable(news_producer), 'OPTIONAL_NEWS_PRODUCER_REQUIRED')
+        self.news_producer = news_producer
         self.max_requests, self.timeout_seconds = max_requests, timeout_seconds
         self.enable_source_access = enable_source_access
         self.pilot_agent_id = pilot_agent_id
@@ -117,6 +126,82 @@ class NormalAgentExecutor:
             return [], {'status': 'UNKNOWN', 'reason': 'SOURCE_READER_FAILED',
                         'error_type': type(error).__name__}
 
+    def _fresh_news(self, *, run_id, target_date, as_of, full_ids, fixtures):
+        """One durable business research attempt; failures are local, retries are not."""
+        from goal_analysis.agents.web_research import TOPICS
+
+        if self.news_producer is None:
+            return None, as_of
+        require(len(full_ids) == len(set(full_ids)) == len(fixtures)
+                and {row.get('fixture_id') for row in fixtures} == set(full_ids),
+                'FULL_CALENDAR_NEWS_INPUT_REQUIRED_BEFORE_HOST')
+        directory = self.journal_root / run_id
+        directory.mkdir(parents=True, exist_ok=True)
+        if (directory / 'run.claim.json').exists() or (directory / 'snapshot.json').exists():
+            raise FileExistsError('EXISTING_OWNER_RUN_CANNOT_RESEARCH_AGAIN')
+
+        def write_once(name, value):
+            with (directory / name).open('x', encoding='utf-8', newline='\n') as stream:
+                stream.write(json_text(value))
+                stream.flush()
+                os.fsync(stream.fileno())
+
+        started = self.clock()
+        require(isinstance(started, datetime) and started.tzinfo is not None and started >= as_of,
+                'CURRENT_NEWS_CLOCK_REQUIRED_BEFORE_HOST')
+        write_once('fresh-news.claim.json', {'run_id': run_id, 'target_date': target_date.isoformat(),
+            'fixture_ids': full_ids, 'fixture_input_sha256': digest(fixtures),
+            'started_at': started.isoformat(), 'maximum_attempts': 1, 'owner_request_budget': self.max_requests,
+            'separate_shared_research_request_budget': 1})
+        unknown = [{'fixture_id': key, 'topic': topic, 'status': 'UNKNOWN'} for key in full_ids for topic in TOPICS]
+        try:
+            result = deepcopy(self.news_producer(fixtures=deepcopy(fixtures), target_date=target_date.isoformat()))
+            require(isinstance(result, dict) and result.get('version') == 'full-day-news-research-v1'
+                    and result.get('fixture_ids') == full_ids, 'FULL_DAY_NEWS_PRODUCER_IDENTITY_REQUIRED')
+            envelopes, coverage = result.get('envelopes'), result.get('coverage')
+            require(isinstance(envelopes, list) and isinstance(coverage, list)
+                    and len(coverage) == len(unknown)
+                    and {(row['fixture_id'], row['topic']) for row in coverage}
+                    == {(row['fixture_id'], row['topic']) for row in unknown}, 'FULL_DAY_NEWS_COVERAGE_REQUIRED')
+            if envelopes:
+                details = result.get('source_result', {})
+                proof = details.get('transport_evidence', {})
+                require(result.get('source_result_sha256') == digest(details)
+                        and proof.get('native_exit_code') == 0 and proof.get('turn_completed') is True
+                        and proof.get('completed_search_ids'), 'COMPLETED_NEWS_TRANSPORT_REQUIRED')
+                allowed = set(details.get('native_source_urls', []))
+                require(proof.get('native_source_urls_sha256') == digest(sorted(allowed))
+                        and coverage == details.get('coverage'), 'NATIVE_NEWS_RESULT_BINDING_REQUIRED')
+                observed = datetime.fromisoformat(result['observed_at'])
+                require(observed.tzinfo is not None and observed >= started,
+                        'ACTUAL_NEWS_OBSERVATION_CLOCK_REQUIRED')
+                expected = [{**row, 'version': 'WEB_RESEARCH_SUMMARY',
+                    'observed_at': result['observed_at'], 'published_at': None,
+                    'representation': 'MODEL_GENERATED_SUMMARY', 'content_status': 'UNVERIFIED',
+                    'provenance_status': 'NATIVE_SEARCH_CITATION_MATCHED',
+                    'source_result_sha256': result['source_result_sha256'], 'PIT_certified': False}
+                    for row in details.get('fixture_context', [])]
+                require(envelopes == expected, 'EXACT_VALIDATED_NEWS_ENVELOPES_REQUIRED')
+                for row in envelopes:
+                    require(row.get('fixture_id') in full_ids and row.get('topic') in TOPICS
+                            and row.get('version') == 'WEB_RESEARCH_SUMMARY' and row.get('published_at') is None
+                            and row.get('content_status') == 'UNVERIFIED'
+                            and row.get('provenance_status') == 'NATIVE_SEARCH_CITATION_MATCHED'
+                            and row.get('source_result_sha256') == result['source_result_sha256']
+                            and row.get('source_urls') and set(row['source_urls']) <= allowed,
+                            'SOURCE_BOUND_NEWS_ENVELOPE_REQUIRED')
+        except Exception as error:  # noqa: BLE001 - one failed optional producer is not a global veto.
+            result = {'version': 'full-day-news-research-v1', 'status': 'UNKNOWN',
+                'fixture_ids': full_ids, 'coverage': unknown, 'envelopes': [],
+                'reason': 'NEWS_RESEARCH_FAILED_NO_RETRY', 'error_type': type(error).__name__,
+                'usage': {'requests': None, 'usage_complete': False, 'cost_amount': None}}
+        finished = self.clock()
+        require(isinstance(finished, datetime) and finished.tzinfo is not None and finished >= started,
+                'CURRENT_NEWS_COMPLETION_CLOCK_REQUIRED')
+        write_once('fresh-news-result.json', {'result': result, 'result_sha256': digest(result),
+                                            'finished_at': finished.isoformat()})
+        return result, finished
+
     def __call__(self, *, run_id, target_date, as_of, artifacts, fixture_records,
                  enriched, club_enriched, candidate_context, weather_by_fixture,
                  historical_runs, feedback, settings, team_plan):
@@ -129,14 +214,34 @@ class NormalAgentExecutor:
         require(set(AGENT_IDS) <= set(settings['enabled_profiles']), 'TEN_AGENT_SETTINGS_REQUIRED')
         require(not self.stop_requested(), 'HUMAN_OR_ACCOUNT_STOP')
         full_ids = artifacts.get('calendar', {}).get('scope_receipt', {}).get('provider_fixture_ids', [])
+        fresh_news = None
+        if self.news_producer is not None:
+            events = artifacts['calendar']['scope_receipt']['events']
+            by_id = {row['fixture_id']: row for row in fixture_records}
+            by_event = {row['fixture_id']: row for row in events}
+            require(len(by_event) == len(events) and set(by_event) == set(full_ids),
+                    'FULL_CALENDAR_NEWS_EVENTS_REQUIRED_BEFORE_HOST')
+            fixtures = [{**by_event[key], **by_id.get(key, {})} for key in full_ids]
+            fresh_news, as_of = self._fresh_news(run_id=run_id, target_date=target_date,
+                as_of=as_of, full_ids=full_ids, fixtures=fixtures)
         news, news_status = self._read_optional(self.news_reader, fixture_ids=full_ids, as_of=as_of)
+        coverage = None
+        if fresh_news is not None:
+            news.extend(deepcopy(fresh_news['envelopes']))
+            coverage = {'status': fresh_news['status'], 'by_fixture_topic': fresh_news['coverage'],
+                'result_sha256': digest(fresh_news), 'research_scope': 'FULL_PROVIDER_DAY',
+                'all_fixtures_independently_researched': False,
+                'publication_time_inferred': False, 'content_verified': False,
+                'budget_gap': fresh_news.get('budget_gap')}
+            artifacts['fresh_news_research'] = deepcopy(fresh_news)
         history, history_status = self._read_optional(self.historical_reader, fixture_ids=full_ids, as_of=as_of)
         historical_view = build_history_view(artifacts, as_of=as_of.isoformat())
         snapshot = build_normal_snapshot(run_id=run_id, target_date=target_date.isoformat(),
             snapshot_as_of=as_of.isoformat(), artifacts=artifacts, fixture_records=fixture_records,
             enriched=enriched, club_enriched=club_enriched, candidate_context=candidate_context,
             weather_by_fixture=weather_by_fixture, historical_runs=historical_runs,
-            feedback=feedback, news_envelopes=news, historical_view=historical_view)
+            feedback=feedback, news_envelopes=news, historical_view=historical_view,
+            **({'news_coverage': coverage} if coverage is not None else {}))
         report = {'schema_version': 3, 'module': 'ARTHUR_PORTFOLIO', 'run_id': run_id,
             'date': target_date.isoformat(), 'observed_at': as_of.isoformat(),
             'finished_at': as_of.isoformat(), 'settings': deepcopy(settings),
@@ -183,6 +288,10 @@ class NormalAgentExecutor:
         else:
             publish_agent_decisions(report, result, settings, self.clock(), team_plan=team_plan)
         usages = [value for owner in result['owners'] for value in owner.get('observed_host_usage', [])]
+        owner_usages = deepcopy(usages)
+        if fresh_news is not None:
+            usages.append(fresh_news.get('usage', {}))
+            report['fresh_news_research'] = deepcopy(fresh_news)
         complete_requests = bool(usages) and all(isinstance(value, dict)
             and type(value.get('requests')) is int for value in usages)
         complete_usage = complete_requests and all(value.get('usage_complete') is True for value in usages)
@@ -195,6 +304,10 @@ class NormalAgentExecutor:
             known = [value[field] for value in usages if isinstance(value, dict)
                      and type(value.get(field)) is int]
             usage[field] = sum(known) if usages and len(known) == len(usages) else None
+        if fresh_news is not None:
+            usage.update(owner_phase_usage=owner_usages, shared_news_usage=fresh_news.get('usage', {}),
+                         owner_request_budget=self.max_requests, shared_news_request_budget=1,
+                         maximum_combined_requests=self.max_requests + 1)
         report['astra'] = {'status': 'COMPLETE' if result['status'] == 'COMPLETE' else 'PARTIAL',
             'mode': 'TEN_INDEPENDENT_OWNER_DECISIONS', 'reviews': [], 'usage': usage,
             'message': 'Tíz külön döntési út; a hiányzó vagy félbeszakadt eredmények agentenként láthatók.',

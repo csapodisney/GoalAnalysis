@@ -285,7 +285,7 @@ def build_normal_snapshot(*, run_id: str, target_date: str, snapshot_as_of: str,
                           artifacts: dict, fixture_records=None, enriched=None,
                           club_enriched=None, candidate_context=None, weather_by_fixture=None,
                           historical_runs=None, feedback=None, news_envelopes=None,
-                          owner_ids=OWNER_IDS, historical_view=None) -> SharedSnapshot:
+                          owner_ids=OWNER_IDS, historical_view=None, news_coverage=None) -> SharedSnapshot:
     """Bind an already collected NORMAL frame before independent owner decisions.
 
     No DB, provider, predictor, simulation or filesystem operation is performed.
@@ -403,8 +403,13 @@ def build_normal_snapshot(*, run_id: str, target_date: str, snapshot_as_of: str,
         reason='COLLECTED_WEATHER_IS_NOT_FULL_CALENDAR_STRICT_FORECAST_VALIDATION')
     news = [] if news_envelopes is None else news_envelopes
     require(isinstance(news, (list, tuple)), 'NEWS_ENVELOPE_SEQUENCE_REQUIRED')
-    family('sourced_news', {'envelopes': list(news)}, available=bool(news),
-           reason='NO_PHYSICAL_NEWS_ENVELOPES_SUPPLIED' if not news else 'PRODUCER_NEWS_ENVELOPES_NOT_REVALIDATED')
+    news_value = {'envelopes': list(news)}
+    if news_coverage is not None:
+        require(isinstance(news_coverage, dict), 'NEWS_COVERAGE_MAPPING_REQUIRED')
+        news_value['research_coverage'] = news_coverage
+    family('sourced_news', news_value, available=bool(news),
+           reason='NO_PHYSICAL_NEWS_ENVELOPES_SUPPLIED' if not news else 'PRODUCER_NEWS_ENVELOPES_NOT_REVALIDATED',
+           **({'coverage': news_coverage} if news_coverage is not None else {}))
     models = _normal_mapping(artifacts.get('numeric_models'))
     probabilities, model_gaps = _normal_model_records(models, fixtures, register, cutoff)
     family('numeric_models', {'results': models, 'model_input_uses': normal_input.get('model_input_uses'),
