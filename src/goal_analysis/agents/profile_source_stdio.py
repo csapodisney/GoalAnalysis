@@ -79,7 +79,10 @@ def serve(input_stream, output_stream, kernel):
             if method == 'ping':
                 response = {'jsonrpc': '2.0', 'id': rpc_id, 'result': {}}
             elif method == 'tools/list':
-                require(not message.get('params') or message['params'] == {}, 'SOURCE_TOOL_LIST_HAS_NO_CURSOR')
+                params = message.get('params')
+                require(not params or (isinstance(params, dict) and set(params) <= {'_meta'}
+                        and ('_meta' not in params or isinstance(params['_meta'], dict))),
+                        'SOURCE_TOOL_LIST_HAS_NO_CURSOR')
                 response = {'jsonrpc': '2.0', 'id': rpc_id, 'result': {'tools': [tool_schema()]}}
             elif method == 'tools/call':
                 params = message.get('params')

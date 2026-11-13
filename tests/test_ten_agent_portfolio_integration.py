@@ -135,7 +135,8 @@ def test_explicit_ten_agent_path_receives_full_frame_and_returns_without_old_sel
     assert not set(MODEL_PROFILE_IDS) & set(settings['enabled_profiles'])
     context_fixtures, packets, eligible = calls['context'][0]
     assert context_fixtures == fixtures and len(context_fixtures) == 45
-    assert {row['candidate_id'] for row in packets} == {row['candidate_id'] for row in eligible}
+    assert {row['candidate_id'] for row in packets} == {row['candidate_id'] for row in source['candidate_input']['candidates']}
+    assert {row['fixture_id'] for row in eligible} == {row['fixture_id'] for row in context_fixtures}
     assert len(packets) == 35  # Exceeds old max_candidates=30; no shared top-N packet shortlist.
     frame = calls['executor'][0]
     assert frame['fixture_records'] == fixtures

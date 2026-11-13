@@ -703,19 +703,20 @@ def run_portfolio(
 
             proposed_context_root = Path(ledger.path).resolve().parents[2]
             profile_context_mode = profile_context_stage.policy(proposed_context_root)
-            if packets or profile_context_mode in {'SHADOW', 'ACTIVE'}:
+            if packets or agent_executor is not None or profile_context_mode in {'SHADOW', 'ACTIVE'}:
                 context_root = proposed_context_root
                 try:
                     context_mode = context_job.policy(context_root)
                 except (OSError, ValueError, TypeError):
                     context_mode = 'UNAVAILABLE'
-        if weather_provider is not None and packets and context_mode != 'ACTIVE':
+        if weather_provider is not None and (packets or agent_executor is not None) and context_mode != 'ACTIVE':
             from goal_analysis.providers.open_meteo import unknown, weather_context
 
             fixtures = {item["fixture_id"]: item for item in artifacts.get("fixtures", {}).get("records", [])}
-            for fixture_id in dict.fromkeys(item["fixture_id"] for item in packets):
+            weather_scope = fixture_records if agent_executor is not None else packets
+            for fixture_id in dict.fromkeys(item["fixture_id"] for item in weather_scope):
                 fixture = fixtures.get(fixture_id)
-                if fixture is None:
+                if fixture is None or (agent_executor is not None and not allows_new_leg(fixture, review_cutoff)):
                     continue
                 try:
                     weather_by_fixture[fixture_id] = weather_provider.forecast(fixture)
@@ -731,7 +732,8 @@ def run_portfolio(
                                        'status': 'ATTEMPTED_BUDGET_MUST_NOT_RESTART'}
                     candidate_context = context_job.prepare(context_root, fixture_records, packets,
                                                             run_id=run_id, target_date=target_date, clock=clock,
-                                                            eligible_candidates=enriched['candidates'],
+                                                            eligible_candidates=(fixture_records if agent_executor is not None
+                                                                                 else enriched['candidates']),
                                                             weather_provider=weather_provider if context_mode == 'ACTIVE' else None)
                     augmented = context_job.attach(packets, candidate_context)
                     artifacts['candidate_context_inputs'] = candidate_context
