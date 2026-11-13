@@ -1,37 +1,31 @@
-# Tíz agent: valódi állapot, 2026-11-13
+# Tíz agent: tényleges állapot, 2026-11-13
 
-Az éles bevezetés funkcionálisan nem kész: a mai legutóbbi futásban0mentett szelvény, a minimum15 nem teljesült. A18:00Europe/Berlin határidő elmúlt. Ez a dokumentum nem minősíti késznek a projektet vagy profitképesnek a stratégiákat.
+Az éles bevezetés még nem kész: a legutóbbi valódi futás 0 szelvényt mentett, a napi minimum 15 nem teljesült. A kért 18:00 Europe/Berlin határidőt elmulasztottuk. Az alábbi javítások nem jelentenek új szelvényeket vagy igazolt profitot.
 
-## Telepített és ellenőrzött
+## Elkészült és telepített
 
-- Tíz külön tulajdonosi döntési út, teljes napi72meccses naptár,3154eredeti jelölt teljes katalógusa és12adatcsalád hozzáférése. Egy agent legfeljebb3saját külön szelvényt adhat.
-- Natív olvasóillesztés, két saját szimulációs szerep, pontos eredmény- és forráskötés; újstadion/hír/adatelérési javítások. A mai új célzott kontrollok14+10+4PASS; a natív olvasó kis valódi próbája0. Ez nem teljes mai rendszersiker.
-- A legutóbbi `2026-11-13-0f9e8e36a00f` valódi NORMAL16:59:45–17:22:20UTC, eredeti natív2, folyamatfa és naplók lezárva.9agent döntése tényleges ABSTAIN; Merlin `OWNER_INPUT_BUDGET_EXCEEDED` miatt nem jutott FINAL-ig.
-- Egyszeri elsődleges visszaellenőrzés0:4308régi típusosSQL-sor/séma és4korábbi mai report változatlan; csak újrun/import append,0új fogadás. Egyszeri kohorszellenőrzés0:80fizikai modell-DatasetStore-fájl;459086906olvasott byte, nincs újmodellhívás.
-- API,export,helyi/TailscaleJS közvetlen visszaellenőrzése0; böngészőben is0mai szelvény és72lekért meccs. Az első ellenőrző hibás8770gatewaycímen403-at kapott, natív1megmaradt; külön minimális8765címjavítás0, nem az eredeti eredmény átírása.
+- Mind a tíz agent megkapja a teljes napi naptárt, a teljes jelöltkatalógust és mind a 12 adatcsalád elérhetőségét. A mentett napi kontroll 72 meccset és 3154 jelöltet tartalmazott. Nincs közös, előzetesen levágott shortlist.
+- Minden agent a saját meglévő stratégiakeresőjét használhatja; legfeljebb hat saját javaslatot kap, és legfeljebb három saját szelvényt választhat. A javaslatok nem helyettesítik a teljes napi adatokat vagy a saját döntést.
+- A PLAN teljes bemenete és a FINAL pontos adatútja bekerül az ellenőrizhető bizonyítékba. A korábbi futás hiányos auditját nem minősítettük át utólag.
+- A túl nagy FINAL-bemenet javítva: az ismételt tartalmak veszteségmentes hivatkozást kapnak. A részletes eredeti jelölt- és historikus sorok az adatolvasón keresztül pontos elérési úttal, mérettel és hash-sel maradnak hozzáférhetők. A szimulációs eredmények közvetlenül a döntési bemenetben maradnak. Az elérhetőség önmagában nem tényleges olvasás vagy döntési hatás.
+- A mentett hat saját opció teljes döntési kérése 324 058 karakter / 324 970 UTF-8 bájt: a változatlan 360 000-es korláton belül. Mind az 50 forrássor-hivatkozás pontos; a két szimulátor már kiszámított eredménye változatlan. Ez egy konkrét mentett minta ellenőrzése, nem minden jövőbeli bemenet méretgaranciája.
+- Az új célzott ellenőrzések sikeresek: az első javításcsomag 21 eset + egy javított fixture külön esete; a többopciós tömörítés 3 eset + egy javított fixture külön esete; a forrássorok 3 új esete. Az eredeti hibás futások megmaradtak. Az érvényes forrásokon az alapértelmezett stílusellenőrzés sikeres.
+- Az új forrás 284 alkalmazásfájlra pontosan települt. A ledger, beállítások, aktivációs állapotok és régi riportok változatlanok. Helyi és Tailscale felület/JS/állapot ellenőrzés sikeres. A felirat: tíz önálló agent, legfeljebb harminc saját változat.
 
-## Még javítandó
+Telepített forrás: `4ec28353677a32a5e7d5cf5f378e7778126adb45`. Telepítés: 2026-11-13 19:24 UTC; felületellenőrzés: 19:26 UTC. Ez a következő CLI-futás forrása; nem állítjuk, hogy a régi dashboardfolyamat minden Python-modulját újratöltöttük.
 
-1. A meglévő saját determinisztikus stratégiakereső nincs az agent PLAN-útjához kötve. Jelenleg csak az agent által kézzel megadott kombinációt ellenőrzi a terméképítő. Az eredeti saját keresést kell elérhetővé tenni; ez saját segítség, nem közös shortlist vagy automatikus választás. A teljes napi adat minden tulajdonosnál megmarad.
-2. Merlin végső bemenetében a szimulációs eredmény egy teljes88ezerkarakteres része ismétlődik. A360000karakteres változatlan határ fölé került. Adatvesztés nélküli, hashkötött hivatkozásos deduplikáció szükséges, a teljes eredményt a journal megtartja.
-3.49meccs versenytípusa nincs a natív bemenethez kötve.47-hez már van mentett versenykatalógus-rekord; a vendor formátummező nem jelent biztonságosLEAGUE/NATIONALtaxonómiát. Két hiány és konkrét ellentmondás látható marad. A kötelező és opcionális feltételek profilfüggők; klubnál nem található ki új kötelező`competition_type`/`season`kapu.
-4. A felület örökölt30profilos felirata téves; tíz agent és legfeljebb30saját változat az érvényes szerződés.
-5. Új valódi kész szelvények, napi minimum15 és mentés/export/tényleges adat-, review- és szimulációs használat ellenőrzése. Ezt fixture-számmal vagy felhasználási nyilatkozattal nem lehet teljesítettnek jelölni.
+## Hátravan
 
-## Változatlan határok
+1. Az új forrással valódi, friss adatos NORMAL futás; a tíz agent tényleges döntései és a létrejövő szelvények. Ebben a javítási körben ilyen futás még nem indult.
+2. Az új mentett kohorsz teljes ellenőrzése: adat → fizikai DatasetStore → modell → saját döntés → pontos piac/odds → két saját szimuláció → mentés és megjelenítés. Ezt korábbi teszttel vagy nyilatkozattal nem lehet helyettesíteni.
+3. A napi minimum 15 elérése továbbra sincs igazolva. Nincs kitöltőszelvény, kikényszerített döntés vagy a profilok kockázati feltételeinek lazítása.
+4. 49 mentett meccs versenytípusa ismeretlen; a szolgáltató formátummezőjéből nem lehet biztonságosan kitalálni. A fontos adathiányokat és a profil szerinti következményüket külön kell jelezni.
+5. A formális időjárási összehasonlító modell, PIT/kalibráció/holdout és a korábbi 31 adat/specifikációs követelmény külön nyitott leltár. Ez nem 31 kódhiba és nem projektszázalék.
 
-Daily és legacy OFF,automationPAUSED;0új fogadás. Nincs minimum/rang/súly/profil/modell/budget/READYlazítás, hamis quoteóra, régi reportújraírás vagy kitöltőszelvény. Hiány helyiUNKNOWN; valódi providerquoteóra nélkül`quoted_at=NULL`. Az eredeti hibás eredmények és régi proofok megmaradnak.5%keretnél mentés és megállás.
+## Legutóbbi valódi üzleti eredmény
 
-A korábbi formalweatherchallenger/PIT/kalibráció/holdout és31eredeti adat/specifikációs követelmény külön nyitott leltár; ez nem31kódhiba vagy projekt-százalék. Elérhető adat nem jelenti minden nyers sor bizonyított döntési hatását. Profit nem igazolt.
+`2026-11-13-0f9e8e36a00f`: 16:59–17:22 UTC, eredeti kilépés 2, kilenc ABSTAIN és Merlin bemenetméret-hibája; 0 szelvény, 0 fogadás. A visszaellenőrzés megőrizte a 4308 régi SQL-sort és a négy korábbi mai riportot. A kohorsz auditja 80 fizikai DatasetStore-fájlt ellenőrzött; a kilenc owner régi független kéréslánc-ellenőrzése UNKNOWN maradt. Ezt az új javítás nem írja át.
 
-Tartós saját bizonyítékok: `artifacts/ten-agent-candidate-navigation-20261113/STOPPED-NAVIGATION-NORMAL.json`, `BUSINESS-ASSESSMENT-COMPLETE.json`, `poststop-reconcile/OUTCOME.json`, `consumption-audit-prepared/first/OUTCOME.json`, `delivery-readback-direct-completion-v2-first/OUTCOME.json`. Ezek helyi végrehajtási bizonyítékok, a dokumentum nem helyettesíti őket.
+Daily és legacy OFF, automation PAUSED. A matematikai szabályok, rangok, súlyok, profilok, keretek, READY-feltételek és eredeti órák változatlanok. A hiány helyi UNKNOWN; provider quoteóra nélkül `quoted_at=NULL`. Az 5%-os megállási határ feloldására feltett kérdés még válaszra vár; addig az eredeti mentés/megállás szabály érvényes.
 
-## Újonnan pontosított auditkorlát
-
-A mentett másodlagos ellenőrzés80DatasetStore-fájl fizikai ellenőrzését elvégezte, de a9befejezett owner független kéréslánc-ellenőrzéseUNKNOWN: a producer-auditor a tényleges PLAN `{snapshot, own_construction_contract}` adatából csak a snapshotot rekonstruálta, így eltért a teljes requesthash. A másodlagos helper a hiányzó `envelope_sha256` mezőt látta. Ez igazolt auditillesztési hiba; nem annak bizonyítéka, hogy nem futott natív olvasás, de a teljes független adatút-elfogadás hiányzik. A régiUNKNOWN eredmények változatlanok. A következő forrásjelölt pontos, mentett auxiliary-inputborítékot köt; nem gyengíti a hashkaput.
-
-## Első konkrét javítási kontroll eredménye
-
-A mentett Merlin teljes FINAL első, külön natív kontrollja1-gyel állt meg: a88 165karakteres pontos duplikáció kivétele önmagában még nem bizonyítja a teljes bemenet360000alatti méretét.0tiltott művelet, az összes forrás/inputhash változatlan és a folyamatfa lezárt. Az eredeti hiba megmarad, nincs automatikus ismétlés. A megmaradó85 313karakteres existing_kernel_result külön, nem azonos harmadik profil; célzott veszteségmentes szerkezetvizsgálat kell.
-
-A saját stratégiakereső és pontos PLAN-audit3APP-jelöltje elkészült12új tesztforrással; a FINAL-jelölt3tesztforrása is megvan. Minden új eset UNRUN, éles APP nem módosult. A következő minimális végrehajtási sorrend a `artifacts/ten-agent-own-strategy-completion-20261113/DESIGN-BEFORE-APP.md` fájlban előre rögzítve, a pontos checkpoint `CHECKPOINT-NOT-READY.json`.
+Bizonyítékok: `artifacts/ten-agent-own-strategy-completion-20261113/VERIFIED-MULTIOPTION-RELEASE.json`, `runtime-readback-first/OUTCOME.json`; a telepítés saját R/release/multioption könyvtára és a hatopciós kontroll saját, külső eredményei. A teljes régi állapotleírás külön, változatlan példányban megmaradt.
