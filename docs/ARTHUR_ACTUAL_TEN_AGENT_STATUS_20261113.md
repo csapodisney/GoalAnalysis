@@ -25,3 +25,13 @@ Daily és legacy OFF,automationPAUSED;0új fogadás. Nincs minimum/rang/súly/pr
 A korábbi formalweatherchallenger/PIT/kalibráció/holdout és31eredeti adat/specifikációs követelmény külön nyitott leltár; ez nem31kódhiba vagy projekt-százalék. Elérhető adat nem jelenti minden nyers sor bizonyított döntési hatását. Profit nem igazolt.
 
 Tartós saját bizonyítékok: `artifacts/ten-agent-candidate-navigation-20261113/STOPPED-NAVIGATION-NORMAL.json`, `BUSINESS-ASSESSMENT-COMPLETE.json`, `poststop-reconcile/OUTCOME.json`, `consumption-audit-prepared/first/OUTCOME.json`, `delivery-readback-direct-completion-v2-first/OUTCOME.json`. Ezek helyi végrehajtási bizonyítékok, a dokumentum nem helyettesíti őket.
+
+## Újonnan pontosított auditkorlát
+
+A mentett másodlagos ellenőrzés80DatasetStore-fájl fizikai ellenőrzését elvégezte, de a9befejezett owner független kéréslánc-ellenőrzéseUNKNOWN: a producer-auditor a tényleges PLAN `{snapshot, own_construction_contract}` adatából csak a snapshotot rekonstruálta, így eltért a teljes requesthash. A másodlagos helper a hiányzó `envelope_sha256` mezőt látta. Ez igazolt auditillesztési hiba; nem annak bizonyítéka, hogy nem futott natív olvasás, de a teljes független adatút-elfogadás hiányzik. A régiUNKNOWN eredmények változatlanok. A következő forrásjelölt pontos, mentett auxiliary-inputborítékot köt; nem gyengíti a hashkaput.
+
+## Első konkrét javítási kontroll eredménye
+
+A mentett Merlin teljes FINAL első, külön natív kontrollja1-gyel állt meg: a88 165karakteres pontos duplikáció kivétele önmagában még nem bizonyítja a teljes bemenet360000alatti méretét.0tiltott művelet, az összes forrás/inputhash változatlan és a folyamatfa lezárt. Az eredeti hiba megmarad, nincs automatikus ismétlés. A megmaradó85 313karakteres existing_kernel_result külön, nem azonos harmadik profil; célzott veszteségmentes szerkezetvizsgálat kell.
+
+A saját stratégiakereső és pontos PLAN-audit3APP-jelöltje elkészült12új tesztforrással; a FINAL-jelölt3tesztforrása is megvan. Minden új eset UNRUN, éles APP nem módosult. A következő minimális végrehajtási sorrend a `artifacts/ten-agent-own-strategy-completion-20261113/DESIGN-BEFORE-APP.md` fájlban előre rögzítve, a pontos checkpoint `CHECKPOINT-NOT-READY.json`.
