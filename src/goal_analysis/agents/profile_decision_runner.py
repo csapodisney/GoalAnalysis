@@ -23,11 +23,13 @@ from goal_analysis.agents.profile_decision import (
 )
 from goal_analysis.agents.profile_input import (
     FINAL_REQUEST_PROJECTION,
+    NEWS_COVERAGE_REQUEST_PROJECTION,
     SOURCE_DETAILS_POLICY,
     decision_view,
     final_option_details,
     final_request_data,
     final_shared_reference,
+    news_coverage_request_data,
     public_tool_results,
 )
 from goal_analysis.agents.profile_roster import ACTIVE_AGENTS, get_agent_definition
@@ -141,7 +143,7 @@ class ProfileDecisionRunner:
     def _call(self, state, phase, data, *, source_records=None):
         body = {**_identity(state), 'phase': phase,
                 'persona': get_agent_definition(state.agent_id).as_dict(),
-                'data': final_request_data(data) if phase == 'FINAL' else data}
+                'data': news_coverage_request_data(final_request_data(data) if phase == 'FINAL' else data)}
         require(len(json_text(body)) <= self.max_input_chars, 'OWNER_INPUT_BUDGET_EXCEEDED')
         timeout = self.budget.reserve()
         key = self.journal.claim(body)
@@ -342,6 +344,7 @@ class ProfileDecisionRunner:
                                if self.source_bundle is not None else 'owner-decision-evidence-v2-compact-views'),
                            'snapshot_id': snapshot.snapshot_id,
                            'final_request_projection': FINAL_REQUEST_PROJECTION,
+                           'coverage_request_projection': NEWS_COVERAGE_REQUEST_PROJECTION,
                            **({'source_details_policy': SOURCE_DETAILS_POLICY}
                               if self.source_bundle is not None else {}),
                            'input_views': {

@@ -12,6 +12,40 @@ FINAL_REQUEST_PROJECTION = 'FINAL_EXACT_SUBTREES_V1'
 SOURCE_DETAILS_POLICY = 'READ_DATA_EXACT_ROWS_V1'
 
 
+NEWS_COVERAGE_REQUEST_PROJECTION = 'REQUEST_NEWS_COVERAGE_TABLE_V1'
+
+
+def news_coverage_request_data(data):
+    """Lossless repeated news coverage only; full daily inputs remain available."""
+    result = deepcopy(data)
+    if not isinstance(result, dict) or 'coverage_data_projection' in result:
+        return result
+    path = ('snapshot', 'families', 'sourced_news', 'coverage', 'by_fixture_topic')
+    parent = result
+    for key in path[:-1]:
+        if not isinstance(parent, dict) or key not in parent:
+            return result
+        parent = parent[key]
+    if not isinstance(parent, dict):
+        return result
+    rows = parent.get(path[-1])
+    if not isinstance(rows, list) or not rows or not all(isinstance(row, dict) for row in rows):
+        return result
+    table = encode_table(rows)
+    parent[path[-1]] = table
+    result['coverage_data_projection'] = {
+        'version': NEWS_COVERAGE_REQUEST_PROJECTION, 'source_data_sha256': digest(data),
+        'path': list(path), 'source_rows_sha256': digest(rows),
+        'instruction': 'Only the declared news-coverage list is encoded as NAMED_COLUMNS_V1. '
+                       'Decode columns with lookups and defaults, preserve missing_rows distinctly '
+                       'from null, and retain every original row in order. The direct_rows_sha256 '
+                       'binds the original list. UNKNOWN stays unknown; no fixture or topic is filtered. '
+                       'All other request fields, including the full calendar and candidate catalogue, '
+                       'are unchanged. This representation is not a claim that all source rows were read.',
+    }
+    return result if len(json_text(result)) < len(json_text(data)) else deepcopy(data)
+
+
 def encode_table(records):
     """Exact rows with named columns, visible defaults and optional value lookups.
 

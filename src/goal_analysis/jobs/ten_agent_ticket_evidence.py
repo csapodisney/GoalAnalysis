@@ -20,11 +20,13 @@ from goal_analysis.agents.profile_decision import (
 )
 from goal_analysis.agents.profile_input import (
     FINAL_REQUEST_PROJECTION,
+    NEWS_COVERAGE_REQUEST_PROJECTION,
     SOURCE_DETAILS_POLICY,
     decision_view,
     final_option_details,
     final_request_data,
     final_shared_reference,
+    news_coverage_request_data,
     public_tool_results,
 )
 from goal_analysis.agents.profile_roster import AGENT_IDS, get_agent_definition
@@ -80,6 +82,8 @@ def _owner_evidence(owner, snapshot, shared):
     require(owner.get('status') == 'DECISION_COMPLETED', 'OWNER_DECISION_INCOMPLETE')
     evidence = owner.get('decision_evidence')
     require(isinstance(evidence, dict), 'OWN_REQUEST_REPLY_ENVELOPE_NOT_SAVED')
+    coverage_projection = evidence.get('coverage_request_projection')
+    require(coverage_projection in {None, NEWS_COVERAGE_REQUEST_PROJECTION}, 'UNKNOWN_NEWS_COVERAGE_PROJECTION')
     projection = evidence.get('final_request_projection')
     require(projection in {None, FINAL_REQUEST_PROJECTION}, 'UNKNOWN_FINAL_REQUEST_PROJECTION')
     source_policy = evidence.get('source_details_policy')
@@ -135,6 +139,8 @@ def _owner_evidence(owner, snapshot, shared):
         }
         if projection == FINAL_REQUEST_PROJECTION:
             phase_data['FINAL'] = final_request_data(phase_data['FINAL'])
+        if coverage_projection == NEWS_COVERAGE_REQUEST_PROJECTION:
+            phase_data = {phase: news_coverage_request_data(value) for phase, value in phase_data.items()}
         source_checks = {}
         for phase, reply in (('PLAN', plan), ('FINAL', final)):
             request = {**{key: getattr(state, key) for key in ('agent_id', 'session_id', 'snapshot_id')},
