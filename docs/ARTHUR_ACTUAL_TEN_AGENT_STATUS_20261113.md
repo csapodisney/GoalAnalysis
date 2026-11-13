@@ -1,3 +1,18 @@
+# November 14-i teljesnapos futás – valós eredmény 2026-11-13T21:16:27.185211+00:00
+
+**0 mentett szelvény; a minimum 15 nem teljesült, a fázis nincs kész.** A `2026-11-14-d28dc3a1f8ad` futás 21:01:41–21:10:13 UTC között ténylegesen lefutott, natív2-vel és leállított folyamatfával zárult. Mind a tíz agent PLAN-bemenete túl nagy volt; döntési hostkérés nem indult (0), nem történt agentdöntés vagy fogadás.
+
+- Teljes szolgáltatói naptár:274 meccs,1660 jelölt. A három numerikus modell38/33/39 előrejelzést készített;191 fizikai DatasetStore ellenőrzött. Ez nem végső szelvényválasztási vagy profitsiker.
+- Fő méretok:1370 ismétlődő hírállapot-sor. Veszteségmentes tömörítés előkészítve; nem meccsek/jelöltek elhagyása, nem keretemelés.
+- Saját futáshoz kötött, szigorúan igazolt időjárás-előrejelzés:0. Hírek részben forrásoltak, oldaltartalom függetlenül nem igazolt. Ezek nyitott adatkorlátok.
+- Elsődleges egyeztetés0:4312 régi sor és séma változatlan; csak run/import +2. Mind a hat korábbi napi riport136 fájlja és26 konfiguráció változatlan.
+- Eredeti audit1 a szülő hibás régi fájlhash-kötése miatt megőrizve; külön friss kötésű, forrásellenőrzött olvasási completion0. Kanonikus API/export ellenőrzés0, valóban0 kártya.
+- Daily és legacy OFF. Az5%-os leállási korlát emberileg feloldva. Új dashboard és08:00 Berlin automatika tervezve, még nincs bekapcsolva.
+
+A következő feladat a teljes napi PLAN-bemenet méretkezelésének javítása és ellenőrzése, majd új, külön döntésű valódi előállítás. A sikertelen futást nem írjuk át és nem indítjuk újra.
+
+---
+
 # Valódi tízagent-futás: 2026-11-13, késő esti eredmény
 
 A futás 21:32–21:44 Europe/Berlin között ténylegesen végrehajtódott. Mind a tíz agent döntése elkészült, mind a tíz ABSTAIN: **0 mentett szelvény, a minimum 15 nem teljesült**. Az eredeti kilépési kód 2 megmaradt.
