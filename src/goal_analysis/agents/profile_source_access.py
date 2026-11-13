@@ -144,6 +144,14 @@ def build_source_seed(snapshot, fullview):
         'max_calls_per_phase': MAX_CALLS, 'response_bytes_per_phase': MAX_RESPONSE_BYTES,
         'response_characters_including_wrapper': MAX_RESPONSE_CHARS,
         'limits_exceeded': 'Explicit owner-phase failure, never hidden first-N filtering.'}
+    seed['query_data'] = {'optional_navigation_only': True, 'namespaces': ['raw', 'view', 'candidates'],
+        'path': 'An exact read_data path to an object or array; all original rows remain accessible.',
+        'filters': 'Up to8 own AND filters: {path:[typed keys],type:string|number|boolean|timestamp,op:eq|in|gte|lte|is_unknown,value:exact typed value}.',
+        'fields': 'Up to16 typed row-relative paths. MISSING/NULL/UNKNOWN differ from present False and0.',
+        'unknown_policy': ['include', 'exclude_with_counts'], 'limit': '1..100', 'cursor': 'null initially; then exact returned next_cursor',
+        'limits': 'Shares read_data phase call/byte/wrapper budgets, never extra allowance.',
+        'recovery': 'REFUSED is local: follow retry_hint, correct filters/projection, or use original read_data. Do not repeat unchanged errors indefinitely.',
+        'selected_candidate_authority': 'Query projections do NOT satisfy full candidate-record read requirements.'}
     _require(len(canonical_json(seed)) <= 360_000, 'FULL_CALENDAR_SOURCE_SEED_EXCEEDS_REQUEST_CAP')
     return seed
 
@@ -178,7 +186,8 @@ def _page_payload(value, *, binding, namespace, path, mode, offset, count, text=
 
 class SourceAccessKernel:
     def __init__(self, bundle, binding, journal_append, clock=None, *, max_calls=MAX_CALLS,
-                 response_byte_limit=MAX_RESPONSE_BYTES, response_char_limit=MAX_RESPONSE_CHARS):
+                 response_byte_limit=MAX_RESPONSE_BYTES, response_char_limit=MAX_RESPONSE_CHARS,
+                 query_factory=None):
         _require(isinstance(bundle, SourceBundle), 'IMMUTABLE_SOURCE_BUNDLE_REQUIRED')
         _require(isinstance(binding, dict) and set(binding) == set(IDENTITY_FIELDS)
                  and all(isinstance(value, str) and 0 < len(value) <= 128 for value in binding.values())
@@ -195,6 +204,11 @@ class SourceAccessKernel:
         # access returns fresh descriptors or immutable JSON fragments only.
         self._roots = {'raw': _load(bundle.raw_json), 'view': _load(bundle.view_json)}
         self._roots['candidates'] = _candidate_index(self._roots['raw'])
+        if query_factory is None:
+            from goal_analysis.agents.profile_source_query import SourceQueryIndex
+
+            query_factory = SourceQueryIndex
+        self._queries = query_factory(self._roots, bundle.snapshot_id) if query_factory else None
         _require(binding['agent_id'] in self._roots['raw']['owner_ids'], 'FOREIGN_OWNER_BINDING')
         self._binding_json = canonical_json(binding)
         self._append = journal_append
@@ -283,7 +297,36 @@ class SourceAccessKernel:
             return self._refusal('SOURCE_PAGE_EXCEEDS_REMAINING_RESOURCE_BUDGET', terminal=True)
         return payload
 
+    def _query(self, request, rpc_id):
+        if not isinstance(request, dict):
+            return self._query_refusal(request, 'QUERY_ARGUMENT_OBJECT_REQUIRED')
+        if any(request.get(key) != value for key, value in self._binding().items()):
+            return self._refusal('FOREIGN_OWNER_SESSION_SNAPSHOT_OR_PHASE', terminal=True)
+        if (self.bundle.raw_json, self.bundle.view_json, self.bundle.snapshot_id,
+                self.bundle.view_sha256) != self._source_pin:
+            return self._refusal('SOURCE_HASH_OR_CANONICAL_VALUE_CHANGED', terminal=True)
+        if len(canonical_json(request).encode('utf-8')) > 8192:
+            return self._query_refusal(None, 'QUERY_ARGUMENT_SIZE_LIMIT')
+        if self._queries is None:
+            return self._query_refusal(request, 'OPTIONAL_QUERY_NOT_ENABLED')
+        return self._queries.evaluate(request, self._binding(), lambda payload: self._fits(payload, rpc_id))
+
+    def _query_refusal(self, request, reason):
+        # This path is also usable when a legacy stdio binding did not enable query.
+        return {'version': 'profile-source-query-v1', 'identity': self._binding(),
+            'status': 'REFUSED', 'data_status': 'UNKNOWN', 'reason': reason, 'terminal': False,
+            'retry_hint': 'Use read_data describe/text on the original source, or correct a query within the existing phase budget.',
+            'fallback': {'tool': 'read_data', 'namespace': 'raw', 'path': [],
+                         'mode': 'describe', 'offset': 0, 'limit': 100},
+            'full_selected_candidate_read_proven': False}
+
     def read_data(self, arguments, *, rpc_id):
+        return self._call(arguments, rpc_id=rpc_id, tool='read_data')
+
+    def query_data(self, arguments, *, rpc_id):
+        return self._call(arguments, rpc_id=rpc_id, tool='query_data')
+
+    def _call(self, arguments, *, rpc_id, tool):
         if self.failure_reason is not None:
             raise SourceAccessClosed(self.failure_reason)
         self.attempts += 1
@@ -299,6 +342,8 @@ class SourceAccessKernel:
             raise SourceAccessClosed(self.failure_reason) from error
         if self.attempts > self.max_calls:
             payload = self._refusal('SOURCE_CALL_BUDGET_EXHAUSTED', terminal=True)
+        elif tool == 'query_data':
+            payload = self._query(arguments, rpc_id)
         elif not isinstance(arguments, dict):
             payload = self._refusal('READ_ARGUMENT_OBJECT_REQUIRED')
         else:
@@ -325,6 +370,12 @@ class SourceAccessKernel:
             'response_sha256': value_hash(response), 'payload_sha256': value_hash(payload),
             'wire_characters': characters, 'wire_bytes': size,
             'previous_record_sha256': self.journal_tail_sha256}
+        if tool == 'query_data':
+            record.update(version='profile-source-query-record-v1', tool_name='query_data',
+                query_arguments=deepcopy(arguments) if len(canonical_json(arguments).encode('utf-8')) <= 8192 else None,
+                oversized_arguments=len(canonical_json(arguments).encode('utf-8')) > 8192)
+            if record['oversized_arguments']:
+                record.update(namespace=None, path=None, mode=None)
         record_hash = value_hash(record)
         try:
             _require(self._append(deepcopy(record)) == record_hash, 'JOURNAL_ACKNOWLEDGEMENT_MISMATCH')
@@ -370,9 +421,12 @@ def validate_read_journal(records, receipt, *, binding, bundle):
              'INVALID_SOURCE_READ_BUDGETS')
     roots = {'raw': _load(bundle.raw_json), 'view': _load(bundle.view_json)}
     roots['candidates'] = _candidate_index(roots['raw'])
+    from goal_analysis.agents.profile_source_query import SourceQueryIndex
+
+    query_index = SourceQueryIndex(roots, bundle.snapshot_id)
     tail, total, successes, previous_time = None, 0, 0, None
     for index, record in enumerate(records, 1):
-        _require(isinstance(record, dict) and record.get('version') == 'profile-source-read-v1'
+        _require(isinstance(record, dict) and record.get('version') in {'profile-source-read-v1', 'profile-source-query-record-v1'}
                  and type(record.get('sequence')) is int and record['sequence'] == index and record.get('binding') == binding
                  and record.get('previous_record_sha256') == tail and record.get('terminal') is False,
                  'SOURCE_JOURNAL_CHAIN_OR_IDENTITY_CHANGED')
@@ -386,7 +440,31 @@ def validate_read_journal(records, receipt, *, binding, bundle):
         rpc_id = record.get('rpc_id')
         _require(type(rpc_id) is int or isinstance(rpc_id, str) and len(rpc_id) <= 128,
                  'SOURCE_JOURNAL_RPC_ID_INVALID')
-        if record.get('status') == 'OK':
+        if record.get('version') == 'profile-source-query-record-v1':
+            arguments = record.get('query_arguments')
+            _require(record.get('tool_name') == 'query_data'
+                     and type(record.get('oversized_arguments')) is bool,
+                     'SOURCE_QUERY_JOURNAL_TYPE_CHANGED')
+            # Reuse the same pure page logic with independently reconstructed roots,
+            # exact prior byte total and the bound response limits.
+            checker = object.__new__(SourceAccessKernel)
+            checker.bundle, checker._source_pin = bundle, (bundle.raw_json, bundle.view_json,
+                                                          bundle.snapshot_id, bundle.view_sha256)
+            checker._binding_json = canonical_json(binding)
+            checker._queries = query_index
+            checker.char_limit, checker.byte_limit = budgets['response_chars'], budgets['response_bytes']
+            checker.response_bytes, checker.failure_reason = total, None
+            if record['oversized_arguments']:
+                _require(arguments is None, 'OVERSIZED_QUERY_MUST_NOT_RETAIN_ARGUMENTS')
+                payload = checker._query_refusal(None, 'QUERY_ARGUMENT_SIZE_LIMIT')
+            else:
+                _require(value_hash(arguments) == record['request_sha256'], 'SOURCE_QUERY_ARGUMENTS_CHANGED')
+                payload = checker._query(arguments, rpc_id)
+            _require(payload['status'] == record.get('status') and payload.get('reason') == record.get('reason')
+                     and payload.get('terminal', False) is False
+                     and record.get('page') is None and record.get('source_value_sha256') is None,
+                     'SOURCE_QUERY_RESPONSE_CHANGED')
+        elif record.get('status') == 'OK':
             namespace, path, mode = record.get('namespace'), record.get('path'), record.get('mode')
             _require(isinstance(namespace, str) and namespace in roots and isinstance(path, list)
                      and all(isinstance(part, str) or type(part) is int and part >= 0 for part in path)
@@ -453,6 +531,7 @@ def require_candidate_reads(records, *, candidate_ids, bundle):
         intervals = []
         for read in records:
             if (not isinstance(read, dict) or read.get('status') != 'OK'
+                    or read.get('version') != 'profile-source-read-v1'
                     or read.get('namespace') != 'candidates' or read.get('mode') != 'text'
                     or read.get('path') != [identifier]):
                 continue

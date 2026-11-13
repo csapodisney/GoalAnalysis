@@ -16,6 +16,7 @@ from pathlib import Path
 
 SERVER_NAME = 'arthur_data'
 TOOL_NAME = 'read_data'
+QUERY_TOOL = 'query_data'
 IDENTITY = ('agent_id', 'session_id', 'snapshot_id', 'phase')
 TOKEN_FIELDS = {'input_tokens': 'input_tokens', 'output_tokens': 'output_tokens',
     'cached_tokens': 'cached_input_tokens', 'reasoning_tokens': 'reasoning_output_tokens'}
@@ -85,6 +86,8 @@ class SourceAccessScope:
     server_sha256: str
     kernel_source: object
     kernel_sha256: str
+    query_source: object = None
+    query_sha256: str | None = None
 
     def __post_init__(self):
         require(isinstance(self.binding, dict) and set(self.binding) == set(IDENTITY)
@@ -124,6 +127,8 @@ class SourceAccessScope:
         verified_bundle = SourceBundle(**bundle)
         _pin(self.server_script, self.server_sha256)
         _pin(self.kernel_source, self.kernel_sha256)
+        if self.query_source is not None or self.query_sha256 is not None:
+            _pin(self.query_source, self.query_sha256)
         phase = _inside(root / 'p' / sha(binding)[:32], root)
         phase.mkdir(parents=True, exist_ok=False)
         journal, receipt = phase / 'reads.jsonl', phase / 'receipt.json'
@@ -133,6 +138,8 @@ class SourceAccessScope:
             'server_script': str(Path(self.server_script).resolve()), 'server_sha256': self.server_sha256,
             'kernel_source': str(Path(self.kernel_source).resolve()), 'kernel_sha256': self.kernel_sha256,
             'journal_path': str(journal), 'receipt_path': str(receipt)}
+        if self.query_source is not None:
+            document.update(query_source=str(Path(self.query_source).resolve()), query_sha256=self.query_sha256)
         binding_path = phase / 'binding.json'
         _write_once(binding_path, document)
         return {'document': document, 'binding_path': binding_path,
@@ -168,7 +175,7 @@ def source_config(prepared):
             '--binding', str(prepared['binding_path']), '--binding-sha256', prepared['binding_sha256']],
         f'{prefix}.cwd': prepared['document']['phase_root'],
         f'{prefix}.env_vars': [], f'{prefix}.required': True,
-        f'{prefix}.enabled_tools': [TOOL_NAME],
+        f'{prefix}.enabled_tools': [TOOL_NAME, *([QUERY_TOOL] if 'query_source' in prepared['document'] else [])],
         f'{prefix}.startup_timeout_sec': 60, f'{prefix}.tool_timeout_sec': 10,
     }
 
@@ -227,7 +234,7 @@ def _native_calls(events):
         if kind in {'reasoning', 'agent_message'}:
             continue
         require(kind == 'mcp_tool_call' and item.get('server') == SERVER_NAME
-                and item.get('tool') == TOOL_NAME and isinstance(item.get('arguments'), dict),
+                and item.get('tool') in (TOOL_NAME, QUERY_TOOL) and isinstance(item.get('arguments'), dict),
                 'SOURCE_MODE_UNEXPECTED_TOOL')
         identifier = item.get('id')
         require(isinstance(identifier, str) and identifier, 'SOURCE_NATIVE_CALL_ID_REQUIRED')
@@ -246,7 +253,7 @@ def _native_calls(events):
                     and isinstance(content[0].get('text'), str), 'SOURCE_NATIVE_RESULT_SHAPE_CHANGED')
             payload_sha = sha(json.loads(content[0]['text']))
         require(item['status'] == 'failed' or payload_sha is not None, 'SOURCE_NATIVE_RESULT_MISSING')
-        calls[identifier] = {'id': identifier, 'request_sha256': sha(item['arguments']),
+        calls[identifier] = {'id': identifier, 'tool_name': item['tool'], 'request_sha256': sha(item['arguments']),
             'payload_sha256': payload_sha, 'status': item['status']}
     require(started == set(calls), 'SOURCE_NATIVE_CALL_INCOMPLETE')
     return list(calls.values())
@@ -305,7 +312,8 @@ def validate_source_evidence(evidence, *, request, reply, bundle):
             and len(calls) == len(records), 'SOURCE_CALL_ACCOUNTING_CHANGED')
     expected = Counter()
     for record in records:
-        expected[(record['request_sha256'], record['payload_sha256'], record['status'])] += 1
+        expected[(record['request_sha256'], record['payload_sha256'], record['status'],
+                  record.get('tool_name', TOOL_NAME))] += 1
     require(receipt['snapshot_id'] == binding['snapshot_id']
             and receipt['view_sha256'] == evidence['view_sha256'] == bundle.view_sha256
             and bundle.snapshot_id == binding['snapshot_id'], 'SOURCE_RECEIPT_SNAPSHOT_CHANGED')
@@ -314,13 +322,16 @@ def validate_source_evidence(evidence, *, request, reply, bundle):
         require(call['id'] not in seen_ids, 'DUPLICATE_NATIVE_SOURCE_CALL')
         seen_ids.add(call['id'])
         matches = [key for key in expected if expected[key] and key[0] == call['request_sha256']
+                   and key[3] == call.get('tool_name', TOOL_NAME)
                    and (key[1] == call['payload_sha256'] or call['status'] == 'failed' and key[2] == 'REFUSED')]
         require(len(matches) == 1 and (call['status'] == 'completed' or matches[0][2] == 'REFUSED'),
                 'NATIVE_SOURCE_RESULT_NOT_IN_JOURNAL')
         expected[matches[0]] -= 1
     require(not any(expected.values()), 'UNOBSERVED_SOURCE_JOURNAL_RESULT')
     return {'status': 'NATIVE_CALLS_AND_SOURCE_JOURNAL_RECONCILED',
-        'read_count': receipt['successful_reads'], 'source_validation': source_summary,
+        'read_count': sum(row['status'] == 'OK' and row.get('tool_name', TOOL_NAME) == TOOL_NAME for row in records),
+        'query_count': sum(row['status'] == 'OK' and row.get('tool_name') == QUERY_TOOL for row in records),
+        'source_validation': source_summary,
         'refused_count': len(records) - receipt['successful_reads'], 'response_bytes': receipt['response_bytes'],
         'all_raw_rows_read': False, 'causal_feature_use_proven': False}
 
@@ -332,6 +343,8 @@ def finish_source_evidence(prepared, events, request, reply, *, cli_native_exit=
     _pin(document['bundle_path'], document['bundle_sha256'], max_bytes=536_870_912, load=False)
     _pin(document['server_script'], document['server_sha256'], load=False)
     _pin(document['kernel_source'], document['kernel_sha256'], load=False)
+    if 'query_source' in document:
+        _pin(document['query_source'], document['query_sha256'], load=False)
     bundle = prepared['bundle']
     journal = prepared['journal_path']
     require(journal.is_file() and journal.stat().st_size <= 1_048_576,

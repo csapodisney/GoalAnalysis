@@ -394,6 +394,14 @@ def _compact_feedback(ledger) -> dict | None:
     }
 
 
+def _model_failure_diagnostic(stage, error):
+    """Bounded failure identity only; never exception text, paths or source data."""
+    allowed = {'PREDICT_MODELS', 'LOAD_NORMAL_DEPENDENCIES', 'VENUE_BINDING',
+               'PREPARE_AND_PREDICT_NORMAL', 'STORE_NORMAL_INPUT_ARTIFACT', 'VALIDATE_MODEL_RESULT'}
+    return {'code': 'MODEL_RUN_FAILED', 'stage': stage if stage in allowed else 'UNKNOWN_MODEL_STAGE',
+            'failure_class': type(error).__name__[:80], 'exception_message_retained': False}
+
+
 def run_portfolio(
     config: dict,
     settings: dict,
@@ -551,6 +559,7 @@ def run_portfolio(
     model_results = {}
     enriched = {}
     if enabled_models:
+        model_stage = 'PREDICT_MODELS'
         try:
             if normal_history_root is None:
                 model_results = (model_predictor or predict_models)(
@@ -558,20 +567,25 @@ def run_portfolio(
                     enabled_profiles=enabled_models, artifact_dir=model_artifact_dir,
                 )
             else:
+                model_stage = 'LOAD_NORMAL_DEPENDENCIES'
                 from goal_analysis.jobs.native_history_shadow import native_history_view
                 from goal_analysis.jobs.normal_history_input import predict_normal
                 from goal_analysis.jobs.online_history_venue import bind_online_venue
 
                 normal_root = Path(normal_history_root).resolve()
+                model_stage = 'VENUE_BINDING'
                 bound = bind_online_venue(normal_root, fixture_records,
                     artifacts.get('history', {}), as_of=model_cutoff)
                 fixture_records = deepcopy(bound['fixtures'])
+                model_stage = 'PREPARE_AND_PREDICT_NORMAL'
                 normal = predict_normal(fixture_records, bound['history'], model_cutoff,
                     retained_reader=lambda targets, *, as_of: native_history_view(
                         normal_root, targets, as_of=as_of,
                         history_start=as_of-timedelta(days=730)),
                     predictor=model_predictor or predict_models,
-                    enabled_profiles=enabled_models, artifact_dir=model_artifact_dir)
+                    enabled_profiles=enabled_models, artifact_dir=model_artifact_dir,
+                    competition_capacity=agent_executor is not None)
+                model_stage = 'STORE_NORMAL_INPUT_ARTIFACT'
                 model_results = normal['numeric_models']
                 # Keep legacy collected inputs intact for their existing consumers.
                 # Persist exact source-bound model inputs and uses independently.
@@ -583,13 +597,16 @@ def run_portfolio(
                     'original_online_history_rows': len(history_records),
                     'original_collected_inputs_preserved': True,
                 }
+            model_stage = 'VALIDATE_MODEL_RESULT'
             if not isinstance(model_results, dict):
                 raise TypeError("Invalid numerical model response")
-        except Exception:  # noqa: BLE001 - Optional local models must not hide existing tickets.
+        except Exception as error:  # noqa: BLE001 - Optional local models must not hide existing tickets.
+            failure = _model_failure_diagnostic(model_stage, error)
             if normal_history_root is not None:
                 artifacts['normal_model_input'] = {
                     'status': 'UNAVAILABLE', 'as_of': model_cutoff.isoformat(),
                     'reason': 'NORMAL_MODEL_INPUT_PREPARATION_FAILED',
+                    'failure_diagnostic': deepcopy(failure),
                     'original_online_history_rows': len(history_records),
                     'original_collected_inputs_preserved': True,
                 }
@@ -597,7 +614,7 @@ def run_portfolio(
                 profile: {
                     "profile_id": profile, "status": "MODEL_ERROR", "predictions": [],
                     "message": "A helyi modellfuttatás nem fejeződött be; nem készült becslés.",
-                    "diagnostics": [{"code": "MODEL_RUN_FAILED"}],
+                    "diagnostics": [deepcopy(failure)],
                 }
                 for profile in enabled_models
             }
@@ -1062,8 +1079,12 @@ def run_portfolio(
                 },
                 historical_feature_availability_certified=False,
             )
+            if 'competition_capacity' in view:
+                summary['competition_capacity'] = deepcopy(view['competition_capacity'])
         else:
             summary['reason'] = normal_input['reason']
+            if 'failure_diagnostic' in normal_input:
+                summary['failure_diagnostic'] = deepcopy(normal_input['failure_diagnostic'])
         report['normal_model_input'] = summary
     for recommendation in numeric_recommendations:
         report.setdefault("profiles", []).append({

@@ -19,6 +19,7 @@ from goal_analysis.normalization.live_identity import field_id, provider_id
 from goal_analysis.normalization.training_datasets import sha, snapshot, validate
 
 VERSION = 'normal-witnessed-history-standard-venue-v1'
+COMPETITION_CAPACITY_VERSION = 'normal-witnessed-history-competition-capacity-v2'
 MAX_TRUTHS = 10000
 MAX_RAW_ALIASES = 200 * 100
 PROFILES = ('gauss', 'kepler', 'laplace')
@@ -89,8 +90,46 @@ def _exact_selected(fixtures, rows, cutoff):
     return selection, exact
 
 
-def prepare_inputs(fixtures, online_history, as_of, *, retained_reader=None):
+def _competition_capacity(rows):
+    """Count every clock-admitted truth without selecting, mutating or sorting rows."""
+    groups, row_competitions, all_truths, unknown = {}, {}, set(), []
+    for index, row in enumerate(rows):
+        row_hash, truth_hash = sha(row), sha(_truth(row))
+        all_truths.add(truth_hash)
+        try:
+            comp = canonical_history_comp(row)
+        except (KeyError, TypeError, ValueError, AttributeError):
+            unknown.append({'input_index': index, 'row_sha256': row_hash,
+                            'reason': 'UNKNOWN_CANONICAL_COMPETITION'})
+            continue
+        group = groups.setdefault(comp, {'truths': set(), 'row_count': 0})
+        group['truths'].add(truth_hash)
+        group['row_count'] += 1
+        row_competitions[row_hash] = comp
+    blocked = {comp for comp, group in groups.items() if len(group['truths']) > MAX_TRUTHS}
+    return {'version': COMPETITION_CAPACITY_VERSION, 'scope': 'PER_CANONICAL_COMPETITION',
+        'truth_limit_per_competition': MAX_TRUTHS, 'raw_alias_global_limit': MAX_RAW_ALIASES,
+        'source_rows_sha256': sha(rows), 'global_row_count': len(rows),
+        'global_truth_count': len(all_truths), 'competition_count': len(groups),
+        'competitions': {comp: {'row_count': group['row_count'], 'truth_count': len(group['truths']),
+            'status': 'INPUT_CAPACITY_UNAVAILABLE' if comp in blocked else 'WITHIN_CAPACITY'}
+            for comp, group in sorted(groups.items())},
+        'blocked_competition_ids': sorted(blocked), 'unknown_competition_rows': unknown,
+        'unknown_competition_row_count': len(unknown),
+        'withheld_input_records': [{'input_index': index, 'row_sha256': sha(row),
+            'competition_id': row_competitions.get(sha(row)),
+            'reason': ('COMPETITION_TRUTH_BOUND_EXCEEDED_NO_FIRST_N'
+                if row_competitions.get(sha(row)) in blocked else 'UNKNOWN_CANONICAL_COMPETITION')}
+            for index, row in enumerate(rows)
+            if row_competitions.get(sha(row)) in blocked or sha(row) not in row_competitions],
+        'global_conflict_and_target_checks_before_capacity_isolation': True,
+        'original_input_rows_modified': False, 'first_n_applied': False}, row_competitions
+
+
+def prepare_inputs(fixtures, online_history, as_of, *, retained_reader=None, competition_capacity=False):
     """Pure policy boundary. Callback signature: reader(fixtures, as_of=cutoff)."""
+    if type(competition_capacity) is not bool:
+        raise TypeError('EXPLICIT_COMPETITION_CAPACITY_BOOLEAN_REQUIRED')
     cutoff = aware_time(as_of)
     if not isinstance(fixtures, list) or not isinstance(online_history, list):
         raise TypeError('Fixture and history lists required')
@@ -116,7 +155,7 @@ def prepare_inputs(fixtures, online_history, as_of, *, retained_reader=None):
                        'clock_issue': issue})
         if issue is None:
             online.append(row)
-    if len({sha(_truth(row)) for row in online}) > MAX_TRUTHS:
+    if not competition_capacity and len({sha(_truth(row)) for row in online}) > MAX_TRUTHS:
         raise ValueError('ONLINE_TRUTH_BOUND_EXCEEDED_NO_FIRST_N')
     retained, reader_diagnostics, dataset = [], [], None
     if retained_reader is None:
@@ -135,7 +174,8 @@ def prepare_inputs(fixtures, online_history, as_of, *, retained_reader=None):
                 if aware_time(dataset['manifest']['as_of']) != cutoff:
                     raise ValueError('RETAINED_DATASET_CUTOFF_MISMATCH')
                 groups = dataset['lineage']['lossless_history_aliases']
-                if len(groups) > MAX_TRUTHS or sum(len(g['aliases']) for g in groups) > MAX_RAW_ALIASES:
+                if ((not competition_capacity and len(groups) > MAX_TRUTHS)
+                        or sum(len(g['aliases']) for g in groups) > MAX_RAW_ALIASES):
                     raise ValueError('RETAINED_TRUTH_OR_ALIAS_BOUND')
                 retained = model_inputs(reconstruct(groups), as_of=cutoff)
                 native = {f['fixture_id']: f for f in fixtures if f.get('source_provider') == 'the_stats_api'}
@@ -150,7 +190,7 @@ def prepare_inputs(fixtures, online_history, as_of, *, retained_reader=None):
                     raise ValueError('RETAINED_UNPROVEN_TARGET_COMPETITION')
                 if len(online) + len(retained) > MAX_RAW_ALIASES:
                     raise ValueError('UNION_RAW_ALIAS_BOUND_EXCEEDED_NO_FIRST_N')
-                if len({sha(_truth(row)) for row in online + retained}) > MAX_TRUTHS:
+                if not competition_capacity and len({sha(_truth(row)) for row in online + retained}) > MAX_TRUTHS:
                     raise ValueError('UNION_TRUTH_BOUND_EXCEEDED_NO_FIRST_N')
                 reader_diagnostics.append({'code': 'RETAINED_COMPLETE_BOUNDED_READ', 'status': view['status'],
                     'gaps': deepcopy(view.get('gaps', {})), 'dataset_id': dataset['manifest']['dataset_id'],
@@ -166,7 +206,15 @@ def prepare_inputs(fixtures, online_history, as_of, *, retained_reader=None):
     for row in retained:
         ledger.append({'origin': 'RETAINED', 'row_sha256': sha(row), 'fixture_id': row['fixture_id'],
                        'normalized_fixture_id': _history_id(row), 'clock_issue': None})
+    capacity, row_competitions = (_competition_capacity(rows) if competition_capacity else (None, {}))
+    # Preserve complete global conflict/quarantine/target checks BEFORE isolating capacity.
     selection, exact = _exact_selected(fixtures, rows, cutoff)
+    if capacity is not None:
+        blocked = set(capacity['blocked_competition_ids'])
+        exact = [row for row in exact if sha(row) in row_competitions
+                 and row_competitions[sha(row)] not in blocked]
+        capacity['policy_selected_rows_before_capacity'] = selection['selected_history_rows']
+        capacity['consumed_rows_after_capacity'] = len(exact)
     online_hashes, retained_hashes = {sha(row) for row in online}, {sha(row) for row in retained}
     selected_origins = []
     for row in exact:
@@ -194,19 +242,30 @@ def prepare_inputs(fixtures, online_history, as_of, *, retained_reader=None):
             entry['partition'] = 'CONFLICTING_IDENTITY'
         elif identifier in unknown:
             entry['partition'] = 'UNKNOWN_VENUE_IDENTITY'
+        elif capacity is not None and row_competitions.get(entry['row_sha256']) in blocked:
+            entry['partition'] = 'COMPETITION_TRUTH_BOUND_EXCEEDED_NO_FIRST_N'
+        elif capacity is not None and entry['row_sha256'] not in row_competitions:
+            entry['partition'] = 'UNKNOWN_CANONICAL_COMPETITION'
         elif identifier in selected_ids:
             entry['partition'] = 'SELECTED_STANDARD_TRUTH_ALIAS'
         else:
             entry['partition'] = 'NONSTANDARD_TARGET_INVALID_OR_INELIGIBLE'
+    capacity_recipe = ({'truth_bound_scope': 'PER_CANONICAL_COMPETITION',
+                        'capacity_partition_sha256': sha(capacity)} if capacity is not None else {})
     consumed = snapshot(exact, role='normal_standard_venue_history', as_of=cutoff,
-        recipe={'version': VERSION, 'policy': selection['version'], 'truth_bound': MAX_TRUTHS,
+        recipe={'version': COMPETITION_CAPACITY_VERSION if competition_capacity else VERSION,
+                'policy': selection['version'], 'truth_bound': MAX_TRUTHS, **capacity_recipe,
                 'raw_alias_bound': MAX_RAW_ALIASES, 'selection': 'CONFLICT_BEFORE_EXPLICIT_STANDARD_VENUE'},
         lineage={'input_partition': ledger,
                  'selected_record_origins': selected_origins,
                  'retained_dataset': dataset['manifest'] if dataset else None,
                  'retained_lineage_sha256': sha(dataset['lineage']) if dataset else None,
-                 'online_clock_basis': 'EXISTING_NORMAL_OBSERVED_CLOCK_NOT_NEW_PIT_CERTIFICATION'})
-    return {'version': VERSION, 'mode': 'NORMAL_EXPLICIT', 'as_of': cutoff.isoformat(),
+                 'online_clock_basis': 'EXISTING_NORMAL_OBSERVED_CLOCK_NOT_NEW_PIT_CERTIFICATION',
+                 **({'competition_capacity': deepcopy(capacity)} if capacity is not None else {})})
+    return {'version': COMPETITION_CAPACITY_VERSION if competition_capacity else VERSION,
+        **({'competition_capacity': capacity,
+            'selection_stage': 'GLOBAL_SAMPLE_POLICY_BEFORE_COMPETITION_CAPACITY_ISOLATION'}
+           if capacity is not None else {}), 'mode': 'NORMAL_EXPLICIT', 'as_of': cutoff.isoformat(),
         'fixtures': selection['fixtures'], 'history': exact, 'online_history': selected_online,
         'selection': {k: v for k, v in selection.items() if k not in {'fixtures', 'history'}},
         'dataset': consumed, 'partition_counts': dict(Counter(e['partition'] for e in ledger)),
@@ -266,12 +325,13 @@ def _merge(profile, competitions):
 
 
 def predict_normal(fixtures, online_history, now, *, retained_reader=None, predictor,
-                   enabled_profiles=PROFILES, artifact_dir=None):
+                   enabled_profiles=PROFILES, artifact_dir=None, competition_capacity=False):
     """Explicit new caller; injected predictor is the unchanged predict_models."""
     enabled = tuple(dict.fromkeys(enabled_profiles))
     if not set(enabled) <= set(PROFILES):
         raise ValueError('UNSUPPORTED_NORMAL_NUMERICAL_PROFILE')
-    view = prepare_inputs(fixtures, online_history, now, retained_reader=retained_reader)
+    view = prepare_inputs(fixtures, online_history, now, retained_reader=retained_reader,
+                          competition_capacity=competition_capacity)
     groups, issues = {}, []
     for fixture in view['fixtures']:
         try:
@@ -281,6 +341,21 @@ def predict_normal(fixtures, online_history, now, *, retained_reader=None, predi
     results = {profile: {} for profile in enabled}
     inputs = []
     for comp, targets in sorted(groups.items()):
+        capacity = view.get('competition_capacity')
+        if capacity is not None and comp in capacity['blocked_competition_ids']:
+            for profile in enabled:
+                detail = capacity['competitions'][comp]
+                diagnostic = {'code': 'COMPETITION_TRUTH_BOUND_EXCEEDED_NO_FIRST_N',
+                    'competition_id': comp, 'truth_count': detail['truth_count'],
+                    'row_count': detail['row_count'], 'truth_limit': MAX_TRUTHS,
+                    'stage': 'NORMAL_COMPETITION_CAPACITY', 'predictor_invoked': False}
+                results[profile][comp] = {'profile_id': profile, 'status': 'INPUT_CAPACITY_UNAVAILABLE',
+                    'predictions': [], 'diagnostics': [diagnostic]}
+                inputs.append({'profile_id': profile, 'competition_id': comp,
+                    'history_rows': None, 'history_sha256': None,
+                    'basis': 'NOT_INVOKED_COMPETITION_CAPACITY', 'predictor_invoked': False,
+                    'available_input_truth_count': detail['truth_count']})
+            continue
         combined = [row for row in view['history'] if canonical_history_comp(row) == comp]
         online = [row for row in view['online_history'] if canonical_history_comp(row) == comp]
         kepler, basis = _kepler_inputs(combined, online)

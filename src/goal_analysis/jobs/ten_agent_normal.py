@@ -101,12 +101,16 @@ class NormalAgentExecutor:
                 checksum.update(encoded)
             stream.flush()
             os.fsync(stream.fileno())
+        from goal_analysis.agents import profile_source_query
+
+        query = Path(profile_source_query.__file__).resolve()
         server, kernel = Path(profile_source_stdio.__file__).resolve(), Path(profile_source_access.__file__).resolve()
         scope_args = {'owned_root': owned_root, 'bundle_path': bundle_path,
             'bundle_sha256': checksum.hexdigest(),
             'python_executable': Path(sys.executable).resolve(), 'server_script': server,
             'server_sha256': hashlib.sha256(server.read_bytes()).hexdigest(),
-            'kernel_source': kernel, 'kernel_sha256': hashlib.sha256(kernel.read_bytes()).hexdigest()}
+            'kernel_source': kernel, 'kernel_sha256': hashlib.sha256(kernel.read_bytes()).hexdigest(),
+            'query_source': query, 'query_sha256': hashlib.sha256(query.read_bytes()).hexdigest()}
         journal.write_once('source-access-bundle.json', {
             'snapshot_id': snapshot.snapshot_id, 'view_sha256': bundle.view_sha256,
             'bundle_sha256': scope_args['bundle_sha256'],

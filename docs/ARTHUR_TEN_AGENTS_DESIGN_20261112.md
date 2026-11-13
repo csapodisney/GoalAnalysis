@@ -1,5 +1,7 @@
 # Arthur: tíz önálló agent — 2026-11-12-i módosítás
 
+**Újabb emberi pontosítás:** a [2026-11-13-i tizenkét főhelyes szerződés](ARTHUR_TWELVE_CARD_DASHBOARD_CONTRACT_20261113.md) írja le a tíz agent mellé kerülő Daily 11. és legacy 12. szelvényt, az új dashboardot és a közös 08:00-s indítást. Az alábbi minimum15 és 5%-os stop a korábbi döntés történeti szövege; az 5%-os stopot az ember külön feloldotta. A régi Daily/legacy feladatok OFF követelménye továbbra is érvényes.
+
 Az ember jóváhagyta: „ok, legyen 10 akkor, kezd a munkat”. Ez feloldja az október29-i munkaszünetet és a korábbi30-agent követelmény helyett pontosan10 aktív döntési agentet ír elő. Az5%-os keretstop és a Daily/legacy OFF változatlan. Ez megvalósítási szerződés, nem élesítési vagy profitállítás.
 
 ## A tízes döntési csapat
