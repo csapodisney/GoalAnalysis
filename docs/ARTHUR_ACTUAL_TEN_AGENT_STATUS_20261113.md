@@ -1,3 +1,22 @@
+# Valódi tízagent-futás: 2026-11-13, késő esti eredmény
+
+A futás 21:32–21:44 Europe/Berlin között ténylegesen végrehajtódott. Mind a tíz agent döntése elkészült, mind a tíz ABSTAIN: **0 mentett szelvény, a minimum 15 nem teljesült**. Az eredeti kilépési kód 2 megmaradt.
+
+A friss szolgáltatói naptár 72 meccset tartalmazott: 31 LIVE, 36 FT, 1 CANC, 3 PST és 1 NS. Mind a tíz agent teljes napi bemenete megmaradt. A 12 fogadható jelölt ugyanahhoz az egy hátralévő mérkőzéshez tartozott (Club Calor–Real Apodaca). Ebből nem állhatott össze a profilok által megkövetelt több, különböző meccses kombináció.
+
+Az elsődleges visszaellenőrzés, az új kohorsz teljes auditja és a felületi/export-visszaolvasás sikeres. 4310 régi SQL-sor és az öt korábbi mai riport változatlan, 0 fogadás történt. A felület és az export pontosan a nulla szelvényt mutatja.
+
+A használat bizonyítékának korlátai: 66 fizikai DatasetStore-fájl ellenőrzött, de Gauss/Kepler/Laplace egyaránt NO_FIXTURES, nulla előrejelzéssel. Mind a tíz agent elszámolt mind a 12 adatcsaláddal, de a nyers adatolvasások száma 0. Mindkét saját szimuláció eredménye minden ownernél UNKNOWN, mert nem volt saját összeállítható opció. A saját futáshoz igazolt szigorú időjárási előrejelzés száma 0; a hírcsomag PARTIAL_SOURCED, a híroldalak tartalmát a külön audit nem ellenőrizte. Ezeket nem állítjuk teljes, érdemi adat- vagy szimulációhasználatnak.
+
+Az adatátadási és bemenetméret-javítás telepített és tesztelt, de valódi, nem üres szelvényválasztáson még nincs üzleti elfogadás. A következő teljes meccsnapra történő futás dátumáról feltett kérdés válaszra vár; a mai futást nem ismételjük és órát nem írunk át.
+
+Az ember kifejezetten feloldotta az 5%-os megállási határt. Utoljára 2% keret volt elérhető. Daily és legacy OFF maradt, automation PAUSED. A matematikai és profilfeltételeket, a szokásos szolgáltatói kereteket és az eredeti hibás eredményeket nem változtattuk meg.
+
+
+---
+
+## Korábbi telepítési állapot – történeti, az esti futás előtt
+
 # Tíz agent: tényleges állapot, 2026-11-13
 
 Az éles bevezetés még nem kész: a legutóbbi valódi futás 0 szelvényt mentett, a napi minimum 15 nem teljesült. A kért 18:00 Europe/Berlin határidőt elmulasztottuk. Az alábbi javítások nem jelentenek új szelvényeket vagy igazolt profitot.
