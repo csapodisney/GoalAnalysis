@@ -31,7 +31,7 @@ try {
     $Definition.Settings.StartWhenAvailable = $false
     $Definition.Settings.MultipleInstances = 2
     $Definition.Settings.RestartCount = 0
-    $Definition.Settings.ExecutionTimeLimit = 'PT95M'
+    $Definition.Settings.ExecutionTimeLimit = 'PT135M'
     $Definition.Settings.DisallowStartIfOnBatteries = $false
     $Definition.Settings.StopIfGoingOnBatteries = $false
     $Definition.Settings.WakeToRun = $false
@@ -55,7 +55,7 @@ try {
     if ($A.Type -ne 0 -or $A.Path -cne $Python -or $A.Arguments -cne $Action.Arguments -or $A.WorkingDirectory -cne $Root) { throw 'Action changed.' }
     if ($Actual.Principal.UserId -ine $User -or $Actual.Principal.LogonType -ne 3 -or $Actual.Principal.RunLevel -ne 0) { throw 'Principal changed.' }
     $S = $Actual.Settings
-    if ($S.StartWhenAvailable -or $S.MultipleInstances -ne 2 -or $S.RestartCount -ne 0 -or $S.ExecutionTimeLimit -cne 'PT95M' -or $S.Enabled -ne $Enabled -or $S.WakeToRun -or $S.RunOnlyIfNetworkAvailable) { throw 'Task settings changed.' }
+    if ($S.StartWhenAvailable -or $S.MultipleInstances -ne 2 -or $S.RestartCount -ne 0 -or $S.ExecutionTimeLimit -cne 'PT135M' -or $S.Enabled -ne $Enabled -or $S.WakeToRun -or $S.RunOnlyIfNetworkAvailable) { throw 'Task settings changed.' }
     $Hasher = [Security.Cryptography.SHA256]::Create()
     try { $Hash = [BitConverter]::ToString($Hasher.ComputeHash([Text.Encoding]::UTF8.GetBytes($Actual.XmlText))).Replace('-','').ToLowerInvariant() } finally { $Hasher.Dispose() }
     @{task_name=$TaskName;enabled=$Enabled;timezone='Europe/Berlin';required_session='INTERACTIVE_USER_LOGGED_IN';wake_to_run=$false;no_catchup=$true;windows_timezone=[TimeZoneInfo]::Local.Id;local_time='08:00';latest_start_local_time='08:15';observation_status='VERIFIED_FIXED_DEFINITION';legacy_tasks=$Legacy;definition_sha256=$Hash;observed_at=[DateTime]::UtcNow.ToString('o');actual_task_execution_performed=$false} | ConvertTo-Json -Depth 5 -Compress

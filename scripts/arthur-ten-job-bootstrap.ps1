@@ -2,7 +2,8 @@ param(
     [Parameter(Mandatory=$true)][string]$Root,
     [Parameter(Mandatory=$true)][string]$TargetDate,
     [Parameter(Mandatory=$true)][string]$Settings,
-    [Parameter(Mandatory=$true)][string]$Output
+    [Parameter(Mandatory=$true)][string]$Output,
+    [string]$OwnerDeadlineAt
 )
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
@@ -39,7 +40,11 @@ try {
     }
     if ([string]::IsNullOrWhiteSpace([Environment]::GetEnvironmentVariable('THE_STATS_API_KEY','Process'))) { throw 'Required saved credential unavailable.' }
     Set-Location -LiteralPath $ResolvedRoot
-    & (Join-Path $ResolvedRoot '.venv\Scripts\python.exe') -B (Join-Path $ResolvedRoot 'scripts\run-arthur.py') --live --date $TargetDate --settings $Settings
+    $OwnerArguments = @()
+    if (-not [string]::IsNullOrWhiteSpace($OwnerDeadlineAt)) {
+        $OwnerArguments = @('--owner-deadline-at', $OwnerDeadlineAt)
+    }
+    & (Join-Path $ResolvedRoot '.venv\Scripts\python.exe') -B (Join-Path $ResolvedRoot 'scripts\run-arthur.py') --live --date $TargetDate --settings $Settings @OwnerArguments
     $Native = $LASTEXITCODE
     if ($null -eq $Native) { $Native = 1 }
 } catch {

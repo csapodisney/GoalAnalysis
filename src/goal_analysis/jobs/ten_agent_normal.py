@@ -20,7 +20,8 @@ from goal_analysis.jobs.agent_snapshot import build_normal_snapshot, digest, jso
 from goal_analysis.jobs.profile_historical_scenarios import build_history_view
 
 
-def make_normal_agent_executor(root, settings, *, clock, stop_requested=lambda: False):
+def make_normal_agent_executor(root, settings, *, clock, stop_requested=lambda: False,
+                               owner_deadline_at=None):
     """Use the existing saved-login host; this factory itself performs no I/O."""
     from goal_analysis.agents.codex_review import CodexReviewer
     from goal_analysis.jobs.agent_evidence import read_current_news
@@ -44,7 +45,8 @@ def make_normal_agent_executor(root, settings, *, clock, stop_requested=lambda: 
 
     return NormalAgentExecutor(host=CodexDecisionHost(reviewer_factory),
         journal_root=root / 'data/arthur/agent-decisions', clock=clock,
-        stop_requested=stop_requested, enable_source_access=True, enable_companion_channels=True,
+        stop_requested=stop_requested, timeout_seconds=4800, owner_deadline_at=owner_deadline_at,
+        enable_source_access=True, enable_companion_channels=True,
         enable_ticket_product_contract=True, enable_grouped_fixture_reviews=True, enable_full_day_odds=True,
         news_reader=lambda **kwargs: read_current_news(root / 'data/goal_analysis.sqlite3', **kwargs),
         news_producer=news_producer if ai.get('web_search') is True else None)
@@ -63,10 +65,17 @@ class NormalAgentExecutor:
                  news_reader=None, historical_reader=None, news_producer=None, max_requests=20,
                  timeout_seconds=3600, enable_source_access=False, pilot_agent_id=None,
                  enable_companion_channels=False, enable_ticket_product_contract=False,
-                 enable_grouped_fixture_reviews=False, enable_full_day_odds=False):
+                 enable_grouped_fixture_reviews=False, enable_full_day_odds=False,
+                 owner_deadline_at=None):
         require(callable(host) and callable(clock), 'EXPLICIT_HOST_AND_CLOCK_REQUIRED')
-        require(type(timeout_seconds) is int and 0 < timeout_seconds <= 3600,
+        require(type(timeout_seconds) is int
+                and 0 < timeout_seconds <= (4800 if enable_source_access is True else 3600),
                 'FINITE_NORMAL_AGENT_DEADLINE_REQUIRED')
+        require(owner_deadline_at is None or (isinstance(owner_deadline_at, datetime)
+                and owner_deadline_at.tzinfo is not None
+                and owner_deadline_at.utcoffset() == timedelta(0)),
+                'AWARE_UTC_OWNER_DEADLINE_REQUIRED')
+        self.owner_deadline_at = owner_deadline_at
         require(type(max_requests) is int and 0 <= max_requests <= 20,
                 'FINITE_NORMAL_AGENT_REQUEST_BUDGET_REQUIRED')
         require(type(enable_source_access) is bool, 'EXPLICIT_SOURCE_ACCESS_MODE_REQUIRED')
@@ -88,6 +97,13 @@ class NormalAgentExecutor:
         self.enable_grouped_fixture_reviews = enable_grouped_fixture_reviews
         require(type(enable_full_day_odds) is bool, 'EXPLICIT_FULL_DAY_ODDS_MODE_REQUIRED')
         self.enable_full_day_odds = enable_full_day_odds
+
+    def _owner_budget(self):
+        deadline = self.clock() + timedelta(seconds=self.timeout_seconds)
+        if self.owner_deadline_at is not None:
+            deadline = min(deadline, self.owner_deadline_at)
+        return DecisionBudget(self.max_requests, deadline, clock=self.clock,
+            stop_requested=self.stop_requested, skip_expired_owners=self.owner_deadline_at is not None)
 
     @staticmethod
     def _stage_source_access(journal, snapshot):
@@ -286,11 +302,15 @@ class NormalAgentExecutor:
                 return self.host(request, timeout=timeout, source_access=scope)
             return self.host(request, timeout=timeout)
 
+        budget = self._owner_budget()
+        if self.owner_deadline_at is not None:
+            report['owner_completion_policy'] = {'version': 'GRACEFUL_OWNER_COMPLETION_V1',
+                'owner_stop_at_utc': budget.deadline.isoformat(),
+                'outer_reserved_stop_at_utc': self.owner_deadline_at.isoformat(),
+                'local_owner_seconds': self.timeout_seconds, 'unstarted_owners_are_not_abstentions': True}
         result = ProfileDecisionRunner(host=owner_host, tools=tools, option_builder=builder,
             journal=journal, source_bundle=source_bundle,
-            grouped_fixture_reviews=self.enable_grouped_fixture_reviews, budget=DecisionBudget(self.max_requests,
-                self.clock() + timedelta(seconds=self.timeout_seconds),
-                clock=self.clock, stop_requested=self.stop_requested)).run(snapshot,
+            grouped_fixture_reviews=self.enable_grouped_fixture_reviews, budget=budget).run(snapshot,
                     **({'pilot_agent_id': self.pilot_agent_id} if self.pilot_agent_id is not None else {}))
         artifacts['independent_agent_snapshot'] = snapshot.data()
         artifacts['independent_agent_decisions'] = deepcopy(result)

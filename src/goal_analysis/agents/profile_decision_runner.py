@@ -33,6 +33,7 @@ from goal_analysis.agents.profile_input import (
     public_tool_results,
 )
 from goal_analysis.agents.profile_roster import ACTIVE_AGENTS, get_agent_definition
+from goal_analysis.agents.profile_source_host import profile_phase_timeout
 from goal_analysis.jobs.agent_portfolio import (
     SOURCE_CATALOG_POLICY,
     OwnOptionAdmissionRejected,
@@ -108,6 +109,7 @@ class DecisionBudget:
     deadline: datetime
     clock: object = _now
     stop_requested: object = lambda: False
+    skip_expired_owners: bool = False
     used_requests: int = field(default=0, init=False)
     _lock: object = field(default_factory=Lock, init=False, repr=False)
 
@@ -116,14 +118,26 @@ class DecisionBudget:
                 'FINITE_TEN_AGENT_REQUEST_BUDGET_REQUIRED')
         require(self.deadline.tzinfo is not None and self.deadline.utcoffset() is not None,
                 'AWARE_DEADLINE_REQUIRED')
+        require(type(self.skip_expired_owners) is bool, 'EXPLICIT_QUEUED_OWNER_STOP_MODE_REQUIRED')
 
-    def reserve(self):
+    def owner_stop_reason(self):
+        if not self.skip_expired_owners:
+            return None
+        with self._lock:
+            if self.stop_requested():
+                return 'HUMAN_OR_ACCOUNT_STOP_BEFORE_OWNER_START'
+            if self.clock() >= self.deadline:
+                return 'OWNER_DEADLINE_REACHED_BEFORE_START'
+        return None
+
+    def reserve(self, *, phase=None, source_access=False):
+        phase_limit = profile_phase_timeout(phase, source_access=source_access)
         with self._lock:
             seconds = (self.deadline - self.clock()).total_seconds()
             require(not self.stop_requested(), 'HUMAN_OR_ACCOUNT_STOP')
             require(seconds > 0 and self.used_requests < self.max_requests, 'DECISION_BUDGET_EXHAUSTED')
             self.used_requests += 1
-            return min(300.0, seconds)
+            return min(phase_limit, seconds)
 
 
 class DecisionJournal:
@@ -204,7 +218,7 @@ class ProfileDecisionRunner:
                 'persona': get_agent_definition(state.agent_id).as_dict(),
                 'data': news_coverage_request_data(final_request_data(data) if phase == 'FINAL' else data)}
         require(len(json_text(body)) <= self.max_input_chars, 'OWNER_INPUT_BUDGET_EXCEEDED')
-        timeout = self.budget.reserve()
+        timeout = self.budget.reserve(phase=phase, source_access=self.source_bundle is not None)
         key = self.journal.claim(body)
         reply = None
         try:
@@ -293,6 +307,14 @@ class ProfileDecisionRunner:
         source_records = {}
         auxiliary = None
         try:
+            stop_reason = self.budget.owner_stop_reason()
+            if stop_reason is not None:
+                outcome = {'status': ('NOT_STARTED_DEADLINE'
+                    if stop_reason == 'OWNER_DEADLINE_REACHED_BEFORE_START' else 'NOT_STARTED_STOP'),
+                    **_identity(state), 'reason': stop_reason, 'state_transcript': list(state.transcript),
+                    'observed_host_usage': [], 'host_requests_started': 0, 'automatic_retry': False}
+                self.journal.write_once(f'{state.session_id}.owner.json', outcome)
+                return outcome
             plan_view = view if self.source_bundle is None else source_seed
             require(isinstance(plan_view, dict), 'BOUND_PLAN_VIEW_REQUIRED')
             plan_data = {'snapshot': plan_view}

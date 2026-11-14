@@ -48,6 +48,7 @@ def parser():
     value.add_argument("--strictness", type=int)
     value.add_argument("--ticket-count", type=int)
     value.add_argument("--competition-ids", type=str)
+    value.add_argument("--owner-deadline-at", type=datetime.fromisoformat)
     return value
 
 
@@ -104,6 +105,11 @@ def validate_agent_scope(settings, selected_competitions):
 def main(argv=None) -> int:
     args = parser().parse_args(argv)
     os.chdir(ROOT)
+    if args.owner_deadline_at is not None and (not args.live
+            or args.owner_deadline_at.tzinfo is None
+            or args.owner_deadline_at.utcoffset() is None
+            or args.owner_deadline_at.utcoffset().total_seconds() != 0):
+        parser().error("--owner-deadline-at requires --live and an aware UTC timestamp")
     selected_competitions = None
     if args.competition_ids is not None:
         parts = args.competition_ids.split(",")
@@ -126,6 +132,8 @@ def main(argv=None) -> int:
         settings = validate_settings(settings)
         if args.live:
             validate_agent_scope(settings, selected_competitions)
+            if args.owner_deadline_at is not None and not current_contract(settings):
+                raise ValueError("Owner completion deadline requires the current ten-agent contract")
         if args.check_codex_login:
             result = make_reviewer(settings).login_status()
             print(json.dumps(result))
@@ -221,7 +229,8 @@ def main(argv=None) -> int:
                             - report.get('usage', {}).get('football_calls', 0)))),
                     model_artifact_dir=ROOT / "data/arthur/models",
                     normal_history_root=ROOT,
-                    agent_executor=(make_normal_agent_executor(ROOT, settings, clock=lambda: datetime.now(UTC))
+                    agent_executor=(make_normal_agent_executor(ROOT, settings, clock=lambda: datetime.now(UTC),
+                                                              owner_deadline_at=args.owner_deadline_at)
                                     if current_contract(settings) else None),
                     team_plan=team_plan,
                     nemotron_stylist=lambda options, cards, target, now: curate_nemotron_tickets(

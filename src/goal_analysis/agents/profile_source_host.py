@@ -38,6 +38,69 @@ def require(value, reason):
         raise ValueError(reason)
 
 
+def profile_phase_timeout(phase=None, *, source_access=False):
+    """One finite phase, with the historical cap retained outside source PLAN."""
+    require(phase in (None, 'PLAN', 'FINAL') and type(source_access) is bool,
+            'EXACT_PROFILE_TIMEOUT_SCOPE_REQUIRED')
+    return 600.0 if source_access and phase == 'PLAN' else 300.0
+
+
+def source_timing_observation(prepared, *, started_at, observed_at, elapsed_seconds,
+                              timer_origin):
+    """Bounded private diagnostics, never a substitute for source-proof validation."""
+    result = {'version': 'source-phase-timing-v1', 'status': 'UNKNOWN',
+        'timer_origin': timer_origin, 'started_at': started_at, 'observed_at': observed_at,
+        'native_elapsed_seconds': (elapsed_seconds if type(elapsed_seconds) in (int, float)
+                                   and 0 <= elapsed_seconds <= 86_400 else None),
+        'kernel_ready_at': None, 'last_source_read_checkpoint_at': None,
+        'start_to_kernel_ready_seconds': None, 'last_source_read_to_return_seconds': None,
+        'checkpoint_sha256': None, 'journal_count_observed': None,
+        'evidence_authority': 'DIAGNOSTIC_ONLY_BEFORE_SOURCE_PROOF_VALIDATION',
+        'clock_basis': 'UTC_WALL_DIFFERENCES_AND_SEPARATE_MONOTONIC_NATIVE_ELAPSED'}
+    try:
+        start, end = datetime.fromisoformat(started_at), datetime.fromisoformat(observed_at)
+        require(start.tzinfo is not None and start.utcoffset() is not None
+                and end.tzinfo is not None and end.utcoffset() is not None and end >= start,
+                'TIMING_NATIVE_CLOCK_UNKNOWN')
+        path = Path(prepared['binding_path']).parent / 'receipt-checkpoints.jsonl'
+        require(path.is_file(), 'TIMING_CHECKPOINT_NOT_RECORDED')
+        require(0 < path.stat().st_size <= 262_144, 'TIMING_CHECKPOINT_SIZE_BOUND')
+        with path.open('rb') as stream:
+            raw = stream.read(262_145)
+        require(len(raw) <= 262_144 and raw.endswith(b'\n'), 'TIMING_CHECKPOINT_SIZE_OR_PARTIAL')
+        records = [json.loads(line) for line in raw.decode('utf-8').splitlines()]
+        require(1 <= len(records) <= 165 and records[0].get('stage') == 'KERNEL_READY',
+                'TIMING_CHECKPOINT_SHAPE')
+        binding = prepared['document']['binding']
+        clocks, previous_count = [], 0
+        for record in records:
+            receipt = record['receipt']
+            count = receipt['journal_count']
+            stamp = datetime.fromisoformat(record['observed_at'])
+            require(receipt['binding'] == binding and type(count) is int
+                    and previous_count <= count <= 65 and stamp.tzinfo is not None
+                    and stamp.utcoffset() is not None and start <= stamp <= end
+                    and (not clocks or stamp >= clocks[-1]), 'TIMING_CHECKPOINT_BINDING_OR_CLOCK')
+            clocks.append(stamp)
+            previous_count = count
+        ready = clocks[0]
+        count = records[-1]['receipt']['journal_count']
+        last = next((stamp for record, stamp in zip(records, clocks, strict=True)
+                     if count and record['receipt']['journal_count'] == count), None)
+        result.update(status='OBSERVED' if last is not None else 'PARTIAL',
+            reason=None if last is not None else 'NO_SOURCE_READ_CHECKPOINT',
+            checkpoint_sha256=hashlib.sha256(raw).hexdigest(), journal_count_observed=count,
+            kernel_ready_at=ready.isoformat(),
+            start_to_kernel_ready_seconds=round((ready - start).total_seconds(), 6),
+            last_source_read_checkpoint_at=last.isoformat() if last is not None else None,
+            last_source_read_to_return_seconds=(round((end - last).total_seconds(), 6)
+                                               if last is not None else None))
+    except (OSError, ValueError, TypeError, KeyError, AttributeError) as error:
+        # Diagnostic gaps do not change the independent acceptance/failure gates.
+        result['reason'] = str(error) if isinstance(error, ValueError) and str(error).startswith('TIMING_') else type(error).__name__
+    return result
+
+
 def source_environment(*, child=False):
     """Only OS resolution and, for Codex alone, existing saved-login paths."""
     names = _OS_ENV if child else _OS_ENV | _AUTH_PATH_ENV

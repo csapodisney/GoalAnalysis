@@ -80,9 +80,9 @@ def human_deadline_policy(raw, now, *, request_id, target_date, source_binding):
 
 
 def human_phase_deadline(now, *, seconds, label, policy=None):
-    """The optional human authority only shortens the original fixed phase bound."""
+    """Human authority shortens the selected finite bound; old 5400s callers remain valid."""
     require(label in {'business', 'verification'} and type(seconds) is int
-            and seconds == {'business': 5400, 'verification': 180}[label], 'EXACT_ORIGINAL_PHASE_LIMIT')
+            and seconds in ({5400, 7200} if label == 'business' else {180}), 'EXACT_ORIGINAL_PHASE_LIMIT')
     ordinary = now + timedelta(seconds=seconds)
     if policy is None:
         return ordinary

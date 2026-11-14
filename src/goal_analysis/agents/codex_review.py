@@ -31,8 +31,10 @@ from goal_analysis.agents.profile_source_host import (
     SourceAccessScope,
     finish_source_evidence,
     observe_source_events,
+    profile_phase_timeout,
     source_config,
     source_environment,
+    source_timing_observation,
 )
 
 BACKEND = "codex_chatgpt"
@@ -103,7 +105,7 @@ def _profile_usage(usage):
     return result
 
 
-def _capture_profile_return(prepared_source, done):
+def _capture_profile_return(prepared_source, done, *, started_at=None, observed_at=None, elapsed_seconds=None):
     """Preserve returned private source-phase diagnostics before parsing/failure handling."""
     limit = 2 * 1024 * 1024
     try:
@@ -115,7 +117,10 @@ def _capture_profile_return(prepared_source, done):
             raise ValueError('NATIVE_RETURN_FIELDS_REQUIRED')
         metadata = {'version': 'private-source-native-return-v1', 'native_exit_code': done.returncode,
             'binding_sha256': prepared_source['binding_sha256'], 'byte_limit': limit,
-            'encoding': 'UTF8_OF_RETURNED_PROCESS_TEXT_NOT_ORIGINAL_PIPE_BYTES', 'streams': {}}
+            'encoding': 'UTF8_OF_RETURNED_PROCESS_TEXT_NOT_ORIGINAL_PIPE_BYTES', 'streams': {},
+            'timing': source_timing_observation(prepared_source, started_at=started_at,
+                observed_at=observed_at, elapsed_seconds=elapsed_seconds,
+                timer_origin='HOST_RUNNER_INVOCATION')}
         remaining = limit
         for name, value in (('stdout', done.stdout), ('stderr', done.stderr)):
             raw = value.encode('utf-8')
@@ -158,7 +163,10 @@ def _capture_profile_interruption(prepared_source, out, err, *, interruption):
             'elapsed_seconds': interruption['elapsed_seconds'], 'timeout_seconds': interruption['timeout_seconds'],
             'child_pid': interruption['child_pid'], 'native_exit_code': interruption['native_exit_code'],
             'termination': interruption['termination'], 'child_tree_stopped': None,
-            'host_completion_proven': False, 'response_accepted': False, 'streams': {}}
+            'host_completion_proven': False, 'response_accepted': False, 'streams': {},
+            'timing': source_timing_observation(prepared_source, started_at=interruption['started_at'],
+                observed_at=interruption['observed_at'], elapsed_seconds=interruption['elapsed_seconds'],
+                timer_origin='NATIVE_PROCESS_START')}
         lengths = {}
         for name, stream in (('stdout', out), ('stderr', err)):
             stream.seek(0, os.SEEK_END)
@@ -533,7 +541,9 @@ class CodexReviewer(AstraReviewer):
         )
 
         if (not isinstance(request, dict) or request.get('phase') not in {'PLAN', 'FINAL'}
-                or type(timeout) not in (int, float) or not 0 < timeout <= 300):
+                or type(timeout) not in (int, float)
+                or not 0 < timeout <= profile_phase_timeout(request.get('phase'),
+                    source_access=isinstance(source_access, SourceAccessScope))):
             raise _ReviewError('Invalid bounded profile request')
         supplied = json.dumps(request, ensure_ascii=False, allow_nan=False,
                               sort_keys=True, separators=(',', ':'))
@@ -625,6 +635,66 @@ class CodexReviewer(AstraReviewer):
                 'PLAN and FINAL are separate processes: FINAL has only the explicit own PLAN and details '
                 'in this request plus fresh bounded access to the same immutable source. Never claim '
                 'all raw rows read or causal influence merely because a source was available.'
+            )
+        if prepared_source is not None and request['phase'] == 'PLAN':
+            instructions += (
+                ' PLAN source navigation PLAN_INDEPENDENT_READS_V1: when the current host supports '
+                'concurrent tool calls, issue existing independent read_data or query_data RPCs in '
+                'parallel. There is no new batch API. Keep dependent cursor and next_offset pages '
+                'sequential; obtain each continuation from its preceding response. Choose your own '
+                'query filters and only the fields required for the current comparison, preserving '
+                'candidate and fixture identities and explicit UNKNOWN values. A narrow projection '
+                'does not replace complete source reads: before proposing any selected candidate, '
+                'read its entire candidates record and every continuation page as already required. '
+                'All daily fixtures and all twelve families remain accessible; this is not a shared '
+                'shortlist. Parallel calls share the same 64-call, 512KiB phase response and '
+                '24000-character per-response limits. Reserve capacity for all selected full reads; '
+                'parallelism does not increase any budget or waive any source-proof requirement.'
+            )
+        if request['phase'] == 'PLAN':
+            instructions += (
+                ' PLAN proposal policy PLAN_BEST_LEGAL_RESEARCH_OPTIONS_V1: this rule takes '
+                'precedence over qualitative abstention suggestions in persona.selection_path. '
+                'Use the persona method to rank support, counterevidence and uncertainty, not to '
+                'invent an extra admission condition requiring a proved scoring path or perfect context. '
+                'When actual source candidates permit a complete own ticket under the supplied '
+                'mandatory construction policy, propose the best such legal own option and, if '
+                'meaningfully distinct, alternatives. Keep every existing own market, model, price, '
+                'identity, kickoff, full selected-record reading and product requirement. Never '
+                'invent candidate IDs, prices or probabilities or waive a required own model. '
+                'Missing optional weather, XI, xG, venue detail, news, cost, PIT or qualitative support '
+                'alone must not make options empty or set fixture_reviews.rejected=true. Explain '
+                'the actual gap locally instead. Never mark a fixture rejected if you propose a leg '
+                'from that fixture; the existing selected-fixture rejection guard remains binding. '
+                'Do not postpone all proposals until optional context is complete. Both tool requests '
+                'remain mandatory even when you expect incomplete evidence: a correctly bound UNKNOWN '
+                'tool result is valid uncertainty, not a requirement for an AVAILABLE result. '
+                'Retain complete explicit daily fixture consideration and all original access limits. '
+                'If no complete own option meets the mandatory rules, return an empty options list '
+                'with the concrete limitations in your fixture considerations. Legal research '
+                'proposals do not establish positive expected value, READY status or wager authority.'
+            )
+        if request['phase'] == 'FINAL':
+            instructions += (
+                ' FINAL selection policy FINAL_BEST_LEGAL_RESEARCH_OPTION_V1: this rule takes '
+                'precedence over qualitative abstention suggestions in persona.selection_path. '
+                'Use your persona method to rank the available evidence, counterevidence and '
+                'uncertainty of your own admitted options; it is not an additional veto requiring '
+                'proof of a scoring path, a successful simulation, calibrated probability or profit. '
+                'When at least one data.validated_own_options entry remains valid under every existing '
+                'mandatory price, identity, kickoff, source-read, own model and product rule, select '
+                'the best such own option as the main research card, followed by at most two genuinely '
+                'distinct legal own variants in rank order. Do not abstain solely because qualitative '
+                'support is incomplete, optional data is missing or a supplied tool returned UNKNOWN. '
+                'State those gaps and counterevidence explicitly in reason, family risks and tool '
+                'interpretations; UNKNOWN must remain UNKNOWN and must not become invented support. '
+                'ABSTAIN only when no admitted own option remains valid under those existing mandatory '
+                'rules, with the concrete invalidity or empty admitted set stated. Never add an '
+                'unadmitted option, repair a rejected option, relax a mandatory model threshold, '
+                'change prices or probabilities, or claim that legality establishes positive expected '
+                'value. This is an uncertain research selection, never READY or wager authorization. '
+                'Keep both actual tool interpretations, exact family hashes and all source-proof '
+                'requirements unchanged; no new tool or model call is requested by this policy.'
             )
         usage = _usage()
         usage['_profile_token_fields_observed'] = []
@@ -764,12 +834,16 @@ class CodexReviewer(AstraReviewer):
             cmd += ["-"]
             usage["requests"] += 1
             started = time.monotonic()
+            native_started_at = datetime.now(UTC).isoformat()
             # A context review returns six source-bound assessments per market.
             # Its measured real response exceeded the ordinary300s deadline;
             # allow one bounded600s process, preserving ordinary/research limits.
             fields = ((schema or {}).get("properties", {}).get("reviews", {})
                       .get("items", {}).get("properties", {}))
             request_timeout = 600 if not research and "context_assessments" in fields else 300
+            if prepared_source is not None:
+                request_timeout = profile_phase_timeout(
+                    prepared_source.get('document', {}).get('binding', {}).get('phase'), source_access=True)
             if '_arthur_profile_timeout' in body:
                 request_timeout = min(request_timeout, body['_arthur_profile_timeout']
                                       - (time.monotonic() - before_auth))
@@ -779,11 +853,14 @@ class CodexReviewer(AstraReviewer):
                 **({'env': source_environment()} if prepared_source is not None else {}),
                 **({'source_capture': prepared_source}
                    if prepared_source is not None and self.runner is _run_process else {}))
+            native_returned_at = datetime.now(UTC).isoformat()
+            native_elapsed_seconds = time.monotonic() - started
             usage["elapsed_seconds"] = round(
-                usage.get("elapsed_seconds", 0) + time.monotonic() - started, 2
+                usage.get("elapsed_seconds", 0) + native_elapsed_seconds, 2
             )
             if prepared_source is not None:
-                _capture_profile_return(prepared_source, done)
+                _capture_profile_return(prepared_source, done, started_at=native_started_at,
+                    observed_at=native_returned_at, elapsed_seconds=native_elapsed_seconds)
             source_events = (observe_source_events(done.stdout, usage)
                              if prepared_source is not None else None)
             if done.returncode:

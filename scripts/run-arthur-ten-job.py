@@ -124,7 +124,7 @@ def supervise(command, folder, *, seconds, label='business', env=None, spawn=Non
     result = {'status': 'PRESPAWN_FAILURE', 'native_exit_code': None, 'child_tree_stopped': False, 'automatic_retry': False}
     started = time.monotonic()
     try:
-        require(0 < seconds <= 5400, 'FINITE_OUTER_BOUND')
+        require(0 < seconds <= (7200 if label == 'business' else 180), 'FINITE_OUTER_BOUND')
         stop = resource_hardstop()
         if stop is not None:
             result.update(status='RESOURCE_HARDSTOP', native_exit_code=None, child_tree_stopped=True,
@@ -282,7 +282,7 @@ def main():
     require(digest(job['settings']) == job['settings_sha256'], 'EXACT_RESERVED_SETTINGS_REQUIRED')
     OUTPUT = Path(tempfile.gettempdir()).resolve() / ('arthur-ten-' + args.job_id)
     require(not OUTPUT.exists() and not OUTPUT.is_relative_to(ROOT), 'NEW_SHORT_OWNED_JOB_FOLDER_REQUIRED')
-    DEADLINE = now + timedelta(seconds=5400)
+    DEADLINE = now + timedelta(seconds=7200)
     store.transition(args.job_id, expected='RESERVED', values={'state': 'RUNNING',
         'stage': 'PREFLIGHT', 'started_at': now.isoformat()})
     native = None
@@ -294,21 +294,29 @@ def main():
         save_new(OUTPUT / 'job-intent.json', {key: value for key, value in job.items() if key != 'settings'})
         HUMAN_DEADLINE = load_human_deadline(job)
         if HUMAN_DEADLINE is not None:
-            DEADLINE = human_phase_deadline(now, seconds=5400, label='business', policy=HUMAN_DEADLINE)
+            DEADLINE = human_phase_deadline(now, seconds=7200, label='business', policy=HUMAN_DEADLINE)
         with RunLock(ROOT / 'data/arthur/run.lock'):
             before = target_runs(job['target_date'])
             save_new(OUTPUT / 'before-runs.json', sorted(before))
         # Lock intentionally released: the unchanged CLI acquires its own RootRunLock.
+        owner_deadline = DEADLINE - timedelta(seconds=300)
+        require(datetime.now(UTC) < owner_deadline, 'OWNER_SAVE_RESERVE_EXHAUSTED_BEFORE_SPAWN')
+        save_new(OUTPUT / 'owner-deadline-binding.json', {
+            'version': 'GRACEFUL_OWNER_COMPLETION_V1', 'job_id': job['job_id'],
+            'request_id': job['request_id'], 'business_stop_at_utc': DEADLINE.isoformat(),
+            'owner_stop_at_utc': owner_deadline.isoformat(), 'save_reserve_seconds': 300,
+            'reserve_is_not_a_wall_time_guarantee': True})
         command = ['powershell.exe', '-NoLogo', '-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass',
             '-File', str(ROOT / 'scripts/arthur-ten-job-bootstrap.ps1'), '-Root', str(ROOT),
-            '-TargetDate', job['target_date'], '-Settings', str(OUTPUT / 'settings.json'), '-Output', str(OUTPUT)]
-        native = supervise(command, OUTPUT, seconds=5400, env=source_environment())
+            '-TargetDate', job['target_date'], '-Settings', str(OUTPUT / 'settings.json'), '-Output', str(OUTPUT),
+            '-OwnerDeadlineAt', owner_deadline.isoformat()]
+        native = supervise(command, OUTPUT, seconds=7200, env=source_environment())
         require(native['child_tree_stopped'] and native['log_pumps_stopped'], 'NATIVE_TREE_AND_LOGS_STOP_REQUIRED')
         store.transition(args.job_id, expected='RUNNING', values={'state': 'VERIFYING', 'stage': 'SAVED_READBACK',
             'native_exit': native['native_exit_code'], 'tree_stopped': True})
         verified = verify_saved(job['target_date'], before)
         save_new(OUTPUT / 'saved-verification.json', verified)
-        # Business 5400s is unchanged; its separate stopped postcheck has an owned 180s Job.
+        # The 7200s business guardian is separate from the stopped 180s verifier.
         DEADLINE = human_phase_deadline(datetime.now(UTC), seconds=180, label='verification', policy=HUMAN_DEADLINE)
         verification_native = supervise([str(ROOT / '.venv/Scripts/python.exe'), '-B',
             str(ROOT / 'scripts/run-arthur-workshop-verify.py'), '--run-id', verified['run_id'],

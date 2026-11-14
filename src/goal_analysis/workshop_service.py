@@ -19,9 +19,21 @@ from goal_analysis.jobs.portfolio import validate_target_day
 from goal_analysis.jobs.workshop_launch import LaunchConflict, LaunchStore, target_day
 from goal_analysis.operating_policy import current_contract
 from goal_analysis.storage.portfolio_ledger import PortfolioLedger
-from goal_analysis.workshop_views import calendar_page, card_page, family_page, workshop
+from goal_analysis.workshop_views import (
+    WORKSHOP_BYTES,
+    _checked,
+    calendar_page,
+    card_page,
+    family_page,
+    workshop,
+)
 
 RUN_ID = re.compile(r'\d{4}-\d{2}-\d{2}-[a-zA-Z0-9]{8,64}\Z')
+
+
+class SnapshotOverviewReadBound(ValueError):
+    """Optional overview data exceeds the existing interactive snapshot read bound."""
+
 
 
 @contextmanager
@@ -126,9 +138,10 @@ class SavedWorkshop:
         if not path.is_file():
             return None
         stat = path.stat()
-        if (path.is_symlink() or not path.resolve().is_relative_to(self.root / 'data/arthur/agent-decisions')
-                or stat.st_size > 512 * 1024 * 1024):
+        if path.is_symlink() or not path.resolve().is_relative_to(self.root / 'data/arthur/agent-decisions'):
             raise ValueError('SAVED_SNAPSHOT_READ_BOUND')
+        if stat.st_size > 512 * 1024 * 1024:
+            raise SnapshotOverviewReadBound('SAVED_SNAPSHOT_READ_BOUND')
         key = (str(path), stat.st_size, stat.st_mtime_ns, expected)
         with self._cache_lock:
             if key != self._snapshot_key:
@@ -181,11 +194,29 @@ class WorkshopService:
         day = day or now.astimezone(ZoneInfo('Europe/Berlin')).date().isoformat()
         target_day(day)
         report = self.repository.report(day=day)
+        snapshot_reason = None
+        try:
+            snapshot = self.repository.snapshot(report)
+        except SnapshotOverviewReadBound:
+            snapshot = None
+            snapshot_reason = 'SAVED_SNAPSHOT_EXCEEDS_INTERACTIVE_READ_BOUND'
+        if snapshot is None and isinstance((report or {}).get('ten_agent_decisions'), dict):
+            snapshot_reason = snapshot_reason or 'SAVED_SNAPSHOT_NOT_FOUND'
         value = workshop(day=day, report=report, states=self.repository.states(report),
-                        snapshot=self.repository.snapshot(report), operation=self.store.latest(day),
+                        snapshot=snapshot, operation=self.store.latest(day),
                         schedule=self.store.schedule(now), capabilities=self.capabilities(), now=now)
+        if snapshot_reason is not None:
+            value['snapshot_readback'] = {
+                'status': 'UNKNOWN', 'reason': snapshot_reason,
+                'expected_snapshot_sha256': report['ten_agent_decisions'].get('snapshot_id'),
+                'canonical_report_sha256': report.get('report_sha256'),
+                'raw_snapshot_read': False, 'physical_verification': 'NOT_PERFORMED_BY_VIEW',
+            }
+            value['calendar']['reason'] = snapshot_reason
+            for family in value['families']:
+                family['reason'] = snapshot_reason
         value['settings'] = load_settings(self.settings_path)
-        return value
+        return _checked(value, WORKSHOP_BYTES)
 
     def cards(self, run_id, offset=0, limit=10):
         report = self.repository.report(run_id=run_id)
