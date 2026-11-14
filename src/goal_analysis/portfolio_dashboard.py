@@ -686,7 +686,7 @@ def make_handler(state: ArthurState, token: str):
             close=False,
         ):
             data = (
-                json.dumps(value, ensure_ascii=False, allow_nan=False).encode("utf-8")
+                json.dumps(value, ensure_ascii=False, allow_nan=False, separators=(",", ":")).encode("utf-8")
                 if isinstance(value, (dict, list))
                 else value
             )
