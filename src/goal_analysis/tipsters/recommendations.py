@@ -442,7 +442,12 @@ def _ticket_rank(rows, persona, preferred=()):
     book = rows[0]["quote"]["bookmaker"]
     book_rank = next((i for i, name in enumerate(preferred)
                       if book == name or book.startswith(name + "_")), len(preferred))
-    return (-_scoring(rows, persona)["ticket_score"], -min(scores), -sum(scores) / len(scores), exposure,
+    preference = ()
+    if persona.get('ticket_product_contract') is not None:
+        from goal_analysis.ticket_product_policy import preference_key
+
+        preference = preference_key(math.prod(row['quote']['decimal_price'] for row in rows))
+    return (*preference, -_scoring(rows, persona)["ticket_score"], -min(scores), -sum(scores) / len(scores), exposure,
             -math.prod(row["quote"]["decimal_price"] for row in rows), book_rank,
             tuple(sorted(row["quote"]["candidate_id"] for row in rows)))
 
@@ -857,7 +862,7 @@ def _positive_support(row):
 def build_tipster_recommendations(
     enriched: dict, model_results: dict, settings: dict, now: datetime,
     *, diversity_options: dict | None = None, support_guard_mode: str = "LIVE",
-    option_search_mode: str = "SHADOW",
+    option_search_mode: str = "SHADOW", ticket_product_contract=None,
 ) -> list:
     """Build paper cards; SHADOW compares the existing alternative support gate.
 
@@ -886,7 +891,7 @@ def build_tipster_recommendations(
     output = []
     history_support_cache = {}
     for source_persona in TIPSTER_CATALOG:
-        persona = effective_persona(source_persona, settings)
+        persona = effective_persona(source_persona, settings, ticket_product_contract=ticket_product_contract)
         profile = persona["profile_id"]
         if profile not in enabled:
             continue
@@ -912,8 +917,8 @@ def build_tipster_recommendations(
         fallback = None
         if current:
             _, _, full_day = _full_day_input(enriched)
-            allowed = cautious_fallback_allowed(profile, settings, options,
-                                                all_daily_fixtures_considered=full_day)
+            allowed = (ticket_product_contract is None and cautious_fallback_allowed(profile, settings, options,
+                                                all_daily_fixtures_considered=full_day))
             fallback = {'status': 'PRIMARY_RANGE' if options else 'NOT_AUTHORIZED',
                         'primary_options_count': primary_options_count,
                         'primary_search': primary_search,
@@ -1008,6 +1013,8 @@ def build_tipster_recommendations(
                 "Az ár időbélyege tájékoztató, soha nem kizáró feltétel. Nincs automatikus fogadás.",
             ],
         }
+        if ticket_product_contract is not None:
+            item['ticket_product_contract'] = deepcopy(ticket_product_contract)
         if legs:
             item["recommendation_id"] = canonical_sha256(
                 [VERSION, target, profile, now.isoformat(),

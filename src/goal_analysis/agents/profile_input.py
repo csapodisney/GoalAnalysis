@@ -616,6 +616,9 @@ def final_option_details(snapshot: SharedSnapshot, owner_id: str, options: list[
             'ONLY_THIS_OWNERS_PROPOSED_OPTIONS')
     candidate_ids, fixture_ids, source_pairs = set(), set(), set()
     for option in options:
+        from goal_analysis.ticket_product_policy import validate_option_product
+
+        validate_option_product(option)
         for leg in option['legs']:
             require(isinstance(leg, dict) and isinstance(leg.get('candidate_id'), str)
                     and leg.get('fixture_id') in original['fixture_ids'], 'SOURCE_BOUND_OPTION_LEG_REQUIRED')

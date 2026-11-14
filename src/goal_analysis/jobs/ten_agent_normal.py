@@ -46,6 +46,7 @@ def make_normal_agent_executor(root, settings, *, clock, stop_requested=lambda: 
     return NormalAgentExecutor(host=CodexDecisionHost(reviewer_factory),
         journal_root=root / 'data/arthur/agent-decisions', clock=clock,
         stop_requested=stop_requested, enable_source_access=True, enable_companion_channels=True,
+        enable_ticket_product_contract=True,
         news_reader=lambda **kwargs: read_current_news(root / 'data/goal_analysis.sqlite3', **kwargs),
         news_producer=news_producer if ai.get('web_search') is True else None)
 
@@ -62,7 +63,7 @@ class NormalAgentExecutor:
     def __init__(self, *, host, journal_root, clock, stop_requested=lambda: False,
                  news_reader=None, historical_reader=None, news_producer=None, max_requests=20,
                  timeout_seconds=3600, enable_source_access=False, pilot_agent_id=None,
-                 enable_companion_channels=False):
+                 enable_companion_channels=False, enable_ticket_product_contract=False):
         require(callable(host) and callable(clock), 'EXPLICIT_HOST_AND_CLOCK_REQUIRED')
         require(type(timeout_seconds) is int and 0 < timeout_seconds <= 3600,
                 'FINITE_NORMAL_AGENT_DEADLINE_REQUIRED')
@@ -81,6 +82,8 @@ class NormalAgentExecutor:
         self.pilot_agent_id = pilot_agent_id
         require(type(enable_companion_channels) is bool, 'EXPLICIT_COMPANION_MODE_REQUIRED')
         self.enable_companion_channels = enable_companion_channels
+        require(type(enable_ticket_product_contract) is bool, 'EXPLICIT_TICKET_PRODUCT_MODE_REQUIRED')
+        self.enable_ticket_product_contract = enable_ticket_product_contract
 
     @staticmethod
     def _stage_source_access(journal, snapshot):
@@ -260,6 +263,10 @@ class NormalAgentExecutor:
                     'source_view_sha256': historical_view['source_view_sha256'],
                     'admitted_record_count': len(historical_view['records']),
                     'physical_source_validation': 'NOT_PERFORMED', 'profit_or_PIT_claim': False}}}
+        if self.enable_ticket_product_contract:
+            from goal_analysis.ticket_product_policy import product_contract
+
+            report['ticket_product_contract'] = product_contract()
         journal = DecisionJournal(self.journal_root / run_id, snapshot)
         journal.write_once('shared-data.json', snapshot.data())
         journal.write_once('descriptive-history-input.json', historical_view)

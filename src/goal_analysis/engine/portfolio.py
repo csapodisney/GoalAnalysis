@@ -226,8 +226,24 @@ def _core_trace(raw, available, ranked, selected, rejected, universe_info, now, 
     }
 
 
-def _effective_core_contract(profile, settings, *, fallback=False):
+def _effective_core_contract(profile, settings, *, fallback=False, ticket_product_contract=None):
     result = contract_metadata(profile)
+    if ticket_product_contract is not None:
+        from goal_analysis.ticket_product_policy import core_limits, validate_contract
+
+        validate_contract(ticket_product_contract)
+        if not current_contract(settings) or fallback or profile == 'daily223':
+            raise ValueError('EXPLICIT_CURRENT_OWNER_PRODUCT_POLICY_REQUIRED')
+        limits = core_limits(profile)
+        result.update(minimum_combined_price=limits['min'], maximum_combined_price=limits['max'],
+                      minimum_legs=limits['minimum_legs'], maximum_legs=limits['maximum_legs'],
+                      operating_contract_version=OPERATING_CONTRACT_VERSION,
+                      ticket_product_contract=deepcopy(ticket_product_contract))
+        result.setdefault('selection_mode', 'PROFILE_ACCUMULATOR')
+        if 'construction_contract' in result:
+            result['construction_contract'].update(min_price=limits['min'], max_price=limits['max'],
+                                                   ticket_product_contract=deepcopy(ticket_product_contract))
+        return result
     if not current_contract(settings) or profile == "daily223":
         return result
     minimum = EXCEPTIONAL_MIN_ODDS if fallback else TARGET_MIN_ODDS
@@ -592,12 +608,14 @@ def _bookmaker_rank(bookmaker: str, preferred: list[str]) -> int:
 
 def _ticket(
     profile: str, legs: list[dict], target: str, observed: str, settings: dict, review: dict | None,
-    *, quality_first: bool = False,
+    *, quality_first: bool = False, ticket_product_contract=None,
 ) -> dict:
     quality_first = quality_first and profile != "daily223"
     current = current_contract(settings)
-    exceptional = current and quality_first and profile == "orszem" and _product(legs) < TARGET_MIN_ODDS
-    metadata = _effective_core_contract(profile, settings, fallback=exceptional)
+    exceptional = (ticket_product_contract is None and current and quality_first
+                   and profile == "orszem" and _product(legs) < TARGET_MIN_ODDS)
+    metadata = _effective_core_contract(profile, settings, fallback=exceptional,
+                                        ticket_product_contract=ticket_product_contract)
     records = {item.get("candidate_id"): item for item in (review or {}).get("reviews", [])}
     successful = (review or {}).get("status") == "COMPLETE"
     reviewed = successful and all(leg["candidate_id"] in records for leg in legs)
@@ -637,6 +655,9 @@ def _ticket(
             or len(legs) == 1
         ))
     )
+    if ticket_product_contract is not None:
+        # Preferred odds are not a fallback or quality defect under the explicit new policy.
+        fallback = False
     if fallback:
         warnings.append(
             "Tartalék kutatási összeállítás: nincs megfelelő önálló profilajánlat; a ténylegesen elérhető választás szerepel rajta."

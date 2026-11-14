@@ -18,6 +18,11 @@ from goal_analysis.operating_policy import (
     current_contract,
 )
 from goal_analysis.team.metrics import _quote_valid
+from goal_analysis.ticket_product_policy import (
+    bound_product_contract,
+    preferred_label,
+    product_failure,
+)
 from goal_analysis.tipsters.catalog import CATALOG_VERSION, TIPSTER_BY_ID
 from goal_analysis.tipsters.recommendations import PRODUCTS, _contrarian_analysis
 
@@ -163,6 +168,14 @@ def _own_shape(card, cutoff):
 
 
 def _invalid(card, report, cutoff):
+    try:
+        policy = bound_product_contract(card, report)
+        if policy is not None:
+            failure = product_failure(card, own_persona=TIPSTER_BY_ID.get(card.get('profile_id')))
+            if failure:
+                return failure
+    except (KeyError, TypeError, ValueError):
+        return 'INVALID_TICKET_PRODUCT_CONTRACT'
     if card.get('profile_id') not in PROFILE_IDS:
         return 'UNKNOWN_PROFILE'
     if card.get('status') not in STATUSES or card.get('construction_verified') is False:
@@ -205,7 +218,7 @@ def _invalid(card, report, cutoff):
                            for price, floor in zip(prices, (2, 2, 3)))
                     or product + 1e-12 < 12 * (1 - tolerance)):
                 return 'DAILY223_CONSTRUCTION_INVALID'
-        elif not (15 <= product <= 40 or 5 <= product < 15 and _fallback(card)):
+        elif policy is None and not (15 <= product <= 40 or 5 <= product < 15 and _fallback(card)):
             return 'OUTSIDE_OWN_APPROVED_ODDS_RANGE'
         if not _own_shape(card, cutoff):
             return 'OWN_STRATEGY_CONSTRUCTION_INVALID'
@@ -235,6 +248,13 @@ def _exact_ready(card, report):
 
 def _materialize(card, source_group, report, plan):
     result = deepcopy(card)
+    policy = bound_product_contract(card, report)
+    if policy is not None:
+        failure = product_failure(card, own_persona=TIPSTER_BY_ID.get(card.get('profile_id')))
+        if failure is not None:
+            raise ValueError(failure)
+        result['ticket_product_contract'] = policy
+        result['preferred_price_status'] = preferred_label(card['combined_price'])
     source_status = card['status']
     result['status'] = 'READY' if _exact_ready(card, report) else 'DRAFT'
     profile = card['profile_id']

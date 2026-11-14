@@ -25,7 +25,7 @@ from goal_analysis.config.portfolio import load_settings, save_settings, validat
 from goal_analysis.jobs.league_scope import MINIMUM_PENDING_FIXTURES
 from goal_analysis.jobs.nightly import automation_snapshot
 from goal_analysis.jobs.portfolio import RunLock, safe_error, validate_target_day
-from goal_analysis.operating_policy import current_contract, effective_persona
+from goal_analysis.operating_policy import effective_persona
 from goal_analysis.quote_metadata import quote_metadata
 from goal_analysis.storage.portfolio_ledger import PortfolioLedger
 from goal_analysis.strategy_provenance import APPLICATION_VERSION
@@ -236,12 +236,18 @@ def german_ticket_text(snapshot: dict) -> str:
 
 class ArthurState:
     def __init__(
-        self, root: Path, config_path: Path | None = None, settings_path: Path | None = None
+        self, root: Path, config_path: Path | None = None, settings_path: Path | None = None,
+        *, workshop_service=None
     ):
         self.root = root.resolve()
         self.config_path = (config_path or self.root / "config/daily223-live.json").resolve()
         self.settings_path = (settings_path or self.root / "config/arthur-settings.json").resolve()
         self.ledger = PortfolioLedger(self.root / "data/arthur/ledger.sqlite3")
+        from goal_analysis.workshop_service import production_workshop
+
+        self.workshop = workshop_service or production_workshop(self.root, self.settings_path,
+            route_capabilities={'team_status': True, 'settings_mutation': True,
+                'financial_recording': True, 'result_refresh': True})
         self.lock = threading.Lock()
         self.competition_cache = {}
         self.source_health_cache = {}
@@ -606,75 +612,23 @@ class ArthurState:
         return result
 
     def start(self, operation: str, payload: dict) -> dict:
-        if operation not in {"run", "settle", "check-openai"}:
+        if operation == "run":
+            return self.workshop.start(payload)
+        if operation not in {"settle", "check-openai"}:
             raise ValueError("Ismeretlen művelet.")
-        settings = load_settings(self.settings_path)
-        day = date.fromisoformat(
-            payload.get("date") or datetime.now(ZoneInfo("Europe/Berlin")).date().isoformat()
-        )
-        if operation == "run":
-            validate_target_day(day, datetime.now(UTC))
-            overrides = {
-                name: payload[name]
-                for name in ("strictness", "target_ticket_count")
-                if name in payload
-            }
-            settings = validate_settings({**settings, **overrides})
-            manual_research = payload.get("manual_research", False)
-            if type(manual_research) is not bool:
-                raise ValueError("manual_research: logikai érték szükséges.")
-            selected = payload.get("competition_ids") if (
-                manual_research or not current_contract(settings)
-            ) else None
-            if manual_research and selected is None:
-                raise ValueError("A kézi kutatáshoz válassz 1–40 különböző sorozatot.")
-            if selected is not None and (
-                not isinstance(selected, list)
-                or not 1 <= len(selected) <= 40
-                or any(type(item) is not int or item <= 0 for item in selected)
-                or len(set(selected)) != len(selected)
-            ):
-                raise ValueError("Válassz 1–40 különböző sorozatot az adott nap kínálatából.")
-        command = [
-            sys.executable,
-            str(self.root / "scripts/run-arthur.py"),
-            "--config",
-            str(self.config_path),
-            "--settings",
-            str(self.settings_path),
-        ]
-        if operation == "run":
-            command += [
-                "--live",
-                "--settle",
-                "--date",
-                day.isoformat(),
-                "--strictness",
-                str(settings["strictness"]),
-                "--ticket-count",
-                str(settings["target_ticket_count"]),
-            ]
-            if selected is not None:
-                command += ["--competition-ids", ",".join(map(str, selected))]
-        elif operation == "settle":
-            command += ["--settle"]
-        else:
-            command += ["--check-openai"]
+        # Explicit legacy maintenance operations remain separate from generation.
+        command = [sys.executable, str(self.root / "scripts/run-arthur.py"),
+                   "--config", str(self.config_path), "--settings", str(self.settings_path),
+                   "--settle" if operation == "settle" else "--check-openai"]
         with self.lock:
             if self.runtime["running"]:
                 raise RuntimeError("Már fut egy Arthur-feladat.")
-            self.runtime.update(
-                running=True,
-                operation=operation,
-                last_output="A feladat elindult.",
-                last_exit_code=None,
-                last_started_at=datetime.now(UTC).isoformat(),
-                last_finished_at=None,
-            )
-        threading.Thread(
-            target=self._execute, args=(command,), name=f"arthur-{operation}", daemon=True
-        ).start()
-        return {"started": True, "operation": operation, "date": day.isoformat()}
+            self.runtime.update(running=True, operation=operation,
+                last_output="A feladat elindult.", last_exit_code=None,
+                last_started_at=datetime.now(UTC).isoformat(), last_finished_at=None)
+        threading.Thread(target=self._execute, args=(command,),
+                         name=f"arthur-{operation}", daemon=True).start()
+        return {"started": True, "operation": operation}
 
     def _execute(self, command):
         try:
@@ -820,6 +774,38 @@ def make_handler(state: ArthurState, token: str):
                     return self._send(
                         (Path(__file__).parent / "web" / name).read_bytes(), media=media
                     )
+                if parsed.path == "/api/workshop":
+                    return self._send(state.workshop.view(query.get("date", [None])[0]))
+                if parsed.path == "/api/schedule":
+                    return self._send(state.workshop.store.schedule(state.workshop.clock()))
+                if parsed.path.startswith("/api/jobs/by-request/"):
+                    return self._send(state.workshop.store.by_request(parsed.path.rsplit("/", 1)[-1]))
+                if parsed.path.startswith("/api/jobs/"):
+                    return self._send(state.workshop.store.get(parsed.path.rsplit("/", 1)[-1]))
+                if parsed.path in {"/api/cards", "/api/calendar", "/api/evidence"}:
+                    if any(len(values) != 1 for values in query.values()):
+                        raise ValueError("Egyértelmű lekérdezési mezők szükségesek.")
+                    run_id = query.get("run_id", [None])[0]
+                    offset = int(query.get("offset", ["0"])[0])
+                    default_limit = "10" if parsed.path == "/api/cards" else "100" if parsed.path == "/api/calendar" else "25"
+                    limit = int(query.get("limit", [default_limit])[0])
+                    if parsed.path == "/api/cards":
+                        return self._send(state.workshop.cards(run_id, offset, limit))
+                    if parsed.path == "/api/calendar":
+                        return self._send(state.workshop.calendar(run_id, offset, limit))
+                    return self._send(state.workshop.evidence(run_id,
+                        query.get("family", [None])[0], query.get("fixture_id", [None])[0], offset, limit))
+                if parsed.path == "/api/ledger-tickets":
+                    if set(query) - {"date", "offset", "limit"} or any(len(value) != 1 for value in query.values()):
+                        raise ValueError("Exact ledger page fields required.")
+                    return self._send(state.workshop.ledger_tickets(query.get("date", [None])[0],
+                        int(query.get("offset", ["0"])[0]), int(query.get("limit", ["25"])[0])))
+                if parsed.path == "/api/evidence/export":
+                    if set(query) != {"run_id", "family"} or any(len(value) != 1 for value in query.values()):
+                        raise ValueError("Exact saved family export required.")
+                    family = query["family"][0]
+                    return self._send(state.workshop.export_family(query["run_id"][0], family),
+                        download="arthur-saved-family.json")
                 if parsed.path == "/api/status":
                     return self._send(state.snapshot(query.get("date", [None])[0], full_export=False))
                 if parsed.path == "/api/tickets.txt":
@@ -879,6 +865,8 @@ def make_handler(state: ArthurState, token: str):
                     }
                     return self._send(payload, download=f"Arthur-{snapshot['selected_date']}.json")
                 return self._send({"error": "Nincs ilyen oldal."}, 404)
+            except KeyError as error:
+                return self._send({"error": safe_error(error), "retryable": False}, 404)
             except (ValueError, TypeError) as error:
                 return self._send({"error": safe_error(error)}, 400)
             except Exception as error:  # noqa: BLE001 - HTTP boundary must not expose tracebacks.
@@ -912,6 +900,8 @@ def make_handler(state: ArthurState, token: str):
                 if not isinstance(payload, dict):
                     raise TypeError("JSON-objektum szükséges.")
                 path = urlsplit(self.path).path
+                if path == "/api/schedule":
+                    return self._send(state.workshop.update_schedule(payload))
                 if path == "/api/settings":
                     return self._send({"settings": state.update_settings(payload)})
                 if path in {"/api/run", "/api/settle", "/api/check-openai"}:

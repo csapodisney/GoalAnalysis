@@ -109,6 +109,9 @@ class ProfileToolService:
         require(tuple(identifiers(payload['own_option_ids'])) == option_ids
                 and payload['option_hash'] == digest(options), 'STALE_TOOL_OPTIONS')
         for option in options:
+            from goal_analysis.ticket_product_policy import validate_option_product
+
+            validate_option_product(option)
             require(option.get('agent_id') == payload['agent_id']
                     and isinstance(option.get('legs'), list) and bool(option['legs']),
                     'FOREIGN_OR_EMPTY_OPTION')

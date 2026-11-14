@@ -82,6 +82,16 @@ def _owner_evidence(owner, snapshot, shared):
     require(owner.get('status') == 'DECISION_COMPLETED', 'OWNER_DECISION_INCOMPLETE')
     evidence = owner.get('decision_evidence')
     require(isinstance(evidence, dict), 'OWN_REQUEST_REPLY_ENVELOPE_NOT_SAVED')
+    product_policy = shared.get('ticket_product_contract')
+    if product_policy is not None:
+        from goal_analysis.ticket_product_policy import report_contract, validate_option_product
+
+        auxiliary = evidence['plan_auxiliary_inputs']['values']['own_construction_contract']
+        require(report_contract(auxiliary) == product_policy, 'OWN_PLAN_PRODUCT_CONTRACT_CHANGED')
+        for option in evidence['validated_own_options']:
+            require(report_contract(option['canonical_card']) == product_policy,
+                    'SAVED_OPTION_PRODUCT_CONTRACT_CHANGED')
+            validate_option_product(option)
     coverage_projection = evidence.get('coverage_request_projection')
     require(coverage_projection in {None, NEWS_COVERAGE_REQUEST_PROJECTION}, 'UNKNOWN_NEWS_COVERAGE_PROJECTION')
     projection = evidence.get('final_request_projection')
@@ -388,6 +398,9 @@ def build_ten_agent_ticket_evidence(report, artifacts):
         source_context = _source_context(data)
         result['snapshot_binding'] = {'status': 'SAVED_SNAPSHOT_BOUND', 'snapshot_id': snapshot.snapshot_id,
             'view_sha256': view_hash, 'fixture_count': len(data['fixture_ids'])}
+        from goal_analysis.ticket_product_policy import report_contract
+
+        shared['ticket_product_contract'] = report_contract(report)
         for owner_index, owner in enumerate(owners):
             try:
                 result['owner_checks'][owner['agent_id']] = _owner_evidence(owner, snapshot, shared)

@@ -95,6 +95,9 @@ def set_options(state: ProfileState, snapshot: SharedSnapshot, options: list[dic
     require(isinstance(options, list) and all(isinstance(row, dict) for row in options), 'OWN_OPTIONS_REQUIRED')
     identifiers([row.get('option_id') for row in options])
     for option in options:
+        from goal_analysis.ticket_product_policy import validate_option_product
+
+        validate_option_product(option)
         require(option.get('agent_id') == state.agent_id and isinstance(option.get('legs'), list)
                 and bool(option['legs']), 'FOREIGN_OR_EMPTY_OPTION')
         for leg in option['legs']:

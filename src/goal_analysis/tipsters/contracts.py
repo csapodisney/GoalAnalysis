@@ -30,8 +30,17 @@ def valid_construction(ticket, now=None):
     quoted = ticket.get("combined_price")
     if type(quoted) not in (int, float) or not math.isclose(total, quoted, rel_tol=1e-10):
         return False
+    policy = ticket.get('ticket_product_contract')
+    if 'ticket_product_contract' in ticket:
+        from goal_analysis.ticket_product_policy import product_failure, validate_contract
+
+        try:
+            if policy is None or not validate_contract(policy) or product_failure(ticket, own_persona=persona):
+                return False
+        except (KeyError, TypeError, ValueError):
+            return False
     band = persona["target_odds_band"]
-    if version == 2:
+    if version == 2 and policy is None:
         band = {"min": TARGET_MIN_ODDS, "max": TARGET_MAX_ODDS}
         diagnostics = ticket.get("selection_diagnostics")
         proof = diagnostics.get("odds_exception") if isinstance(diagnostics, dict) else None
@@ -55,7 +64,7 @@ def valid_construction(ticket, now=None):
         proof = verified_veto_override(original, now=now)
         exceptional = "HIGH_ODDS" in (proof or {}).get("gates", [])
     if not exceptional and not (persona["min_legs"] <= len(legs) <= persona["max_legs"]
-                               and band["min"] <= total <= band["max"]):
+                               and (policy is not None or band["min"] <= total <= band["max"])):
         return False
     fixtures = [leg.get("fixture_id") for leg in legs]
     cohorts = {(leg.get("bookmaker"), leg.get("region"), leg.get("currency")) for leg in legs}

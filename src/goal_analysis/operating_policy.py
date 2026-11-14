@@ -72,11 +72,18 @@ def effective_persona(
     settings: Mapping,
     *,
     cautious_fallback: bool = False,
+    ticket_product_contract=None,
 ) -> dict:
     """Apply current odds policy without changing a character's model maths."""
     if type(cautious_fallback) is not bool:
         raise ValueError("Fallback selection must be explicit")
     result = deepcopy(dict(persona))
+    if ticket_product_contract is not None:
+        from goal_analysis.ticket_product_policy import persona_contract
+
+        if not current_contract(settings) or cautious_fallback or result['profile_id'] == 'daily223':
+            raise ValueError('New ticket product contract is only for explicit current owner personas')
+        return persona_contract(result, ticket_product_contract)
     if not current_contract(settings):
         if cautious_fallback:
             raise ValueError("Current cautious fallback is unavailable in legacy replay")

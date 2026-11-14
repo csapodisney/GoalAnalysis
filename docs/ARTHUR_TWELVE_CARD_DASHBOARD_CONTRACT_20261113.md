@@ -1,3 +1,6 @@
+> **Aktuális kötelező pontosítás (2026-11-14): 12 főszelvény; minimum10× összszorzó, legfeljebb6különmérkőzés, előnyben15–20×. Az új futásoknál nincs5×-ös kivétel és nincs globális15–40-es céltartomány. A20× nem kemény felsőkorlát; az egyes személyiségek saját kockázati korlátai megmaradnak.**
+> Teljes, lépésenkénti bevezetési terv: `artifacts/twelve-channel-production-integration-20261114/PLAN.md`. Új változatazonosítós termékszerződés; korábbi riportok és operating_v2 jelentés változatlan. Az alábbi régi odds-hivatkozások történeti tervezési állapotok, a fenti új szerződés felülírja őket.
+
 # Arthur: tíz agent, Daily 11., legacy 12.
 
 A 2026-11-13-i közvetlen emberi pontosítás a jelenlegi szerződés: „daily es a legacy lesznek a 11 es 12. szelveny”. Ez a korábbi tízes design kiegészítése, nem kész termék vagy éles működés igazolása.

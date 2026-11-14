@@ -28,6 +28,12 @@ from goal_analysis.operating_policy import (
     effective_persona,
 )
 from goal_analysis.team.metrics import _quote_valid
+from goal_analysis.ticket_product_policy import (
+    core_limits,
+    feasible_search_ceiling,
+    preference_key,
+    report_contract,
+)
 from goal_analysis.tipsters import recommendations as club
 from goal_analysis.tipsters.catalog import CATALOG_VERSION, TIPSTER_BY_ID
 
@@ -37,6 +43,7 @@ LOCAL_ADMISSION_REASONS = frozenset({
     'OWN_CORE_MARKET_OR_PRICE_RULE', 'OWN_PERSONA_MODEL_HISTORY_OR_PRODUCT_RULE',
     'CAUTIOUS_PRIMARY_ABSENCE_NOT_PROVEN', 'OUTSIDE_OWN_APPROVED_ODDS_RANGE',
     'OWN_STRATEGY_CONSTRUCTION_INVALID', 'MIXED_QUOTE_COHORT', 'DUPLICATE_SELECTED_FIXTURE',
+    'TICKET_PRODUCT_LEG_COUNT',
 })
 
 
@@ -188,7 +195,7 @@ def own_option_admission_partition(snapshot, owner, proposals, options, rejected
         'reason_validation': 'SOURCE_AND_PARTITION_BOUND_NOT_INDEPENDENT_GATE_REEXECUTION'}
 
 
-def _core_card(owner, selected, enriched, settings, now, receipt, universe):
+def _core_card(owner, selected, enriched, settings, now, receipt, universe, product_policy=None):
     raw = [row for row in enriched['candidates'] if isinstance(row, dict)]
     policy = Daily223Policy(**enriched.get('policy', {}))
     history = enriched.get('history_analysis')
@@ -199,7 +206,8 @@ def _core_card(owner, selected, enriched, settings, now, receipt, universe):
         settings, analyses, Counter(_product_key(row) for row in raw),
         Counter(row.get('candidate_id') for row in raw), universe, None)
     matching = [row for row in prepared if core._matches_profile(row, owner)
-                and row['decimal_price'] <= 40]
+                and (row['decimal_price'] <= (core_limits(owner)['max'] or math.inf)
+                     if product_policy is not None else row['decimal_price'] <= 40)]
     index = {row['candidate_id']: row for row in matching}
     missing = [key for key in selected if key not in index]
     if missing:
@@ -208,8 +216,9 @@ def _core_card(owner, selected, enriched, settings, now, receipt, universe):
                 rejected.get(key, 'OWN_MARKET_OR_PRODUCT_RULE') for key in missing))
         raise _ProductAdmissionRejected('OWN_CORE_MARKET_OR_PRICE_RULE')
     legs = [index[key] for key in selected]
-    card = core._ticket(owner, legs, enriched['date'], now.isoformat(), settings, None)
-    if math.prod(row['decimal_price'] for row in legs) < 15:
+    card = core._ticket(owner, legs, enriched['date'], now.isoformat(), settings, None,
+                        ticket_product_contract=product_policy)
+    if product_policy is None and math.prod(row['decimal_price'] for row in legs) < 15:
         full = core._core_universe({**enriched, 'calendar_scope_receipt': receipt,
                                    'calendar_universe': universe}, raw)[3]
         if not (cautious_fallback_allowed(owner, settings, [], all_daily_fixtures_considered=full)
@@ -223,8 +232,8 @@ def _core_card(owner, selected, enriched, settings, now, receipt, universe):
     return card
 
 
-def _club_card(owner, selected, enriched, settings, now, models):
-    persona = effective_persona(TIPSTER_BY_ID[owner], settings)
+def _club_card(owner, selected, enriched, settings, now, models, product_policy=None):
+    persona = effective_persona(TIPSTER_BY_ID[owner], settings, ticket_product_contract=product_policy)
     fixtures = club._fixtures(enriched.get('fixtures', []), enriched['date'], now)
     base, _ = club._pool(enriched, fixtures, club._models(models, fixtures, now), now)
     ranked = club._ranked(base, persona, now)
@@ -233,7 +242,7 @@ def _club_card(owner, selected, enriched, settings, now, models):
         row, enriched, enriched['date'], settings, now, persona=persona) is not None]
     fallback = None
     raw_selected = [row for row in enriched['candidates'] if row.get('candidate_id') in selected]
-    if math.prod(row['decimal_price'] for row in raw_selected) < 15:
+    if product_policy is None and math.prod(row['decimal_price'] for row in raw_selected) < 15:
         primary, _ = club._options(eligible, persona, enriched.get('preferred_bookmakers', []))
         full = club._full_day_input(enriched)[2]
         if not cautious_fallback_allowed(owner, settings, primary, all_daily_fixtures_considered=full):
@@ -291,9 +300,10 @@ def _full_candidate_catalog(candidate_input):
 def _own_construction_contract(owner, settings, report, now):
     """Describe existing gates before reasoning; never grant admission or select rows."""
     definition = get_agent_definition(owner)
-    cautious = owner in CAUTIOUS_PROFILE_IDS
+    product_policy = report_contract(report)
+    cautious = product_policy is None and owner in CAUTIOUS_PROFILE_IDS
     if owner in CORE_MARKETS:
-        primary = core._effective_core_contract(owner, settings)
+        primary = core._effective_core_contract(owner, settings, ticket_product_contract=product_policy)
         exceptional = core._effective_core_contract(owner, settings, fallback=True) if cautious else None
         market, selection, period = CORE_MARKETS[owner]
         products = [{'market_key': market, 'selection_key': choice, 'period': period}
@@ -307,7 +317,7 @@ def _own_construction_contract(owner, settings, report, now):
         fallback_odds = ({'min': exceptional['minimum_combined_price'],
                           'max': exceptional['maximum_combined_price']} if exceptional else None)
     else:
-        primary = effective_persona(TIPSTER_BY_ID[owner], settings)
+        primary = effective_persona(TIPSTER_BY_ID[owner], settings, ticket_product_contract=product_policy)
         exceptional = effective_persona(TIPSTER_BY_ID[owner], settings, cautious_fallback=True) if cautious else None
         policy = {'source': 'effective_persona(TIPSTER_BY_ID[owner], settings)',
                   'effective_policy': primary,
@@ -319,6 +329,9 @@ def _own_construction_contract(owner, settings, report, now):
         'version': 'own-complete-ticket-construction-v1', 'agent_id': owner,
         'method_version': definition.method_version, 'run_id': report['run_id'],
         'target_date': report['date'], 'source_as_of': now.isoformat(), 'settings_sha256': digest(settings),
+        **({'ticket_product_contract': deepcopy(product_policy),
+            'price_policy_instruction': 'Hard combined odds minimum 10; no global upper limit. At most six distinct fixtures. Prefer 15–20 without rejecting valid values outside it. Respect any original own-personality risk maximum. A lower-odds valid ticket needs no old cautious-absence proof. Never target arbitrary huge odds or add filler; compare evidence and risk.'}
+           if product_policy is not None else {}),
         'option_means': 'ONE_COMPLETE_ACCUMULATOR_NOT_ONE_RESEARCH_LEG',
         'instruction': 'For each option, select every leg of one complete ticket. Compute the product of its exact source decimal prices and satisfy this own construction policy before proposing it. Seek two or three genuinely distinct legal own tickets; never pad output or assume a rejected single leg will later be combined automatically.',
         'source_candidate_ids_mean': 'All legs of this ONE ticket, using exact original source candidate IDs.',
@@ -351,12 +364,14 @@ def _own_construction_contract(owner, settings, report, now):
         'own_policy': policy, 'candidate_filter_applied': False,
         'source_record_instruction': 'Read every complete original candidate record before proposing it. Check mandatory raw identity, quote, kickoff and own-policy metadata. An invalid or missing mandatory field makes that candidate ineligible: do not propose it or invent/backfill the field; continue considering other fixtures. A proposed invalid candidate can still stop this owner under the existing builder.',
         'missing_optional_data': 'Keep local UNKNOWN; do not fabricate neutral values or waive mandatory product rules.',
-        'admission_authority': 'UNCHANGED_EXISTING_PRODUCT_BUILDER_AND_CANONICAL_VALIDATION',
+        'admission_authority': ('EXPLICIT_VERSIONED_PRODUCT_POLICY_WITH_EXISTING_SOURCE_MODEL_AND_PUBLICATION_GATES'
+                                if product_policy is not None else
+                                'UNCHANGED_EXISTING_PRODUCT_BUILDER_AND_CANONICAL_VALIDATION'),
         'fallback_or_reselection_by_application': False, 'ready_or_profit_guarantee': False,
     }
 
 
-def _core_strategy_search(owner, source, settings, now, universe):
+def _core_strategy_search(owner, source, settings, now, universe, product_policy=None):
     """Existing own specialist search; bounded alternatives, never publication."""
     raw = source['candidates']
     require(isinstance(raw, list) and all(isinstance(row, dict) for row in raw),
@@ -370,24 +385,30 @@ def _core_strategy_search(owner, source, settings, now, universe):
         Counter(_product_key(row) for row in raw), Counter(row.get('candidate_id') for row in raw),
         universe, None)
     matching = [row for row in prepared if core._matches_profile(row, owner)
-                and row['decimal_price'] <= core.TARGET_MAX_ODDS]
+                and (row['decimal_price'] <= (core_limits(owner)['max'] or math.inf)
+                     if product_policy is not None else row['decimal_price'] <= core.TARGET_MAX_ODDS)]
     rejected.update({row['candidate_id']: 'PROFILE_MARKET_MISMATCH' for row in prepared
                      if not core._matches_profile(row, owner)})
     rejected.update({row['candidate_id']: 'LEG_PRICE_ABOVE_PROFILE_MAXIMUM' for row in prepared
-                     if core._matches_profile(row, owner) and row['decimal_price'] > core.TARGET_MAX_ODDS})
+                     if product_policy is None and core._matches_profile(row, owner)
+                     and row['decimal_price'] > core.TARGET_MAX_ODDS})
     groups = sorted({(row['bookmaker'], row['region'], row['currency']) for row in prepared})
-    contract = core._effective_core_contract(owner, settings)
+    contract = core._effective_core_contract(owner, settings, ticket_product_contract=product_policy)
     options = []
     for group in groups:
         scoped = [row for row in matching
                   if (row['bookmaker'], row['region'], row['currency']) == group]
-        options.extend(core._specialist_options(scoped, core.TARGET_MAX_ODDS,
-            minimum=core.TARGET_MIN_ODDS, min_legs=contract['minimum_legs'],
+        upper = (feasible_search_ceiling(scoped, contract['maximum_legs'])
+                 if product_policy is not None else core.TARGET_MAX_ODDS)
+        if product_policy is not None and contract['maximum_combined_price'] is not None:
+            upper = min(upper, contract['maximum_combined_price'])
+        options.extend(core._specialist_options(scoped, upper,
+            minimum=contract['minimum_combined_price'], min_legs=contract['minimum_legs'],
             max_legs=contract['maximum_legs']))
     full = core._core_universe(source, raw)
     fallback = {'status': 'PRIMARY_RANGE' if options else 'NOT_AUTHORIZED',
                 'primary_options_count': len(options), 'full_day_coverage': full[3], 'applied': False}
-    if cautious_fallback_allowed(owner, settings, options, all_daily_fixtures_considered=full[3]):
+    if product_policy is None and cautious_fallback_allowed(owner, settings, options, all_daily_fixtures_considered=full[3]):
         proven = core._primary_absence_proven(matching)
         fallback['primary_absence_proven'] = proven
         if proven:
@@ -401,7 +422,8 @@ def _core_strategy_search(owner, source, settings, now, universe):
             fallback['reason'] = 'PRIMARY_SEARCH_COMPLETENESS_NOT_PROVEN'
     preferred = source.get('preferred_bookmakers', ['betano'])
     def rank(legs):
-        return (*core._specialist_rank(legs)[:3], core._bookmaker_rank(legs[0]['bookmaker'], preferred),
+        preference = preference_key(float(core._product(legs))) if product_policy is not None else ()
+        return (*preference, *core._specialist_rank(legs)[:3], core._bookmaker_rank(legs[0]['bookmaker'], preferred),
                 len(legs), -core._product(legs), core._specialist_rank(legs)[-1])
     options.sort(key=rank)
     options = [legs for legs in options if len(legs) == 1] + core._bounded_specialist_combinations(options)
@@ -414,15 +436,19 @@ def _core_strategy_search(owner, source, settings, now, universe):
         'quality_warnings': [warning for row in legs for warning in row.get('quality_warnings', [])]}
         for legs in options], 'diagnostics': trace, 'odds_exception': fallback,
         'search_method': 'EXISTING_OWN_SPECIALIST_BOUNDED_DIVERSIFIED_BEAM',
-        'source_producer': 'engine.portfolio._core_pool/_specialist_options/_specialist_rank'}
+        'source_producer': 'engine.portfolio._core_pool/_specialist_options/_specialist_rank',
+        **({'ticket_product_contract': deepcopy(product_policy),
+            'search_upper_bound': 'INPUT_DERIVED_MAX_SIX_DISTINCT_FIXTURE_PRODUCT_NOT_ADMISSION_LIMIT'}
+           if product_policy is not None else {})}
 
 
-def _club_strategy_search(owner, source, settings, now, models):
+def _club_strategy_search(owner, source, settings, now, models, product_policy=None):
     """Existing own persona alternatives, with no report or automatic choice published."""
     own_settings = {**deepcopy(settings), 'enabled_profiles': [owner]}
     alternatives = {}
     results = club.build_tipster_recommendations(source, models, own_settings, now,
-        diversity_options=alternatives, support_guard_mode='LIVE', option_search_mode='OFF')
+        diversity_options=alternatives, support_guard_mode='LIVE', option_search_mode='OFF',
+        ticket_product_contract=product_policy)
     own = [row for row in results if row.get('profile_id') == owner]
     require(len(own) == 1 and set(alternatives) <= {owner}, 'EXACT_OWN_PERSONA_SEARCH_REQUIRED')
     rows = []
@@ -454,6 +480,7 @@ def build_agent_option_builder(report, artifacts, enriched, club_enriched, setti
     require(current_contract(settings), 'CURRENT_OPERATING_CONTRACT_REQUIRED')
     report, artifacts, enriched, club_enriched = deepcopy((report, artifacts, enriched, club_enriched))
     settings = core._settings(deepcopy(settings))
+    product_policy = report_contract(report)
     catalogue_json = json.dumps(_full_candidate_catalog(artifacts.get('candidate_input', {})),
                                 sort_keys=True, ensure_ascii=False, allow_nan=False)
     construction_contracts = {owner: json.dumps(
@@ -502,13 +529,15 @@ def build_agent_option_builder(report, artifacts, enriched, club_enriched, setti
         source = {**source, 'date': report['date'], 'fixtures': universe,
                   'calendar_universe': universe, 'calendar_scope_receipt': receipt}
         try:
-            card = (_core_card(owner, selected, source, settings, now, receipt, universe)
+            card = (_core_card(owner, selected, source, settings, now, receipt, universe, product_policy)
                     if owner in CORE_MARKETS else
-                    _club_card(owner, selected, source, settings, now, admitted_models))
+                    _club_card(owner, selected, source, settings, now, admitted_models, product_policy))
         except _ProductAdmissionRejected as error:
             raise OwnOptionAdmissionRejected({**admission_binding, 'reason': str(error)}) from error
         card.update(status='DRAFT', publication_scope='RESEARCH', playable=False, stake_eur=None,
                     real_wager_placed=False, construction_verified=True)
+        if product_policy is not None:
+            card['ticket_product_contract'] = deepcopy(product_policy)
         card.setdefault('reasoning', []).append(proposal['reason'])
         card['agent_product_binding'] = {'version': VERSION, 'snapshot_id': snapshot.snapshot_id,
             'agent_id': owner, 'option_id': proposal['option_id'],
@@ -517,7 +546,7 @@ def build_agent_option_builder(report, artifacts, enriched, club_enriched, setti
             'physical_authentication': 'NOT_PERFORMED_BY_PURE_BRIDGE'}
         failure = _invalid(card, report, now)
         if failure in {'OUTSIDE_OWN_APPROVED_ODDS_RANGE', 'OWN_STRATEGY_CONSTRUCTION_INVALID',
-                       'MIXED_QUOTE_COHORT', 'DUPLICATE_OR_INVALID_FIXTURE'}:
+                       'MIXED_QUOTE_COHORT', 'DUPLICATE_OR_INVALID_FIXTURE', 'TICKET_PRODUCT_LEG_COUNT'}:
             reason = 'DUPLICATE_SELECTED_FIXTURE' if failure == 'DUPLICATE_OR_INVALID_FIXTURE' else failure
             raise OwnOptionAdmissionRejected({**admission_binding, 'reason': reason})
         require(failure is None, 'CANONICAL_PRODUCT_REJECTED:' + str(failure))
@@ -561,9 +590,9 @@ def build_agent_option_builder(report, artifacts, enriched, club_enriched, setti
             'search_data_usage': 'EXISTING_DECLARED_SCORE_TERMS_AND_GATES_NOT_ALL_FAMILY_CAUSAL_USE',
             'actual_host_tool_invocation': False, 'transport_binding': 'RUNNER_PRECOMPUTED_OWN_PLAN_CONTEXT_NOT_MCP_TOOL'}
         try:
-            produced = (_core_strategy_search(owner, source, settings, now, universe)
+            produced = (_core_strategy_search(owner, source, settings, now, universe, product_policy)
                         if owner in CORE_MARKETS else
-                        _club_strategy_search(owner, source, settings, now, admitted_models))
+                        _club_strategy_search(owner, source, settings, now, admitted_models, product_policy))
             result.update(produced)
             for row in result['alternatives']:
                 chosen = identifiers(row['source_candidate_ids'])
