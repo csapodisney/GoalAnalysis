@@ -96,7 +96,8 @@ class ProfileToolService:
                 'FOREIGN_OWNER_OR_SNAPSHOT')
         require(payload['request_id'] == digest({key: value for key, value in payload.items()
                                                 if key != 'request_id'}), 'TOOL_REQUEST_HASH_MISMATCH')
-        require(payload['method_version'] == get_agent_definition(payload['agent_id']).method_version,
+        require(payload['method_version'] == get_agent_definition(
+            payload['agent_id'], decision_group=self._data.get('decision_group', 'CORE_TEN')).method_version,
                 'UNBOUND_TOOL_METHOD_VERSION')
         require(payload['role'] in SIMULATOR_ROLES and isinstance(payload['parameters'], dict)
                 and not set(payload['parameters']) - {'window', 'policy_hash'},

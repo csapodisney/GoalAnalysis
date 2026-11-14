@@ -19,6 +19,10 @@
     return ["year", "month", "day"].map(key => parts.find(part => part.type === key).value).join("-");
   };
   const AGENTS = ["kronikas", "ritmusor", "parharcmester", "orszem", "merlin", "tipster_archiv_nora", "tipster_forma_soma", "tipster_ertek_milan", "tipster_szines_reka", "tipster_fek_tade"];
+  const PAIR_AGENTS = ["daily_portfolio", "legacy_daily223"];
+  const ALL_AGENT_IDS = [...AGENTS, ...PAIR_AGENTS];
+  const independentPair = () => state.workshop?.capacity?.version === "TWELVE_INDEPENDENT_AGENT_SLOTS_V2";
+  const visibleAgentIds = () => independentPair() ? ALL_AGENT_IDS : AGENTS;
   const FAMILIES = {
     calendar: "Teljes napi naptár", retained_history: "Historikus meccsadatok", odds_and_price_history: "Szorzók és ártörténet",
     team_stats_xg: "Csapatstatisztika és xG", players_squad_xi: "Játékosok, keret, kezdőcsapat", schedule_venue_pitch: "Program, stadion, pálya",
@@ -35,8 +39,8 @@
     DISABLED: "Kikapcsolva", ENABLED: "Bekapcsolva", PASS: "Ellenőrizve", VERIFIED: "Ellenőrizve", NOT_AVAILABLE: "Nem elérhető", LEGACY_REPORT: "Történeti riport"
   };
   const VIEW = {
-    workshop: ["Napi műhely", "TÍZ AGENT · EGY TELJES FUTBALLNAP", "A nap kínálata, a saját döntések és az elkészült szelvények egy helyen."],
-    agents: ["Tíz külön gondolkodásmód", "AZ AGENTEK", "Saját választási út, közös adatbázis és mindenkinél látható döntési állapot."],
+    workshop: ["Napi műhely", "TIZENKÉT AGENT · EGY TELJES FUTBALLNAP", "A nap kínálata, a saját döntések és az elkészült szelvények egy helyen."],
+    agents: ["Tizenkét külön gondolkodásmód", "AZ AGENTEK", "Saját választási út, közös adatbázis és mindenkinél látható döntési állapot."],
     results: ["Eredmények és pénzügy", "A MEGŐRZÖTT EREDMÉNYEK", "A tényleges megjátszás, a papíreredmény és az ismeretlen költség külön mérhető."],
     data: ["Adatok és ellenőrzés", "A DÖNTÉS MÖGÖTT", "Teljes meccsnaptár, adatlefedettség és visszakereshető bizonyíték."],
     operations: ["A műhely működése", "KÉZI ÉS REGGELI INDÍTÁS", "Egyszeri, felügyelt futások. Az állapot a mentett eredményből származik."]
@@ -130,7 +134,7 @@
       state.connected = false; $("connection-dot").className = "connection-dot offline"; set("connection-label", "Állapot nem ellenőrizhető");
       set("connection-error", error.status === 404 ? "Az új felület adatillesztése még nem érhető el. Nem indítunk régi generálási vagy adatfrissítési útvonalat." : `Az állapot nem frissült: ${error.message} A korábban betöltött adat nem tekinthető frissnek.`);
       $("connection-error").hidden = false; syncControls();
-      if (!state.workshop) { replace("cards", empty("A műhely állapotára várunk", "A mentett adatok betöltése után itt jelennek meg az eredeti szelvények.")); replace("agents", empty("A tízes registry még nem érkezett meg", "Nem pótoljuk kitalált agentekkel vagy korábbi profil-előnézettel.")); }
+      if (!state.workshop) { replace("cards", empty("A műhely állapotára várunk", "A mentett adatok betöltése után itt jelennek meg az eredeti szelvények.")); replace("agents", empty("Az agentek névjegyzéke még nem érkezett meg", "Nem pótoljuk kitalált agentekkel vagy korábbi profil-előnézettel.")); }
     }
   }
   function renderWorkshop() {
@@ -141,7 +145,7 @@
     const companionCount = count(amount) && count(capacity.agent_variant_count) && amount >= capacity.agent_variant_count
       ? amount - capacity.agent_variant_count : null;
     const historical = capacity.state === "HISTORICAL_TEN_OWNER_REPORT" && capacity.target_met === null;
-    const trustworthy = capacity.version === "TWELVE_MAIN_SLOTS_V1" && capacity.main_slot_count === 12 &&
+    const legacyTrustworthy = capacity.version === "TWELVE_MAIN_SLOTS_V1" && capacity.main_slot_count === 12 &&
       capacity.maximum_agent_variants === 30 && capacity.maximum_companion_tickets === 2 &&
       [amount, filled, capacity.filled_agent_owner_slots, capacity.filled_companion_slots, capacity.agent_variant_count, companionCount].every(count) &&
       capacity.filled_agent_owner_slots <= 10 && capacity.filled_companion_slots <= 2 &&
@@ -149,14 +153,27 @@
       capacity.agent_variant_count >= capacity.filled_agent_owner_slots && capacity.agent_variant_count <= capacity.filled_agent_owner_slots * 3 &&
       companionCount === capacity.filled_companion_slots &&
       amount === capacity.agent_variant_count + companionCount && capacity.target_met === (filled === 12);
+    const independent = independentPair(), ownerIds = arr(capacity.filled_agent_owner_ids);
+    const pairTrustworthy = independent && capacity.main_slot_count === 12 &&
+      capacity.maximum_agent_variants === 32 && capacity.maximum_companion_tickets === 0 &&
+      [amount, filled, capacity.filled_agent_owner_slots, capacity.filled_core_owner_slots, capacity.filled_pair_owner_slots].every(count) &&
+      ownerIds.length === new Set(ownerIds).size && ownerIds.every(id => ALL_AGENT_IDS.includes(id)) &&
+      filled === ownerIds.length && filled === capacity.filled_agent_owner_slots &&
+      capacity.filled_core_owner_slots === ownerIds.filter(id => AGENTS.includes(id)).length &&
+      capacity.filled_pair_owner_slots === ownerIds.filter(id => PAIR_AGENTS.includes(id)).length &&
+      capacity.filled_companion_slots === 0 && amount === capacity.agent_variant_count &&
+      amount >= filled && amount <= capacity.filled_core_owner_slots * 3 + capacity.filled_pair_owner_slots &&
+      arr(capacity.invalid_card_ids).length === 0 && arr(capacity.identity_issues).length === 0 &&
+      capacity.target_met === (filled === 12);
+    const trustworthy = independent ? pairTrustworthy : legacyTrustworthy;
     set("nav-count", count(amount) ? amount : "—"); set("card-count", count(amount) ? `${amount} mentett` : "számlálásra vár");
     $("minimum-note").className = `notice ${!run.run_id || historical ? "neutral" : trustworthy && filled === 12 ? "" : "warning"}`;
-    set("minimum-note", !run.run_id ? "Erre a napra még nincs mentett futás." : historical ? "Történeti tíz-agentes riport. A tizenkét főhely új szerződését nem alkalmazzuk visszamenőleg; a régi kártyák változatlanul megtekinthetők." : !trustworthy ? "A tizenkét főhely lefedettsége hiányos vagy ellentmondásos; a cél teljesülése nem igazolt." : filled < 12 ? `Kitöltött főhelyek: ${filled} / 12 · ${capacity.filled_agent_owner_slots} / 10 agent · ${capacity.filled_companion_slots} / 2 külön csatorna. ${amount} mentett szelvény; a további saját változatok nem pótolják az üres főhelyeket.` : `Mind a 12 főhelyhez van mentett szelvény · ${amount} szelvény a saját változatokkal. Az ellenőrzés és a kártyák DRAFT/READY állapota külön számít; ez nem profitígéret.`);
-    replace("overview", metric("Teljes napi naptár", number(calendar.fixture_count), "Szolgáltató által felsorolt mérkőzések"), metric("Árazott mérkőzések", number(calendar.priced_fixture_count), "A hiányzó ár nem tünteti el a naptár sorát"), metric("Kitöltött főhelyek", trustworthy ? `${filled} / 12` : "—", historical ? "Történeti tíz-agentes szerződés" : `${count(amount) ? amount : "—"} mentett szelvény · legfeljebb 30 agentváltozat és 2 külön companion`), metric("Befejezett döntések", count(capacity.completed_owner_count) ? `${capacity.completed_owner_count} / 10` : "—", `${number(capacity.abstained_owner_count)} tartózkodó · ${number(capacity.failed_owner_count)} hibás`));
+    set("minimum-note", !run.run_id ? "Erre a napra még nincs mentett futás." : historical ? "Történeti tíz-agentes riport. A tizenkét főhely új szerződését nem alkalmazzuk visszamenőleg; a régi kártyák változatlanul megtekinthetők." : !trustworthy ? "A tizenkét főhely lefedettsége hiányos vagy ellentmondásos; a cél teljesülése nem igazolt." : filled < 12 ? `Kitöltött főhelyek: ${filled} / 12 · ${capacity.filled_agent_owner_slots} / ${independent ? 12 : 10} agent${independent ? "" : ` · ${capacity.filled_companion_slots} / 2 külön csatorna`}. ${amount} mentett szelvény; a további saját változatok nem pótolják az üres főhelyeket.` : `Mind a 12 főhelyhez van mentett szelvény · ${amount} szelvény a saját változatokkal. Az ellenőrzés és a kártyák DRAFT/READY állapota külön számít; ez nem profitígéret.`);
+    replace("overview", metric("Teljes napi naptár", number(calendar.fixture_count), "Szolgáltató által felsorolt mérkőzések"), metric("Árazott mérkőzések", number(calendar.priced_fixture_count), "A hiányzó ár nem tünteti el a naptár sorát"), metric("Kitöltött főhelyek", trustworthy ? `${filled} / 12` : "—", historical ? "Történeti tíz-agentes szerződés" : `${count(amount) ? amount : "—"} mentett szelvény · ${independent ? "tizenkét önálló agent, legfeljebb 32 saját szelvény" : "legfeljebb 30 agentváltozat és 2 történeti külön csatorna"}`), metric("Befejezett döntések", count(capacity.completed_owner_count) ? `${capacity.completed_owner_count} / ${independent ? 12 : 10}` : "—", `${number(capacity.abstained_owner_count)} tartózkodó · ${number(capacity.failed_owner_count)} hibás`));
     const running = busyStates.has(operation.state); $("run-progress").hidden = !running;
     set("progress-heading", label(operation.state)); set("progress-detail", [text(operation.stage), reasons(run.reason_codes)].filter(Boolean).join(" · ") || "A következő mentett állapotra várunk; nem becsülünk készültségi százalékot.");
     replace("owner-progress", ...arr(data.agents).map(agent => append(node("div"), node("strong", "", agent.name || agent.agent_id), badge(ownerStatus(agent)))));
-    const selected = $("card-agent").value; replace("card-agent", option("", "Mind a tíz"), ...arr(data.agents).map(agent => option(agent.agent_id, agent.name || agent.agent_id))); $("card-agent").value = selected;
+    const selected = $("card-agent").value; replace("card-agent", option("", "Minden agent"), ...arr(data.agents).map(agent => option(agent.agent_id, agent.name || agent.agent_id))); $("card-agent").value = selected;
     $("export-json").href = `/api/export?date=${encodeURIComponent(state.date)}`; $("export-txt").href = `/api/tickets.txt?date=${encodeURIComponent(state.date)}`;
     set("date-note", state.date < berlinToday() ? "Történeti nap · eredeti mentett adatok" : state.date > berlinToday() ? "Előzetes nap · minden kezdés Berlin ideje szerint" : "Minden kezdés Berlin ideje szerint"); syncControls();
   }
@@ -166,8 +183,9 @@
     const data = state.workshop, flags = data?.capabilities, capacity = data?.capacity;
     if (typeof flags?.ledger_ticket_history === "boolean") return flags.ledger_ticket_history;
     return flags?.ledger_ticket_history === undefined && flags?.financial_recording === true &&
-      data?.schema_version === 1 && capacity?.version === "TWELVE_MAIN_SLOTS_V1" &&
-      capacity?.main_slot_count === 12 && capacity?.maximum_agent_variants === 30 && capacity?.maximum_companion_tickets === 2;
+      data?.schema_version === 1 && capacity?.main_slot_count === 12 &&
+      ((capacity?.version === "TWELVE_MAIN_SLOTS_V1" && capacity?.maximum_agent_variants === 30 && capacity?.maximum_companion_tickets === 2) ||
+       (capacity?.version === "TWELVE_INDEPENDENT_AGENT_SLOTS_V2" && capacity?.maximum_agent_variants === 32 && capacity?.maximum_companion_tickets === 0));
   }
   function syncControls() {
     const pending = state.pending; $("generate").disabled = !capability("manual_generation") || !!pending || state.date < berlinToday();
@@ -186,6 +204,11 @@
     if (data.next_offset !== null && (!count(data.next_offset) || data.next_offset !== offset + data.items.length || data.next_offset <= offset || data.next_offset >= data.total)) throw new Error("A következő lap azonosítója érvénytelen.");
     if (data.next_offset === null && offset + data.items.length !== data.total) throw new Error("A válasz nem számolja el a teljes mentett listát.");
   }
+  function hydrateCard(item) {
+    if (item.state_projection !== "CANONICAL_TICKET_PLUS_STATE_DELTA_V2") return item;
+    if (!item.ticket || !item.state || typeof item.state !== "object" || Array.isArray(item.state)) throw new Error("Érvénytelen szelvényállapot-vetület.");
+    return { ...item, state: { ...item.ticket, ...item.state } };
+  }
   async function loadCards(reset = false) {
     const runId = currentRun(); if (!runId || (!reset && state.cardsLoading)) return;
     const sequence = ++state.cardsSeq, epoch = state.epoch, offset = reset ? 0 : state.cardsNext;
@@ -197,7 +220,7 @@
       pagination(data, offset, runId);
       if (count(state.workshop.capacity?.generated_ticket_count) && data.total !== state.workshop.capacity.generated_ticket_count) throw new Error("A kanonikus kártyalista és a napi számlálás eltér.");
       if (state.workshop.run.report_sha256 && data.report_sha256 !== state.workshop.run.report_sha256) throw new Error("A kártyák másik riporthoz tartoznak; frissítsd az állapotot.");
-      const incoming = data.items.map(item => { const ticket = item.ticket; if (!ticket || typeof ticket.ticket_id !== "string" || (ticket.date !== undefined && ticket.date !== state.date) || (ticket.run_id !== undefined && ticket.run_id !== runId) || (ticket.agent_product_binding && ticket.agent_product_binding.run_id !== runId)) throw new Error("Hiányos vagy ellentmondásos kanonikus kártyaazonosság."); return item; });
+      const incoming = data.items.map(item => { const ticket = item.ticket; if (!ticket || typeof ticket.ticket_id !== "string" || (ticket.date !== undefined && ticket.date !== state.date) || (ticket.run_id !== undefined && ticket.run_id !== runId) || (ticket.agent_product_binding && ticket.agent_product_binding.run_id !== runId)) throw new Error("Hiányos vagy ellentmondásos kanonikus kártyaazonosság."); return hydrateCard(item); });
       const combined = reset ? incoming : [...state.cards, ...incoming];
       if (new Set(combined.map(item => item.ticket.ticket_id)).size !== combined.length) throw new Error("Ismétlődő szelvényazonosító érkezett; nem vonjuk össze a változatokat.");
       state.cards = combined; state.cardsRun = runId; state.cardsNext = data.next_offset; state.cardsTotal = data.total; renderCards();
@@ -219,12 +242,12 @@
     });
     const ordering = $("card-sort").value;
     if (ordering !== "original") rows = [...rows].sort((a, b) => ordering === "owner" ? ownerName(a.ticket.profile_id).localeCompare(ownerName(b.ticket.profile_id), "hu") : ordering === "kickoff" ? kickoffOf(a.ticket) - kickoffOf(b.ticket) : (finite(a.ticket.combined_price) ? a.ticket.combined_price : Infinity) - (finite(b.ticket.combined_price) ? b.ticket.combined_price : Infinity));
-    set("card-filter-note", `${rows.filter(item => AGENTS.includes(item.ticket.profile_id)).length} agentváltozat felel meg a szűrőnek · ${state.cards.length} összes betöltött / ${number(state.cardsTotal)} mentett. A szűrő csak az agentkártyák megjelenítését változtatja; a Daily és legacy külön alább szerepel.`);
+    set("card-filter-note", `${rows.filter(item => visibleAgentIds().includes(item.ticket.profile_id)).length} agentváltozat felel meg a szűrőnek · ${state.cards.length} összes betöltött / ${number(state.cardsTotal)} mentett. ${independentPair() ? "A szűrő mind a tizenkét önálló agent mentett kártyáira érvényes." : "A szűrő csak az agentkártyák megjelenítését változtatja; a Daily és legacy külön alább szerepel."}`);
     const ownerIndices = new Map(); state.cards.forEach(item => { const index = (ownerIndices.get(item.ticket.profile_id) || 0) + 1; ownerIndices.set(item.ticket.profile_id, index); item.displayIndex = index; });
     const agents = arr(state.workshop?.agents), groups = [];
-    AGENTS.filter(id => !owner || id === owner).forEach(id => {
+    visibleAgentIds().filter(id => !owner || id === owner).forEach(id => {
       const agent = agents.find(value => value.agent_id === id), own = rows.filter(item => item.ticket.profile_id === id), allOwn = state.cards.filter(item => item.ticket.profile_id === id), group = node("section", "owner-ticket-group");
-      group.append(node("p", "eyebrow", `${AGENTS.indexOf(id) + 1}. ${agent?.name || id}`));
+      group.append(node("p", "eyebrow", `${visibleAgentIds().indexOf(id) + 1}. ${agent?.name || id}`));
       if (own.length) {
         const primary = allOwn.find(item => own.includes(item)), variants = own.filter(item => item !== primary);
         group.append(ticketCard(primary));
@@ -239,6 +262,14 @@
     $("cards-more").hidden = state.cardsNext === null;
   }
   function renderCompanions(cards) {
+    $("companion-section").hidden = independentPair();
+    if (independentPair()) {
+      replace("companion-cards");
+      const unmapped = cards.filter(item => !ALL_AGENT_IDS.includes(item.ticket.profile_id));
+      $("unmapped-cards-section").hidden = unmapped.length === 0;
+      replace("unmapped-cards", ...unmapped.map(ticketCard));
+      return;
+    }
     const channels = arr(state.workshop?.companion_channels), assigned = new Set(), actual = new Map(cards.map(item => [item.ticket.ticket_id, item]));
     const allIds = channels.filter(channel => ["DAILY", "LEGACY"].includes(channel.role)).flatMap(channel => arr(channel.ticket_ids));
     const groups = [["DAILY", "11. Daily"], ["LEGACY", "12. Legacy"]].map(([role, title]) => {
@@ -289,7 +320,7 @@
   }
   function renderAgents() {
     const agents = arr(state.workshop?.agents);
-    if (agents.length !== 10 || new Set(agents.map(agent => agent.agent_id)).size !== 10 || agents.some(agent => !AGENTS.includes(agent.agent_id))) { replace("agents", empty("A tízes registry nem ellenőrizhető", "A névjegyzék hiányos vagy ellentmondásos. A történeti profilokat nem keverjük az aktív agentek közé.")); return; }
+    if (agents.length !== visibleAgentIds().length || new Set(agents.map(agent => agent.agent_id)).size !== visibleAgentIds().length || agents.some(agent => !visibleAgentIds().includes(agent.agent_id))) { replace("agents", empty("A mentett agentnévjegyzék nem ellenőrizhető", "A névjegyzék hiányos vagy ellentmondásos. A történeti profilokat nem keverjük az aktív agentek közé.")); return; }
     replace("agents", ...agents.map(agent => {
       const card = node("article", "agent-card"); card.append(append(node("header"), node("div", "owner-monogram", (agent.name || agent.agent_id).slice(0, 1)), append(node("div"), node("h3", "", agent.name || agent.agent_id), node("p", "", `Legfeljebb ${number(agent.max_variants)} saját változat`)), badge(ownerStatus(agent))));
       card.append(node("p", "agent-personality", text(agent.personality) || "A személyiségleírás nem érkezett meg."));
@@ -297,7 +328,7 @@
       const focus = node("div", "agent-focus"); arr(agent.focus_families).forEach(id => focus.append(badge("NEUTRAL", FAMILIES[id] || id))); card.append(focus);
       const steps = node("ol", "agent-steps"); arr(agent.selection_path).forEach(step => steps.append(node("li", "", text(step)))); card.append(append(node("details"), node("summary", "small", "A saját választási út"), steps));
       if (arr(agent.reason_codes).length) card.append(node("p", "small muted", reasons(agent.reason_codes)));
-      card.append(append(node("footer", "agent-footer"), node("span", "muted", `Csapatállapot: ${label(agent.team_status || "UNKNOWN")}`), button("Állapot módosítása", () => openTeamStatus(agent), "secondary small", !capability("team_status")))); return card;
+      card.append(append(node("footer", "agent-footer"), node("span", "muted", `Csapatállapot: ${label(agent.team_status || "UNKNOWN")}`), button(PAIR_AGENTS.includes(agent.agent_id) ? "Kézi csapatkapcsoló még nem elérhető" : "Állapot módosítása", () => openTeamStatus(agent), "secondary small", !capability("team_status") || PAIR_AGENTS.includes(agent.agent_id)))); return card;
     }));
   }
   function families() { const raw = state.workshop?.families; return Array.isArray(raw) ? raw : Object.entries(obj(raw)).map(([id, value]) => ({ ...obj(value), family_id: id })); }
@@ -416,9 +447,9 @@
   }
   function renderProfiles() {
     if (!state.performance) return; const mode = $("profile-scope").value, paper = state.performanceMode === "paper";
-    const profiles = arr(state.performance.by_profile).filter(profile => mode === "all" || (mode === "active" ? AGENTS.includes(profile.profile_id) : !AGENTS.includes(profile.profile_id)));
+    const profiles = arr(state.performance.by_profile).filter(profile => mode === "all" || (mode === "active" ? AGENTS.includes(profile.profile_id) : !ALL_AGENT_IDS.includes(profile.profile_id)));
     replace("profile-performance", ...(profiles.length ? [table(["Agent / eredeti profil", "Szelvény", "Nyert / vesztett", "Lezárt eredmény", "Hozam"], profiles.map(profile => {
-      const title = append(node("span"), node("span", "", profile.profile_name || ownerName(profile.profile_id)), !AGENTS.includes(profile.profile_id) ? append(node("small", "muted"), node("span", "", " · történeti profil")) : null);
+      const title = append(node("span"), node("span", "", profile.profile_name || ownerName(profile.profile_id)), !ALL_AGENT_IDS.includes(profile.profile_id) ? append(node("small", "muted"), node("span", "", " · történeti profil")) : null);
       return [title, number(paper ? profile.records : profile.tickets), `${number(profile.won)} / ${number(profile.lost)}`, money(paper ? profile.full_all_record_realized_net_eur : profile.net_eur), finite(paper ? profile.roi_pct : profile.yield_pct) ? `${number(paper ? profile.roi_pct : profile.yield_pct)}%` : "Nem ismert"];
     }))] : [empty("Nincs eredmény ebben a csoportban", "A régi azonosítók saját történeti profiljukkal maradnak meg; nem alakítjuk őket a mai tíz agentté.")]));
   }
@@ -490,7 +521,7 @@
   }
   function openTeamStatus(agent) {
     if (!capability("team_status")) return;
-    openAction({ title: `${agent.name || agent.agent_id} · csapatállapot`, description: "Ez a meglévő agent státuszát változtatja. A tízes registry tagsága és a korábbi szelvények nem változnak.", fields: [field("status", "Állapot", "select", { values: [["ACTIVE", "Aktív"], ["PROBATION", "Próbaidő"], ["SUSPENDED", "Szüneteltetve"]] }), field("reason", "Indoklás", "textarea", { minLength: 3, maxLength: 500 })], perform: values => api("/api/team/status", { profile_id: agent.agent_id, status: values.status, reason: values.reason.trim() }) });
+    openAction({ title: `${agent.name || agent.agent_id} · csapatállapot`, description: "Ez a meglévő agent státuszát változtatja. A névjegyzék tagsága és a korábbi szelvények nem változnak.", fields: [field("status", "Állapot", "select", { values: [["ACTIVE", "Aktív"], ["PROBATION", "Próbaidő"], ["SUSPENDED", "Szüneteltetve"]] }), field("reason", "Indoklás", "textarea", { minLength: 3, maxLength: 500 })], perform: values => api("/api/team/status", { profile_id: agent.agent_id, status: values.status, reason: values.reason.trim() }) });
   }
   function openSchedule() {
     if (!capability("schedule_mutation")) return; const schedule = state.workshop.schedule;
@@ -549,7 +580,7 @@
     $("selected-date").value = value; $("evidence-panel").hidden = true;
     replace("run-summary", badge("UNKNOWN", "Az új nap állapotára vár")); set("minimum-note", "A kiválasztott nap mentett számlálása még nem érkezett meg."); set("nav-count", "—"); set("card-count", "betöltés alatt"); $("run-progress").hidden = true;
     replace("overview", ...["Teljes napi naptár", "Árazott mérkőzések", "Mentett szelvények", "Befejezett döntések"].map(title => metric(title, "—", "A kiválasztott nap adataira vár")));
-    replace("cards", empty("A kiválasztott nap betöltése", "Az előző nap kártyáit nem mutatjuk az új dátum alatt.")); renderCompanions([]); replace("agents", empty("Napi agentállapotok betöltése", "Az eredeti tízes registry és az ehhez a naphoz mentett döntések hamarosan megjelennek."));
+    replace("cards", empty("A kiválasztott nap betöltése", "Az előző nap kártyáit nem mutatjuk az új dátum alatt.")); renderCompanions([]); replace("agents", empty("Napi agentállapotok betöltése", "A nap eredeti agentnévjegyzéke és mentett döntései hamarosan megjelennek."));
     $("cards-more").hidden = true; set("ledger-note", `${value} · erre a napra még nincs betöltött könyvelési lap.`); $("export-json").href = `/api/export?date=${encodeURIComponent(value)}`; $("export-txt").href = `/api/tickets.txt?date=${encodeURIComponent(value)}`;
     renderFamilies(); renderCalendar(); syncControls(); refresh();
   }

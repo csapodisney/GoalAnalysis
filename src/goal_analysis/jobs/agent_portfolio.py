@@ -107,7 +107,8 @@ def _source_quotes(source, candidates, selected, now):
 
 def _admission_binding(owner, proposal, snapshot, data):
     """Strict identity/provenance before any failure may be classified as local."""
-    get_agent_definition(owner)
+    group = data.get('decision_group', 'CORE_TEN')
+    get_agent_definition(owner, decision_group=group)
     require(owner in data['owner_ids'] and isinstance(proposal, dict)
             and set(proposal) == {'option_id', 'source_candidate_ids', 'reason'}
             and isinstance(proposal['option_id'], str) and bool(proposal['option_id'])
@@ -116,14 +117,14 @@ def _admission_binding(owner, proposal, snapshot, data):
     selected = identifiers(proposal['source_candidate_ids'])
     require(0 < len(selected) <= 6, 'ONE_TO_SIX_OWN_SOURCE_SELECTIONS_REQUIRED')
     odds = data['families']['odds_and_price_history']['value']
-    source = odds['enriched'] if owner in CORE_MARKETS else odds['club_enriched']
+    source = odds['enriched'] if owner in CORE_MARKETS or group == 'COMPANION_PAIR' else odds['club_enriched']
     now = _time(data['as_of'])
     _source_quotes(odds['candidate_input'], source['candidates'], selected, now)
     rows = {row['candidate_id']: row for row in odds['candidate_input']['candidates']
             if isinstance(row, dict) and row.get('candidate_id') in selected}
     events = {row['fixture_id']: row for row in data['families']['calendar']['value']}
     club_events = (club._fixtures(list(events.values()), data['target_date'], now)
-                   if owner not in CORE_MARKETS else None)
+                   if owner not in CORE_MARKETS and group != 'COMPANION_PAIR' else None)
     for identifier in selected:
         row = rows[identifier]
         require(row.get('fixture_id') in data['fixture_ids'], 'SOURCE_FIXTURE_OUTSIDE_FULL_DAY')
@@ -232,11 +233,12 @@ def _core_card(owner, selected, enriched, settings, now, receipt, universe, prod
     return card
 
 
-def _club_card(owner, selected, enriched, settings, now, models, product_policy=None):
+def _club_card(owner, selected, enriched, settings, now, models, product_policy=None,
+               milan_research_policy=None):
     persona = effective_persona(TIPSTER_BY_ID[owner], settings, ticket_product_contract=product_policy)
     fixtures = club._fixtures(enriched.get('fixtures', []), enriched['date'], now)
     base, _ = club._pool(enriched, fixtures, club._models(models, fixtures, now), now)
-    ranked = club._ranked(base, persona, now)
+    ranked = club._ranked(base, persona, now, milan_research_policy=milan_research_policy)
     supported = [row for row in ranked if club._positive_support(row)]
     eligible = [row for row in supported if row['components'] or club._history_option_support(
         row, enriched, enriched['date'], settings, now, persona=persona) is not None]
@@ -259,7 +261,8 @@ def _club_card(owner, selected, enriched, settings, now, models, product_policy=
         raise _ProductAdmissionRejected('OWN_PERSONA_MODEL_HISTORY_OR_PRODUCT_RULE')
     rows = [index[key] for key in selected]
     legs = [club._leg(row, persona, now, enriched) for row in rows]
-    return {'profile_id': owner, 'profile_name': persona['name'], 'date': enriched['date'],
+    research = any(leg.get('model_value_research') for leg in legs)
+    return {**({'milan_price_history_research_contract': deepcopy(milan_research_policy)} if research else {}),'profile_id': owner, 'profile_name': persona['name'], 'date': enriched['date'],
         'created_at': now.isoformat(), 'catalog_version': CATALOG_VERSION,
         'strategy_version': club.VERSION, 'persona': persona,
         'status': 'DRAFT', 'publication_scope': 'RESEARCH', 'playable': False,
@@ -366,6 +369,8 @@ def _own_construction_contract(owner, settings, report, now):
     """Describe existing gates before reasoning; never grant admission or select rows."""
     definition = get_agent_definition(owner)
     product_policy = report_contract(report)
+    milan_policy = report.get('milan_price_history_research_contract')
+    club.validate_milan_research_contract(milan_policy)
     cautious = product_policy is None and owner in CAUTIOUS_PROFILE_IDS
     if owner in CORE_MARKETS:
         primary = core._effective_core_contract(owner, settings, ticket_product_contract=product_policy)
@@ -397,6 +402,9 @@ def _own_construction_contract(owner, settings, report, now):
         **({'ticket_product_contract': deepcopy(product_policy),
             'price_policy_instruction': 'Hard combined odds minimum 10; no global upper limit. At most six distinct fixtures. Prefer 15–20 without rejecting valid values outside it. Respect any original own-personality risk maximum. A lower-odds valid ticket needs no old cautious-absence proof. Never target arbitrary huge odds or add filler; compare evidence and risk.'}
            if product_policy is not None else {}),
+        **({'milan_price_history_research_contract': deepcopy(milan_policy),
+            'research_branch_instruction': 'Only this explicitly bound current-run addendum permits MODEL_VALUE_RESEARCH_FALLBACK when the original price-movement producer reports INSUFFICIENT_HISTORY. Keep the historical contrarian method for verified rises; a known failed rise, invalid source or malformed clock cannot use this branch. Require the unchanged two model components, probability, edge, value floor and ranking weights. Read the complete selected raw records and both simulations; price baseline/rise/cause/profit remain UNKNOWN. Any fallback ticket is DRAFT/RESEARCH and not playable. This addendum does not alter the historical persona or method version.'}
+           if owner == club.MILAN_RESEARCH_OWNER and milan_policy is not None else {}),
         'option_means': 'ONE_COMPLETE_ACCUMULATOR_NOT_ONE_RESEARCH_LEG',
         'instruction': 'For each option, select every leg of one complete ticket. Compute the product of its exact source decimal prices and satisfy this own construction policy before proposing it. Seek two or three genuinely distinct legal own tickets; never pad output or assume a rejected single leg will later be combined automatically.',
         'source_candidate_ids_mean': 'All legs of this ONE ticket, using exact original source candidate IDs.',
@@ -507,13 +515,14 @@ def _core_strategy_search(owner, source, settings, now, universe, product_policy
            if product_policy is not None else {})}
 
 
-def _club_strategy_search(owner, source, settings, now, models, product_policy=None):
+def _club_strategy_search(owner, source, settings, now, models, product_policy=None,
+                          milan_research_policy=None):
     """Existing own persona alternatives, with no report or automatic choice published."""
     own_settings = {**deepcopy(settings), 'enabled_profiles': [owner]}
     alternatives = {}
     results = club.build_tipster_recommendations(source, models, own_settings, now,
         diversity_options=alternatives, support_guard_mode='LIVE', option_search_mode='OFF',
-        ticket_product_contract=product_policy)
+        ticket_product_contract=product_policy, milan_research_policy=milan_research_policy)
     own = [row for row in results if row.get('profile_id') == owner]
     require(len(own) == 1 and set(alternatives) <= {owner}, 'EXACT_OWN_PERSONA_SEARCH_REQUIRED')
     rows = []
@@ -534,18 +543,28 @@ def _club_strategy_search(owner, source, settings, now, models, product_policy=N
         'shadow_challenger_executed': False, 'legacy_chosen_card_published': False}
 
 
-def build_agent_option_builder(report, artifacts, enriched, club_enriched, settings, as_of):
+def build_agent_option_builder(report, artifacts, enriched, club_enriched, settings, as_of,
+                               *, decision_group='CORE_TEN'):
     """Return an owner/proposal/snapshot callable over detached NORMAL inputs.
 
     All full-calendar choices remain available to the reasoning host. This
     function only admits the requested exact products; it never chooses a
     replacement or a supposedly stronger shared shortlist.
     """
+    if decision_group == 'COMPANION_PAIR':
+        from goal_analysis.companion_agents import build_companion_option_builder
+
+        require(current_contract(settings), 'CURRENT_OPERATING_CONTRACT_REQUIRED')
+        return build_companion_option_builder(report, artifacts, enriched, club_enriched, settings, as_of)
+    require(decision_group == 'CORE_TEN', 'EXACT_DECISION_GROUP_REQUIRED')
     now = _time(as_of)
     require(current_contract(settings), 'CURRENT_OPERATING_CONTRACT_REQUIRED')
     report, artifacts, enriched, club_enriched = deepcopy((report, artifacts, enriched, club_enriched))
     settings = core._settings(deepcopy(settings))
     product_policy = report_contract(report)
+    milan_policy = report.get('milan_price_history_research_contract')
+    require(not club.validate_milan_research_contract(milan_policy) or product_policy is not None,
+            'MILAN_RESEARCH_REQUIRES_CURRENT_PRODUCT_CONTRACT')
     catalogue_json = json.dumps(_full_candidate_catalog(artifacts.get('candidate_input', {})),
                                 sort_keys=True, ensure_ascii=False, allow_nan=False)
     construction_contracts = {owner: json.dumps(
@@ -597,7 +616,8 @@ def build_agent_option_builder(report, artifacts, enriched, club_enriched, setti
         try:
             card = (_core_card(owner, selected, source, settings, now, receipt, universe, product_policy)
                     if owner in CORE_MARKETS else
-                    _club_card(owner, selected, source, settings, now, admitted_models, product_policy))
+                    _club_card(owner, selected, source, settings, now, admitted_models, product_policy,
+                               milan_policy))
         except _ProductAdmissionRejected as error:
             raise OwnOptionAdmissionRejected({**admission_binding, 'reason': str(error)}) from error
         card.update(status='DRAFT', publication_scope='RESEARCH', playable=False, stake_eur=None,
@@ -610,6 +630,8 @@ def build_agent_option_builder(report, artifacts, enriched, club_enriched, setti
             'run_id': report['run_id'], 'target_date': report['date'], 'source_as_of': now.isoformat(),
             'source_candidate_ids': list(selected), 'source_candidate_input_sha256': digest(artifacts['candidate_input']),
             'physical_authentication': 'NOT_PERFORMED_BY_PURE_BRIDGE'}
+        if card.get('milan_price_history_research_contract') is not None:
+            card['agent_product_binding']['milan_research_contract_sha256'] = digest(milan_policy)
         failure = _invalid(card, report, now)
         if failure in {'OUTSIDE_OWN_APPROVED_ODDS_RANGE', 'OWN_STRATEGY_CONSTRUCTION_INVALID',
                        'MIXED_QUOTE_COHORT', 'DUPLICATE_OR_INVALID_FIXTURE', 'TICKET_PRODUCT_LEG_COUNT'}:
@@ -675,7 +697,8 @@ def build_agent_option_builder(report, artifacts, enriched, club_enriched, setti
         try:
             produced = (_core_strategy_search(owner, source, settings, now, universe, product_policy)
                         if owner in CORE_MARKETS else
-                        _club_strategy_search(owner, source, settings, now, admitted_models, product_policy))
+                        _club_strategy_search(owner, source, settings, now, admitted_models, product_policy,
+                                              milan_policy))
             result.update(produced)
             for row in result['alternatives']:
                 chosen = identifiers(row['source_candidate_ids'])

@@ -35,7 +35,7 @@ def main():
 
     sys.addaudithook(guard)
     reader = SavedReader(ROOT)
-    report = reader.pin(ROOT / 'reports/arthur' / args.run_id / 'report.json')
+    report = reader.pin(ROOT / 'reports/arthur' / args.run_id / 'report.json', limit=128 * 1024 * 1024)
     if report.get('run_id') != args.run_id:
         raise ValueError('POSTSTOP_RUN_ID_CHANGED')
     result = verify_new_cohort(ROOT, report, reader=reader)

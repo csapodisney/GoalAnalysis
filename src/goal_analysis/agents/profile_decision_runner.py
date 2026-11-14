@@ -32,7 +32,11 @@ from goal_analysis.agents.profile_input import (
     news_coverage_request_data,
     public_tool_results,
 )
-from goal_analysis.agents.profile_roster import ACTIVE_AGENTS, get_agent_definition
+from goal_analysis.agents.profile_roster import (
+    COMPANION_DECISION_VERSION,
+    agents_for_group,
+    get_agent_definition,
+)
 from goal_analysis.agents.profile_source_host import profile_phase_timeout
 from goal_analysis.jobs.agent_portfolio import (
     SOURCE_CATALOG_POLICY,
@@ -69,6 +73,52 @@ def bound_fixture_review_contract(request):
     snapshot = data.get('snapshot')
     require(isinstance(snapshot, dict), 'FIXTURE_REVIEW_SNAPSHOT_REQUIRED')
     return validate_fixture_review_contract(data['fixture_review_contract'], snapshot.get('fixture_ids'))
+
+
+_FINAL_FAMILY_USE_STATES = {
+    'AVAILABLE': ('AVAILABLE_AND_CONSIDERED', 'AVAILABLE_NOT_RELEVANT'),
+    'UNKNOWN': ('MISSING',), 'STALE': ('STALE',), 'CONFLICTING': ('CONFLICTING',),
+}
+
+
+def _checked_final_family_states(values):
+    from goal_analysis.jobs.agent_snapshot import FAMILIES
+
+    require(isinstance(values, dict) and set(values) == set(FAMILIES),
+            'EXACT_FINAL_FAMILY_STATES_REQUIRED')
+    result = {}
+    for family in FAMILIES:
+        row = values[family]
+        require(isinstance(row, dict) and isinstance(row.get('status'), str)
+                and row['status'] in _FINAL_FAMILY_USE_STATES
+                and isinstance(row.get('value_sha256'), str) and len(row['value_sha256']) == 64
+                and all(char in '0123456789abcdef' for char in row['value_sha256']),
+                'INVALID_FINAL_FAMILY_SOURCE_STATE')
+        result[family] = {key: row[key] for key in ('status', 'value_sha256')}
+    return result
+
+
+def bound_final_family_states(request):
+    """Constrain the response from bound input; never rewrite a model reply."""
+    if request.get('phase') != 'FINAL':
+        return None
+    data = request.get('data')
+    snapshot = data.get('snapshot') if isinstance(data, dict) else None
+    if not isinstance(snapshot, dict):
+        return None  # Historical injected hosts without a snapshot keep their schema.
+    view = snapshot.get('view')
+    if ('families' not in snapshot and not (isinstance(view, dict)
+            and view.get('version') == 'owner-final-shared-reference-v1')):
+        return None
+    snapshot_id = request.get('snapshot_id')
+    owners = snapshot.get('owner_ids')
+    require(isinstance(view, dict) and view.get('version') == 'owner-final-shared-reference-v1'
+            and view.get('phase') == 'FINAL' and view.get('source_snapshot_id') == snapshot_id
+            and isinstance(snapshot_id, str) and len(snapshot_id) == 64
+            and all(char in '0123456789abcdef' for char in snapshot_id)
+            and isinstance(owners, list) and request.get('agent_id') in identifiers(owners),
+            'FINAL_FAMILY_SNAPSHOT_BINDING_CHANGED')
+    return _checked_final_family_states(snapshot.get('families'))
 
 
 def expand_fixture_reviews(reviews, fixture_ids, *, contract=None):
@@ -110,11 +160,13 @@ class DecisionBudget:
     clock: object = _now
     stop_requested: object = lambda: False
     skip_expired_owners: bool = False
+    decision_group: str = 'CORE_TEN'
     used_requests: int = field(default=0, init=False)
     _lock: object = field(default_factory=Lock, init=False, repr=False)
 
     def __post_init__(self):
-        require(type(self.max_requests) is int and 0 <= self.max_requests <= 20,
+        maximum = 2 * len(agents_for_group(self.decision_group))
+        require(type(self.max_requests) is int and 0 <= self.max_requests <= maximum,
                 'FINITE_TEN_AGENT_REQUEST_BUDGET_REQUIRED')
         require(self.deadline.tzinfo is not None and self.deadline.utcoffset() is not None,
                 'AWARE_DEADLINE_REQUIRED')
@@ -201,7 +253,7 @@ class ProfileDecisionRunner:
 
     def __init__(self, *, host, tools, option_builder, journal, budget,
                  max_input_chars=360_000, max_output_chars=150_000, source_bundle=None,
-                 grouped_fixture_reviews=False):
+                 grouped_fixture_reviews=False, decision_group='CORE_TEN'):
         require(callable(host) and callable(option_builder), 'HOST_AND_PRODUCT_BUILDER_REQUIRED')
         require(type(max_input_chars) is int and 0 < max_input_chars <= 360_000
                 and type(max_output_chars) is int and 0 < max_output_chars <= 150_000,
@@ -212,10 +264,13 @@ class ProfileDecisionRunner:
         self.source_bundle = source_bundle
         require(type(grouped_fixture_reviews) is bool, 'EXPLICIT_GROUPED_FIXTURE_REVIEW_MODE_REQUIRED')
         self.grouped_fixture_reviews = grouped_fixture_reviews
+        agents_for_group(decision_group)
+        require(getattr(budget, 'decision_group', 'CORE_TEN') == decision_group, 'BUDGET_DECISION_GROUP_MISMATCH')
+        self.decision_group = decision_group
 
     def _call(self, state, phase, data, *, source_records=None):
         body = {**_identity(state), 'phase': phase,
-                'persona': get_agent_definition(state.agent_id).as_dict(),
+                'persona': get_agent_definition(state.agent_id, decision_group=self.decision_group).as_dict(),
                 'data': news_coverage_request_data(final_request_data(data) if phase == 'FINAL' else data)}
         require(len(json_text(body)) <= self.max_input_chars, 'OWNER_INPUT_BUDGET_EXCEEDED')
         timeout = self.budget.reserve(phase=phase, source_access=self.source_bundle is not None)
@@ -470,13 +525,17 @@ class ProfileDecisionRunner:
         return outcome
 
     def run(self, snapshot, *, pilot_agent_id=None):
+        agents = agents_for_group(self.decision_group)
+        data = snapshot.decision_data()
+        require(data.get('decision_group', 'CORE_TEN') == self.decision_group
+                and set(data['owner_ids']) == {row.agent_id for row in agents}, 'RUNNER_DECISION_GROUP_MISMATCH')
         require(pilot_agent_id is None or isinstance(pilot_agent_id, str)
-                and pilot_agent_id in {row.agent_id for row in ACTIVE_AGENTS}, 'VALID_PILOT_AGENT_REQUIRED')
+                and pilot_agent_id in {row.agent_id for row in agents}, 'VALID_PILOT_AGENT_REQUIRED')
         # A partial or completed run is never silently resubmitted. The caller
         # can inspect existing outcomes without constructing a fresh operation.
         self.journal.write_once('run.claim.json', {'snapshot_id': snapshot.snapshot_id,
                                                   'automatic_retry': False})
-        states = start_sessions(snapshot, {row.agent_id: row.method_version for row in ACTIVE_AGENTS})
+        states = start_sessions(snapshot, {row.agent_id: row.method_version for row in agents})
         if self.source_bundle is not None:
             from goal_analysis.agents.profile_source_access import SourceBundle, build_source_seed
 
@@ -523,14 +582,19 @@ class ProfileDecisionRunner:
                         'option_id': option['option_id'], 'option': option,
                         'publication_status': 'REQUIRES_CANONICAL_PRODUCT_VALIDATION',
                         'playable': False})
-        result = {'version': 'ten-agent-decision-run-v1', 'snapshot_id': snapshot.snapshot_id,
-            'status': ('COMPLETE' if len(outcomes) == len(ACTIVE_AGENTS)
+        result = {'version': (COMPANION_DECISION_VERSION if self.decision_group == 'COMPANION_PAIR'
+                              else 'ten-agent-decision-run-v1'), 'snapshot_id': snapshot.snapshot_id,
+            'status': ('COMPLETE' if len(outcomes) == len(agents)
                        and all(row['status'] == 'DECISION_COMPLETED' for row in outcomes) else 'PARTIAL'),
             'agent_count': len(outcomes), 'owners': outcomes, 'distinct_decisions': cards,
             'duplicate_exposures': duplicate_links, 'distinct_decision_count': len(cards),
             'minimum15_decision_count_met': len(cards) >= 15, 'canonical_ticket_count': None,
             'host_requests_reserved': self.budget.used_requests,
             'financial_approval': False, 'wagers': 0}
+        if self.decision_group == 'COMPANION_PAIR':
+            result.pop('minimum15_decision_count_met')
+            result['both_companion_owners_selected'] = all(
+                row.get('decision', {}).get('selected_options') for row in outcomes) and len(outcomes) == 2
         if pilot is not None:
             result.update(pilot_gate=pilot, unattempted_agent_ids=unattempted)
         self.journal.write_once('decision-run.json', result)
@@ -551,7 +615,7 @@ class CodexDecisionHost:
         return reviewer.request_profile_decision(request, timeout=timeout, source_access=source_access)
 
 
-def profile_response_schema(phase, *, fixture_review_contract=None):
+def profile_response_schema(phase, *, fixture_review_contract=None, family_states=None):
     """Strict, narrow action schema; model cannot supply a wager or new prices."""
     def obj(properties):
         return {'type': 'object', 'properties': properties,
@@ -563,6 +627,7 @@ def profile_response_schema(phase, *, fixture_review_contract=None):
     text = {'type': 'string'}
     identity = {'phase': {'type': 'string', 'enum': [phase]},
                 'agent_id': text, 'session_id': text, 'snapshot_id': text}
+    require(family_states is None or phase == 'FINAL', 'FAMILY_SCHEMA_ONLY_FINAL')
     if phase == 'PLAN':
         reviews = array(obj({'fixture_id': text, 'reason': text,
                              'rejected': {'type': 'boolean'}}))
@@ -596,10 +661,22 @@ def profile_response_schema(phase, *, fixture_review_contract=None):
     require(phase == 'FINAL', 'UNKNOWN_OWNER_PHASE')
     from goal_analysis.agents.profile_decision import FAMILY_USES
     from goal_analysis.jobs.agent_snapshot import FAMILIES
+    family_item = obj({'family': {'type': 'string', 'enum': list(FAMILIES)},
+        'status': {'type': 'string', 'enum': sorted(FAMILY_USES)}, 'reason': text,
+        'value_sha256': text, 'option_ids': array(text, 6),
+        'risk': {'type': ['string', 'null']}})
+    if family_states is not None:
+        states = _checked_final_family_states(family_states)
+        family_item = {'anyOf': [obj({**family_item['properties'],
+            'family': {'type': 'string', 'enum': [family]},
+            'value_sha256': {'type': 'string', 'enum': [row['value_sha256']]},
+            'status': {'type': 'string', 'enum': [*_FINAL_FAMILY_USE_STATES[row['status']],
+                                                'UNUSABLE_FOR_THIS_METHOD']},
+        }) for family, row in states.items()]}
+    uses = array(family_item, len(FAMILIES))
+    if family_states is not None:
+        uses['minItems'] = len(FAMILIES)
     return obj({**identity, 'option_ids': array(text, 3), 'reason': text,
         'tool_interpretations': array(obj({'request_id': text, 'interpretation': text}), 2),
-        'family_uses': array(obj({'family': {'type': 'string', 'enum': list(FAMILIES)},
-            'status': {'type': 'string', 'enum': sorted(FAMILY_USES)}, 'reason': text,
-            'value_sha256': text, 'option_ids': array(text, 6),
-            'risk': {'type': ['string', 'null']}}), len(FAMILIES)),
+        'family_uses': uses,
     })

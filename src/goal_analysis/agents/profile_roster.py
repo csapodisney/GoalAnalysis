@@ -197,11 +197,59 @@ if len(AGENT_IDS) != AGENT_COUNT or len(set(AGENT_IDS)) != AGENT_COUNT:
 _BY_ID = MappingProxyType({agent.agent_id: agent for agent in ACTIVE_AGENTS})
 
 
-def get_agent_definition(agent_id: str) -> AgentDefinition:
-    """Only active decision owners; legacy profile/model IDs grant no session."""
+COMPANION_DECISION_VERSION = 'arthur-independent-companion-pair-v1'
+COMPANION_AGENT_IDS = ('daily_portfolio', 'legacy_daily223')
+COMPANION_AGENTS = (
+    AgentDefinition(
+        agent_id='daily_portfolio', name='Daily Portfolio',
+        method_version=COMPANION_DECISION_VERSION + ':daily_portfolio',
+        selection_path=(
+            'Account for the complete daily calendar and all twelve source families.',
+            'Apply the existing Daily construction math to own source-bound alternatives.',
+            'Compare joint exposure and available evidence with both owner-bound simulators.',
+            'Choose at most one legal own option with explicit uncertainty and unchanged product gates.',
+        ),
+        personality='An independent daily portfolio viewpoint with explicit shared exposure.',
+        focus_families=('odds_and_price_history', 'numeric_models', 'candidate_scenarios',
+                        'historical_strategy_evaluation'),
+        risk_policy='No invented probability or READY promotion; optional UNKNOWN alone is not an abstention gate.',
+        max_variants=1,
+    ),
+    AgentDefinition(
+        agent_id='legacy_daily223', name='Legacy Daily223',
+        method_version=COMPANION_DECISION_VERSION + ':legacy_daily223',
+        selection_path=(
+            'Account for the complete daily calendar and all twelve source families.',
+            'Apply the existing legacy Daily223 construction math to own source-bound alternatives.',
+            'Challenge those alternatives with both owner-bound simulators and visible uncertainty.',
+            'Choose at most one legal own option without inheriting another owner decision.',
+        ),
+        personality='An independent decision using the original legacy construction method.',
+        focus_families=('retained_history', 'odds_and_price_history',
+                        'candidate_scenarios', 'historical_strategy_evaluation'),
+        risk_policy='Keep original strategy and price rules; optional missing facts stay UNKNOWN, never fabricated.',
+        max_variants=1,
+    ),
+)
+_COMPANION_BY_ID = MappingProxyType({agent.agent_id: agent for agent in COMPANION_AGENTS})
+
+
+def agents_for_group(decision_group: str = 'CORE_TEN') -> tuple[AgentDefinition, ...]:
+    """Two fixed groups only; no caller-supplied or silently extended registry."""
+    if decision_group == 'CORE_TEN':
+        return ACTIVE_AGENTS
+    if decision_group == 'COMPANION_PAIR':
+        return COMPANION_AGENTS
+    raise ValueError('UNKNOWN_DECISION_GROUP')
+
+
+def get_agent_definition(agent_id: str, *, decision_group='CORE_TEN') -> AgentDefinition:
+    """Only owners in the explicit fixed group; historical defaults remain core ten."""
     if not isinstance(agent_id, str):
         raise TypeError('AGENT_ID_MUST_BE_STRING')
+    agents_for_group(decision_group)
+    registry = _BY_ID if decision_group == 'CORE_TEN' else _COMPANION_BY_ID
     try:
-        return _BY_ID[agent_id]
+        return registry[agent_id]
     except KeyError:
         raise KeyError(f'UNKNOWN_ACTIVE_AGENT:{agent_id}') from None

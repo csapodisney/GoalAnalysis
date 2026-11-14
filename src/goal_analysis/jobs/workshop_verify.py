@@ -60,6 +60,8 @@ class SavedReader:
         self.files[str(resolved.relative_to(self.root)).replace('\\', '/')] = {
             'sha256': hasher.hexdigest(), 'bytes': size}
         self.check()
+        if parse == 'text':
+            return b''.join(chunks).decode('utf-8')
         return json.loads(b''.join(chunks)) if parse else hasher.hexdigest()
 
 
@@ -176,6 +178,140 @@ def _saved_source_phase_binding(proof, storage):
             and proof['view_sha256'] == storage['view_sha256'], 'PHYSICAL_PHASE_SOURCE_STORAGE_CHANGED')
 
 
+def _saved_pair_native_phase(reader, journal, purpose, claim, outcome, proof):
+    """Pair-only complete returned native text, bound to its actual private files."""
+    from goal_analysis.agents.profile_source_host import _native_calls, observe_source_events
+
+    phase = journal / 'source-access/p' / digest(purpose)[:32]
+    document = reader.pin(phase / 'binding.json', limit=16384)
+    binding_pin = reader.files[(phase / 'binding.json').relative_to(reader.root).as_posix()]
+    require(document.get('version') == 'profile-source-host-phase-v1'
+        and document.get('binding') == purpose and document.get('request_sha256') == claim['request_sha256']
+        and document.get('bundle_sha256') == proof['bundle_sha256'], 'PAIR_NATIVE_BINDING_CHANGED')
+    paths = {'owned_root': journal / 'source-access', 'phase_root': phase,
+        'bundle_path': journal / 'source-access/bundle.json',
+        'journal_path': phase / 'reads.jsonl', 'receipt_path': phase / 'receipt.json'}
+    require(all(Path(document[key]).resolve() == path.resolve() for key, path in paths.items()),
+            'PAIR_NATIVE_OWNED_PATH_CHANGED')
+    for field, filename in (('server', 'profile_source_stdio.py'),
+                            ('kernel', 'profile_source_access.py'), ('query', 'profile_source_query.py')):
+        key = 'server_script' if field == 'server' else field + '_source'
+        expected = reader.root / 'src/goal_analysis/agents' / filename
+        require(Path(document[key]).resolve() == expected.resolve()
+            and reader.pin(expected, parse=False) == document[field + '_sha256'], 'PAIR_NATIVE_SOURCE_PIN_CHANGED')
+    native = reader.pin(phase / 'native-return.json', limit=16384)
+    require(native.get('version') == 'private-source-native-return-v1'
+        and native.get('status') == 'COMPLETE_PRIVATE_CAPTURE'
+        and type(native.get('native_exit_code')) is int and native['native_exit_code'] == 0
+        and native.get('binding_sha256') == binding_pin['sha256']
+        and native.get('byte_limit') == 2 * 1024 * 1024
+        and native.get('encoding') == 'UTF8_OF_RETURNED_PROCESS_TEXT_NOT_ORIGINAL_PIPE_BYTES'
+        and set(native.get('streams', {})) == {'stdout', 'stderr'}, 'PAIR_COMPLETE_NATIVE_ZERO_REQUIRED')
+    streams, total = {}, 0
+    for name in ('stdout', 'stderr'):
+        path = phase / ('native-return.' + name + '.utf8')
+        streams[name] = reader.pin(path, limit=2 * 1024 * 1024, parse='text')
+        physical = reader.files[path.relative_to(reader.root).as_posix()]
+        saved = native['streams'][name]
+        require(saved.get('truncated') is False
+            and saved.get('returned_bytes') == saved.get('captured_bytes') == physical['bytes']
+            and saved.get('returned_sha256') == saved.get('captured_sha256') == physical['sha256'],
+            'PAIR_NATIVE_RETURN_TEXT_CHANGED')
+        total += physical['bytes']
+    require(total <= 2 * 1024 * 1024, 'PAIR_NATIVE_RETURN_COMBINED_BOUND')
+    records = reader.pin(phase / 'reads.jsonl', limit=1048576, parse='text')
+    require([json.loads(line) for line in records.splitlines() if line.strip()] == proof['journal_records'],
+            'PAIR_PHYSICAL_READ_JOURNAL_CHANGED')
+    if proof['version'] == 'profile-source-host-evidence-v1':
+        require(reader.pin(phase / 'receipt.json', limit=16384) == proof['receipt'],
+                'PAIR_PHYSICAL_RECEIPT_CHANGED')
+    else:
+        checkpoints = reader.pin(phase / 'receipt-checkpoints.jsonl', limit=262144, parse='text')
+        require(checkpoints.endswith('\n') and all(checkpoints.splitlines())
+            and [json.loads(line) for line in checkpoints.splitlines()] == proof['checkpoint_records'],
+            'PAIR_PHYSICAL_CHECKPOINTS_CHANGED')
+    events = observe_source_events(streams['stdout'], {})
+    require(_native_calls(events) == proof['native_calls']
+        and any(event.get('type') == 'turn.completed' for event in events), 'PAIR_PHYSICAL_NATIVE_CALLS_CHANGED')
+    messages = [event['item'].get('text') for event in events
+                if event.get('type') == 'item.completed'
+                and isinstance(event.get('item'), dict) and event['item'].get('type') == 'agent_message']
+    require(messages and isinstance(messages[-1], str), 'PAIR_PHYSICAL_RAW_REPLY_MISSING')
+    reply = {key: value for key, value in outcome['reply'].items() if key not in {'host_usage', 'host_evidence'}}
+    require(json.loads(messages[-1]) == reply, 'PAIR_PHYSICAL_RAW_REPLY_CHANGED')
+    return {'status': 'SAVED_COMPLETE_NATIVE_ZERO_AND_RAW_REPLY_BOUND',
+            'native_exit_code': native['native_exit_code'], 'captured_bytes': total}
+
+
+def _saved_companion_pair(reader, journal, report, artifacts, audit, *, default_reader):
+    """Reuse the core's physically checked raw tree; pair evidence is not retagged core proof."""
+    from goal_analysis.agents.profile_roster import COMPANION_AGENT_IDS
+
+    paired = journal / 'companion-agents'
+    run = report['companion_agent_decisions']
+    binding = audit['companion_snapshot_binding']
+    require(binding['status'] == 'SAVED_COMPANION_SNAPSHOT_BOUND', 'PAIR_PURE_SHARED_SNAPSHOT_NOT_BOUND')
+    require(reader.pin(paired / 'shared-data-reference.json', limit=16384)
+        == artifacts['companion_agent_snapshot'], 'PAIR_PHYSICAL_SNAPSHOT_REFERENCE_CHANGED')
+    require(reader.pin(paired / 'companion-agent-decisions.json') == run
+        == artifacts['companion_agent_decisions'], 'PAIR_PHYSICAL_ENVELOPE_CHANGED')
+    raw_run = reader.pin(paired / 'decision-run.json')
+    require(raw_run == {key: value for key, value in run.items()
+        if key not in {'runner_result_sha256', 'shared_data_binding', 'journal_subdirectory'}}
+        and digest(raw_run) == run['runner_result_sha256'], 'PAIR_PHYSICAL_RUNNER_RESULT_CHANGED')
+    require(reader.pin(paired / 'run.claim.json', limit=16384)
+        == {'snapshot_id': run['snapshot_id'], 'automatic_retry': False}, 'PAIR_PHYSICAL_RUN_CLAIM_CHANGED')
+    storage = _v2_saved_source_limits(reader, paired, run['snapshot_id'], default_reader=default_reader)
+    reference = artifacts['companion_agent_source_storage']
+    require(storage is not None and storage['raw_sha256'] == run['snapshot_id'] == binding['snapshot_id']
+        and storage['view_sha256'] == binding['view_sha256'] == reference['view_sha256']
+        and storage['manifest_sha256'] == reference['bundle_sha256'], 'PAIR_PHYSICAL_SOURCE_STORAGE_CHANGED')
+    owners = run['owners']
+    require([owner['agent_id'] for owner in owners] == list(COMPANION_AGENT_IDS), 'EXACT_PAIR_PHYSICAL_OWNERS_REQUIRED')
+    checked, gaps = {}, []
+    for owner in owners:
+        identifier = owner['agent_id']
+        reader.check()
+        try:
+            require(reader.pin(paired / (owner['session_id'] + '.owner.json')) == owner,
+                    'PAIR_PHYSICAL_OWNER_OUTCOME_CHANGED')
+            evidence = owner['decision_evidence']
+            require(audit['owner_checks'][identifier]['status'] == 'OWN_REQUEST_REPLY_AND_CONTRACT_BOUND'
+                and set(evidence['source_access']) == {'PLAN', 'FINAL'}, 'PAIR_BOTH_VERIFIED_SOURCE_PHASES_REQUIRED')
+            phases = {}
+            for phase in ('PLAN', 'FINAL'):
+                purpose = {key: owner[key] for key in ('agent_id', 'session_id', 'snapshot_id')}
+                purpose['phase'] = phase
+                key = digest(purpose)
+                claim = reader.pin(paired / (key + '.claim.json'))
+                outcome = reader.pin(paired / (key + '.outcome.json'))
+                proof = reader.pin(paired / (key + '.source-access.json'))
+                _saved_source_phase_binding(proof, storage)
+                require(claim['purpose'] == purpose and claim['claim_key'] == key
+                    and digest(claim['request']) == claim['request_sha256'] == proof['request_sha256']
+                    and proof == evidence['source_access'][phase]
+                    and outcome['status'] == 'HOST_COMPLETED' and outcome['claim_key'] == key
+                    and outcome['request_sha256'] == claim['request_sha256']
+                    and outcome['reply'] == evidence[phase.lower()], 'PAIR_PHYSICAL_PHASE_JOURNAL_CHANGED')
+                phases[phase] = _saved_pair_native_phase(reader, paired, purpose, claim, outcome, proof)
+            roles = set()
+            for pair in evidence['tool_results']:
+                request = pair['request']
+                key = digest([owner['session_id'], request['request_id']])
+                require(reader.pin(paired / (key + '.tool-full-result.json'))
+                    == {**pair, 'raw_result_preserved_before_final': True}, 'PAIR_PHYSICAL_TOOL_RESULT_CHANGED')
+                roles.add(request['role'])
+            require(roles == {'candidate_scenarios', 'historical_strategy_evaluation'}, 'PAIR_BOTH_PHYSICAL_TOOLS_REQUIRED')
+            checked[identifier] = {'status': 'PHYSICAL_AND_CONTRACT_BOUND',
+                'final_decision_status': owner['decision']['status'], 'native_phases': phases,
+                'tool_statuses': {pair['request']['role']: pair['result']['status'] for pair in evidence['tool_results']}}
+        except (OSError, ValueError, KeyError, TypeError) as error:
+            checked[identifier] = {'status': 'UNKNOWN', 'reason': 'PAIR_PHYSICAL_EVIDENCE_INCOMPLETE',
+                                   'error_type': type(error).__name__}
+            gaps.append({'owner_id': identifier, 'reason': 'PAIR_PHYSICAL_EVIDENCE_INCOMPLETE'})
+    return checked, gaps, binding
+
+
 def verify_new_cohort(root, report, *, reader=None):
     """Return explicit partial evidence instead of turning optional UNKNOWN into a veto."""
     root = Path(root).resolve()
@@ -193,7 +329,7 @@ def verify_new_cohort(root, report, *, reader=None):
         'optional_family_states': {}, 'run_id': run_id, 'report_sha256': report.get('report_sha256')}
     artifacts = {}
     try:
-        require(reader.pin(directory / 'report.json') == report
+        require(reader.pin(directory / 'report.json', limit=128 * 1024 * 1024) == report
             and digest({key: value for key, value in report.items() if key != 'report_sha256'}) == report.get('report_sha256'),
             'PHYSICAL_REPORT_OR_EMBEDDED_HASH_CHANGED')
         storage = _v2_saved_source_limits(reader, journal,
@@ -202,7 +338,11 @@ def verify_new_cohort(root, report, *, reader=None):
             path = directory / (name + '.json')
             if path.is_file():
                 limit = (storage['independent_physical_limit'] if storage else 536870912)
-                artifacts[name] = reader.pin(path, limit=limit if name == 'independent_agent_snapshot' else 67108864)
+                artifacts[name] = reader.pin(path, limit=limit if name == 'independent_agent_snapshot'
+                    else 128 * 1024 * 1024 if name == 'candidate_input' else 67108864)
+        if 'companion_agent_decisions' in report:
+            for name in ('companion_agent_snapshot', 'companion_agent_decisions', 'companion_agent_source_storage'):
+                artifacts[name] = reader.pin(directory / (name + '.json'))
         data = artifacts['independent_agent_snapshot']
         _saved_snapshot_pair(reader, journal, data, report['ten_agent_decisions']['snapshot_id'], storage)
         require(set(data['families']) == set(FAMILIES), 'ALL_TWELVE_SAVED_FAMILIES_REQUIRED')
@@ -262,17 +402,24 @@ def verify_new_cohort(root, report, *, reader=None):
                 result['owners'][identifier] = {'status': 'UNKNOWN', 'reason': 'OWN_PHYSICAL_EVIDENCE_INCOMPLETE',
                     'error_type': type(error).__name__}
                 result['gaps'].append({'owner_id': identifier, 'reason': 'OWN_PHYSICAL_EVIDENCE_INCOMPLETE'})
-        for channel in report['companion_ticket_channels']['channels']:
-            identifier = channel['channel_id']
-            require(identifier in {'daily_portfolio', 'legacy_daily223'}, 'EXACT_COMPANION_JOURNAL_NAME')
-            require(reader.pin(journal / (identifier + '.companion-claim.json')) == channel['claim']
-                and reader.pin(journal / (identifier + '.companion-result.json')) == channel,
-                'PHYSICAL_COMPANION_JOURNAL_CHANGED')
-            odds = data['families']['odds_and_price_history']['value']
-            inputs = {'candidate_input': artifacts['candidate_input'], 'history': artifacts.get('history', {}),
-                      'enriched': odds['enriched'], 'settings': report['settings']}
-            require(channel['input_hashes'] == {key: digest(value) for key, value in inputs.items()},
-                    'COMPANION_PHYSICAL_INPUT_BINDING_CHANGED')
+        if 'companion_agent_decisions' in report:
+            pair_owners, pair_gaps, pair_binding = _saved_companion_pair(
+                reader, journal, report, artifacts, audit, default_reader=default_reader)
+            result['owners'].update(pair_owners)
+            result['gaps'].extend(pair_gaps)
+            result['companion_source_binding'] = pair_binding
+        else:
+            for channel in report['companion_ticket_channels']['channels']:
+                identifier = channel['channel_id']
+                require(identifier in {'daily_portfolio', 'legacy_daily223'}, 'EXACT_COMPANION_JOURNAL_NAME')
+                require(reader.pin(journal / (identifier + '.companion-claim.json')) == channel['claim']
+                    and reader.pin(journal / (identifier + '.companion-result.json')) == channel,
+                    'PHYSICAL_COMPANION_JOURNAL_CHANGED')
+                odds = data['families']['odds_and_price_history']['value']
+                inputs = {'candidate_input': artifacts['candidate_input'], 'history': artifacts.get('history', {}),
+                          'enriched': odds['enriched'], 'settings': report['settings']}
+                require(channel['input_hashes'] == {key: digest(value) for key, value in inputs.items()},
+                        'COMPANION_PHYSICAL_INPUT_BINDING_CHANGED')
         result['datasets'], dataset_gaps = _dataset_checks(root, artifacts.get('numeric_models', {}), reader)
         result['gaps'].extend(dataset_gaps)
         for card in audit['cards']:
@@ -293,5 +440,6 @@ def verify_new_cohort(root, report, *, reader=None):
                                'verification_aborted': True})
     result['physical_files'] = reader.files
     result['physical_bytes_read'] = reader.read_bytes
-    result['status'] = 'VERIFIED' if not result['gaps'] and len(result['owners']) == 10 else 'PARTIAL'
+    expected_owner_count = 12 if 'companion_agent_decisions' in report else 10
+    result['status'] = 'VERIFIED' if not result['gaps'] and len(result['owners']) == expected_owner_count else 'PARTIAL'
     return result

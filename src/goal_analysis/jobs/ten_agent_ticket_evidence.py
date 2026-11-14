@@ -26,6 +26,7 @@ from goal_analysis.agents.profile_input import (
     FINAL_REQUEST_PROJECTION,
     NEWS_COVERAGE_REQUEST_PROJECTION,
     SOURCE_DETAILS_POLICY,
+    SOURCE_DETAILS_POLICY_V1,
     decision_view,
     final_option_details,
     final_request_data,
@@ -110,7 +111,7 @@ def _owner_evidence(owner, snapshot, shared):
     projection = evidence.get('final_request_projection')
     require(projection in {None, FINAL_REQUEST_PROJECTION}, 'UNKNOWN_FINAL_REQUEST_PROJECTION')
     source_policy = evidence.get('source_details_policy')
-    require(source_policy in {None, SOURCE_DETAILS_POLICY}, 'UNKNOWN_SOURCE_DETAILS_POLICY')
+    require(source_policy in {None, SOURCE_DETAILS_POLICY_V1, SOURCE_DETAILS_POLICY}, 'UNKNOWN_SOURCE_DETAILS_POLICY')
     source_mode = evidence.get('version') == 'owner-decision-evidence-v3-source-access'
     require(source_policy is None or source_mode, 'SOURCE_DETAILS_REQUIRE_SOURCE_ACCESS')
     require(evidence.get('version') in {'owner-decision-evidence-v2-compact-views',
@@ -119,7 +120,7 @@ def _owner_evidence(owner, snapshot, shared):
     state = shared['states'][owner['agent_id']]
     plan, final, options = evidence['plan'], evidence['final'], evidence['validated_own_options']
     details = final_option_details(snapshot, owner['agent_id'], options,
-        source_access=source_policy == SOURCE_DETAILS_POLICY)
+        source_access=source_policy is not None, source_policy=source_policy)
     proposals = plan['options']
     admission = evidence.get('own_option_admission')
     if admission is not None:
@@ -173,7 +174,8 @@ def _owner_evidence(owner, snapshot, shared):
         source_checks = {}
         for phase, reply in (('PLAN', plan), ('FINAL', final)):
             request = {**{key: getattr(state, key) for key in ('agent_id', 'session_id', 'snapshot_id')},
-                'phase': phase, 'persona': get_agent_definition(state.agent_id).as_dict(),
+                'phase': phase, 'persona': get_agent_definition(state.agent_id,
+                    decision_group=snapshot.decision_data().get('decision_group', 'CORE_TEN')).as_dict(),
                 'data': phase_data[phase]}
             source_checks[phase] = validate_source_evidence(proofs[phase], request=request,
                 reply=reply, bundle=shared['source_bundle'])
@@ -243,7 +245,8 @@ def _owner_evidence(owner, snapshot, shared):
             'consideration_semantics': 'MODEL_DECLARED_NOT_CAUSAL_FEATURE_INFLUENCE'}
 
 
-def _canonical_card(card, owner, report, snapshot_id, candidate_input_sha256):
+def _canonical_card(card, owner, report, snapshot_id, candidate_input_sha256, *,
+                    source_group='ten_agent_decisions'):
     decision, binding = owner['decision'], card['agent_decision']
     matching = [row for row in decision['selected_options'] if row['option_id'] == binding['option_id']]
     require(len(matching) == 1, 'SELECTED_OWN_OPTION_NOT_UNIQUE')
@@ -267,7 +270,7 @@ def _canonical_card(card, owner, report, snapshot_id, candidate_input_sha256):
         'family_uses': decision.get('family_uses'), 'tool_receipts': decision.get('tool_receipts'),
         'selection_authority': 'OWN_FINAL_DECISION_NO_COORDINATOR_RESELECTION'}
     require(binding == expected and card == {
-        **_materialize(source, 'ten_agent_decisions', report, report.get('team', {})),
+        **_materialize(source, source_group, report, report.get('team', {})),
         'agent_decision': expected}, 'PUBLISHED_OWN_CARD_OR_DECISION_CHANGED')
     return {'status': 'EXACT_OWN_CANONICAL_SOURCE_BOUND', 'option_id': option['option_id'],
             'canonical_source_card_sha256': option['canonical_card_sha256']}
@@ -367,6 +370,67 @@ def _snapshot_links(card, data, sources):
         'historical_pit_or_profit_certification': False}
 
 
+def _companion_evidence_context(report, artifacts, core_snapshot):
+    """Derive the exact fixed pair and reuse original source/decision contracts."""
+    from goal_analysis.agents.profile_decision_runner import source_final_reference
+    from goal_analysis.agents.profile_roster import COMPANION_AGENT_IDS, COMPANION_DECISION_VERSION
+    from goal_analysis.agents.profile_source_access import SourceBundle, build_source_seed
+    from goal_analysis.companion_agents import (
+        pair_snapshot_metadata,
+        restore_companion_snapshot,
+        shared_data_binding,
+        validate_companion_agent_cards,
+    )
+    from goal_analysis.ticket_product_policy import report_contract
+
+    run = report['companion_agent_decisions']
+    require(run == artifacts['companion_agent_decisions']
+            and run.get('version') == COMPANION_DECISION_VERSION
+            and run.get('agent_count') == 2 and run.get('journal_subdirectory') == 'companion-agents'
+            and 'companion_ticket_channels' not in report, 'SAVED_PAIR_RUN_CHANGED')
+    raw_run = {key: value for key, value in run.items()
+               if key not in {'runner_result_sha256', 'shared_data_binding', 'journal_subdirectory'}}
+    require(digest(raw_run) == run.get('runner_result_sha256'), 'SAVED_PAIR_RUNNER_HASH_CHANGED')
+    snapshot = restore_companion_snapshot(core_snapshot, artifacts['companion_agent_snapshot'])
+    binding = shared_data_binding(core_snapshot, snapshot)
+    require(run.get('snapshot_id') == snapshot.snapshot_id and run.get('shared_data_binding') == binding
+            and report.get('companion_agent_snapshot_metadata') == pair_snapshot_metadata(binding),
+            'SAVED_PAIR_SHARED_DATA_CHANGED')
+    owners = run['owners']
+    require(isinstance(owners, list) and [row.get('agent_id') for row in owners] == list(COMPANION_AGENT_IDS),
+            'EXACT_PAIR_SAVED_OWNERS_REQUIRED')
+    require(all(owner.get('status') != 'DECISION_COMPLETED'
+                or owner.get('decision_evidence', {}).get('version') == 'owner-decision-evidence-v3-source-access'
+                for owner in owners), 'PAIR_REQUIRES_NATIVE_SOURCE_PHASES')
+    validate_companion_agent_cards(report)
+    data, view = snapshot.data(), decision_view(snapshot)
+    source_bundle = SourceBundle.from_snapshot(snapshot, view)
+    seed = build_source_seed(snapshot, view)
+    final_shared = final_shared_reference(snapshot, view)
+    source_final = source_final_reference(snapshot, seed)
+    storage = artifacts['companion_agent_source_storage']
+    require(isinstance(storage, dict) and set(storage) == {
+                'version', 'snapshot_id', 'view_sha256', 'bundle_sha256', 'bundle_relative_path'}
+            and storage['version'] == 'companion-source-storage-reference-v1'
+            and storage['snapshot_id'] == snapshot.snapshot_id and storage['view_sha256'] == digest(view)
+            and storage['bundle_relative_path'] == 'companion-agents/source-access/bundle.json'
+            and isinstance(storage['bundle_sha256'], str) and len(storage['bundle_sha256']) == 64
+            and all(c in '0123456789abcdef' for c in storage['bundle_sha256']), 'PAIR_SOURCE_STORAGE_REFERENCE_CHANGED')
+    shared = {'plan_view_sha256': digest(view), 'final_shared': final_shared,
+        'final_shared_sha256': digest(final_shared), 'manifest_sha256': digest(data['source_manifest']),
+        'candidate_input_sha256': digest(artifacts['candidate_input']),
+        'source_bundle': source_bundle, 'source_seed': seed, 'source_seed_sha256': digest(seed),
+        'source_final_shared': source_final, 'source_final_shared_sha256': digest(source_final),
+        'ticket_product_contract': report_contract(report),
+        'states': {state.agent_id: state for state in start_sessions(snapshot,
+            {key: get_agent_definition(key, decision_group='COMPANION_PAIR').method_version
+             for key in COMPANION_AGENT_IDS})}}
+    return snapshot, shared, owners, {'status': 'SAVED_COMPANION_SNAPSHOT_BOUND',
+        'snapshot_id': snapshot.snapshot_id, 'core_snapshot_id': core_snapshot.snapshot_id,
+        'view_sha256': digest(view), 'fixture_count': len(snapshot.fixture_ids),
+        'shared_data_binding': binding, 'source_storage': deepcopy(storage)}
+
+
 def build_ten_agent_ticket_evidence(report, artifacts):
     cards = report.get('generated_tickets')
     require(isinstance(cards, list), 'CANONICAL_GENERATED_COHORT_REQUIRED')
@@ -432,6 +496,25 @@ def build_ten_agent_ticket_evidence(report, artifacts):
     except (KeyError, TypeError, ValueError, AttributeError) as error:
         data = snapshot = shared = source_context = None
         result['snapshot_binding'] = _unknown(str(error), error)
+    pair_snapshot = pair_shared = None
+    pair_owners = []
+    if 'companion_agent_decisions' in report:
+        try:
+            require(snapshot is not None, 'CORE_SNAPSHOT_REQUIRED_FOR_PAIR')
+            pair_snapshot, pair_shared, pair_owners, pair_binding = _companion_evidence_context(
+                report, artifacts, snapshot)
+            result['companion_snapshot_binding'] = pair_binding
+            for owner_index, owner in enumerate(pair_owners):
+                try:
+                    result['owner_checks'][owner['agent_id']] = _owner_evidence(owner, pair_snapshot, pair_shared)
+                    result['owner_checks'][owner['agent_id']].update(
+                        source_location=['companion_agent_decisions', 'owners', owner_index, 'decision_evidence'],
+                        decision_sha256=digest(owner['decision']))
+                except (KeyError, TypeError, ValueError, AttributeError, StopIteration) as error:
+                    result['owner_checks'][owner['agent_id']] = _unknown(str(error), error)
+        except (KeyError, TypeError, ValueError, AttributeError) as error:
+            pair_snapshot = pair_shared = None
+            result['companion_snapshot_binding'] = _unknown(str(error), error)
     legacy_cohort = None
     try:
         from goal_analysis.jobs.ticket_evidence import _build_ticket_evidence
@@ -465,7 +548,13 @@ def build_ten_agent_ticket_evidence(report, artifacts):
             require(snapshot is not None, 'SAVED_SNAPSHOT_NOT_BOUND')
             require(isinstance(card, dict) and isinstance(card.get('ticket_id'), str)
                     and counts[card['ticket_id']] == 1, 'UNIQUE_CANONICAL_TICKET_ID_REQUIRED')
-            if 'channel_id' in card:
+            if 'channel_id' in card and 'companion_agent_decisions' in report:
+                require(pair_snapshot is not None, 'SAVED_COMPANION_SNAPSHOT_NOT_BOUND')
+                owner = next(row for row in pair_owners if row['agent_id'] == card['channel_id'])
+                entry['own_selection'] = _canonical_card(card, owner, report, pair_snapshot.snapshot_id,
+                    pair_shared['candidate_input_sha256'], source_group='companion_agent_decisions')
+                entry['owner_evidence'] = result['owner_checks'][owner['agent_id']]
+            elif 'channel_id' in card:
                 from goal_analysis.companion_tickets import validate_companion_cards
 
                 require(card['ticket_id'] in validate_companion_cards(report), 'COMPANION_BINDING_NOT_FOUND')
@@ -504,6 +593,10 @@ def build_ten_agent_ticket_evidence(report, artifacts):
     if snapshot is None or any(row.get('own_selection', {}).get('status') == 'UNKNOWN'
             or row.get('owner_evidence', {}).get('status') == 'UNKNOWN'
             or 'source_joins' in row for row in result['cards']):
+        result['status'] = 'PARTIAL'
+    if 'companion_agent_decisions' in report and (pair_snapshot is None or any(
+            result['owner_checks'].get(owner['agent_id'], {}).get('status')
+            != 'OWN_REQUEST_REPLY_AND_CONTRACT_BOUND' for owner in pair_owners)):
         result['status'] = 'PARTIAL'
     result['bundle_sha256'] = digest(result)
     return result

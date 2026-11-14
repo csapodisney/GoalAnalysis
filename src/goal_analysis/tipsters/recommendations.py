@@ -340,8 +340,91 @@ def _contrarian_analysis(row, persona, now, *, require_review=True):
     }
 
 
+MILAN_RESEARCH_OWNER = 'tipster_ertek_milan'
+MILAN_RESEARCH_VERSION = 'MILAN_PRICE_HISTORY_UNKNOWN_RESEARCH_V1'
+
+
+def milan_research_contract():
+    """Explicit new-run research authority; historical missing markers stay old."""
+    return {'version': MILAN_RESEARCH_VERSION, 'agent_id': MILAN_RESEARCH_OWNER,
+            'allowed_missing_status': 'INSUFFICIENT_HISTORY',
+            'fallback_kind': 'MODEL_VALUE_RESEARCH_FALLBACK',
+            'complete_contrarian_branch_unchanged': True,
+            'original_model_math_and_rank_unchanged': True,
+            'publication_status': 'DRAFT', 'publication_scope': 'RESEARCH',
+            'playable': False}
+
+
+def validate_milan_research_contract(value):
+    if value is not None and canonical_sha256(value) != canonical_sha256(milan_research_contract()):
+        raise ValueError('UNKNOWN_OR_CHANGED_MILAN_RESEARCH_CONTRACT')
+    return value is not None
+
+
+def _milan_model_value_research(row, persona, now, *, contract=None):
+    """Use admitted model evidence only when the producer has no price baseline.
+
+    The selected raw snapshot binds the annotation; this pure check neither
+    acquires missing history nor turns a known failed price case into a pass.
+    """
+    from goal_analysis.engine.odds_movement import IDENTITY_FIELDS
+    from goal_analysis.engine.odds_movement import VERSION as movement_version
+    from goal_analysis.engine.odds_movement import _verified_quote as verified_movement_quote
+
+    if not validate_milan_research_contract(contract) or persona['profile_id'] != MILAN_RESEARCH_OWNER:
+        return None
+    policy, quote = persona['selection_policy'], row['quote']
+    movement = quote.get('odds_movement')
+    expected_fields = {'policy_version', 'observed_as_of', 'status', 'interpretation', 'identity'}
+    if (not policy.get('contrarian_value') or not isinstance(movement, dict)
+            or set(movement) != expected_fields
+            or movement.get('policy_version') != movement_version
+            or movement.get('status') != 'INSUFFICIENT_HISTORY'
+            or not isinstance(movement.get('interpretation'), str) or not movement['interpretation'].strip()):
+        return None
+    try:
+        as_of = _time(movement['observed_as_of'])
+        if as_of is None or as_of > now:
+            return None
+        identity, price, quoted = verified_movement_quote(quote, as_of)
+        if (movement['identity'] != dict(zip(IDENTITY_FIELDS, identity, strict=True))
+                or not isinstance(quote.get('candidate_id'), str) or not quote['candidate_id']
+                or not re.fullmatch(r'[a-f0-9]{64}', str(quote.get('quote_source_sha256', '')))):
+            return None
+        components, probability = row['components'], row['probability']
+        if (not isinstance(components, dict) or len(components) < policy['min_models']
+                or any(source not in components for source in policy['required_models'])
+                or any(not _number(value) or not 0 <= value <= 1 for value in components.values())):
+            return None
+        total = sum(persona['model_weights'].get(source, 0) for source in components)
+        mean = (sum(persona['model_weights'].get(source, 0) * value for source, value in components.items())
+                / total if total else None)
+        spread = max(components.values()) - min(components.values())
+        if (not _number(probability) or mean is None or not math.isclose(probability, mean, rel_tol=1e-9)
+                or probability < policy['min_probability'] - 1e-12 or spread > policy['max_model_spread']
+                or probability * price - 1 < policy['min_edge'] - 1e-12
+                or probability * price <= policy['contrarian_min_expected_return']):
+            return None
+    except (KeyError, TypeError, ValueError, OverflowError):
+        return None
+    return {'kind': 'MODEL_VALUE_RESEARCH_FALLBACK', 'contract_version': MILAN_RESEARCH_VERSION,
+            'source_candidate_id': quote['candidate_id'],
+            'source_movement_sha256': canonical_sha256(movement),
+            'source_quote_sha256': quote['quote_source_sha256'],
+            'price_history_status': 'UNKNOWN', 'price_history_reason': 'INSUFFICIENT_HISTORY',
+            'baseline_price': None, 'relative_change': None, 'price_change_cause': None,
+            'current_price': price, 'current_source_clock': quoted.isoformat(),
+            'movement_evaluation_as_of': as_of.isoformat(),
+            'model_probability': probability, 'supporting_models': deepcopy(components),
+            'expected_return': probability * price, 'estimated_edge': probability * price - 1,
+            'minimum_expected_return_exclusive': policy['contrarian_min_expected_return'],
+            'retail_sentiment_inferred': False, 'calibrated_probability': False,
+            'profit_status': 'UNKNOWN', 'publication_status': 'DRAFT', 'playable': False}
+
+
 def _ranked(base, persona, now, *, require_contrarian_review=True, propose_soft_veto=False,
-            rejections=None):
+            rejections=None, milan_research_policy=None):
+    validate_milan_research_contract(milan_research_policy)
     policy = persona["selection_policy"]
     output = []
     for row in base:
@@ -395,7 +478,10 @@ def _ranked(base, persona, now, *, require_contrarian_review=True, propose_soft_
             continue
         case = _contrarian_analysis({**row, "probability": probability, "components": components},
                                     persona, now, require_review=require_contrarian_review)
-        if case is None:
+        research = (_milan_model_value_research(
+            {**row, "probability": probability, "components": components}, persona, now,
+            contract=milan_research_policy) if case is None else None)
+        if case is None and research is None:
             if rejections is not None:
                 rejections[row['quote']['candidate_id']] = 'REQUIRED_PRICE_MOVEMENT_OR_VALUE_CASE_UNKNOWN'
             continue
@@ -430,7 +516,8 @@ def _ranked(base, persona, now, *, require_contrarian_review=True, propose_soft_
                        "market_disagreement": market_disagreement,
                        "score_terms": terms, "score": normalize_score(sum(terms.values())),
                        "normalized_components": components_normalized, "score_scale": scale,
-                       "contrarian_analysis": case, "veto_override": override})
+                       "contrarian_analysis": case, "veto_override": override,
+                       **({"model_value_research": research} if research is not None else {})})
     return sorted(output, key=lambda row: (-row["score"], row["quote"]["candidate_id"]))
 
 
@@ -601,6 +688,8 @@ def _leg(row, persona, now, enriched=None):
     leg.update(quote_metadata(quote.get("quote_timestamp_raw", quote.get("quoted_at")), now))
     if row.get("contrarian_analysis"):
         leg["contrarian_analysis"] = deepcopy(row["contrarian_analysis"])
+    if row.get("model_value_research"):
+        leg["model_value_research"] = deepcopy(row["model_value_research"])
     if row.get("veto_override"):
         leg["veto_override"] = {
             **deepcopy(row["veto_override"]), "profile_upper_price": persona["target_odds_band"]["max"],
@@ -814,7 +903,8 @@ def _history_option_support(row, enriched, target, settings, now, *, persona=Non
     return support if support >= minimum or allowed else None
 
 
-def _diversity_template(item, rows, persona, target, now, history_support, enriched=None):
+def _diversity_template(item, rows, persona, target, now, history_support, enriched=None,
+                        milan_research_policy=None):
     """A complete, detached ticket; allocation belongs to the coordinator."""
     result = deepcopy(item)
     legs = [_leg(row, persona, now, enriched) for row in rows]
@@ -822,6 +912,12 @@ def _diversity_template(item, rows, persona, target, now, history_support, enric
                   combined_price=math.prod(leg["decimal_price"] for leg in legs),
                   bookmaker=legs[0]["bookmaker"])
     result["quality_warnings"] = result["quality_warnings"][:3]
+    if any(leg.get("model_value_research") for leg in legs):
+        result.update(status="DRAFT", publication_scope="RESEARCH", playable=False,
+                      milan_price_history_research_contract=deepcopy(milan_research_policy))
+        result["quality_warnings"].append("PRICE_HISTORY_UNKNOWN_MODEL_VALUE_RESEARCH_ONLY")
+    else:
+        result.pop("milan_price_history_research_contract", None)
     if any(leg["model_probability"] is None for leg in legs):
         result["quality_warnings"].append(
             "Egyes választások csak leíró történeti bizonyítékon alapulnak; modellvalószínűségük ismeretlen.")
@@ -862,7 +958,7 @@ def _positive_support(row):
 def build_tipster_recommendations(
     enriched: dict, model_results: dict, settings: dict, now: datetime,
     *, diversity_options: dict | None = None, support_guard_mode: str = "LIVE",
-    option_search_mode: str = "SHADOW", ticket_product_contract=None,
+    option_search_mode: str = "SHADOW", ticket_product_contract=None, milan_research_policy=None,
 ) -> list:
     """Build paper cards; SHADOW compares the existing alternative support gate.
 
@@ -873,6 +969,8 @@ def build_tipster_recommendations(
     """
     if now.tzinfo is None or now.utcoffset() is None:
         raise ValueError("now must include a timezone")
+    if validate_milan_research_contract(milan_research_policy) and ticket_product_contract is None:
+        raise ValueError("MILAN_RESEARCH_REQUIRES_CURRENT_PRODUCT_CONTRACT")
     if support_guard_mode not in {"SHADOW", "LIVE"}:
         raise ValueError("support_guard_mode must be SHADOW or LIVE")
     if option_search_mode not in {"SHADOW", "OFF", "ACTIVE"}:
@@ -896,7 +994,8 @@ def build_tipster_recommendations(
         if profile not in enabled:
             continue
         rejections = {} if current else None
-        ranked = _ranked(base, persona, now, rejections=rejections)
+        ranked = _ranked(base, persona, now, rejections=rejections,
+                         milan_research_policy=milan_research_policy)
         supported = [row for row in ranked if _positive_support(row)]
         excluded = [row["quote"]["candidate_id"] for row in ranked if not _positive_support(row)]
         preferred = [name for name in enriched.get("preferred_bookmakers", []) if isinstance(name, str)]
@@ -1013,6 +1112,10 @@ def build_tipster_recommendations(
                 "Az ár időbélyege tájékoztató, soha nem kizáró feltétel. Nincs automatikus fogadás.",
             ],
         }
+        if any(leg.get("model_value_research") for leg in legs):
+            item.update(status="DRAFT", publication_scope="RESEARCH", playable=False,
+                        milan_price_history_research_contract=deepcopy(milan_research_policy))
+            item["quality_warnings"].append("PRICE_HISTORY_UNKNOWN_MODEL_VALUE_RESEARCH_ONLY")
         if ticket_product_contract is not None:
             item['ticket_product_contract'] = deepcopy(ticket_product_contract)
         if legs:
@@ -1084,7 +1187,7 @@ def build_tipster_recommendations(
                 supports = [history_support[row["quote"]["candidate_id"]] for row in rows]
                 support = min((value for value in supports if value is not None), default=None)
                 recommendation = _diversity_template(item, rows, persona, target, now, support,
-                                                    enriched if current else None)
+                                                    enriched if current else None, milan_research_policy)
                 recommendation["selection_diagnostics"]["alternative_search"] = option_search
                 if alternative_active is not None:
                     recommendation["selection_diagnostics"]["alternative_search_active"] = alternative_active

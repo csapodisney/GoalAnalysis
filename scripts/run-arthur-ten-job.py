@@ -220,7 +220,7 @@ def verify_saved(day, before):
     repository = SavedWorkshop(ROOT)
     report = repository.report(run_id=run_id)
     path = ROOT / 'reports/arthur' / run_id / 'report.json'
-    require(path.is_file() and not path.is_symlink() and path.stat().st_size <= 64 * 1024 * 1024,
+    require(path.is_file() and not path.is_symlink() and path.stat().st_size <= 128 * 1024 * 1024,
             'BOUNDED_NEW_PHYSICAL_REPORT_REQUIRED')
     raw = path.read_bytes()
     require(json.loads(raw) == report and report['date'] == day,
@@ -230,10 +230,15 @@ def verify_saved(day, before):
     cards = report['generated_tickets']
     require(isinstance(cards, list) and len(cards) <= 32
             and len({card['ticket_id'] for card in cards}) == len(cards), 'CANONICAL_CARD_CAPACITY_AND_IDENTITIES')
-    require(isinstance(report.get('companion_ticket_channels'), dict), 'TWELVE_SLOT_REPORT_MARKER_REQUIRED')
-    from goal_analysis.companion_tickets import validate_companion_cards
+    if 'companion_agent_decisions' in report:
+        from goal_analysis.companion_agents import validate_companion_agent_cards
 
-    validate_companion_cards(report)  # Saved product validation only, no producer execution.
+        validate_companion_agent_cards(report)
+    else:
+        require(isinstance(report.get('companion_ticket_channels'), dict), 'TWELVE_SLOT_REPORT_MARKER_REQUIRED')
+        from goal_analysis.companion_tickets import validate_companion_cards
+
+        validate_companion_cards(report)  # Historical saved products; no producer execution.
     capacity = main_slot_capacity(report)
     require(not capacity['invalid_card_ids'] and not capacity['identity_issues'],
             'EXACT_CURRENT_AGENT_AND_COMPANION_IDENTITIES_REQUIRED')
@@ -249,6 +254,11 @@ def verify_saved(day, before):
             'SAVED_COHORT_EVIDENCE_BINDING_REQUIRED')
     owners = report['ten_agent_decisions']['owners']
     require(len(owners) == 10 and {row['agent_id'] for row in owners} == set(AGENT_IDS), 'ALL_TEN_OUTCOMES_REQUIRED')
+    if 'companion_agent_decisions' in report:
+        pair = report['companion_agent_decisions']['owners']
+        require(len(pair) == 2 and {row['agent_id'] for row in pair}
+                == {'daily_portfolio', 'legacy_daily223'}, 'EXACT_TWO_INDEPENDENT_COMPANION_OUTCOMES_REQUIRED')
+        owners = [*owners, *pair]
     complete = evidence.get('status') == 'COMPLETE' and all(
         row.get('status') == 'DECISION_COMPLETED' for row in owners)
     return {'run_id': run_id, 'generated_ticket_count': len(cards), 'target_met': capacity['target_met'],

@@ -92,6 +92,18 @@ def _publication_sources(report: Mapping[str, Any]) -> list:
 
 
 def _agent_variant_keys(report: Mapping[str, Any]) -> dict[str, str] | None:
+    if 'companion_agent_decisions' in report:
+        if 'companion_ticket_channels' in report:
+            raise ValueError('MIXED_COMPANION_GENERATIONS_FORBIDDEN')
+        from goal_analysis.companion_agents import validate_companion_agent_cards
+
+        pair = validate_companion_agent_cards(report)
+        core = {**report, 'generated_tickets': [row for row in _publication_sources(report)
+                                             if 'channel_id' not in row]}
+        own = _ten_agent_variant_keys(core)
+        if own is None or set(own) & set(pair):
+            raise ValueError('UNBOUND_OR_DUPLICATE_COMPANION_AGENT_TICKET')
+        return {**own, **pair}
     if 'companion_ticket_channels' not in report:
         if any('channel_id' in row for row in _publication_sources(report)):
             raise ValueError('COMPANION_MARKER_REQUIRED')
@@ -427,7 +439,7 @@ class PortfolioLedger(RecommendationLedger):
         if not isinstance(tickets, list):
             raise ValueError("tickets must be a list")  # noqa: TRY004 - API validation contract.
         if generated:
-            companion_count = sum("channel_id" in item for item in tickets) if "companion_ticket_channels" in report else 0
+            companion_count = sum("channel_id" in item for item in tickets) if ("companion_ticket_channels" in report or "companion_agent_decisions" in report) else 0
             if len(tickets) - companion_count > self.max_generated_tickets or companion_count > 2:
                 raise ValueError("Generated ticket capacity exceeded")
             if any(not isinstance(ticket, Mapping) for ticket in tickets):
@@ -528,7 +540,7 @@ class PortfolioLedger(RecommendationLedger):
                     enumerate(tickets),
                     key=lambda x: (x[1]["profile_id"].upper() != "DAILY_223", x[0]),
                 )
-                companion_mode = "companion_ticket_channels" in report
+                companion_mode = "companion_ticket_channels" in report or "companion_agent_decisions" in report
                 if companion_mode:
                     agent_slots = max(0, self.max_generated_tickets - sum(
                         "channel_id" not in json.loads(row[1]) for row in locked))

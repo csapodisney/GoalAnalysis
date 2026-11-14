@@ -9,7 +9,8 @@ from goal_analysis.jobs.agent_snapshot import SharedSnapshot, digest, json_text,
 
 VIEW_VERSION = 'ten-agent-readable-decision-tables-v3'
 FINAL_REQUEST_PROJECTION = 'FINAL_EXACT_SUBTREES_V1'
-SOURCE_DETAILS_POLICY = 'READ_DATA_EXACT_ROWS_V1'
+SOURCE_DETAILS_POLICY_V1 = 'READ_DATA_EXACT_ROWS_V1'
+SOURCE_DETAILS_POLICY = 'READ_DATA_EXACT_SELECTED_CONTEXT_V2'
 
 
 NEWS_COVERAGE_REQUEST_PROJECTION = 'REQUEST_NEWS_COVERAGE_TABLE_V1'
@@ -602,13 +603,16 @@ def _source_candidate_id(leg, owner_id):
 
 
 def final_option_details(snapshot: SharedSnapshot, owner_id: str, options: list[dict], *,
-                         source_access: bool = False) -> dict:
+                         source_access: bool = False, source_policy: str | None = None) -> dict:
     """Readable facts for this owner's already proposed options, without reselection.
 
     PLAN used the entire day. This expansion is never a shared candidate filter.
     Its payload still passes the runner's unchanged FINAL character limit.
     """
     require(type(source_access) is bool, 'SOURCE_ACCESS_FLAG_MUST_BE_BOOLEAN')
+    require(source_policy is None or source_access, 'SOURCE_POLICY_REQUIRES_SOURCE_ACCESS')
+    policy = SOURCE_DETAILS_POLICY if source_policy is None else source_policy
+    require(policy in {SOURCE_DETAILS_POLICY_V1, SOURCE_DETAILS_POLICY}, 'UNKNOWN_SOURCE_DETAILS_POLICY')
     original = snapshot.data()
     require(owner_id in original['owner_ids'] and isinstance(options, list)
             and all(isinstance(option, dict) and option.get('agent_id') == owner_id
@@ -687,7 +691,7 @@ def final_option_details(snapshot: SharedSnapshot, owner_id: str, options: list[
 
     if source_access:
         def row_reference(row, path):
-            return {'format': SOURCE_DETAILS_POLICY, 'candidate_id': row['candidate_id'],
+            return {'format': policy, 'candidate_id': row['candidate_id'],
                 **({'fixture_id': deepcopy(row['fixture_id'])} if 'fixture_id' in row else {}),
                 'namespace': 'raw', 'path': path,
                 'source_value_sha256': digest(row), 'total_chars': len(json_text(row))}
@@ -708,9 +712,46 @@ def final_option_details(snapshot: SharedSnapshot, owner_id: str, options: list[
         result['source_candidates_by_producer'] = selected_candidates
         result['history_features_by_producer'] = selected_history
         result['source_details_policy'] = {
-            'version': SOURCE_DETAILS_POLICY,
+            'version': policy,
             'instructions': 'These two producer groups contain exact original raw-row locators, not inline row values. Use read_data with this namespace/path, your current agent/session/snapshot/phase identity, mode=text, offset=0 and bounded limit; follow next_offset until complete. Verify source_value_sha256 and total_chars. Original UNKNOWN values, clocks and full historical membership remain in the immutable raw bundle. Read any detail you need before relying on it. A locator is availability, not proof that the row was read or influenced your choice.',
             'raw_rows_preserved_in_shared_bundle': True, 'all_raw_rows_read_by_host': False}
+        if policy == SOURCE_DETAILS_POLICY:
+            def context_reference(value, path, fixture_id):
+                return {'format': policy, 'namespace': 'raw', 'path': path,
+                    'fixture_id': fixture_id, 'source_value_sha256': digest(value),
+                    'total_chars': len(json_text(value))}
+
+            for family, context in contexts.items():
+                value = original['families'][family]['value']
+                selected = {}
+                if isinstance(value, dict):
+                    for key in ('categories', 'by_fixture'):
+                        if isinstance(value.get(key), dict):
+                            selected[key] = {fixture: context_reference(row,
+                                ['families', family, 'value', key, fixture], fixture)
+                                for fixture, row in value[key].items() if fixture in fixture_ids}
+                    if isinstance(value.get('fixtures'), list):
+                        selected['fixtures'] = [context_reference(row,
+                            ['families', family, 'value', 'fixtures', index], row['fixture_id'])
+                            for index, row in enumerate(value['fixtures'])
+                            if isinstance(row, dict) and row.get('fixture_id') in fixture_ids]
+                context['selected_fixture_values'] = selected
+            result['model_probabilities'] = {key: {
+                **context_reference(row, ['model_probabilities', key], row['fixture_id']),
+                **{name: deepcopy(row[name]) for name in ('model_id', 'market', 'outcome', 'value')}}
+                for key, row in original['model_probabilities'].items() if row['fixture_id'] in fixture_ids}
+            result['source_details_policy']['instructions'] = (
+                'The two producer groups, four selected fixture-context groups and model probability '
+                'records contain exact original raw-record locators. The displayed model probability '
+                'value and identity are unchanged. Use existing read_data with namespace/path, your '
+                'current agent/session/snapshot/phase, mode=text, offset=0 and bounded limit; follow '
+                'next_offset until complete. Verify source_value_sha256 and total_chars. Replacing '
+                'only these declared locator positions with the full raw value restores every '
+                'selected record in original order, including duplicate rows, UNKNOWN, nulls, '
+                'clocks and source provenance. Family status/hash remain the original envelope. '
+                'Availability is not proof of a read or causal use; read details before relying on '
+                'them. Original options, prices, probabilities, tool results and raw journals '
+                'are unchanged. No source-read, call or response budget is increased.')
     return result
 
 

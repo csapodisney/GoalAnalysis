@@ -45,9 +45,10 @@ def make_normal_agent_executor(root, settings, *, clock, stop_requested=lambda: 
 
     return NormalAgentExecutor(host=CodexDecisionHost(reviewer_factory),
         journal_root=root / 'data/arthur/agent-decisions', clock=clock,
-        stop_requested=stop_requested, timeout_seconds=4800, owner_deadline_at=owner_deadline_at,
-        enable_source_access=True, enable_companion_channels=True,
+        stop_requested=stop_requested, timeout_seconds=6000, owner_deadline_at=owner_deadline_at,
+        enable_source_access=True, enable_companion_channels=False, enable_companion_agents=True,
         enable_ticket_product_contract=True, enable_grouped_fixture_reviews=True, enable_full_day_odds=True,
+        enable_milan_unknown_price_research=True,
         news_reader=lambda **kwargs: read_current_news(root / 'data/goal_analysis.sqlite3', **kwargs),
         news_producer=news_producer if ai.get('web_search') is True else None)
 
@@ -66,10 +67,22 @@ class NormalAgentExecutor:
                  timeout_seconds=3600, enable_source_access=False, pilot_agent_id=None,
                  enable_companion_channels=False, enable_ticket_product_contract=False,
                  enable_grouped_fixture_reviews=False, enable_full_day_odds=False,
-                 owner_deadline_at=None):
+                 owner_deadline_at=None, enable_companion_agents=False,
+                 enable_milan_unknown_price_research=False):
         require(callable(host) and callable(clock), 'EXPLICIT_HOST_AND_CLOCK_REQUIRED')
+        require(type(enable_companion_agents) is bool, 'EXPLICIT_COMPANION_AGENT_MODE_REQUIRED')
+        require(not enable_companion_agents or not enable_companion_channels and pilot_agent_id is None,
+                'PAIR_AGENTS_CANNOT_USE_PROTECTED_COMPANIONS_OR_PILOT')
+        require(not enable_companion_agents or enable_ticket_product_contract,
+                'PAIR_AGENTS_REQUIRE_CURRENT_PRODUCT_CONTRACT')
+        self.enable_companion_agents = enable_companion_agents
+        require(type(enable_milan_unknown_price_research) is bool, 'EXPLICIT_MILAN_RESEARCH_MODE_REQUIRED')
+        require(not enable_milan_unknown_price_research or enable_companion_agents
+                and enable_ticket_product_contract, 'MILAN_RESEARCH_REQUIRES_NEW_PAIRED_PRODUCT_MODE')
+        self.enable_milan_unknown_price_research = enable_milan_unknown_price_research
         require(type(timeout_seconds) is int
-                and 0 < timeout_seconds <= (4800 if enable_source_access is True else 3600),
+                and 0 < timeout_seconds <= (6000 if enable_companion_agents else
+                    4800 if enable_source_access is True else 3600),
                 'FINITE_NORMAL_AGENT_DEADLINE_REQUIRED')
         require(owner_deadline_at is None or (isinstance(owner_deadline_at, datetime)
                 and owner_deadline_at.tzinfo is not None
@@ -176,7 +189,8 @@ class NormalAgentExecutor:
                 'CURRENT_NEWS_CLOCK_REQUIRED_BEFORE_HOST')
         write_once('fresh-news.claim.json', {'run_id': run_id, 'target_date': target_date.isoformat(),
             'fixture_ids': full_ids, 'fixture_input_sha256': digest(fixtures),
-            'started_at': started.isoformat(), 'maximum_attempts': 1, 'owner_request_budget': self.max_requests,
+            'started_at': started.isoformat(), 'maximum_attempts': 1,
+            'owner_request_budget': self.max_requests + (4 if self.enable_companion_agents else 0),
             'separate_shared_research_request_budget': 1})
         unknown = [{'fixture_id': key, 'topic': topic, 'status': 'UNKNOWN'} for key in full_ids for topic in TOPICS]
         try:
@@ -282,6 +296,10 @@ class NormalAgentExecutor:
             from goal_analysis.ticket_product_policy import product_contract
 
             report['ticket_product_contract'] = product_contract()
+        if self.enable_milan_unknown_price_research:
+            from goal_analysis.tipsters.recommendations import milan_research_contract
+
+            report['milan_price_history_research_contract'] = milan_research_contract()
         journal = DecisionJournal(self.journal_root / run_id, snapshot)
         journal.write_once('shared-data.json', snapshot.data())
         journal.write_once('descriptive-history-input.json', historical_view)
@@ -308,6 +326,63 @@ class NormalAgentExecutor:
                 'owner_stop_at_utc': budget.deadline.isoformat(),
                 'outer_reserved_stop_at_utc': self.owner_deadline_at.isoformat(),
                 'local_owner_seconds': self.timeout_seconds, 'unstarted_owners_are_not_abstentions': True}
+        pair_result = pair_metadata = None
+        if self.enable_companion_agents:
+            from goal_analysis.companion_agents import (
+                JOURNAL_SUBDIRECTORY,
+                pair_snapshot_metadata,
+                shared_data_binding,
+                snapshot_reference,
+            )
+            from goal_analysis.jobs.agent_snapshot import companion_snapshot
+
+            pair_snapshot = companion_snapshot(snapshot)
+            shared = shared_data_binding(snapshot, pair_snapshot)
+            reference = snapshot_reference(pair_snapshot, shared)
+            pair_metadata = pair_snapshot_metadata(shared)
+            pair_journal = DecisionJournal(journal.directory / JOURNAL_SUBDIRECTORY, pair_snapshot)
+            pair_journal.write_once('shared-data-reference.json', reference)
+            pair_journal.write_once('descriptive-history-input.json', historical_view)
+            pair_bundle, pair_scope_args = (self._stage_source_access(pair_journal, pair_snapshot)
+                                            if self.enable_source_access else (None, None))
+            pair_tools = ProfileToolService(pair_snapshot, artifacts=artifacts,
+                historical_evaluations=history, historical_view=historical_view)
+            pair_builder = build_agent_option_builder(report, artifacts, enriched, club_enriched,
+                settings, as_of, decision_group='COMPANION_PAIR')
+
+            def pair_host(request, *, timeout):
+                require(request['agent_id'] not in blocked, 'OWNER_PAUSED_BY_TEAM_POLICY')
+                if self.enable_source_access:
+                    from goal_analysis.agents.profile_source_host import SourceAccessScope
+
+                    binding = {key: request[key] for key in ('agent_id', 'session_id', 'snapshot_id', 'phase')}
+                    return self.host(request, timeout=timeout, source_access=SourceAccessScope(
+                        **pair_scope_args, binding=binding))
+                return self.host(request, timeout=timeout)
+
+            pair_budget = DecisionBudget(4, budget.deadline, clock=self.clock,
+                stop_requested=self.stop_requested, skip_expired_owners=True, decision_group='COMPANION_PAIR')
+            pair_result = ProfileDecisionRunner(host=pair_host, tools=pair_tools, option_builder=pair_builder,
+                journal=pair_journal, source_bundle=pair_bundle,
+                grouped_fixture_reviews=self.enable_grouped_fixture_reviews, budget=pair_budget,
+                decision_group='COMPANION_PAIR').run(pair_snapshot)
+            pair_result.update(runner_result_sha256=digest(pair_result),
+                               shared_data_binding=shared, journal_subdirectory=JOURNAL_SUBDIRECTORY)
+            pair_journal.write_once('companion-agent-decisions.json', pair_result)
+            artifacts['companion_agent_snapshot'] = reference
+            artifacts['companion_agent_decisions'] = deepcopy(pair_result)
+            if pair_bundle is not None:
+                artifacts['companion_agent_source_storage'] = {
+                    'version': 'companion-source-storage-reference-v1', 'snapshot_id': pair_snapshot.snapshot_id,
+                    'view_sha256': pair_bundle.view_sha256, 'bundle_sha256': pair_scope_args['bundle_sha256'],
+                    'bundle_relative_path': JOURNAL_SUBDIRECTORY + '/source-access/bundle.json'}
+            report['independent_owner_composition'] = {
+                'version': 'fixed-core-ten-plus-independent-pair-v1',
+                'execution_order': ['COMPANION_PAIR', 'CORE_TEN'],
+                'core_owner_request_budget': self.max_requests, 'pair_owner_request_budget': 4,
+                'maximum_owner_requests': self.max_requests + 4, 'maximum_concurrent_owners': 2,
+                'shared_owner_stop_at_utc': budget.deadline.isoformat(),
+                'pair_deadline_resets_core_clock': False, 'protected_constructor_publication': False}
         result = ProfileDecisionRunner(host=owner_host, tools=tools, option_builder=builder,
             journal=journal, source_bundle=source_bundle,
             grouped_fixture_reviews=self.enable_grouped_fixture_reviews, budget=budget).run(snapshot,
@@ -321,7 +396,14 @@ class NormalAgentExecutor:
             report['diagnostics'].append('A pilot nem adott saját szelvényválasztást; a többi agent nem indult el.')
         else:
             publish_agent_decisions(report, result, settings, self.clock(), team_plan=team_plan)
-        usages = [value for owner in result['owners'] for value in owner.get('observed_host_usage', [])]
+        if pair_result is not None:
+            from goal_analysis.companion_agents import append_companion_agent_cards
+
+            report['companion_agent_decisions'] = deepcopy(pair_result)
+            report['companion_agent_snapshot_metadata'] = pair_metadata
+            append_companion_agent_cards(report)
+        all_outcomes = result['owners'] + (pair_result['owners'] if pair_result is not None else [])
+        usages = [value for owner in all_outcomes for value in owner.get('observed_host_usage', [])]
         owner_usages = deepcopy(usages)
         if fresh_news is not None:
             usages.append(fresh_news.get('usage', {}))
@@ -332,7 +414,8 @@ class NormalAgentExecutor:
         known_requests = sum(value['requests'] for value in usages if isinstance(value, dict)
                              and type(value.get('requests')) is int)
         usage = {'requests': known_requests if complete_requests else None,
-            'known_requests': known_requests, 'host_requests_reserved': result['host_requests_reserved'],
+            'known_requests': known_requests, 'host_requests_reserved': result['host_requests_reserved']
+                + (pair_result['host_requests_reserved'] if pair_result is not None else 0),
             'cost_amount': None, 'cost_currency': 'USD', 'usage_complete': complete_usage}
         for field in ('input_tokens', 'output_tokens', 'total_tokens', 'cached_tokens', 'reasoning_tokens'):
             known = [value[field] for value in usages if isinstance(value, dict)
@@ -340,12 +423,20 @@ class NormalAgentExecutor:
             usage[field] = sum(known) if usages and len(known) == len(usages) else None
         if fresh_news is not None:
             usage.update(owner_phase_usage=owner_usages, shared_news_usage=fresh_news.get('usage', {}),
-                         owner_request_budget=self.max_requests, shared_news_request_budget=1,
-                         maximum_combined_requests=self.max_requests + 1)
-        report['astra'] = {'status': 'COMPLETE' if result['status'] == 'COMPLETE' else 'PARTIAL',
+                          owner_request_budget=self.max_requests + (4 if pair_result is not None else 0),
+                          shared_news_request_budget=1,
+                          maximum_combined_requests=self.max_requests + (5 if pair_result is not None else 1))
+        report['astra'] = {'status': 'COMPLETE' if result['status'] == 'COMPLETE'
+            and (pair_result is None or pair_result['status'] == 'COMPLETE') else 'PARTIAL',
             'mode': 'TEN_INDEPENDENT_OWNER_DECISIONS', 'reviews': [], 'usage': usage,
             'message': 'Tíz külön döntési út; a hiányzó vagy félbeszakadt eredmények agentenként láthatók.',
             'legacy_candidate_review_performed': False}
+        if pair_result is not None:
+            usage.update(owner_request_budget=self.max_requests + 4,
+                         shared_news_request_budget=1 if fresh_news is not None else 0,
+                         maximum_combined_requests=self.max_requests + (5 if fresh_news is not None else 4))
+            report['astra'].update(mode='TWELVE_INDEPENDENT_OWNER_DECISIONS',
+                message='Tizenkét külön döntési út; a hiányzó vagy félbeszakadt eredmények agentenként láthatók.')
         report['usage'] = {**deepcopy(artifacts.get('report', {}).get('usage', {})),
                            'openai': usage, 'llm_calls': usage['requests']}
         if result.get('unattempted_agent_ids'):

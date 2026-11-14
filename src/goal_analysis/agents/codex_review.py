@@ -536,6 +536,7 @@ class CodexReviewer(AstraReviewer):
     def request_profile_decision(self, request, *, timeout, source_access=None):
         """One supplied-data owner action on the same existing host and limits."""
         from goal_analysis.agents.profile_decision_runner import (
+            bound_final_family_states,
             bound_fixture_review_contract,
             profile_response_schema,
         )
@@ -552,6 +553,7 @@ class CodexReviewer(AstraReviewer):
         if source_access is not None and not isinstance(source_access, SourceAccessScope):
             raise _ReviewError('Private typed source capability required')
         review_contract = bound_fixture_review_contract(request)
+        family_states = bound_final_family_states(request)
         source_preparation_started = time.monotonic()
         try:
             prepared_source = source_access.prepare(request) if source_access is not None else None
@@ -696,13 +698,28 @@ class CodexReviewer(AstraReviewer):
                 'Keep both actual tool interpretations, exact family hashes and all source-proof '
                 'requirements unchanged; no new tool or model call is requested by this policy.'
             )
+        if family_states is not None:
+            instructions += (
+                '\nFINAL_SOURCE_FAMILY_STATES_V1: family_uses.status describes the immutable '
+                'data.snapshot.families state, not merely that you considered a family. '
+                'An UNKNOWN family must use MISSING or honestly UNUSABLE_FOR_THIS_METHOD; '
+                'STALE stays STALE and CONFLICTING stays CONFLICTING, with the same unusable option. '
+                'Only an AVAILABLE source family can use AVAILABLE_AND_CONSIDERED or '
+                'AVAILABLE_NOT_RELEVANT. Copy its exact value_sha256. A later own tool result '
+                'has its separate status and interpretation; it never upgrades or replaces the '
+                'snapshot family state or hash. AVAILABLE family envelopes may contain locally '
+                'UNKNOWN fixture facts: state those gaps as risk, never invent support, weights '
+                'or probabilities. MISSING or UNKNOWN alone does not veto an otherwise legal '
+                'admitted own research option. Keep the full twelve-family coverage and all '
+                'existing selected-fact, price, identity, kickoff, own-model and product guards.'
+            )
         usage = _usage()
         usage['_profile_token_fields_observed'] = []
         try:
             response = self._request({
                 'instructions': instructions, 'input': supplied,
                 'text': {'format': {'schema': profile_response_schema(request['phase'],
-                    fixture_review_contract=review_contract)}},
+                    fixture_review_contract=review_contract, family_states=family_states)}},
                 '_arthur_profile_timeout': float(timeout),
                 **({'_arthur_profile_source': prepared_source} if prepared_source is not None else {}),
             }, usage)

@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 from datetime import date, datetime
 from typing import Any
 
-from goal_analysis.agents.profile_roster import AGENT_COUNT, AGENT_IDS
+from goal_analysis.agents.profile_roster import AGENT_COUNT, AGENT_IDS, agents_for_group
 
 OWNER_IDS = AGENT_IDS
 FAMILIES = (
@@ -85,7 +85,18 @@ class SharedSnapshot:
         require(isinstance(self.payload_json, str), 'IMMUTABLE_JSON_STRING_REQUIRED')
         data = json.loads(self.payload_json)
         require(digest(data) == self.snapshot_id, 'SNAPSHOT_HASH_MISMATCH')
+        group = data.get('decision_group', 'CORE_TEN')
+        agents_for_group(group)
+        if group == 'COMPANION_PAIR':
+            require(data.get('version') == 'agent-snapshot-contract-v1-companion-pair'
+                    and data.get('owner_ids') == [row.agent_id for row in agents_for_group(group)],
+                    'EXACT_COMPANION_PAIR_SNAPSHOT_REQUIRED')
+        else:
+            require(data.get('version') != 'agent-snapshot-contract-v1-companion-pair',
+                    'EXPLICIT_COMPANION_GROUP_REQUIRED')
         decision = {key: data[key] for key in ('owner_ids', 'fixture_ids', 'as_of', 'model_probabilities')}
+        if group == 'COMPANION_PAIR':
+            decision['decision_group'] = group
         decision['families'] = {name: {key: value[key] for key in ('status', 'value_sha256')}
                                 for name, value in data['families'].items()}
         object.__setattr__(self, '_decision_json', json_text(decision))
@@ -108,7 +119,7 @@ def build_snapshot(*, run_id: str, target_date: str, as_of: str,
                    authoritative_fixture_ids, calendar_receipt: dict, fixtures,
                    family_values: dict, source_manifest: dict,
                    model_probabilities: dict | None = None,
-                   owner_ids=OWNER_IDS) -> SharedSnapshot:
+                   owner_ids=None, decision_group='CORE_TEN') -> SharedSnapshot:
     """The authoritative ID argument comes from the full collector, never its shortlist.
 
     This pure contract compares three inputs; it cannot authenticate their producer.
@@ -118,8 +129,12 @@ def build_snapshot(*, run_id: str, target_date: str, as_of: str,
     require(date.fromisoformat(target_date).isoformat() == target_date, 'ISO_TARGET_DATE_REQUIRED')
     stamp = datetime.fromisoformat(as_of)
     require(stamp.tzinfo is not None and stamp.utcoffset() is not None, 'AWARE_CUTOFF_REQUIRED')
-    owners = identifiers(owner_ids)
-    require(len(owners) == AGENT_COUNT and set(owners) == set(OWNER_IDS), 'EXACT_TEN_OWNERS_REQUIRED')
+    expected = tuple(row.agent_id for row in agents_for_group(decision_group))
+    owners = identifiers(expected if owner_ids is None else owner_ids)
+    if decision_group == 'CORE_TEN':
+        require(len(owners) == AGENT_COUNT and set(owners) == set(OWNER_IDS), 'EXACT_TEN_OWNERS_REQUIRED')
+    else:
+        require(owners == expected, 'EXACT_COMPANION_PAIR_OWNERS_REQUIRED')
     complete_ids = identifiers(authoritative_fixture_ids)
     require(isinstance(calendar_receipt, dict)
             and calendar_receipt.get('target_date') == target_date
@@ -148,8 +163,22 @@ def build_snapshot(*, run_id: str, target_date: str, as_of: str,
         'fixture_ids': list(complete_ids), 'calendar_receipt': calendar_receipt,
         'families': families, 'source_manifest': source_manifest,
         'model_probabilities': probabilities, 'execution_evidence': 'NOT_ESTABLISHED_BY_METADATA'}
+    if decision_group == 'COMPANION_PAIR':
+        payload.update(version='agent-snapshot-contract-v1-companion-pair', decision_group=decision_group)
     encoded = json_text(payload)
     return SharedSnapshot(digest(payload), encoded)
+
+
+def companion_snapshot(core_snapshot: SharedSnapshot) -> SharedSnapshot:
+    """Same complete shared evidence, different exact owner identity; no collection."""
+    require(isinstance(core_snapshot, SharedSnapshot), 'SHARED_SNAPSHOT_REQUIRED')
+    data = core_snapshot.data()
+    require(data.get('version') == 'agent-snapshot-contract-v2-ten-agents'
+            and 'decision_group' not in data and len(data.get('owner_ids', [])) == AGENT_COUNT
+            and set(data['owner_ids']) == set(OWNER_IDS), 'CORE_TEN_SNAPSHOT_REQUIRED')
+    data.update(version='agent-snapshot-contract-v1-companion-pair', decision_group='COMPANION_PAIR',
+                owner_ids=[row.agent_id for row in agents_for_group('COMPANION_PAIR')])
+    return SharedSnapshot(digest(data), json_text(data))
 
 
 _KNOWLEDGE_CLOCKS = frozenset({
@@ -357,7 +386,8 @@ def build_normal_snapshot(*, run_id: str, target_date: str, snapshot_as_of: str,
                           artifacts: dict, fixture_records=None, enriched=None,
                           club_enriched=None, candidate_context=None, weather_by_fixture=None,
                           historical_runs=None, feedback=None, news_envelopes=None,
-                          owner_ids=OWNER_IDS, historical_view=None, news_coverage=None) -> SharedSnapshot:
+                          owner_ids=None, historical_view=None, news_coverage=None,
+                          decision_group='CORE_TEN') -> SharedSnapshot:
     """Bind an already collected NORMAL frame before independent owner decisions.
 
     No DB, provider, predictor, simulation or filesystem operation is performed.
@@ -509,7 +539,7 @@ def build_normal_snapshot(*, run_id: str, target_date: str, snapshot_as_of: str,
     snapshot = build_snapshot(run_id=run_id, target_date=target_date, as_of=snapshot_as_of,
         authoritative_fixture_ids=full_ids, calendar_receipt=adapted_receipt, fixtures=fixtures,
         family_values=families, source_manifest=source_manifest, model_probabilities=probabilities,
-        owner_ids=owner_ids)
+        owner_ids=owner_ids, decision_group=decision_group)
     data = snapshot.data()
     require(all(ref in data['source_manifest'] for family_value in data['families'].values()
                 for ref in family_value['source_refs']) and all(

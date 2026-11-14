@@ -106,9 +106,60 @@ def _owner_card_bound(card, outcome, report):
         and proof.get('option_id') in _list(decision.get('option_ids')))
 
 
+
+INDEPENDENT_SLOT_VERSION = 'TWELVE_INDEPENDENT_AGENT_SLOTS_V2'
+PAIR_IDS = ('daily_portfolio', 'legacy_daily223')
+
+
+def _independent_pair_capacity(report, snapshot):
+    """Explicit new generation; historical constructors never count as agents."""
+    from goal_analysis.companion_agents import validate_companion_agent_cards
+
+    cards = canonical_cards(report)
+    core_report = {key: value for key, value in report.items()
+                   if key != 'companion_agent_decisions'}
+    core_report['generated_tickets'] = [card for card in cards if 'channel_id' not in card]
+    base = main_slot_capacity(core_report, snapshot)
+    issues, invalid = list(base['identity_issues']), list(base['invalid_card_ids'])
+    if 'companion_ticket_channels' in report:
+        issues.append('MIXED_COMPANION_GENERATIONS_FORBIDDEN')
+    pair = _object(report.get('companion_agent_decisions'))
+    outcomes = _list(pair.get('owners'))
+    if (len(outcomes) != 2 or {_object(row).get('agent_id') for row in outcomes} != set(PAIR_IDS)):
+        issues.append('EXACT_TWO_INDEPENDENT_COMPANION_OUTCOMES_REQUIRED')
+    try:
+        bound = validate_companion_agent_cards(report)
+    except (ValueError, TypeError, KeyError) as error:
+        bound = {}
+        issues.append('INVALID_INDEPENDENT_COMPANION_BINDING:' + type(error).__name__)
+    pair_cards = [card for card in cards if 'channel_id' in card]
+    invalid.extend(card['ticket_id'] for card in pair_cards if card['ticket_id'] not in bound)
+    present_pair = {card['profile_id'] for card in pair_cards if card['ticket_id'] in bound}
+    present = set(base['filled_agent_owner_ids']) | present_pair
+    all_ids = (*AGENT_IDS, *PAIR_IDS)
+    if len(pair_cards) > 2 or len(cards) > 32:
+        issues.append('INDEPENDENT_CARD_CAPACITY_EXCEEDED')
+    met = len(present) == 12 and not invalid and not issues
+    return {**base, 'version': INDEPENDENT_SLOT_VERSION,
+        'generated_ticket_count': len(cards), 'maximum_agent_variants': 32,
+        'maximum_companion_tickets': 0, 'agent_variant_count': len(cards),
+        'filled_agent_owner_slots': len(present),
+        'filled_core_owner_slots': base['filled_agent_owner_slots'],
+        'filled_pair_owner_slots': len(present_pair),
+        'filled_agent_owner_ids': [key for key in all_ids if key in present],
+        'missing_agent_ids': [key for key in all_ids if key not in present],
+        'filled_companion_slots': 0, 'filled_companion_channel_ids': [],
+        'missing_channel_ids': [], 'companion_channels': [],
+        'filled_main_slots': len(present), 'target_met': met,
+        'invalid_card_ids': invalid, 'identity_issues': issues,
+        'state': 'TARGET_MET' if met else 'TARGET_NOT_MET'}
+
+
 def main_slot_capacity(report, snapshot=None):
     """Saved identity coverage, not independent source validity or profit proof."""
     report, snapshot = _object(report), _object(snapshot)
+    if 'companion_agent_decisions' in report:
+        return _independent_pair_capacity(report, snapshot)
     cards = canonical_cards(report)
     outcomes = _list(_object(report.get('ten_agent_decisions')).get('owners'))
     valid_outcomes, issues, invalid_cards = {}, [], []
@@ -206,16 +257,18 @@ def main_slot_capacity(report, snapshot=None):
 def success_identity_coverage(job):
     """Pure durable-success guard; counts alone cannot fill absent identities."""
     coverage = _object(job.get('capacity'))
-    return (coverage.get('version') == MAIN_SLOT_VERSION
+    independent = coverage.get('version') == INDEPENDENT_SLOT_VERSION
+    expected_ids = list(AGENT_IDS) + list(PAIR_IDS) if independent else list(AGENT_IDS)
+    return (coverage.get('version') in {MAIN_SLOT_VERSION, INDEPENDENT_SLOT_VERSION}
         and coverage.get('run_id') == job.get('run_id') and bool(job.get('run_id'))
         and coverage.get('target_date') == job.get('target_date')
         and isinstance(coverage.get('canonical_report_sha256'), str)
         and len(coverage['canonical_report_sha256']) == 64
         and all(char in '0123456789abcdef' for char in coverage['canonical_report_sha256'])
-        and coverage.get('filled_agent_owner_ids') == list(AGENT_IDS)
-        and coverage.get('filled_companion_channel_ids') == list(COMPANION_ROLES)
-        and coverage.get('filled_agent_owner_slots') == 10
-        and coverage.get('filled_companion_slots') == 2 and coverage.get('filled_main_slots') == 12
+        and coverage.get('filled_agent_owner_ids') == expected_ids
+        and coverage.get('filled_companion_channel_ids') == ([] if independent else list(COMPANION_ROLES))
+        and coverage.get('filled_agent_owner_slots') == (12 if independent else 10)
+        and coverage.get('filled_companion_slots') == (0 if independent else 2) and coverage.get('filled_main_slots') == 12
         and coverage.get('main_slot_count') == 12 and coverage.get('target_met') is True
         and coverage.get('invalid_card_ids') == [] and coverage.get('identity_issues') == []
         and type(job.get('generated_ticket_count')) is int
@@ -229,12 +282,22 @@ def card_page(report, states, *, offset=0, limit=10):
     by_id = {row['ticket_id']: row for row in state_rows}
     if len(by_id) != len(state_rows):
         raise ValueError('DUPLICATE_TICKET_STATE')
-    items = [{'ticket': card, 'state': by_id.get(card['ticket_id']),
-              'agent_decision': card.get('agent_decision'),
-              'companion_decision': card.get('companion_decision')} for card in cards]
+    items = []
+    for card in cards:
+        state = by_id.get(card['ticket_id'])
+        # The stored state already contains the entire ticket. Send that immutable
+        # object once; every differing or additional state value remains exact.
+        can_share = state is not None and card.keys() <= state.keys()
+        delta = {key: value for key, value in state.items()
+            if key not in card or json_text(value) != json_text(card[key])
+            or key in {'ticket_id', 'run_id', 'snapshot_sha256'}} if can_share else state
+        items.append({'ticket': card, 'state': delta,
+            'state_projection': 'CANONICAL_TICKET_PLUS_STATE_DELTA_V2' if can_share else 'STATE_FULL_V1',
+            'decision_projection': 'CANONICAL_TICKET_V2'})
     return page(items, offset=offset, limit=limit, maximum=32,
                 metadata={'run_id': report['run_id'], 'target_date': report['date'],
-                          'report_sha256': report.get('report_sha256')})
+                          'report_sha256': report.get('report_sha256'),
+                          'card_wire_version': 2})
 
 
 def calendar_page(snapshot, *, offset=0, limit=100):
@@ -320,13 +383,19 @@ def workshop(*, day, report, states, snapshot, operation, schedule, capabilities
     cards = canonical_cards(report)
     state_map = {row['ticket_id']: row for row in _list(states)}
     owners = _list(_object(report.get('ten_agent_decisions')).get('owners'))
+    definitions = ACTIVE_AGENTS
+    if 'companion_agent_decisions' in report:
+        from goal_analysis.agents.profile_roster import COMPANION_AGENTS
+
+        owners = [*owners, *_list(_object(report['companion_agent_decisions']).get('owners'))]
+        definitions = (*ACTIVE_AGENTS, *COMPANION_AGENTS)
     owner_map = {row['agent_id']: row for row in owners}
-    if len(owner_map) != len(owners) or set(owner_map) - set(AGENT_IDS):
+    if len(owner_map) != len(owners) or set(owner_map) - {row.agent_id for row in definitions}:
         raise ValueError('UNIQUE_ACTIVE_OWNER_OUTCOMES_REQUIRED')
     audit = _object(report.get('ticket_evidence'))
     agents, counts, reasons = [], Counter(), Counter()
     profiles = {row['profile_id']: row for row in _list(report.get('profiles'))}
-    for definition in ACTIVE_AGENTS:
+    for definition in definitions:
         key = definition.agent_id
         owner = owner_map.get(key, {})
         decision = _object(owner.get('decision'))

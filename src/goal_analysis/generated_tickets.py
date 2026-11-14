@@ -24,7 +24,12 @@ from goal_analysis.ticket_product_policy import (
     product_failure,
 )
 from goal_analysis.tipsters.catalog import CATALOG_VERSION, TIPSTER_BY_ID
-from goal_analysis.tipsters.recommendations import PRODUCTS, _contrarian_analysis
+from goal_analysis.tipsters.recommendations import (
+    PRODUCTS,
+    _contrarian_analysis,
+    _milan_model_value_research,
+    validate_milan_research_contract,
+)
 
 GROUPS = ('profile_proposals', 'recommendations', 'tickets')
 STATUSES = {'READY', 'DRAFT', 'MODEL_READY', 'REVIEWED'}
@@ -134,9 +139,15 @@ def _own_shape(card, cutoff):
             if policy.get('contrarian_value'):
                 quote = {**leg, 'candidate_id': leg.get('quote_candidate_id')
                          or leg.get('source_candidate_id') or leg['candidate_id']}
-                if not leg.get('contrarian_analysis') or _contrarian_analysis(
+                original = _contrarian_analysis(
+                    {'quote': quote, 'probability': probability, 'components': probabilities}, persona, cutoff)
+                if original is None or not leg.get('contrarian_analysis'):
+                    research = _milan_model_value_research(
                         {'quote': quote, 'probability': probability, 'components': probabilities},
-                        persona, cutoff) is None:
+                        persona, cutoff, contract=card.get('milan_price_history_research_contract'))
+                    if research is None or leg.get('model_value_research') != research:
+                        return False
+                elif leg.get('model_value_research') is not None:
                     return False
             minimum_disagreement = policy.get('min_market_disagreement')
             disagreement = leg.get('model_details', {}).get('model_market_disagreement')
@@ -170,13 +181,34 @@ def _own_shape(card, cutoff):
 def _invalid(card, report, cutoff):
     try:
         policy = bound_product_contract(card, report)
+        research = card.get('milan_price_history_research_contract')
+        has_research = any(isinstance(leg, dict) and leg.get('model_value_research') is not None
+                           for leg in card.get('legs', []))
+        if research is not None or has_research:
+            binding = card.get('agent_product_binding', {})
+            if (not validate_milan_research_contract(research) or policy is None
+                    or research != report.get('milan_price_history_research_contract')
+                    or card.get('profile_id') != 'tipster_ertek_milan'
+                    or binding.get('version') != 'ten-agent-canonical-product-bridge-v1'
+                    or binding.get('agent_id') != card.get('profile_id')
+                    or binding.get('run_id') != report.get('run_id')
+                    or binding.get('milan_research_contract_sha256') != canonical_sha256(research)
+                    or card.get('status') != 'DRAFT' or card.get('publication_scope') != 'RESEARCH'
+                    or card.get('playable') is not False):
+                return 'INVALID_MILAN_RESEARCH_BINDING'
         if policy is not None:
             failure = product_failure(card, own_persona=TIPSTER_BY_ID.get(card.get('profile_id')))
             if failure:
                 return failure
     except (KeyError, TypeError, ValueError):
         return 'INVALID_TICKET_PRODUCT_CONTRACT'
-    if card.get('profile_id') not in PROFILE_IDS:
+    pair_owner = (card.get('profile_id') in {'daily_portfolio', 'legacy_daily223'}
+                  and card.get('channel_id') == card.get('profile_id')
+                  and card.get('producer_profile_id') == 'daily223'
+                  and card.get('pair_agent_contract_version') == 'arthur-independent-companion-pair-v1'
+                  and card.get('agent_product_binding', {}).get('agent_id') == card.get('profile_id')
+                  and policy is not None)
+    if card.get('profile_id') not in PROFILE_IDS and not pair_owner:
         return 'UNKNOWN_PROFILE'
     if card.get('status') not in STATUSES or card.get('construction_verified') is False:
         return 'NOT_A_COMPLETE_PROFILE_DECISION'
@@ -209,7 +241,7 @@ def _invalid(card, report, cutoff):
         product = math.prod(leg['decimal_price'] for leg in legs)
         if not _number(card.get('combined_price')) or not math.isclose(product, card['combined_price'], rel_tol=1e-9):
             return 'COMBINED_PRICE_MISMATCH'
-        if card['profile_id'] == 'daily223':
+        if card['profile_id'] == 'daily223' or pair_owner:
             band = card.get('odds_band', card.get('daily223_odds_band'))
             tolerance = .02 if band == 'NEAR_TARGET' else 0
             prices = sorted(leg['decimal_price'] for leg in legs)
@@ -247,6 +279,12 @@ def _exact_ready(card, report):
 
 
 def _materialize(card, source_group, report, plan):
+    if (card.get('milan_price_history_research_contract') is not None
+            or any(leg.get('model_value_research') is not None for leg in card.get('legs', []))):
+        cutoff = datetime.fromisoformat(report.get('finished_at', report['observed_at']))
+        failure = _invalid(card, report, cutoff)
+        if failure is not None:
+            raise ValueError(failure)
     result = deepcopy(card)
     policy = bound_product_contract(card, report)
     if policy is not None:
@@ -369,7 +407,7 @@ def _finalize_agent_generated(report, settings, plan):
     report['generated_tickets'] = generated
     report['tickets'] = [card for card in generated if card['status'] == 'READY'
                          and card['publication_scope'] == 'LIVE']
-    refresh_generation_capacity(report, excluded=excluded)
+    refresh_generation_capacity(report, excluded=excluded, include_companion_agents=False)
     return report
 
 
@@ -380,6 +418,10 @@ def finalize_generated(report, settings, *, team_plan=None, options=None):
     report.setdefault('settings', deepcopy(settings))
     if 'ten_agent_decisions' in report:
         result = _finalize_agent_generated(report, settings, team_plan or report.get('team', {}))
+        if 'companion_agent_decisions' in report:
+            from goal_analysis.companion_agents import append_companion_agent_cards
+
+            return append_companion_agent_cards(result)
         if 'companion_ticket_channels' in report:
             from goal_analysis.companion_tickets import append_companion_cards
 
@@ -457,7 +499,7 @@ def finalize_generated(report, settings, *, team_plan=None, options=None):
     return report
 
 
-def refresh_generation_capacity(report, *, excluded=None):
+def refresh_generation_capacity(report, *, excluded=None, include_companion_agents=True):
     """Refresh counters after risk grading without choosing different tickets."""
     if not current_contract(report.get('settings',report.get('policy',{}))):
         return report
@@ -478,7 +520,11 @@ def refresh_generation_capacity(report, *, excluded=None):
         'draft_count': sum(ticket['status'] == 'DRAFT' for ticket in generated),
         'excluded_profiles': excluded, 'financial_wager_cap_changed': False,
     }
-    if 'companion_ticket_channels' in report:
+    if include_companion_agents and 'companion_agent_decisions' in report:
+        from goal_analysis.companion_agents import refresh_companion_agent_capacity
+
+        refresh_companion_agent_capacity(report)
+    elif 'companion_ticket_channels' in report:
         from goal_analysis.companion_tickets import refresh_companion_capacity
 
         refresh_companion_capacity(report)

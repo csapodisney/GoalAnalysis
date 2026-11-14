@@ -91,8 +91,17 @@ class SourceBundle:
         _require(view.get('fixture_ids') == raw.get('fixture_ids')
                  and isinstance(raw.get('fixture_ids'), list)
                  and len(set(raw['fixture_ids'])) == len(raw['fixture_ids']), 'FULL_CALENDAR_REQUIRED')
-        _require(view.get('owner_ids') == raw.get('owner_ids') and isinstance(raw.get('owner_ids'), list)
-                 and len(raw['owner_ids']) == len(set(raw['owner_ids'])) == 10, 'EXACT_TEN_OWNERS_REQUIRED')
+        group = raw.get('decision_group', 'CORE_TEN')
+        _require(group in {'CORE_TEN', 'COMPANION_PAIR'}
+                 and view.get('decision_group', 'CORE_TEN') == group, 'SOURCE_DECISION_GROUP_MISMATCH')
+        if group == 'COMPANION_PAIR':
+            _require(raw.get('version') == view.get('version') == 'agent-snapshot-contract-v1-companion-pair'
+                     and raw.get('owner_ids') == view.get('owner_ids')
+                     == ['daily_portfolio', 'legacy_daily223'], 'EXACT_COMPANION_PAIR_OWNERS_REQUIRED')
+        else:
+            _require(raw.get('version') != 'agent-snapshot-contract-v1-companion-pair'
+                     and view.get('owner_ids') == raw.get('owner_ids') and isinstance(raw.get('owner_ids'), list)
+                     and len(raw['owner_ids']) == len(set(raw['owner_ids'])) == 10, 'EXACT_TEN_OWNERS_REQUIRED')
         _require(set(raw.get('families', {})) == set(view.get('families', {})) == set(FAMILY_NAMES),
                  'ALL_TWELVE_FAMILIES_REQUIRED')
         for name in FAMILY_NAMES:
@@ -126,6 +135,8 @@ def build_source_seed(snapshot, fullview):
     raw = bundle._roots['raw']
     seed = {key: deepcopy(raw[key]) for key in
             ('version', 'run_id', 'target_date', 'as_of', 'owner_ids', 'fixture_ids')}
+    if raw.get('decision_group') == 'COMPANION_PAIR':
+        seed['decision_group'] = 'COMPANION_PAIR'
     seed['view'] = {'version': 'ten-agent-source-access-seed-v1',
         'source_snapshot_id': bundle.snapshot_id, 'full_view_sha256': bundle.view_sha256,
         'source_access_mode': 'IMMUTABLE_OWNER_PHASE_READ_DATA',

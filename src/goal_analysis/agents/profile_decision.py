@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, replace
 
-from goal_analysis.agents.profile_roster import AGENT_COUNT, get_agent_definition
+from goal_analysis.agents.profile_roster import agents_for_group, get_agent_definition
 from goal_analysis.jobs.agent_snapshot import (
     FAMILIES,
     SharedSnapshot,
@@ -82,8 +82,11 @@ def _event(state: ProfileState, value: dict, **updates) -> ProfileState:
 
 
 def start_sessions(snapshot: SharedSnapshot, method_versions: dict[str, str]) -> tuple[ProfileState, ...]:
-    owners = snapshot.decision_data()['owner_ids']
-    require(set(method_versions) == set(owners) and len(method_versions) == AGENT_COUNT
+    data = snapshot.decision_data()
+    owners = data['owner_ids']
+    agents = agents_for_group(data.get('decision_group', 'CORE_TEN'))
+    require(set(owners) == {row.agent_id for row in agents}, 'EXACT_GROUP_OWNERS_REQUIRED')
+    require(set(method_versions) == set(owners) and len(method_versions) == len(agents)
             and all(isinstance(value, str) and value for value in method_versions.values()),
             'EXACT_TEN_METHOD_OWNERS_REQUIRED')
     return tuple(ProfileState(owner, digest([owner, method_versions[owner], snapshot.snapshot_id]),
@@ -240,7 +243,8 @@ def finalize_decisions(state: ProfileState, snapshot: SharedSnapshot, *, option_
     options = json.loads(state.options_json)
     option_hash = digest(options)
     selected_ids = identifiers(option_ids)
-    require(len(selected_ids) <= get_agent_definition(state.agent_id).max_variants,
+    require(len(selected_ids) <= get_agent_definition(
+        state.agent_id, decision_group=data.get('decision_group', 'CORE_TEN')).max_variants,
             'OWNER_VARIANT_LIMIT_EXCEEDED')
     require(set(selected_ids) <= {row['option_id'] for row in options}, 'FOREIGN_FINAL_OPTION')
     selected = [next(row for row in options if row['option_id'] == key) for key in selected_ids]
@@ -273,7 +277,9 @@ def finalize_decisions(state: ProfileState, snapshot: SharedSnapshot, *, option_
     current_hashes = {row['option_id']: digest(row) for row in options}
     require(all(value['option_hashes'] == {key: current_hashes[key] for key in value['option_ids']}
                 for value in uses.values()), 'STALE_FAMILY_OPTION_CONTENT')
-    final = {'version': 'profile-owner-decision-v2-ten-agents',
+    final = {'version': ('profile-owner-decision-v1-companion-pair'
+                         if data.get('decision_group') == 'COMPANION_PAIR'
+                         else 'profile-owner-decision-v2-ten-agents'),
         'agent_id': state.agent_id, 'session_id': state.session_id,
         'snapshot_id': snapshot.snapshot_id, 'method_version': state.method_version,
         'status': 'ABSTAIN' if not selected_ids else 'FINAL_DECISION',
