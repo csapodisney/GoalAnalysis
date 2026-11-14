@@ -25,6 +25,7 @@ from goal_analysis.agents.profile_decision_runner import (
 from goal_analysis.agents.profile_input import (
     FINAL_REQUEST_PROJECTION,
     FINAL_REQUEST_PROJECTION_V1,
+    FINAL_REQUEST_PROJECTION_V2,
     NEWS_COVERAGE_REQUEST_PROJECTION,
     SOURCE_DETAILS_POLICY,
     SOURCE_DETAILS_POLICY_V1,
@@ -110,7 +111,7 @@ def _owner_evidence(owner, snapshot, shared):
     coverage_projection = evidence.get('coverage_request_projection')
     require(coverage_projection in {None, NEWS_COVERAGE_REQUEST_PROJECTION}, 'UNKNOWN_NEWS_COVERAGE_PROJECTION')
     projection = evidence.get('final_request_projection')
-    require(projection in {None, FINAL_REQUEST_PROJECTION_V1, FINAL_REQUEST_PROJECTION}, 'UNKNOWN_FINAL_REQUEST_PROJECTION')
+    require(projection in {None, FINAL_REQUEST_PROJECTION_V1, FINAL_REQUEST_PROJECTION_V2, FINAL_REQUEST_PROJECTION}, 'UNKNOWN_FINAL_REQUEST_PROJECTION')
     source_policy = evidence.get('source_details_policy')
     require(source_policy in {None, SOURCE_DETAILS_POLICY_V1, SOURCE_DETAILS_POLICY}, 'UNKNOWN_SOURCE_DETAILS_POLICY')
     source_mode = evidence.get('version') == 'owner-decision-evidence-v3-source-access'

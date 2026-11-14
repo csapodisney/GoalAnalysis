@@ -148,6 +148,37 @@ def _inputs(*, run='TESTONLY-pair-composition', offset=0):
 
 def _expand_final(data):
     data = deepcopy(data)
+    current = data.get('final_data_projection')
+    if current is not None and current['version'] == 'FINAL_EXACT_NAMED_COLUMNS_V3':
+        columns, used = data.pop('exact_columns'), set()
+        assert set(columns) == {f'k{index}' for index in range(len(columns))}
+        assert all(isinstance(fields, list) and all(isinstance(key, str) for key in fields)
+                   and fields == sorted(set(fields)) for fields in columns.values())
+
+        def decode_rows(value):
+            if isinstance(value, dict) and set(value) == {'$row'}:
+                row = value['$row']
+                assert isinstance(row, list) and len(row) == 2
+                key, cells = row
+                assert isinstance(key, str) and key in columns
+                assert isinstance(cells, list) and len(cells) == len(columns[key])
+                used.add(key)
+                return dict(zip(columns[key], [decode_rows(cell) for cell in cells], strict=True))
+            if isinstance(value, dict):
+                return {key: decode_rows(item) for key, item in value.items()}
+            if isinstance(value, list):
+                return [decode_rows(item) for item in value]
+            return value
+
+        data.pop('final_data_projection')
+        data = decode_rows(data)
+        assert used == set(columns)
+        if current['values_projection'] is not None:
+            data['final_data_projection'] = current['values_projection']
+        assert digest(data) == current['values_wire_sha256']
+        restored = _expand_final(data)
+        assert digest(restored) == current['source_data_sha256']
+        return restored
     marker = data.pop('final_data_projection', None)
     if marker is None:
         return data

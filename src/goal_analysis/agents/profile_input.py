@@ -9,7 +9,8 @@ from goal_analysis.jobs.agent_snapshot import SharedSnapshot, digest, json_text,
 
 VIEW_VERSION = 'ten-agent-readable-decision-tables-v3'
 FINAL_REQUEST_PROJECTION_V1 = 'FINAL_EXACT_SUBTREES_V1'
-FINAL_REQUEST_PROJECTION = 'FINAL_EXACT_VALUES_V2'
+FINAL_REQUEST_PROJECTION_V2 = 'FINAL_EXACT_VALUES_V2'
+FINAL_REQUEST_PROJECTION = 'FINAL_EXACT_NAMED_COLUMNS_V3'
 SOURCE_DETAILS_POLICY_V1 = 'READ_DATA_EXACT_ROWS_V1'
 SOURCE_DETAILS_POLICY = 'READ_DATA_EXACT_SELECTED_CONTEXT_V2'
 
@@ -775,13 +776,13 @@ def final_shared_reference(snapshot: SharedSnapshot, plan_view: dict) -> dict:
                      for name, envelope in original['families'].items()}}
 
 
-def final_request_data(data, *, projection_policy=None):
+def _final_request_values(data, *, projection_policy=None):
     """Lossless FINAL-wire duplicates only; original evidence is never rewritten."""
     require(isinstance(data, dict), 'FINAL_DATA_OBJECT_REQUIRED')
-    policy = FINAL_REQUEST_PROJECTION if projection_policy is None else projection_policy
-    require(policy in {FINAL_REQUEST_PROJECTION_V1, FINAL_REQUEST_PROJECTION},
+    policy = FINAL_REQUEST_PROJECTION_V2 if projection_policy is None else projection_policy
+    require(policy in {FINAL_REQUEST_PROJECTION_V1, FINAL_REQUEST_PROJECTION_V2},
             'UNKNOWN_FINAL_REQUEST_PROJECTION')
-    compact = policy == FINAL_REQUEST_PROJECTION
+    compact = policy == FINAL_REQUEST_PROJECTION_V2
     reference_key = '__arthur_final_ref__'
 
     def reserved(value):
@@ -872,6 +873,102 @@ def final_request_data(data, *, projection_policy=None):
             'UNKNOWN, clocks and numbers are unchanged. No external read is required and no new '
             'source-read or profit evidence is created.')
     return result if len(json_text(result)) < len(json_text(data)) else deepcopy(data)
+
+
+def final_request_data(data, *, projection_policy=None):
+    """Keep historical wires exact; optionally replace repeated field names inline."""
+    require(isinstance(data, dict), 'FINAL_DATA_OBJECT_REQUIRED')
+    policy = FINAL_REQUEST_PROJECTION if projection_policy is None else projection_policy
+    if policy in {FINAL_REQUEST_PROJECTION_V1, FINAL_REQUEST_PROJECTION_V2}:
+        return _final_request_values(data, projection_policy=policy)
+    require(policy == FINAL_REQUEST_PROJECTION, 'UNKNOWN_FINAL_REQUEST_PROJECTION')
+
+    def reserved(value):
+        if isinstance(value, dict):
+            return bool({'$row', '__arthur_final_ref__'}.intersection(value)) or any(
+                reserved(row) for row in value.values())
+        return isinstance(value, list) and any(reserved(row) for row in value)
+
+    if {'exact_columns', 'exact_values', 'final_data_projection'}.intersection(data) or reserved(data):
+        return deepcopy(data)
+    wire = _final_request_values(data, projection_policy=FINAL_REQUEST_PROJECTION_V2)
+
+    def untouched(path):
+        if path and path[0] in {'snapshot', 'own_plan', 'own_option_admission', 'final_data_projection'}:
+            return True
+        if len(path) >= 3 and path[0] == 'exact_values' and path[2] != 'value':
+            return True
+        return (len(path) >= 3 and path[0] == 'tool_results'
+                and (path[2] == 'request' or len(path) >= 4
+                     and path[2] == 'result' and path[3] not in {'value', 'diagnostics'}))
+
+    def protected(path):
+        return (len(path) <= 1 or path[0] in {'validated_own_options', 'exact_values'} and len(path) == 2
+                or path[0] == 'tool_results' and len(path) <= 3)
+
+    counts = Counter()
+
+    def scan(value, path):
+        if untouched(path):
+            return
+        if isinstance(value, dict):
+            if set(value) == {'__arthur_final_ref__'}:
+                return
+            if not protected(path):
+                counts[tuple(sorted(value))] += 1
+            for key, row in value.items():
+                scan(row, (*path, key))
+        elif isinstance(value, list):
+            for index, row in enumerate(value):
+                scan(row, (*path, index))
+
+    scan(wire, ())
+    columns, keysets = {}, {}
+    for fields, count in sorted(counts.items()):
+        if count < 2:
+            continue
+        key = f'k{len(columns)}'
+        original_cost = len(json_text(dict.fromkeys(fields)))
+        row_cost = len(json_text({'$row': [key, [None] * len(fields)]}))
+        table_cost = len(json_text({key: list(fields)}))
+        if count * (original_cost - row_cost) > table_cost:
+            columns[key] = list(fields)
+            keysets[fields] = key
+    if not columns:
+        return wire
+
+    def project(value, path):
+        if untouched(path):
+            return deepcopy(value)
+        if isinstance(value, dict):
+            if set(value) == {'__arthur_final_ref__'}:
+                return deepcopy(value)
+            fields = tuple(sorted(value))
+            rows = [project(value[key], (*path, key)) for key in fields]
+            if not protected(path) and fields in keysets:
+                return {'$row': [keysets[fields], rows]}
+            return dict(zip(fields, rows, strict=True))
+        if isinstance(value, list):
+            return [project(row, (*path, index)) for index, row in enumerate(value)]
+        return deepcopy(value)
+
+    result = project(wire, ())
+    result['exact_columns'] = columns
+    result['final_data_projection'] = {
+        'version': FINAL_REQUEST_PROJECTION, 'source_data_sha256': digest(data),
+        'values_wire_sha256': digest(wire),
+        'values_projection': deepcopy(wire.get('final_data_projection')),
+        'original_evidence_and_tools_unchanged': True,
+        'reconstruction': (
+            'Decode each exact one-key {"$row":[column_key,[values...]]} object recursively using '
+            'the unique sorted field names in exact_columns[column_key]; arity must match exactly. '
+            'Decode rows in the six data fields and exact_values entry values before resolving any '
+            '__arthur_final_ref__. Remove exact_columns and replace final_data_projection with '
+            'values_projection (remove it when null). Verify this intermediate object SHA256 equals '
+            'values_wire_sha256. Then apply that original values projection, checking each fully '
+            'expanded entry SHA256 and final source_data_sha256. All original data stays inline; '
+            'missing fields, null, booleans, numbers, list order and UNKNOWN are unchanged.')}
+    return result if len(json_text(result)) < len(json_text(wire)) else wire
 
 
 def public_tool_results(tool_results):

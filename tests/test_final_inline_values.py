@@ -6,12 +6,21 @@ import pytest
 
 from goal_analysis.agents import profile_input, profile_source_host
 from goal_analysis.agents.profile_input import (
-    FINAL_REQUEST_PROJECTION,
     FINAL_REQUEST_PROJECTION_V1,
-    final_request_data,
+)
+from goal_analysis.agents.profile_input import (
+    FINAL_REQUEST_PROJECTION_V2 as FINAL_REQUEST_PROJECTION,
+)
+from goal_analysis.agents.profile_input import (
+    final_request_data as _final_request_data,
 )
 from goal_analysis.jobs import ten_agent_ticket_evidence
 from goal_analysis.jobs.agent_snapshot import digest, json_text
+
+
+def final_request_data(data, *, projection_policy=FINAL_REQUEST_PROJECTION):
+    return _final_request_data(data, projection_policy=projection_policy)
+
 
 OLD_RECONSTRUCTION = 'In the six original data fields, recursively replace exact one-key __arthur_final_ref__ objects with exact_values[key].value, expanding nested references first. Verify each restored value SHA256 against its table key and source_value_sha256; remove exact_values and final_data_projection to recover the original data and verify source_data_sha256. All values are supplied in this same request; order, UNKNOWN, clocks and numbers are unchanged. This is not extra source-read or profit evidence.'
 

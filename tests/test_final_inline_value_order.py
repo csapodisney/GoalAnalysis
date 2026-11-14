@@ -2,8 +2,17 @@
 import json
 from copy import deepcopy
 
-from goal_analysis.agents.profile_input import FINAL_REQUEST_PROJECTION, final_request_data
+from goal_analysis.agents.profile_input import (
+    FINAL_REQUEST_PROJECTION_V2 as FINAL_REQUEST_PROJECTION,
+)
+from goal_analysis.agents.profile_input import (
+    final_request_data as _final_request_data,
+)
 from goal_analysis.jobs.agent_snapshot import digest, json_text
+
+
+def final_request_data(data, *, projection_policy=FINAL_REQUEST_PROJECTION):
+    return _final_request_data(data, projection_policy=projection_policy)
 
 
 def test_v2_wire_is_identical_after_saved_json_or_nested_dictionary_reordering():
