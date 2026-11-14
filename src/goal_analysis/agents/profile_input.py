@@ -8,7 +8,8 @@ from datetime import UTC, datetime
 from goal_analysis.jobs.agent_snapshot import SharedSnapshot, digest, json_text, require
 
 VIEW_VERSION = 'ten-agent-readable-decision-tables-v3'
-FINAL_REQUEST_PROJECTION = 'FINAL_EXACT_SUBTREES_V1'
+FINAL_REQUEST_PROJECTION_V1 = 'FINAL_EXACT_SUBTREES_V1'
+FINAL_REQUEST_PROJECTION = 'FINAL_EXACT_VALUES_V2'
 SOURCE_DETAILS_POLICY_V1 = 'READ_DATA_EXACT_ROWS_V1'
 SOURCE_DETAILS_POLICY = 'READ_DATA_EXACT_SELECTED_CONTEXT_V2'
 
@@ -774,9 +775,13 @@ def final_shared_reference(snapshot: SharedSnapshot, plan_view: dict) -> dict:
                      for name, envelope in original['families'].items()}}
 
 
-def final_request_data(data):
+def final_request_data(data, *, projection_policy=None):
     """Lossless FINAL-wire duplicates only; original evidence is never rewritten."""
     require(isinstance(data, dict), 'FINAL_DATA_OBJECT_REQUIRED')
+    policy = FINAL_REQUEST_PROJECTION if projection_policy is None else projection_policy
+    require(policy in {FINAL_REQUEST_PROJECTION_V1, FINAL_REQUEST_PROJECTION},
+            'UNKNOWN_FINAL_REQUEST_PROJECTION')
+    compact = policy == FINAL_REQUEST_PROJECTION
     reference_key = '__arthur_final_ref__'
 
     def reserved(value):
@@ -801,31 +806,51 @@ def final_request_data(data):
     counts = Counter()
 
     def scan(value, path):
-        if not isinstance(value, (dict, list)) or untouched(path):
+        if not isinstance(value, (dict, list, str) if compact else (dict, list)) or untouched(path):
             return
         if not protected(path):
             raw = json_text(value)
-            if len(raw) >= 256:
+            if len(raw) >= (150 if isinstance(value, str) else 256):
                 counts[raw] += 1
+        if isinstance(value, str):
+            return
         for key, row in (value.items() if isinstance(value, dict) else enumerate(value)):
             scan(row, (*path, key))
 
     scan(data, ())
-    values, originals = {}, {}
+    values, originals, short_keys = {}, {}, {}
 
     def project(value, path, inline=False):
-        if not isinstance(value, (dict, list)) or untouched(path):
+        if not isinstance(value, (dict, list, str) if compact else (dict, list)) or untouched(path):
             return deepcopy(value)
         raw = json_text(value)
         if not inline and not protected(path) and counts[raw] > 1:
+            if compact:
+                hashed = digest(value)
+                require(hashed not in originals or originals[hashed] == raw, 'EXACT_SUBTREE_HASH_COLLISION')
+                key = short_keys.get(hashed, f'v{len(short_keys)}')
+                if isinstance(value, str):
+                    entry = {key: {'source_value_sha256': hashed, 'value': value}}
+                    reference = {reference_key: key}
+                    if counts[raw] * len(raw) <= len(json_text(entry)) + counts[raw] * len(json_text(reference)):
+                        return value
+                if hashed not in short_keys:
+                    short_keys[hashed] = key
+                    originals[hashed] = raw
+                    values[key] = {'source_value_sha256': hashed, 'value': None}
+                    values[key]['value'] = project(value, path, True)
+                return {reference_key: key}
             key = digest(value)
             require(key not in originals or originals[key] == raw, 'EXACT_SUBTREE_HASH_COLLISION')
             if key not in values:
                 originals[key] = raw
                 values[key] = {'source_value_sha256': key, 'value': project(value, path, True)}
             return {reference_key: key}
+        if isinstance(value, str):
+            return value
         if isinstance(value, dict):
-            return {key: project(row, (*path, key)) for key, row in value.items()}
+            items = sorted(value.items()) if compact else value.items()
+            return {key: project(row, (*path, key)) for key, row in items}
         return [project(row, (*path, index)) for index, row in enumerate(value)]
 
     result = project(data, ())
@@ -833,9 +858,19 @@ def final_request_data(data):
         return deepcopy(data)
     result['exact_values'] = values
     result['final_data_projection'] = {
-        'version': FINAL_REQUEST_PROJECTION, 'source_data_sha256': digest(data),
+        'version': policy, 'source_data_sha256': digest(data),
         'reconstruction': 'In the six original data fields, recursively replace exact one-key __arthur_final_ref__ objects with exact_values[key].value, expanding nested references first. Verify each restored value SHA256 against its table key and source_value_sha256; remove exact_values and final_data_projection to recover the original data and verify source_data_sha256. All values are supplied in this same request; order, UNKNOWN, clocks and numbers are unchanged. This is not extra source-read or profit evidence.',
         'original_evidence_and_tools_unchanged': True}
+    if compact:
+        result['final_data_projection']['reconstruction'] = (
+            'In the six original data fields, recursively replace exact one-key __arthur_final_ref__ '
+            'objects with exact_values[key].value, expanding nested references first. V2 keys v0, v1 '
+            'and so on are deterministic local table indexes, not hashes. Verify SHA256 of each '
+            'fully restored entry value against its full source_value_sha256. Entry values may be '
+            'strings, lists or objects. Remove exact_values and final_data_projection and verify '
+            'source_data_sha256. All original values remain in this same request; types, order, '
+            'UNKNOWN, clocks and numbers are unchanged. No external read is required and no new '
+            'source-read or profit evidence is created.')
     return result if len(json_text(result)) < len(json_text(data)) else deepcopy(data)
 
 

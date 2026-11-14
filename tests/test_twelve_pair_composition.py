@@ -152,6 +152,9 @@ def _expand_final(data):
     if marker is None:
         return data
     values, active = data.pop('exact_values'), set()
+    assert marker['version'] in {'FINAL_EXACT_SUBTREES_V1', 'FINAL_EXACT_VALUES_V2'}
+    if marker['version'] == 'FINAL_EXACT_VALUES_V2':
+        assert set(values) == {f'v{index}' for index in range(len(values))}
 
     def expand(value):
         if isinstance(value, dict) and set(value) == {'__arthur_final_ref__'}:
@@ -160,7 +163,10 @@ def _expand_final(data):
             active.add(key)
             result = expand(values[key]['value'])
             active.remove(key)
-            assert digest(result) == key == values[key]['source_value_sha256']
+            if marker['version'] == 'FINAL_EXACT_SUBTREES_V1':
+                assert digest(result) == key == values[key]['source_value_sha256']
+            else:
+                assert digest(result) == values[key]['source_value_sha256']
             return result
         if isinstance(value, dict):
             return {key: expand(item) for key, item in value.items()}
