@@ -18,6 +18,10 @@ from goal_analysis.agents.profile_decision import (
     set_options,
     start_sessions,
 )
+from goal_analysis.agents.profile_decision_runner import (
+    expand_fixture_reviews,
+    validate_fixture_review_contract,
+)
 from goal_analysis.agents.profile_input import (
     FINAL_REQUEST_PROJECTION,
     NEWS_COVERAGE_REQUEST_PROJECTION,
@@ -58,10 +62,13 @@ def _plan_auxiliary_inputs(evidence, state, snapshot):
     require(isinstance(envelope, dict) and set(envelope) == {'version', 'values', 'sha256'}
             and envelope['version'] == 'owner-plan-auxiliary-inputs-v1'
             and isinstance(envelope['values'], dict)
-            and set(envelope['values']) <= {'own_construction_contract', 'own_strategy_search'}
+            and set(envelope['values']) <= {'own_construction_contract', 'own_strategy_search',
+                                            'fixture_review_contract'}
             and digest(envelope['values']) == envelope['sha256'], 'SAVED_PLAN_AUXILIARY_INPUTS_CHANGED')
     values = envelope['values']
     data = snapshot.data()
+    if 'fixture_review_contract' in values:
+        validate_fixture_review_contract(values['fixture_review_contract'], list(snapshot.fixture_ids))
     contract = values.get('own_construction_contract')
     if contract is not None:
         require(isinstance(contract, dict) and contract.get('agent_id') == state.agent_id
@@ -130,6 +137,12 @@ def _owner_evidence(owner, snapshot, shared):
     for reply, phase in ((plan, 'PLAN'), (final, 'FINAL')):
         require(reply.get('phase') == phase and all(reply.get(key) == getattr(state, key)
                 for key in ('agent_id', 'session_id', 'snapshot_id')), 'FOREIGN_SAVED_HOST_REPLY')
+    saved_auxiliary = evidence.get('plan_auxiliary_inputs')
+    grouped_declared = (isinstance(saved_auxiliary, dict)
+        and isinstance(saved_auxiliary.get('values'), dict)
+        and 'fixture_review_contract' in saved_auxiliary['values'])
+    plan_auxiliary = (_plan_auxiliary_inputs(evidence, state, snapshot)
+                      if source_mode or grouped_declared else {})
     source_checks = None
     if source_mode:
         from goal_analysis.agents.profile_source_access import require_candidate_reads
@@ -140,7 +153,7 @@ def _owner_evidence(owner, snapshot, shared):
                 'BOTH_VERIFIED_SOURCE_PHASE_PROOFS_REQUIRED')
         phase_data = {
             'PLAN': {'snapshot': shared['source_seed'],
-                     **_plan_auxiliary_inputs(evidence, state, snapshot)},
+                     **plan_auxiliary},
             'FINAL': {'snapshot': shared['source_final_shared'], 'own_plan': plan,
                 'validated_own_options': options,
                 'tool_results': public_tool_results(evidence['tool_results']),
@@ -176,7 +189,8 @@ def _owner_evidence(owner, snapshot, shared):
                 and proposal['source_candidate_ids'] == binding['source_candidate_ids'],
                 'OWN_PROPOSAL_PRODUCT_CHANGED')
     state = set_options(state, snapshot, options)
-    reviews = plan['fixture_reviews']
+    reviews = expand_fixture_reviews(plan['fixture_reviews'], list(snapshot.fixture_ids),
+        contract=plan_auxiliary.get('fixture_review_contract'))
     require(set(identifiers([row['fixture_id'] for row in reviews])) == set(snapshot.fixture_ids),
             'SAVED_FULL_CALENDAR_REVIEW_CHANGED')
     for row in reviews:

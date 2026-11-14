@@ -46,7 +46,7 @@ def make_normal_agent_executor(root, settings, *, clock, stop_requested=lambda: 
     return NormalAgentExecutor(host=CodexDecisionHost(reviewer_factory),
         journal_root=root / 'data/arthur/agent-decisions', clock=clock,
         stop_requested=stop_requested, enable_source_access=True, enable_companion_channels=True,
-        enable_ticket_product_contract=True,
+        enable_ticket_product_contract=True, enable_grouped_fixture_reviews=True,
         news_reader=lambda **kwargs: read_current_news(root / 'data/goal_analysis.sqlite3', **kwargs),
         news_producer=news_producer if ai.get('web_search') is True else None)
 
@@ -63,7 +63,8 @@ class NormalAgentExecutor:
     def __init__(self, *, host, journal_root, clock, stop_requested=lambda: False,
                  news_reader=None, historical_reader=None, news_producer=None, max_requests=20,
                  timeout_seconds=3600, enable_source_access=False, pilot_agent_id=None,
-                 enable_companion_channels=False, enable_ticket_product_contract=False):
+                 enable_companion_channels=False, enable_ticket_product_contract=False,
+                 enable_grouped_fixture_reviews=False):
         require(callable(host) and callable(clock), 'EXPLICIT_HOST_AND_CLOCK_REQUIRED')
         require(type(timeout_seconds) is int and 0 < timeout_seconds <= 3600,
                 'FINITE_NORMAL_AGENT_DEADLINE_REQUIRED')
@@ -84,6 +85,8 @@ class NormalAgentExecutor:
         self.enable_companion_channels = enable_companion_channels
         require(type(enable_ticket_product_contract) is bool, 'EXPLICIT_TICKET_PRODUCT_MODE_REQUIRED')
         self.enable_ticket_product_contract = enable_ticket_product_contract
+        require(type(enable_grouped_fixture_reviews) is bool, 'EXPLICIT_GROUPED_FIXTURE_REVIEW_MODE_REQUIRED')
+        self.enable_grouped_fixture_reviews = enable_grouped_fixture_reviews
 
     @staticmethod
     def _stage_source_access(journal, snapshot):
@@ -288,7 +291,8 @@ class NormalAgentExecutor:
             return self.host(request, timeout=timeout)
 
         result = ProfileDecisionRunner(host=owner_host, tools=tools, option_builder=builder,
-            journal=journal, source_bundle=source_bundle, budget=DecisionBudget(self.max_requests,
+            journal=journal, source_bundle=source_bundle,
+            grouped_fixture_reviews=self.enable_grouped_fixture_reviews, budget=DecisionBudget(self.max_requests,
                 self.clock() + timedelta(seconds=self.timeout_seconds),
                 clock=self.clock, stop_requested=self.stop_requested)).run(snapshot,
                     **({'pilot_agent_id': self.pilot_agent_id} if self.pilot_agent_id is not None else {}))

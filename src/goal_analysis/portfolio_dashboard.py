@@ -2,10 +2,13 @@
 
 from __future__ import annotations
 
+import errno
+import hashlib
 import json
 import os
 import re
 import secrets
+import socket
 import sqlite3
 import subprocess
 import sys
@@ -14,6 +17,7 @@ import time
 import webbrowser
 from copy import deepcopy
 from datetime import UTC, date, datetime
+from http.client import HTTPConnection, HTTPException
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from importlib import metadata
 from pathlib import Path
@@ -753,6 +757,9 @@ def make_handler(state: ArthurState, token: str):
             parsed = urlsplit(self.path)
             query = parse_qs(parsed.query)
             try:
+                if parsed.path == "/api/instance":
+                    return self._send(_dashboard_identity(
+                        state.root, state.config_path, state.settings_path))
                 if parsed.path == "/":
                     nonce = secrets.token_urlsafe(18)
                     html = (Path(__file__).parent / "web/index.html").read_text("utf-8")
@@ -945,6 +952,48 @@ def make_handler(state: ArthurState, token: str):
     return Handler
 
 
+class ExclusiveDashboardServer(ThreadingHTTPServer):
+    """Reserve the loopback endpoint before any writer-capable application state."""
+
+    allow_reuse_address = False
+    allow_reuse_port = False
+
+    def server_bind(self):
+        if os.name == "nt":
+            # Required before bind; REUSEADDR permits competing Windows listeners.
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+        super().server_bind()
+
+
+def _dashboard_identity(root, config_path=None, settings_path=None):
+    root = Path(root).resolve()
+    paths = [root, Path(config_path or root / "config/daily223-live.json").resolve(),
+             Path(settings_path or root / "config/arthur-settings.json").resolve()]
+    raw = json.dumps([os.path.normcase(str(path)) for path in paths],
+                     ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+    return {"protocol": "ARTHUR_LOCAL_DASHBOARD_INSTANCE_V1",
+            "binding_sha256": hashlib.sha256(raw).hexdigest()}
+
+
+def _matching_dashboard(root, config_path, settings_path, port):
+    """One bounded loopback identity read; never read DB/state or follow redirects."""
+    connection = HTTPConnection("127.0.0.1", port, timeout=2)
+    try:
+        connection.request("GET", "/api/instance")
+        response = connection.getresponse()
+        length = response.getheader("Content-Length", "")
+        if (response.status != 200 or not length.isascii() or not length.isdecimal()
+                or len(length) > 4 or int(length) > 2048):
+            return False
+        raw = response.read(2049)
+        return (len(raw) == int(length)
+                and json.loads(raw) == _dashboard_identity(root, config_path, settings_path))
+    except (OSError, HTTPException, ValueError):
+        return False
+    finally:
+        connection.close()
+
+
 def serve(
     root: Path,
     config_path: Path | None = None,
@@ -952,17 +1001,33 @@ def serve(
     port=8765,
     open_browser=False,
 ):
-    state = ArthurState(root, config_path, settings_path)
-    server = ThreadingHTTPServer(
-        ("127.0.0.1", port), make_handler(state, secrets.token_urlsafe(32))
-    )
-    url = f"http://127.0.0.1:{server.server_port}"
-    print(f"Arthur dashboard: {url}")
-    if open_browser:
-        webbrowser.open(url)
+    # Creating/listening does not dispatch requests until serve_forever below.
+    server = ExclusiveDashboardServer(("127.0.0.1", port), BaseHTTPRequestHandler,
+                                      bind_and_activate=False)
     try:
-        server.serve_forever()
-    except KeyboardInterrupt:
-        pass
+        server.server_bind()
+        server.server_activate()
+    except OSError as error:
+        server.server_close()
+        occupied = (error.errno in {errno.EADDRINUSE, errno.EACCES}
+                    or getattr(error, "winerror", None) in {10048, 10013})
+        if occupied and _matching_dashboard(root, config_path, settings_path, port):
+            url = f"http://127.0.0.1:{port}"
+            print(f"Arthur dashboard already running: {url}")
+            if open_browser:
+                webbrowser.open(url)
+            return
+        raise
+    try:
+        state = ArthurState(root, config_path, settings_path)
+        server.RequestHandlerClass = make_handler(state, secrets.token_urlsafe(32))
+        url = f"http://127.0.0.1:{server.server_port}"
+        print(f"Arthur dashboard: {url}")
+        if open_browser:
+            webbrowser.open(url)
+        try:
+            server.serve_forever()
+        except KeyboardInterrupt:
+            pass
     finally:
         server.server_close()

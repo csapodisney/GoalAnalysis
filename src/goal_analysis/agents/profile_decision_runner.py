@@ -39,6 +39,61 @@ from goal_analysis.jobs.agent_portfolio import (
 )
 from goal_analysis.jobs.agent_snapshot import digest, identifiers, json_text, require
 
+GROUPED_FIXTURE_REVIEWS_VERSION = 'FULL_CALENDAR_GROUPED_INDEX_REVIEWS_V1'
+
+
+def fixture_review_contract(fixture_ids):
+    """Bind index meanings to the complete original calendar, without filtering."""
+    require(isinstance(fixture_ids, list), 'FIXTURE_ORDER_LIST_REQUIRED')
+    identifiers(fixture_ids)
+    return {'version': GROUPED_FIXTURE_REVIEWS_VERSION, 'fixture_count': len(fixture_ids),
+            'fixture_order_sha256': digest(fixture_ids)}
+
+
+def validate_fixture_review_contract(contract, fixture_ids):
+    expected = fixture_review_contract(fixture_ids)
+    require(isinstance(contract, dict) and set(contract) == set(expected)
+            and type(contract.get('fixture_count')) is int and contract == expected,
+            'FIXTURE_REVIEW_CONTRACT_CHANGED')
+    return expected
+
+
+def bound_fixture_review_contract(request):
+    """Only an explicit input contract may select the new response schema."""
+    data = request.get('data')
+    if not isinstance(data, dict) or 'fixture_review_contract' not in data:
+        return None
+    require(request.get('phase') == 'PLAN', 'FIXTURE_REVIEW_CONTRACT_ONLY_PLAN')
+    snapshot = data.get('snapshot')
+    require(isinstance(snapshot, dict), 'FIXTURE_REVIEW_SNAPSHOT_REQUIRED')
+    return validate_fixture_review_contract(data['fixture_review_contract'], snapshot.get('fixture_ids'))
+
+
+def expand_fixture_reviews(reviews, fixture_ids, *, contract=None):
+    """Expand only the declared wire format; preserve historical flat ordering."""
+    if contract is None:
+        require(isinstance(reviews, list), 'GROUPED_FIXTURE_REVIEWS_REQUIRE_BOUND_CONTRACT')
+        return reviews
+    expected = validate_fixture_review_contract(contract, fixture_ids)
+    require(isinstance(reviews, dict)
+            and set(reviews) == {'version', 'fixture_order_sha256', 'groups'}
+            and reviews['version'] == expected['version']
+            and reviews['fixture_order_sha256'] == expected['fixture_order_sha256']
+            and isinstance(reviews['groups'], list), 'GROUPED_FIXTURE_REVIEWS_BINDING_CHANGED')
+    expanded = [None] * expected['fixture_count']
+    for group in reviews['groups']:
+        require(isinstance(group, dict) and set(group) == {'fixture_indices', 'reason', 'rejected'}
+                and isinstance(group['fixture_indices'], list) and bool(group['fixture_indices'])
+                and isinstance(group['reason'], str) and bool(group['reason'])
+                and type(group['rejected']) is bool, 'EXACT_FIXTURE_REVIEW_GROUP_REQUIRED')
+        for index in group['fixture_indices']:
+            require(type(index) is int and 0 <= index < len(expanded), 'FIXTURE_REVIEW_INDEX_INVALID')
+            require(expanded[index] is None, 'FIXTURE_REVIEW_INDEX_DUPLICATE')
+            expanded[index] = {'fixture_id': fixture_ids[index], 'reason': group['reason'],
+                               'rejected': group['rejected']}
+    require(all(row is not None for row in expanded), 'FULL_CALENDAR_GROUPED_REVIEW_REQUIRED')
+    return expanded
+
 
 def _now():
     return datetime.now(UTC)
@@ -130,7 +185,8 @@ class ProfileDecisionRunner:
     """
 
     def __init__(self, *, host, tools, option_builder, journal, budget,
-                 max_input_chars=360_000, max_output_chars=150_000, source_bundle=None):
+                 max_input_chars=360_000, max_output_chars=150_000, source_bundle=None,
+                 grouped_fixture_reviews=False):
         require(callable(host) and callable(option_builder), 'HOST_AND_PRODUCT_BUILDER_REQUIRED')
         require(type(max_input_chars) is int and 0 < max_input_chars <= 360_000
                 and type(max_output_chars) is int and 0 < max_output_chars <= 150_000,
@@ -139,6 +195,8 @@ class ProfileDecisionRunner:
         self.journal, self.budget = journal, budget
         self.max_input_chars, self.max_output_chars = max_input_chars, max_output_chars
         self.source_bundle = source_bundle
+        require(type(grouped_fixture_reviews) is bool, 'EXPLICIT_GROUPED_FIXTURE_REVIEW_MODE_REQUIRED')
+        self.grouped_fixture_reviews = grouped_fixture_reviews
 
     def _call(self, state, phase, data, *, source_records=None):
         body = {**_identity(state), 'phase': phase,
@@ -237,6 +295,8 @@ class ProfileDecisionRunner:
             plan_view = view if self.source_bundle is None else source_seed
             require(isinstance(plan_view, dict), 'BOUND_PLAN_VIEW_REQUIRED')
             plan_data = {'snapshot': plan_view}
+            if self.grouped_fixture_reviews:
+                plan_data['fixture_review_contract'] = fixture_review_contract(list(snapshot.fixture_ids))
             describe_construction = getattr(self.option_builder, 'construction_contract', None)
             if callable(describe_construction):
                 contract = json.loads(json_text(describe_construction(state.agent_id)))
@@ -284,7 +344,8 @@ class ProfileDecisionRunner:
             admission = own_option_admission_partition(snapshot, state.agent_id, plan['options'],
                                                        options, rejected_options)
             state = set_options(state, snapshot, options)
-            fixture_rows = plan.get('fixture_reviews')
+            fixture_rows = expand_fixture_reviews(plan.get('fixture_reviews'), list(snapshot.fixture_ids),
+                contract=plan_data.get('fixture_review_contract'))
             require(isinstance(fixture_rows, list)
                     and all(isinstance(row, dict) for row in fixture_rows)
                     and len({row.get('fixture_id') for row in fixture_rows}) == len(fixture_rows),
@@ -459,7 +520,7 @@ class CodexDecisionHost:
         return reviewer.request_profile_decision(request, timeout=timeout, source_access=source_access)
 
 
-def profile_response_schema(phase):
+def profile_response_schema(phase, *, fixture_review_contract=None):
     """Strict, narrow action schema; model cannot supply a wager or new prices."""
     def obj(properties):
         return {'type': 'object', 'properties': properties,
@@ -472,11 +533,28 @@ def profile_response_schema(phase):
     identity = {'phase': {'type': 'string', 'enum': [phase]},
                 'agent_id': text, 'session_id': text, 'snapshot_id': text}
     if phase == 'PLAN':
+        reviews = array(obj({'fixture_id': text, 'reason': text,
+                             'rejected': {'type': 'boolean'}}))
+        if fixture_review_contract is not None:
+            contract = fixture_review_contract
+            require(isinstance(contract, dict)
+                    and set(contract) == {'version', 'fixture_count', 'fixture_order_sha256'}
+                    and contract['version'] == GROUPED_FIXTURE_REVIEWS_VERSION
+                    and type(contract['fixture_count']) is int and contract['fixture_count'] >= 0
+                    and isinstance(contract['fixture_order_sha256'], str),
+                    'FIXTURE_REVIEW_CONTRACT_CHANGED')
+            indices = {'type': 'array', 'minItems': 1, 'items': {'type': 'integer', 'minimum': 0,
+                       'maximum': max(0, contract['fixture_count'] - 1)}}
+            groups = {'type': 'array', 'maxItems': contract['fixture_count'],
+                      'items': obj({'fixture_indices': indices, 'reason': text,
+                                    'rejected': {'type': 'boolean'}})}
+            reviews = obj({'version': {'type': 'string', 'enum': [contract['version']]},
+                'fixture_order_sha256': {'type': 'string', 'enum': [contract['fixture_order_sha256']]},
+                'groups': groups})
         return obj({**identity,
             'options': array(obj({'option_id': text, 'source_candidate_ids': array(text, 6),
                                   'reason': text}), 6),
-            'fixture_reviews': array(obj({'fixture_id': text, 'reason': text,
-                                          'rejected': {'type': 'boolean'}})),
+            'fixture_reviews': reviews,
             'tool_requests': array(obj({
                 'role': {'type': 'string', 'enum': list(SIMULATOR_ROLES)},
                 'parameters': obj({'window': {'anyOf': [obj({'start': text, 'end': text}),

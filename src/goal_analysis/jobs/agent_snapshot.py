@@ -164,10 +164,82 @@ _MODEL_OUTCOMES = {
 }
 
 
+_NORMAL_TABLE_FIELDS = frozenset({
+    'row_count', 'columns', 'defaults', 'missing_rows', 'lookups', 'rows', 'direct_rows_sha256',
+})
+
+
+def _normal_table_rows(table):
+    """Validate the complete named-table representation before walking row clocks.
+
+    Kept here to avoid importing profile_input, which imports this snapshot module.
+    The returned rows are an internal read-only view; original input is not changed.
+    """
+    require(_NORMAL_TABLE_FIELDS <= table.keys(), 'TABLE_FIELDS_MISSING')
+    count = table['row_count']
+    columns, defaults = table['columns'], table['defaults']
+    missing, lookups, rows = table['missing_rows'], table['lookups'], table['rows']
+    require(type(count) is int and count >= 0 and isinstance(columns, list)
+            and isinstance(defaults, dict) and isinstance(missing, dict)
+            and isinstance(lookups, dict) and isinstance(rows, list) and len(rows) == count,
+            'TABLE_CONTAINER_OR_ROW_COUNT')
+    require(all(isinstance(column, dict) and set(column) == {'name', 'encoding'}
+                and isinstance(column['name'], str) and column['encoding'] in {'literal', 'lookup'}
+                for column in columns), 'TABLE_COLUMN_SCHEMA')
+    names = [column['name'] for column in columns]
+    fields = set(names) | set(defaults)
+    require(len(names) == len(set(names)) and not set(names) & set(defaults)
+            and all(isinstance(key, str) for key in fields), 'TABLE_DISTINCT_FIELDS')
+    require(set(lookups) == {column['name'] for column in columns if column['encoding'] == 'lookup'}
+            and set(missing) <= fields, 'TABLE_LOOKUP_OR_MISSING_FIELDS')
+    for indexes in missing.values():
+        require(isinstance(indexes, list)
+                and all(type(index) is int and 0 <= index < count for index in indexes)
+                and indexes == sorted(set(indexes)), 'TABLE_MISSING_ROW_INDEXES')
+    for values in lookups.values():
+        require(isinstance(values, list) and bool(values)
+                and len({digest(value) for value in values}) == len(values), 'TABLE_LOOKUP_VALUES')
+    decoded, used = [], {key: set() for key in lookups}
+    for index, cells in enumerate(rows):
+        require(isinstance(cells, list) and len(cells) == len(columns), 'TABLE_ROW_WIDTH')
+        row = dict(defaults)
+        for column, cell in zip(columns, cells, strict=True):
+            name = column['name']
+            if index in missing.get(name, []):
+                require(cell is None, 'TABLE_MISSING_CELL_MARKER')
+                continue
+            if column['encoding'] == 'lookup':
+                require(type(cell) is int and 0 <= cell < len(lookups[name]), 'TABLE_LOOKUP_INDEX')
+                used[name].add(cell)
+                cell = lookups[name][cell]
+            row[name] = cell
+        for name, indexes in missing.items():
+            if index in indexes:
+                row.pop(name, None)
+        decoded.append(row)
+    require(all(used[name] == set(range(len(values))) for name, values in lookups.items())
+            and all(any(name in row for row in decoded) for name in fields), 'TABLE_UNREPRESENTED_VALUE')
+    require(digest(decoded) == table['direct_rows_sha256'], 'TABLE_DIRECT_ROWS_HASH')
+    return decoded
+
+
 def _normal_clock_issues(value, cutoff: datetime, path: str = '') -> list[dict]:
     """Inspect knowledge clocks only: kickoff/target/forecast times may be future."""
     issues = []
     if isinstance(value, dict):
+        # A source-navigation descriptor may name this format without containing a table.
+        if value.get('format') == 'NAMED_COLUMNS_V1' and _NORMAL_TABLE_FIELDS.intersection(value):
+            try:
+                rows = _normal_table_rows(value)
+            except (ValueError, TypeError, KeyError, IndexError):
+                issues.append({'path': path, 'reason': 'INVALID_ENCODED_CLOCK_TABLE'})
+                # Malformed representations retain the ordinary strict walk as well.
+            else:
+                issues.extend(_normal_clock_issues(rows, cutoff, f'{path}/decoded_rows'))
+                metadata = {key: child for key, child in value.items()
+                            if key not in _NORMAL_TABLE_FIELDS and key != 'format'}
+                issues.extend(_normal_clock_issues(metadata, cutoff, path))
+                return issues
         for key, child in value.items():
             location = f'{path}/{key}'
             if key in _KNOWLEDGE_CLOCKS and child is not None:
