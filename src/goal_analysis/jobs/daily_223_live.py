@@ -13,6 +13,7 @@ from goal_analysis.config.daily_223_live import validate_live_config
 from goal_analysis.engine.daily_223 import build_daily_223
 from goal_analysis.providers.api_football_history import ApiFootballHistoryCollector, aware_time
 from goal_analysis.providers.base import ProviderError
+from goal_analysis.providers.the_stats_odds import TheStatsOddsFeed
 
 from .daily_223_candidates import (
     assemble_daily223_candidates,
@@ -163,6 +164,7 @@ def run_daily223_live(
     selected_competition_ids: list[int] | None = None,
     calendar_scope=None,
     operating_contract_version: int = 1,
+    full_day_odds_authority: dict | None = None,
 ) -> dict:
     started = clock()
     aware_time(started.isoformat())
@@ -304,6 +306,13 @@ def run_daily223_live(
         stage = "odds"
         if hasattr(odds_feed, 'bind_fixtures'):
             odds_feed.bind_fixtures(fixtures)
+        if full_day_odds_authority is not None:
+            if (construct_legacy or not stats_primary or operating_contract_version != 2
+                    or selected_competition_ids is not None
+                    or full_day_odds_authority.get('target_date') != target_date.isoformat()
+                    or not isinstance(odds_feed, TheStatsOddsFeed)):
+                raise ValueError('EXPLICIT_NATIVE_FULL_DAY_NORMAL_SCOPE_REQUIRED')
+            odds_feed.configure_full_day(fixtures, full_day_odds_authority, config['extra_markets'])
         events, base_issues = [], []
         artifacts["odds_bulk"] = {}
         for league in _odds_leagues(config, fixtures,
@@ -332,6 +341,8 @@ def run_daily223_live(
                     }
                 )
                 continue
+            native_issue_start = len(getattr(odds_feed, 'issues', []))
+            acquisition_start = len(getattr(odds_feed, 'acquisition_outcomes', []))
             try:
                 payload = odds_feed.bulk(league["odds_sport_key"], target_date)
             except ProviderError as error:
@@ -345,6 +356,17 @@ def run_daily223_live(
                 continue
             artifacts["odds_bulk"][league["odds_sport_key"]] = payload
             events.extend(payload)
+            native_feed = getattr(odds_feed, 'provider', None) == 'the_stats_api'
+            if native_feed:
+                base_issues.extend({**row, 'provider': 'the_stats_api'}
+                    for row in odds_feed.issues[native_issue_start:])
+                if full_day_odds_authority is not None:
+                    base_issues.extend({'fixture_id': row['fixture_id'], 'provider': 'the_stats_api',
+                        'status': 'REQUESTED_MARKETS_UNAVAILABLE',
+                        'markets': row['missing_requested_markets'],
+                        'reason': 'ABSENT_FROM_ACCEPTED_NATIVE_RESPONSE'}
+                        for row in odds_feed.acquisition_outcomes[acquisition_start:]
+                        if row['outcome'] == 'EVENT_AVAILABLE' and row['missing_requested_markets'])
             native_usage = getattr(getattr(odds_feed, 'resources', None), 'usage', {})
             if stats_primary and operating_contract_version == 2 and native_usage.get('stopped_reason'):
                 returned = {event.get('id') for event in payload}
@@ -357,9 +379,10 @@ def run_daily223_live(
                 base_issues.append(
                     {
                         "sport_key": league["odds_sport_key"],
-                        "status": "EMPTY_ODDS_RESPONSE",
+                        "status": "NO_ACCEPTED_ODDS_EVENTS" if native_feed else "EMPTY_ODDS_RESPONSE",
                         "returned_events": 0,
-                        "message": "Az Odds API erre a napra és ligára nem adott szorzókat. A további források eredménye külön látható.",
+                        "message": ("Nincs elfogadott natív szorzóesemény; a kérési és hiányokok külön szerepelnek."
+                            if native_feed else "Az Odds API erre a napra és ligára nem adott szorzókat. A további források eredménye külön látható."),
                     }
                 )
         stage = "extra_markets"
@@ -369,7 +392,7 @@ def run_daily223_live(
             key=lambda market: (market != "btts", market != "totals_h1", market),
         )
         extra_issues = []
-        if extras:
+        if extras and full_day_odds_authority is None:
             pairs, _ = match_daily_events(
                 fixtures, events, config["team_aliases"], target_date, clock()
             )
@@ -568,6 +591,11 @@ def run_daily223_live(
         report['usage']['odds_api_calls'] = 0
         report['usage']['odds_budget_unit'] = 'THE_STATS_HTTP_REQUESTS'
         artifacts['odds_issues'] = odds_feed.issues
+        artifacts['odds_acquisition'] = getattr(odds_feed, 'acquisition_outcomes', [])
+        if full_day_odds_authority is not None:
+            receipt = odds_feed.acquisition_receipt()
+            artifacts['odds_acquisition_scope'] = receipt
+            report['usage']['odds_full_day_acquisition'] = receipt
     del report["report_sha256"]
     report["report_sha256"] = canonical_sha256(report)
     artifacts["report"] = report

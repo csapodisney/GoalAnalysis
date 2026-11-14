@@ -46,7 +46,7 @@ def make_normal_agent_executor(root, settings, *, clock, stop_requested=lambda: 
     return NormalAgentExecutor(host=CodexDecisionHost(reviewer_factory),
         journal_root=root / 'data/arthur/agent-decisions', clock=clock,
         stop_requested=stop_requested, enable_source_access=True, enable_companion_channels=True,
-        enable_ticket_product_contract=True, enable_grouped_fixture_reviews=True,
+        enable_ticket_product_contract=True, enable_grouped_fixture_reviews=True, enable_full_day_odds=True,
         news_reader=lambda **kwargs: read_current_news(root / 'data/goal_analysis.sqlite3', **kwargs),
         news_producer=news_producer if ai.get('web_search') is True else None)
 
@@ -64,7 +64,7 @@ class NormalAgentExecutor:
                  news_reader=None, historical_reader=None, news_producer=None, max_requests=20,
                  timeout_seconds=3600, enable_source_access=False, pilot_agent_id=None,
                  enable_companion_channels=False, enable_ticket_product_contract=False,
-                 enable_grouped_fixture_reviews=False):
+                 enable_grouped_fixture_reviews=False, enable_full_day_odds=False):
         require(callable(host) and callable(clock), 'EXPLICIT_HOST_AND_CLOCK_REQUIRED')
         require(type(timeout_seconds) is int and 0 < timeout_seconds <= 3600,
                 'FINITE_NORMAL_AGENT_DEADLINE_REQUIRED')
@@ -87,6 +87,8 @@ class NormalAgentExecutor:
         self.enable_ticket_product_contract = enable_ticket_product_contract
         require(type(enable_grouped_fixture_reviews) is bool, 'EXPLICIT_GROUPED_FIXTURE_REVIEW_MODE_REQUIRED')
         self.enable_grouped_fixture_reviews = enable_grouped_fixture_reviews
+        require(type(enable_full_day_odds) is bool, 'EXPLICIT_FULL_DAY_ODDS_MODE_REQUIRED')
+        self.enable_full_day_odds = enable_full_day_odds
 
     @staticmethod
     def _stage_source_access(journal, snapshot):

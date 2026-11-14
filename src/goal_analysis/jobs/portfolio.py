@@ -491,6 +491,18 @@ def run_portfolio(
         attach_strategy_provenance(report, requested_settings)
         report["report_sha256"] = canonical_sha256(report)
         return {"schema_version": 3, "artifacts": {"report": report}}
+    odds_acquisition_kwargs = {}
+    if agent_executor is not None:
+        from goal_analysis.agents.profile_roster import AGENT_IDS
+        from goal_analysis.jobs.ten_agent_normal import NormalAgentExecutor
+
+        if isinstance(agent_executor, NormalAgentExecutor) and agent_executor.enable_full_day_odds:
+            if (not agent_executor.enable_ticket_product_contract
+                    or not set(AGENT_IDS) <= set(requested_settings['enabled_profiles'])):
+                raise ValueError('CURRENT_TEN_AGENT_FULL_DAY_ODDS_FACTORY_REQUIRED')
+            odds_acquisition_kwargs['full_day_odds_authority'] = {
+                'version': 'NORMAL_FULL_DAY_ODDS_V1', 'run_id': run_id,
+                'target_date': target_date.isoformat(), 'authority': 'CURRENT_TEN_AGENT_NORMAL_FACTORY'}
     bundle = run_daily223_live(
         effective_live_config(config, settings),
         football_client,
@@ -502,6 +514,7 @@ def run_portfolio(
         allow_incomplete=permissive(settings),
         selected_competition_ids=selected_competition_ids,
         calendar_scope=resolve_default_leagues,
+        **odds_acquisition_kwargs,
         **({"operating_contract_version": 2} if current_contract(settings) else {}),
     )
     artifacts = bundle["artifacts"]

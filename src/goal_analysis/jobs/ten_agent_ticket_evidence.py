@@ -36,7 +36,10 @@ from goal_analysis.agents.profile_input import (
 from goal_analysis.agents.profile_roster import AGENT_IDS, get_agent_definition
 from goal_analysis.agents.profile_tools import VERSION as TOOL_VERSION
 from goal_analysis.generated_tickets import _materialize
-from goal_analysis.jobs.agent_portfolio import own_option_admission_partition
+from goal_analysis.jobs.agent_portfolio import (
+    own_option_admission_partition,
+    validate_source_catalog_contract,
+)
 from goal_analysis.jobs.agent_snapshot import (
     FAMILIES,
     SharedSnapshot,
@@ -75,6 +78,9 @@ def _plan_auxiliary_inputs(evidence, state, snapshot):
                 and contract.get('method_version') == state.method_version
                 and contract.get('run_id') == data['run_id'] and contract.get('target_date') == data['target_date']
                 and contract.get('source_as_of') == data['as_of'], 'FOREIGN_SAVED_CONSTRUCTION_CONTRACT')
+        validate_source_catalog_contract(contract, snapshot.snapshot_id,
+            data['families']['odds_and_price_history'].get('value'),
+            source_access=evidence.get('version') == 'owner-decision-evidence-v3-source-access')
     search = values.get('own_strategy_search')
     if search is not None:
         require(isinstance(search, dict) and search.get('agent_id') == state.agent_id

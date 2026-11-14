@@ -273,6 +273,71 @@ def _club_card(owner, selected, enriched, settings, now, models, product_policy=
                                  'selected_source_candidate_ids': list(selected)}}
 
 
+SOURCE_CATALOG_POLICY = 'ALL_SOURCE_CANDIDATE_QUERY_REFERENCE_V1'
+
+
+def source_candidate_catalog_reference(odds, snapshot_id):
+    """Locate every original producer row; neither filter nor claim it was read."""
+    require(isinstance(odds, dict) and isinstance(snapshot_id, str) and bool(snapshot_id),
+            'SOURCE_CATALOG_SNAPSHOT_REQUIRED')
+    primary = odds.get('candidate_input')
+    require(isinstance(primary, dict) and isinstance(primary.get('candidates'), list),
+            'SOURCE_CANDIDATES_REQUIRED')
+    sources = {}
+    for producer in ('candidate_input', 'enriched', 'club_enriched'):
+        container = odds.get(producer)
+        present = isinstance(container, dict) and 'candidates' in container
+        rows = container.get('candidates') if present else None
+        is_list = isinstance(rows, list)
+        identifiers_in_order = [row['candidate_id'] for row in rows
+            if isinstance(row, dict) and isinstance(row.get('candidate_id'), str) and row['candidate_id']] if is_list else []
+        counts = Counter(identifiers_in_order)
+        sources[producer] = {
+            'namespace': 'raw',
+            'path': ['families', 'odds_and_price_history', 'value', producer, 'candidates'],
+            'source_field_present': present, 'queryable': is_list,
+            'status': 'AVAILABLE' if is_list else 'UNKNOWN',
+            'source_value_sha256': digest(rows),
+            'source_row_count': len(rows) if is_list else None,
+            'valid_candidate_ids_sha256': digest(identifiers_in_order) if is_list else None,
+            'unique_candidate_id_count': len(counts) if is_list else None,
+            'duplicate_candidate_id_count': sum(value > 1 for value in counts.values()) if is_list else None,
+            'rows_without_valid_candidate_id': len(rows) - len(identifiers_in_order) if is_list else None,
+        }
+    return {
+        'version': SOURCE_CATALOG_POLICY, 'snapshot_id': snapshot_id,
+        'query_sources': sources, 'candidate_filter_applied': False,
+        'full_calendar_replaced_by_priced_candidates': False,
+        'full_record_read_proven': False, 'all_rows_supplied_inline': False,
+        'selected_candidate_read': {'tool': 'read_data', 'namespace': 'candidates',
+            'path_template': ['<exact original candidate_id>'], 'mode': 'text',
+            'all_text_pages_required': True, 'includes_all_ordered_producer_rows': True},
+        'instruction': 'The complete original candidate containers remain in the immutable source bundle. '
+            'Use query_data on the exact raw query_sources path, with your own typed market/selection/fixture '
+            'filters and projected fields; counts cover that entire container, without ranking or a shared shortlist. '
+            'Use next_cursor for further matching pages within the unchanged tool budget. Do not enumerate every '
+            'market row as a prerequisite. UNKNOWN optional metadata is not fabricated or silently filtered. '
+            'Every proposed candidate ID still requires read_data candidates/[candidate_id] through all text pages; '
+            'a query projection or this descriptor is not a full-record-read receipt. Duplicate or conflicting '
+            'producer rows remain separate. All full-calendar fixtures remain in the initial snapshot. '
+            'Numeric probabilities use raw/model_probabilities; compressed view tables are not row dictionaries.',
+    }
+
+
+def validate_source_catalog_contract(contract, snapshot_id, odds, *, source_access):
+    """Rebind the new explicit protocol; leave historical inline inputs unchanged."""
+    catalog = contract.get('full_candidate_catalog')
+    if 'source_catalog_policy' not in contract:
+        require(not isinstance(catalog, dict) or catalog.get('version') != SOURCE_CATALOG_POLICY,
+                'SOURCE_CATALOG_POLICY_REQUIRED')
+        return
+    require(source_access and contract['source_catalog_policy'] == SOURCE_CATALOG_POLICY,
+            'UNKNOWN_OR_NON_SOURCE_CATALOG_POLICY')
+    expected = source_candidate_catalog_reference(odds, snapshot_id)
+    require(isinstance(catalog, dict) and digest(catalog) == digest(expected),
+            'SOURCE_CATALOG_REFERENCE_CHANGED')
+
+
 def _full_candidate_catalog(candidate_input):
     """All original source rows, compactly addressable without admitting any row."""
     rows = candidate_input.get('candidates', [])
@@ -489,6 +554,7 @@ def build_agent_option_builder(report, artifacts, enriched, club_enriched, setti
     bound_snapshot = None
     bound_data = None
     admitted_models = None
+    source_catalog_json = None
 
     search_cache = {}
 
@@ -560,6 +626,23 @@ def build_agent_option_builder(report, artifacts, enriched, club_enriched, setti
         result['full_candidate_catalog'] = json.loads(catalogue_json)
         return result
 
+    def source_construction_contract(owner, snapshot):
+        nonlocal source_catalog_json
+        bind_snapshot(owner, snapshot)
+        if source_catalog_json is None:
+            source_catalog_json = json.dumps(source_candidate_catalog_reference(
+                bound_data['families']['odds_and_price_history']['value'], snapshot.snapshot_id),
+                sort_keys=True, ensure_ascii=False, allow_nan=False)
+        result = json.loads(construction_contracts[owner])
+        result['source_catalog_policy'] = SOURCE_CATALOG_POLICY
+        result['full_candidate_catalog'] = json.loads(source_catalog_json)
+        result['optional_data_instruction'] = (
+            'Missing optional weather, xG, lineup, venue, cost or historical PIT/profit evidence alone is not '
+            'a whole-owner abstention requirement. Continue with other valid fixtures and available evidence; '
+            'retain explicit UNKNOWN risks. Never fabricate a probability or override existing source, price, '
+            'kickoff, product, own model/history or numerical construction gates.')
+        return result
+
     def strategy_search(owner, snapshot):
         """Callable construction aid; no host invocation or selected-card authority."""
         bind_snapshot(owner, snapshot)
@@ -607,6 +690,7 @@ def build_agent_option_builder(report, artifacts, enriched, club_enriched, setti
         return json.loads(search_cache[owner])
 
     build.construction_contract = construction_contract
+    build.source_construction_contract = source_construction_contract
     build.strategy_search = strategy_search
     return build
 

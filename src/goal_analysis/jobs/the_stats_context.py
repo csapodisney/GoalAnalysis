@@ -118,7 +118,9 @@ class Resources:
         self.usage = {"requests": 0, "cache_hits": 0, "max_requests": max_requests, "stopped_reason": None, "by_endpoint": {}}
 
     def get(self, endpoint, params=None, *, ttl=timedelta(minutes=30), cache_only=False,
-            retained_team_stats=False):
+            retained_team_stats=False, before_request=None):
+        if before_request is not None and not callable(before_request):
+            raise ValueError('OPTIONAL_REQUEST_ADMISSION_CALLBACK_REQUIRED')
         if type(cache_only) is not bool:
             raise ValueError('cache_only must be boolean')
         if type(retained_team_stats) is not bool:
@@ -198,6 +200,10 @@ class Resources:
             return None, None, 'CACHE_MISS'
         if self.usage["stopped_reason"] or self.usage["requests"] >= self.usage["max_requests"]:
             return None, None, self.usage["stopped_reason"] or "REQUEST_BUDGET"
+        if before_request is not None:
+            refusal = before_request(endpoint)
+            if refusal is not None:
+                return None, None, refusal
         self.usage["requests"] += 1
         self.usage["by_endpoint"][endpoint] = self.usage["by_endpoint"].get(endpoint, 0) + 1
         try:

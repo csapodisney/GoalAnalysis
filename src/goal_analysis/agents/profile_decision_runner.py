@@ -34,6 +34,7 @@ from goal_analysis.agents.profile_input import (
 )
 from goal_analysis.agents.profile_roster import ACTIVE_AGENTS, get_agent_definition
 from goal_analysis.jobs.agent_portfolio import (
+    SOURCE_CATALOG_POLICY,
     OwnOptionAdmissionRejected,
     own_option_admission_partition,
 )
@@ -298,8 +299,16 @@ class ProfileDecisionRunner:
             if self.grouped_fixture_reviews:
                 plan_data['fixture_review_contract'] = fixture_review_contract(list(snapshot.fixture_ids))
             describe_construction = getattr(self.option_builder, 'construction_contract', None)
-            if callable(describe_construction):
-                contract = json.loads(json_text(describe_construction(state.agent_id)))
+            source_construction = (getattr(self.option_builder, 'source_construction_contract', None)
+                                   if self.source_bundle is not None else None)
+            if callable(source_construction) or callable(describe_construction):
+                contract = json.loads(json_text(source_construction(state.agent_id, snapshot)
+                    if callable(source_construction) else describe_construction(state.agent_id)))
+                if callable(source_construction):
+                    require(contract.get('source_catalog_policy') == SOURCE_CATALOG_POLICY
+                            and isinstance(contract.get('full_candidate_catalog'), dict)
+                            and contract['full_candidate_catalog'].get('snapshot_id') == snapshot.snapshot_id,
+                            'OWN_SOURCE_CATALOG_BINDING_MISMATCH')
                 require(isinstance(contract, dict) and contract.get('agent_id') == state.agent_id
                         and contract.get('run_id') == plan_view.get('run_id')
                         and contract.get('target_date') == plan_view.get('target_date'),
