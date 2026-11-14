@@ -88,6 +88,7 @@ class SourceAccessScope:
     kernel_sha256: str
     query_source: object = None
     query_sha256: str | None = None
+    cached_bundle: object = None
 
     def __post_init__(self):
         require(isinstance(self.binding, dict) and set(self.binding) == set(IDENTITY)
@@ -115,16 +116,15 @@ class SourceAccessScope:
             if re.search(r'(?:API_KEY|TOKEN|SECRET|PASSWORD|CREDENTIAL)$', name, re.IGNORECASE)})
         require(not any(os.environ.get(name) and os.environ[name] in bundle_text for name in secret_names),
                 'SOURCE_CONTAINS_CURRENT_CREDENTIAL')
-        bundle = json.loads(bundle_text)
-        require(set(bundle) == {'raw_json', 'view_json', 'snapshot_id', 'view_sha256'}
-                and bundle['snapshot_id'] == binding['snapshot_id'], 'SOURCE_BUNDLE_BINDING_CHANGED')
-        require(all(isinstance(bundle[key], str) for key in ('raw_json', 'view_json'))
-                and not any(os.environ.get(name) and any(os.environ[name] in bundle[key]
-                    for key in ('raw_json', 'view_json')) for name in secret_names),
-                'SOURCE_CONTAINS_CURRENT_CREDENTIAL')
-        from goal_analysis.agents.profile_source_access import SourceBundle
+        bundle_document = json.loads(bundle_text)
+        from goal_analysis.agents.profile_source_access import load_source_bundle_document
 
-        verified_bundle = SourceBundle(**bundle)
+        verified_bundle = load_source_bundle_document(bundle_document, bundle_path,
+                                                      cached_bundle=self.cached_bundle)
+        require(verified_bundle.snapshot_id == binding['snapshot_id'], 'SOURCE_BUNDLE_BINDING_CHANGED')
+        require(not any(os.environ.get(name) and any(os.environ[name] in text
+                        for text in (verified_bundle.raw_json, verified_bundle.view_json))
+                        for name in secret_names), 'SOURCE_CONTAINS_CURRENT_CREDENTIAL')
         _pin(self.server_script, self.server_sha256)
         _pin(self.kernel_source, self.kernel_sha256)
         if self.query_source is not None or self.query_sha256 is not None:
@@ -144,8 +144,8 @@ class SourceAccessScope:
         _write_once(binding_path, document)
         return {'document': document, 'binding_path': binding_path,
             'binding_sha256': hashlib.sha256(binding_path.read_bytes()).hexdigest(),
-            'bundle_view_sha256': bundle['view_sha256'], 'journal_path': journal, 'receipt_path': receipt,
-            'bundle': verified_bundle,
+            'bundle_view_sha256': verified_bundle.view_sha256, 'journal_path': journal, 'receipt_path': receipt,
+            'bundle': verified_bundle, 'bundle_document': bundle_document,
             'server_script': Path(self.server_script).resolve(),
             'python_executable': Path(self.python_executable).resolve()}
 
@@ -346,6 +346,10 @@ def finish_source_evidence(prepared, events, request, reply, *, cli_native_exit=
     if 'query_source' in document:
         _pin(document['query_source'], document['query_sha256'], load=False)
     bundle = prepared['bundle']
+    if prepared.get('bundle_document', {}).get('version') is not None:
+        from goal_analysis.agents.profile_source_access import load_source_bundle_document
+
+        load_source_bundle_document(prepared['bundle_document'], document['bundle_path'], cached_bundle=bundle)
     journal = prepared['journal_path']
     require(journal.is_file() and journal.stat().st_size <= 1_048_576,
             'SOURCE_JOURNAL_MISSING_OR_OVERSIZE')

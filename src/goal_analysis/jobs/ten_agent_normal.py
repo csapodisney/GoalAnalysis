@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import hashlib
-import json
 import os
 import sys
 from copy import deepcopy
@@ -101,23 +100,15 @@ class NormalAgentExecutor:
         require(owned_root.is_relative_to(journal.directory.resolve()), 'SOURCE_ACCESS_ROOT_OUTSIDE_RUN')
         owned_root.mkdir(exist_ok=False)
         bundle_path = owned_root / 'bundle.json'
-        checksum, written = hashlib.sha256(), 0
-        encoder = json.JSONEncoder(sort_keys=True, ensure_ascii=False, allow_nan=False, separators=(',', ':'))
-        with bundle_path.open('xb') as stream:
-            for part in encoder.iterencode(bundle.as_dict()):
-                encoded = part.encode('utf-8')
-                written += len(encoded)
-                require(written <= 536_870_912, 'SOURCE_BUNDLE_STORAGE_BOUND_EXCEEDED_BEFORE_HOST')
-                stream.write(encoded)
-                checksum.update(encoded)
-            stream.flush()
-            os.fsync(stream.fileno())
+        storage = profile_source_access.stage_source_bundle_files(bundle, bundle_path)
+        manifest_bytes = bundle_path.read_bytes()
+        written = len(manifest_bytes) + sum(part['stored_bytes'] for part in storage['parts'].values())
         from goal_analysis.agents import profile_source_query
 
         query = Path(profile_source_query.__file__).resolve()
         server, kernel = Path(profile_source_stdio.__file__).resolve(), Path(profile_source_access.__file__).resolve()
         scope_args = {'owned_root': owned_root, 'bundle_path': bundle_path,
-            'bundle_sha256': checksum.hexdigest(),
+            'bundle_sha256': hashlib.sha256(manifest_bytes).hexdigest(), 'cached_bundle': bundle,
             'python_executable': Path(sys.executable).resolve(), 'server_script': server,
             'server_sha256': hashlib.sha256(server.read_bytes()).hexdigest(),
             'kernel_source': kernel, 'kernel_sha256': hashlib.sha256(kernel.read_bytes()).hexdigest(),
@@ -126,6 +117,9 @@ class NormalAgentExecutor:
             'snapshot_id': snapshot.snapshot_id, 'view_sha256': bundle.view_sha256,
             'bundle_sha256': scope_args['bundle_sha256'],
             'bundle_bytes': written, 'bundle_byte_limit': 536_870_912,
+            'storage_version': storage['version'], 'bundle_manifest_bytes': len(manifest_bytes),
+            'decoded_bytes': sum(part['decoded_bytes'] for part in storage['parts'].values()),
+            'decoded_byte_limit': storage['decoded_limit'],
             'access_semantics': 'AVAILABLE_TO_ALL_OWNERS_NOT_AN_ACTUAL_READ_CLAIM'})
         return bundle, scope_args
 

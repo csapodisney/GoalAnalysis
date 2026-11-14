@@ -255,7 +255,7 @@ def main(argv=None):
     if 'query_source' in document or 'query_sha256' in document:
         query_module = _load_pinned_query(document['query_source'], document['query_sha256'])
         query_factory = query_module.SourceQueryIndex
-    bundle = module.SourceBundle(**json.loads(bundle_raw.decode('utf-8')))
+    bundle = module.load_source_bundle_document(json.loads(bundle_raw.decode('utf-8')), bundle_path)
     require(bundle.snapshot_id == document['binding']['snapshot_id'], 'SOURCE_BUNDLE_BINDING_CHANGED')
     forbidden, outcome, error_type = [], 1, None
     with journal.open('x', encoding='utf-8', newline='\n') as stream, checkpoint_path.open(

@@ -8,7 +8,7 @@ import time
 from ctypes import wintypes
 from datetime import UTC, datetime, timedelta
 from hashlib import sha256
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 LOG_LIMIT = 16 * 1024 * 1024
 
@@ -32,6 +32,62 @@ def resource_cancel_decision(raw, now):
     except (KeyError, TypeError, UnicodeError, json.JSONDecodeError) as error:
         raise ValueError('INVALID_RESOURCE_HARDSTOP_SENTINEL') from error
     return {'requested_at_utc': value['requested_at_utc'], 'request_sha256': sha256(raw).hexdigest()}
+
+
+
+HUMAN_DEADLINE_STATUS = 'HUMAN_WORKSHOP_DEADLINE_V1'
+
+
+def human_deadline_policy(raw, now, *, request_id, target_date, source_binding):
+    """Validate one explicit request-bound authority; never reinterpret resource5%."""
+    from uuid import UUID
+
+    require(type(raw) is bytes and 0 < len(raw) <= 4096, 'BOUNDED_HUMAN_DEADLINE_REQUIRED')
+    value = json.loads(raw.decode('utf-8-sig'))
+    fields = {'status', 'requested_at_utc', 'request_id', 'target_date', 'source_map',
+              'business_stop_at_utc', 'verification_stop_at_utc', 'human_stop_at_utc',
+              'human_authority_sha256'}
+    require(isinstance(value, dict) and set(value) == fields
+            and value['status'] == HUMAN_DEADLINE_STATUS, 'EXACT_HUMAN_DEADLINE_SCHEMA_REQUIRED')
+    require(str(UUID(request_id)) == request_id and value['request_id'] == request_id
+            and value['target_date'] == target_date, 'HUMAN_DEADLINE_REQUEST_OR_DAY_MISMATCH')
+    source = value['source_map']
+    require(isinstance(source, dict) and set(source) == {'relative_path', 'sha256', 'source_commit', 'source_files_sha256'}
+            and source == source_binding, 'HUMAN_DEADLINE_ACTUAL_SOURCE_MISMATCH')
+    relative = source['relative_path']
+    require(isinstance(relative, str) and relative == PurePosixPath(relative).as_posix()
+            and not PurePosixPath(relative).is_absolute() and '..' not in PurePosixPath(relative).parts
+            and ':' not in relative and '\\' not in relative
+            and relative.startswith('artifacts/') and relative.endswith('/SOURCE-MAP.json'),
+            'HUMAN_DEADLINE_SOURCE_MAP_PATH_REQUIRED')
+    for hashed in (value['human_authority_sha256'], source['sha256'], source['source_files_sha256']):
+        require(isinstance(hashed, str) and len(hashed) == 64
+                and all(char in '0123456789abcdef' for char in hashed), 'HUMAN_DEADLINE_HASH_REQUIRED')
+    require(isinstance(source['source_commit'], str) and len(source['source_commit']) == 40
+            and all(char in '0123456789abcdef' for char in source['source_commit']), 'HUMAN_DEADLINE_COMMIT_REQUIRED')
+    require(now.tzinfo is not None and now.utcoffset() == timedelta(0), 'HUMAN_DEADLINE_UTC_NOW_REQUIRED')
+    clocks = {}
+    for name in ('requested_at_utc', 'business_stop_at_utc', 'verification_stop_at_utc', 'human_stop_at_utc'):
+        require(isinstance(value[name], str), 'HUMAN_DEADLINE_CLOCK_STRING_REQUIRED')
+        stamp = datetime.fromisoformat(value[name])
+        require(stamp.tzinfo is not None and stamp.utcoffset() == timedelta(0), 'HUMAN_DEADLINE_AWARE_UTC_REQUIRED')
+        clocks[name] = stamp
+    require(0 <= (now - clocks['requested_at_utc']).total_seconds() <= 600,
+            'FRESH_HUMAN_DEADLINE_AUTHORITY_REQUIRED')
+    require(now < clocks['business_stop_at_utc'] <= clocks['verification_stop_at_utc']
+            < clocks['human_stop_at_utc'], 'HUMAN_DEADLINE_PHASE_ORDER_OR_EXPIRED')
+    return {**value, 'authority_sha256': sha256(raw).hexdigest()}
+
+
+def human_phase_deadline(now, *, seconds, label, policy=None):
+    """The optional human authority only shortens the original fixed phase bound."""
+    require(label in {'business', 'verification'} and type(seconds) is int
+            and seconds == {'business': 5400, 'verification': 180}[label], 'EXACT_ORIGINAL_PHASE_LIMIT')
+    ordinary = now + timedelta(seconds=seconds)
+    if policy is None:
+        return ordinary
+    require(policy['status'] == HUMAN_DEADLINE_STATUS, 'VALIDATED_HUMAN_DEADLINE_REQUIRED')
+    return min(ordinary, datetime.fromisoformat(policy[label + '_stop_at_utc']))
 
 
 

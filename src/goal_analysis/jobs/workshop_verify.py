@@ -108,9 +108,77 @@ def _dataset_checks(root, models, reader):
     return checked, gaps
 
 
+
+def _v2_saved_source_limits(reader, journal, snapshot_id, *, default_reader):
+    """Only the exact compressed v2 contract selects its distinct disk limits."""
+    marker = journal / 'source-access-bundle.json'
+    if not marker.is_file():
+        return None
+    receipt = reader.pin(marker, limit=16384)
+    if receipt.get('storage_version') != 'SOURCE_BUNDLE_GZIP_FILES_V2':
+        return None
+    from goal_analysis.agents.profile_source_access import (
+        BUNDLE_DECODED_LIMIT,
+        BUNDLE_STORED_LIMIT,
+        _bundle_parts,
+    )
+
+    path = journal / 'source-access/bundle.json'
+    manifest = reader.pin(path, limit=16384)
+    manifest_pin = reader.files[path.relative_to(reader.root).as_posix()]
+    parts = _bundle_parts(manifest, path)
+    decoded = sum(part['decoded_bytes'] for _, _, part in parts)
+    stored = manifest_pin['bytes'] + sum(part['stored_bytes'] for _, _, part in parts)
+    require(receipt['snapshot_id'] == manifest['snapshot_id'] == snapshot_id
+        and receipt['view_sha256'] == manifest['view_sha256']
+        and receipt['bundle_sha256'] == manifest_pin['sha256']
+        and type(receipt['decoded_byte_limit']) is int
+        and receipt['decoded_byte_limit'] == BUNDLE_DECODED_LIMIT
+        and type(receipt['bundle_byte_limit']) is int
+        and receipt['bundle_byte_limit'] == BUNDLE_STORED_LIMIT
+        and receipt['decoded_bytes'] == decoded and receipt['bundle_bytes'] == stored
+        and receipt['bundle_manifest_bytes'] == manifest_pin['bytes'],
+        'EXACT_V2_SAVED_STORAGE_RECEIPT_REQUIRED')
+    # This is aggregate streaming disk I/O, distinct from the codec decoded limit.
+    # Explicit caller-supplied smaller readers retain their original policy.
+    if default_reader:
+        reader.maximum_bytes = 3 * 1024**3
+    for _, part_path, part in parts:
+        require(reader.pin(part_path, limit=BUNDLE_STORED_LIMIT, parse=False)
+            == part['stored_sha256'] and part_path.stat().st_size == part['stored_bytes'],
+            'SAVED_COMPRESSED_SOURCE_PART_CHANGED')
+    return {'manifest_sha256': manifest_pin['sha256'], 'view_sha256': manifest['view_sha256'],
+            'raw_bytes': manifest['parts']['raw']['decoded_bytes'],
+            'raw_sha256': manifest['parts']['raw']['decoded_sha256'],
+            'independent_physical_limit': 2 * 1024**3,
+            'decoded_logical_limit': BUNDLE_DECODED_LIMIT}
+
+
+def _saved_snapshot_pair(reader, journal, data, snapshot_id, storage):
+    if storage is None:
+        shared = reader.pin(journal / 'shared-data.json', limit=536870912)
+        require(data == shared and digest(shared) == snapshot_id, 'PHYSICAL_SHARED_SNAPSHOT_CHANGED')
+        return
+    # Canonical raw bytes and the fully parsed pretty artifact have the same
+    # canonical hash. A second large parsed tree is neither needed nor retained.
+    path = journal / 'shared-data.json'
+    require(path.stat().st_size == storage['raw_bytes'], 'V2_RAW_SOURCE_SIZE_CHANGED')
+    require(reader.pin(path, limit=storage['raw_bytes'], parse=False)
+        == storage['raw_sha256'] == snapshot_id and digest(data) == snapshot_id,
+        'PHYSICAL_SHARED_SNAPSHOT_CHANGED')
+
+
+def _saved_source_phase_binding(proof, storage):
+    """Bind the saved native-phase envelope to the exact stored v2 manifest."""
+    if storage is not None:
+        require(proof['bundle_sha256'] == storage['manifest_sha256']
+            and proof['view_sha256'] == storage['view_sha256'], 'PHYSICAL_PHASE_SOURCE_STORAGE_CHANGED')
+
+
 def verify_new_cohort(root, report, *, reader=None):
     """Return explicit partial evidence instead of turning optional UNKNOWN into a veto."""
     root = Path(root).resolve()
+    default_reader = reader is None
     reader = reader or SavedReader(root)
     run_id = report['run_id']
     require(Path(run_id).name == run_id and run_id.startswith(report['date'] + '-'), 'EXACT_SAVED_RUN_ID_REQUIRED')
@@ -127,13 +195,15 @@ def verify_new_cohort(root, report, *, reader=None):
         require(reader.pin(directory / 'report.json') == report
             and digest({key: value for key, value in report.items() if key != 'report_sha256'}) == report.get('report_sha256'),
             'PHYSICAL_REPORT_OR_EMBEDDED_HASH_CHANGED')
+        storage = _v2_saved_source_limits(reader, journal,
+            report.get('ten_agent_decisions', {}).get('snapshot_id'), default_reader=default_reader)
         for name in ARTIFACTS:
             path = directory / (name + '.json')
             if path.is_file():
-                artifacts[name] = reader.pin(path, limit=536870912 if name == 'independent_agent_snapshot' else 67108864)
+                limit = (storage['independent_physical_limit'] if storage else 536870912)
+                artifacts[name] = reader.pin(path, limit=limit if name == 'independent_agent_snapshot' else 67108864)
         data = artifacts['independent_agent_snapshot']
-        shared = reader.pin(journal / 'shared-data.json', limit=536870912)
-        require(data == shared and digest(shared) == report['ten_agent_decisions']['snapshot_id'], 'PHYSICAL_SHARED_SNAPSHOT_CHANGED')
+        _saved_snapshot_pair(reader, journal, data, report['ten_agent_decisions']['snapshot_id'], storage)
         require(set(data['families']) == set(FAMILIES), 'ALL_TWELVE_SAVED_FAMILIES_REQUIRED')
         for name, family in data['families'].items():
             require(digest(family.get('value')) == family['value_sha256'], 'PHYSICAL_FAMILY_HASH_CHANGED')
@@ -170,6 +240,7 @@ def verify_new_cohort(root, report, *, reader=None):
                     claim = reader.pin(journal / (key + '.claim.json'))
                     outcome = reader.pin(journal / (key + '.outcome.json'))
                     proof = reader.pin(journal / (key + '.source-access.json'))
+                    _saved_source_phase_binding(proof, storage)
                     require(claim['purpose'] == purpose and claim['claim_key'] == key
                         and digest(claim['request']) == claim['request_sha256'] == proof['request_sha256']
                         and proof == evidence['source_access'][phase]

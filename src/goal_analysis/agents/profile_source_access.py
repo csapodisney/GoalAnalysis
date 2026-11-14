@@ -1,11 +1,14 @@
-"""One immutable Arthur data capability; pure kernel, no filesystem or execution."""
+"""Immutable Arthur data, bounded storage codec, and a filesystem-free kernel."""
 from __future__ import annotations
 
+import gzip
 import hashlib
 import json
+import os
 from copy import deepcopy
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import UTC, datetime
+from pathlib import Path
 
 MAX_CALLS = 64
 MAX_RESPONSE_BYTES = 524_288
@@ -77,6 +80,7 @@ class SourceBundle:
     view_json: str
     snapshot_id: str
     view_sha256: str
+    _roots: dict = field(init=False, repr=False, compare=False)
 
     def __post_init__(self):
         self.check_integrity()
@@ -96,6 +100,7 @@ class SourceBundle:
             _require(source.get('value_sha256') == value_hash(source.get('value'))
                      and projected.get('value_sha256') == source['value_sha256']
                      and projected.get('status') == source.get('status'), 'FAMILY_BINDING_CHANGED')
+        object.__setattr__(self, '_roots', {'raw': raw, 'view': view, 'candidates': _candidate_index(raw)})
 
     def check_integrity(self):
         _require(hashlib.sha256(self.raw_json.encode('utf-8')).hexdigest() == self.snapshot_id,
@@ -112,15 +117,13 @@ class SourceBundle:
 
     def data(self, namespace):
         self.check_integrity()
-        if namespace == 'candidates':
-            return _candidate_index(_load(self.raw_json))
-        _require(namespace in {'raw', 'view'}, 'UNKNOWN_SOURCE_NAMESPACE')
-        return _load(self.raw_json if namespace == 'raw' else self.view_json)
+        _require(namespace in {'raw', 'view', 'candidates'}, 'UNKNOWN_SOURCE_NAMESPACE')
+        return deepcopy(self._roots[namespace])
 
 
 def build_source_seed(snapshot, fullview):
     bundle = SourceBundle.from_snapshot(snapshot, fullview)
-    raw = bundle.data('raw')
+    raw = bundle._roots['raw']
     seed = {key: deepcopy(raw[key]) for key in
             ('version', 'run_id', 'target_date', 'as_of', 'owner_ids', 'fixture_ids')}
     seed['view'] = {'version': 'ten-agent-source-access-seed-v1',
@@ -202,8 +205,7 @@ class SourceAccessKernel:
         self._source_pin = (bundle.raw_json, bundle.view_json, bundle.snapshot_id, bundle.view_sha256)
         # Each tree is decoded once, privately owned and never returned. Public
         # access returns fresh descriptors or immutable JSON fragments only.
-        self._roots = {'raw': _load(bundle.raw_json), 'view': _load(bundle.view_json)}
-        self._roots['candidates'] = _candidate_index(self._roots['raw'])
+        self._roots = bundle._roots
         if query_factory is None:
             from goal_analysis.agents.profile_source_query import SourceQueryIndex
 
@@ -419,8 +421,7 @@ def validate_read_journal(records, receipt, *, binding, bundle):
              and type(budgets.get('response_bytes')) is int and 0 < budgets['response_bytes'] <= MAX_RESPONSE_BYTES
              and type(budgets.get('response_chars')) is int and 0 < budgets['response_chars'] <= MAX_RESPONSE_CHARS,
              'INVALID_SOURCE_READ_BUDGETS')
-    roots = {'raw': _load(bundle.raw_json), 'view': _load(bundle.view_json)}
-    roots['candidates'] = _candidate_index(roots['raw'])
+    roots = bundle._roots
     from goal_analysis.agents.profile_source_query import SourceQueryIndex
 
     query_index = SourceQueryIndex(roots, bundle.snapshot_id)
@@ -522,7 +523,7 @@ def require_candidate_reads(records, *, candidate_ids, bundle):
              and isinstance(candidate_ids, (list, tuple))
              and all(isinstance(key, str) and key for key in candidate_ids),
              'EXACT_PROPOSED_CANDIDATE_IDS_REQUIRED')
-    source = bundle.data('candidates')
+    source = bundle._roots['candidates']
     coverage = {}
     for identifier in dict.fromkeys(candidate_ids):
         _require(identifier in source, 'PROPOSED_CANDIDATE_NOT_IN_SOURCE')
@@ -565,3 +566,141 @@ def assert_selected_candidate_reads(records, proposals, bundle):
              'EXACT_PROPOSAL_SOURCE_IDS_REQUIRED')
     return require_candidate_reads(records, candidate_ids=[key for proposal in proposals
                                    for key in proposal['source_candidate_ids']], bundle=bundle)
+
+
+BUNDLE_FILES_VERSION = 'SOURCE_BUNDLE_GZIP_FILES_V2'
+BUNDLE_STORED_LIMIT = 536_870_912
+BUNDLE_DECODED_LIMIT = 1_073_741_824
+_BUNDLE_CHUNK = 262_144
+
+
+def _part_pin(path, expected_size, expected_hash):
+    _require(path.is_file() and path.stat().st_size == expected_size,
+             'SOURCE_PART_SIZE_CHANGED')
+    checksum, count = hashlib.sha256(), 0
+    with path.open('rb') as stream:
+        while chunk := stream.read(_BUNDLE_CHUNK):
+            count += len(chunk)
+            _require(count <= expected_size, 'SOURCE_PART_SIZE_CHANGED')
+            checksum.update(chunk)
+    _require(count == expected_size and checksum.hexdigest() == expected_hash,
+             'SOURCE_PART_HASH_CHANGED')
+
+
+def _bundle_parts(document, manifest_path):
+    _require(isinstance(document, dict) and set(document) == {
+        'version', 'snapshot_id', 'view_sha256', 'stored_limit', 'decoded_limit', 'parts'}
+        and document['version'] == BUNDLE_FILES_VERSION
+        and type(document['stored_limit']) is int and document['stored_limit'] == BUNDLE_STORED_LIMIT
+        and type(document['decoded_limit']) is int and document['decoded_limit'] == BUNDLE_DECODED_LIMIT
+        and isinstance(document['parts'], dict) and set(document['parts']) == {'raw', 'view'},
+        'EXACT_SOURCE_BUNDLE_V2_REQUIRED')
+    manifest_path = Path(manifest_path).resolve()
+    _require(manifest_path.name == 'bundle.json', 'SOURCE_BUNDLE_MANIFEST_NAME_REQUIRED')
+    manifest_bytes = (manifest_path.stat().st_size if manifest_path.exists()
+                      else len(canonical_json(document).encode('utf-8')))
+    _require(manifest_bytes <= 16_384, 'SOURCE_BUNDLE_MANIFEST_BOUND_EXCEEDED')
+    total_stored, total_decoded, result = manifest_bytes, 0, []
+    for name, identity in (('raw', 'snapshot_id'), ('view', 'view_sha256')):
+        part = document['parts'][name]
+        _require(isinstance(part, dict) and set(part) == {
+            'file', 'stored_bytes', 'stored_sha256', 'decoded_bytes', 'decoded_sha256'}
+            and part['file'] == name + '.json.gz'
+            and all(type(part[key]) is int and part[key] > 0 for key in ('stored_bytes', 'decoded_bytes'))
+            and all(isinstance(part[key], str) and len(part[key]) == 64
+                    and all(character in '0123456789abcdef' for character in part[key])
+                    for key in ('stored_sha256', 'decoded_sha256'))
+            and part['decoded_sha256'] == document[identity], 'EXACT_SOURCE_PART_REQUIRED')
+        total_stored += part['stored_bytes']
+        total_decoded += part['decoded_bytes']
+        path = manifest_path.parent / part['file']
+        _require(not path.is_symlink() and path.resolve().parent == manifest_path.parent,
+                 'SOURCE_PART_OUTSIDE_OWNED_ROOT')
+        result.append((name, path, part))
+    _require(total_stored <= BUNDLE_STORED_LIMIT, 'SOURCE_BUNDLE_STORED_BOUND_EXCEEDED')
+    _require(total_decoded <= BUNDLE_DECODED_LIMIT, 'SOURCE_BUNDLE_DECODED_BOUND_EXCEEDED')
+    return result
+
+
+def stage_source_bundle_files(bundle, manifest_path):
+    """One lossless v2 attempt; incomplete files remain evidence on failure."""
+    _require(isinstance(bundle, SourceBundle), 'IMMUTABLE_SOURCE_BUNDLE_REQUIRED')
+    bundle.check_integrity()
+    manifest_path = Path(manifest_path)
+    _require(manifest_path.name == 'bundle.json' and not manifest_path.exists(),
+             'SOURCE_BUNDLE_MANIFEST_ALREADY_EXISTS')
+    document = {'version': BUNDLE_FILES_VERSION, 'snapshot_id': bundle.snapshot_id,
+        'view_sha256': bundle.view_sha256, 'stored_limit': BUNDLE_STORED_LIMIT,
+        'decoded_limit': BUNDLE_DECODED_LIMIT, 'parts': {}}
+    stored_total = decoded_total = 0
+    for name, text in (('raw', bundle.raw_json), ('view', bundle.view_json)):
+        path = manifest_path.parent / (name + '.json.gz')
+        checksum, decoded_size = hashlib.sha256(), 0
+        with path.open('xb') as stream:
+            with gzip.GzipFile(filename='', mode='wb', fileobj=stream, compresslevel=1, mtime=0) as packed:
+                for offset in range(0, len(text), _BUNDLE_CHUNK):
+                    chunk = text[offset:offset + _BUNDLE_CHUNK].encode('utf-8')
+                    decoded_size += len(chunk)
+                    _require(decoded_total + decoded_size <= BUNDLE_DECODED_LIMIT,
+                             'SOURCE_BUNDLE_DECODED_BOUND_EXCEEDED')
+                    checksum.update(chunk)
+                    packed.write(chunk)
+                    _require(stored_total + stream.tell() <= BUNDLE_STORED_LIMIT,
+                             'SOURCE_BUNDLE_STORED_BOUND_EXCEEDED')
+            stream.flush()
+            os.fsync(stream.fileno())
+        stored_size = path.stat().st_size
+        stored_total += stored_size
+        decoded_total += decoded_size
+        _require(stored_total <= BUNDLE_STORED_LIMIT, 'SOURCE_BUNDLE_STORED_BOUND_EXCEEDED')
+        stored_hash = hashlib.sha256()
+        with path.open('rb') as stream:
+            while chunk := stream.read(_BUNDLE_CHUNK):
+                stored_hash.update(chunk)
+        document['parts'][name] = {'file': path.name, 'stored_bytes': stored_size,
+            'stored_sha256': stored_hash.hexdigest(), 'decoded_bytes': decoded_size,
+            'decoded_sha256': checksum.hexdigest()}
+    _bundle_parts(document, manifest_path)
+    with manifest_path.open('x', encoding='utf-8', newline='\n') as stream:
+        stream.write(canonical_json(document))
+        stream.flush()
+        os.fsync(stream.fileno())
+    return document
+
+
+def load_source_bundle_document(document, manifest_path, *, cached_bundle=None):
+    """Pin stored bytes, bound decoded bytes before JSON parsing, preserve v1."""
+    if isinstance(document, dict) and 'version' not in document:
+        _require(set(document) == {'raw_json', 'view_json', 'snapshot_id', 'view_sha256'},
+                 'EXACT_SOURCE_BUNDLE_V1_REQUIRED')
+        return SourceBundle(**document)
+    parts = _bundle_parts(document, manifest_path)
+    if cached_bundle is not None:
+        _require(isinstance(cached_bundle, SourceBundle)
+                 and cached_bundle.snapshot_id == document['snapshot_id']
+                 and cached_bundle.view_sha256 == document['view_sha256'], 'FOREIGN_CACHED_SOURCE_BUNDLE')
+        cached_bundle.check_integrity()
+    decoded = {}
+    for name, path, part in parts:
+        _part_pin(path, part['stored_bytes'], part['stored_sha256'])
+        if cached_bundle is not None:
+            text = cached_bundle.raw_json if name == 'raw' else cached_bundle.view_json
+            _require(len(text.encode('utf-8')) == part['decoded_bytes'], 'CACHED_SOURCE_SIZE_CHANGED')
+            continue
+        output, checksum = bytearray(), hashlib.sha256()
+        with path.open('rb') as stream, gzip.GzipFile(fileobj=stream, mode='rb') as packed:
+            while True:
+                chunk = packed.read(min(_BUNDLE_CHUNK, part['decoded_bytes'] - len(output) + 1))
+                if not chunk:
+                    break
+                _require(len(output) + len(chunk) <= part['decoded_bytes'],
+                         'SOURCE_PART_DECODED_BOUND_EXCEEDED')
+                checksum.update(chunk)
+                output.extend(chunk)
+        _require(len(output) == part['decoded_bytes']
+                 and checksum.hexdigest() == part['decoded_sha256'], 'SOURCE_PART_DECODED_HASH_CHANGED')
+        _part_pin(path, part['stored_bytes'], part['stored_sha256'])
+        decoded[name] = output.decode('utf-8')
+    if cached_bundle is not None:
+        return cached_bundle
+    return SourceBundle(decoded['raw'], decoded['view'], document['snapshot_id'], document['view_sha256'])

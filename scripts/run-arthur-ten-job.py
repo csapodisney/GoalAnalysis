@@ -4,13 +4,14 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import subprocess
 import sys
 import tempfile
 import threading
 import time
 from datetime import UTC, date, datetime, timedelta
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'src'))
@@ -20,12 +21,19 @@ from goal_analysis.jobs.agent_snapshot import digest
 from goal_analysis.jobs.portfolio import RunLock, validate_target_day
 from goal_analysis.jobs.workshop_dispatch import exclusive_json
 from goal_analysis.jobs.workshop_launch import LaunchStore, request_identity
-from goal_analysis.jobs.workshop_windows_job import WindowsJob, drain, resource_cancel_decision
+from goal_analysis.jobs.workshop_windows_job import (
+    WindowsJob,
+    drain,
+    human_deadline_policy,
+    human_phase_deadline,
+    resource_cancel_decision,
+)
 from goal_analysis.workshop_service import SavedWorkshop, readonly
 from goal_analysis.workshop_views import main_slot_capacity
 
 OUTPUT = None
 DEADLINE = None
+HUMAN_DEADLINE = None
 
 
 def require(value, reason):
@@ -47,6 +55,63 @@ def resource_hardstop():
     return resource_cancel_decision(raw, datetime.now(UTC))
 
 
+def load_human_deadline(job):
+    """Read one optional request authority before any business DB read or spawn."""
+    path = ROOT / 'data/arthur/workshop-deadlines' / (job['request_id'] + '.json')
+    if not path.exists():
+        return None
+    require(not path.is_symlink() and path.resolve().is_relative_to(ROOT.resolve()), 'EXACT_HUMAN_DEADLINE_PATH')
+    with path.open('rb') as stream:
+        raw = stream.read(4097)
+    require(0 < len(raw) <= 4096, 'BOUNDED_HUMAN_DEADLINE_REQUIRED')
+    source = json.loads(raw.decode('utf-8-sig'))['source_map']
+    relative = source['relative_path']
+    require(isinstance(relative, str) and relative == PurePosixPath(relative).as_posix()
+            and not PurePosixPath(relative).is_absolute() and '..' not in PurePosixPath(relative).parts
+            and ':' not in relative and '\\' not in relative
+            and relative.startswith('artifacts/') and relative.endswith('/SOURCE-MAP.json'),
+            'EXACT_HUMAN_DEADLINE_SOURCE_MAP_PATH')
+    source_path = ROOT / relative
+    require(not source_path.is_symlink() and source_path.resolve().is_relative_to((ROOT / 'artifacts').resolve())
+            and source_path.stat().st_size <= 1024**2, 'BOUNDED_DEADLINE_SOURCE_MAP')
+    with source_path.open('rb') as stream:
+        source_raw = stream.read(1024**2 + 1)
+    require(len(source_raw) <= 1024**2, 'DEADLINE_SOURCE_MAP_GREW')
+    manifest = json.loads(source_raw)
+    rows = manifest['files']
+    require(isinstance(rows, list) and 0 < len(rows) <= 1000, 'BOUNDED_DEADLINE_SOURCE_MEMBERSHIP')
+    actual = {}
+    for row in rows:
+        name = row['path']
+        require(isinstance(name, str) and name == PurePosixPath(name).as_posix()
+                and not PurePosixPath(name).is_absolute() and '..' not in PurePosixPath(name).parts
+                and ':' not in name and '\\' not in name
+                and (name.startswith(('src/', 'scripts/', 'config/')) or name == 'pyproject.toml') and name not in actual,
+                'UNIQUE_DECLARED_DEADLINE_SOURCE_PATH')
+        item = ROOT / name
+        require(not item.is_symlink() and item.resolve().is_relative_to(ROOT.resolve())
+                and item.is_file() and item.stat().st_size <= 8 * 1024**2, 'BOUNDED_ACTUAL_DEADLINE_SOURCE')
+        with item.open('rb') as stream:
+            item_raw = stream.read(8 * 1024**2 + 1)
+        require(len(item_raw) <= 8 * 1024**2, 'DEADLINE_SOURCE_FILE_GREW')
+        actual[name] = hashlib.sha256(item_raw).hexdigest()
+        require(actual[name] == row['worktree_sha256'], 'HUMAN_DEADLINE_SOURCE_BYTES_CHANGED')
+    binding = {'relative_path': relative, 'sha256': hashlib.sha256(source_raw).hexdigest(),
+               'source_commit': manifest['source_commit'], 'source_files_sha256': digest(actual)}
+    policy = human_deadline_policy(raw, datetime.now(UTC), request_id=job['request_id'],
+        target_date=job['target_date'], source_binding=binding)
+    with (OUTPUT / 'human-deadline-authority.json').open('xb') as stream:
+        stream.write(raw)
+        stream.flush()
+        os.fsync(stream.fileno())
+    save_new(OUTPUT / 'human-deadline-binding.json', {'job_id': job['job_id'], 'request_id': job['request_id'],
+        'target_date': job['target_date'], 'source_map': binding, 'authority_sha256': policy['authority_sha256'],
+        'business_stop_at_utc': policy['business_stop_at_utc'],
+        'verification_stop_at_utc': policy['verification_stop_at_utc'],
+        'human_stop_at_utc': policy['human_stop_at_utc'], 'read_once_no_periodic_sentinel': True})
+    return policy
+
+
 def supervise(command, folder, *, seconds, label='business', env=None, spawn=None, job_factory=WindowsJob):
     """Only actual command supplied by checked fixed CLI; tests inject harmless child."""
     require(label in {'business', 'verification'}, 'FIXED_OWNED_PHASE_REQUIRED')
@@ -65,6 +130,13 @@ def supervise(command, folder, *, seconds, label='business', env=None, spawn=Non
             result.update(status='RESOURCE_HARDSTOP', native_exit_code=None, child_tree_stopped=True,
                           child_started=False, resource_hardstop=stop)
             return result
+        if HUMAN_DEADLINE is not None:
+            result['human_deadline'] = {'authority_sha256': HUMAN_DEADLINE['authority_sha256'],
+                'phase_stop_at_utc': HUMAN_DEADLINE[label + '_stop_at_utc'],
+                'effective_deadline_at_utc': DEADLINE.isoformat()}
+            if datetime.now(UTC) >= DEADLINE:
+                result.update(status='HUMAN_PHASE_DEADLINE_BEFORE_SPAWN', child_tree_stopped=True, child_started=False)
+                return result
         job = job_factory()
         flags = 0x00000004 | 0x00000200  # CREATE_SUSPENDED | CREATE_NEW_PROCESS_GROUP
         child = spawn(command, cwd=ROOT, env=env, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
@@ -100,7 +172,8 @@ def supervise(command, folder, *, seconds, label='business', env=None, spawn=Non
             if datetime.now(UTC) >= DEADLINE or time.monotonic() - started >= seconds or (exited_at is not None and time.monotonic() - exited_at > 30):
                 job.terminate()
                 child.wait(timeout=10)
-                result.update(status='TIMEOUT_DURABLE_PARTIAL' if exited_at is None else 'ORPHAN_DESCENDANTS_DURABLE_PARTIAL',
+                human_expired = HUMAN_DEADLINE is not None and datetime.now(UTC) >= datetime.fromisoformat(HUMAN_DEADLINE[label + '_stop_at_utc'])
+                result.update(status='HUMAN_PHASE_DEADLINE_STOP' if human_expired else 'TIMEOUT_DURABLE_PARTIAL' if exited_at is None else 'ORPHAN_DESCENDANTS_DURABLE_PARTIAL',
                               native_exit_code=child.returncode, child_tree_stopped=job.active() == 0)
                 break
             time.sleep(0.1)
@@ -196,7 +269,7 @@ def source_pins():
 
 
 def main():
-    global OUTPUT, DEADLINE
+    global OUTPUT, DEADLINE, HUMAN_DEADLINE
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--job-id', required=True)
     args = parser.parse_args()
@@ -219,6 +292,9 @@ def main():
         save_new(OUTPUT / 'source-before.json', pins)
         save_new(OUTPUT / 'settings.json', job['settings'])
         save_new(OUTPUT / 'job-intent.json', {key: value for key, value in job.items() if key != 'settings'})
+        HUMAN_DEADLINE = load_human_deadline(job)
+        if HUMAN_DEADLINE is not None:
+            DEADLINE = human_phase_deadline(now, seconds=5400, label='business', policy=HUMAN_DEADLINE)
         with RunLock(ROOT / 'data/arthur/run.lock'):
             before = target_runs(job['target_date'])
             save_new(OUTPUT / 'before-runs.json', sorted(before))
@@ -233,7 +309,7 @@ def main():
         verified = verify_saved(job['target_date'], before)
         save_new(OUTPUT / 'saved-verification.json', verified)
         # Business 5400s is unchanged; its separate stopped postcheck has an owned 180s Job.
-        DEADLINE = datetime.now(UTC) + timedelta(seconds=180)
+        DEADLINE = human_phase_deadline(datetime.now(UTC), seconds=180, label='verification', policy=HUMAN_DEADLINE)
         verification_native = supervise([str(ROOT / '.venv/Scripts/python.exe'), '-B',
             str(ROOT / 'scripts/run-arthur-workshop-verify.py'), '--run-id', verified['run_id'],
             '--output', str(OUTPUT / 'physical-verification.json')], OUTPUT, seconds=180,
