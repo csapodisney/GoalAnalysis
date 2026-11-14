@@ -26,9 +26,10 @@ class SavedVerificationLimit(RuntimeError):
 
 
 class SavedReader:
-    def __init__(self, root, *, maximum_bytes=805306368, seconds=180, clock=time.monotonic):
+    def __init__(self, root, *, maximum_bytes=None, seconds=180, clock=time.monotonic):
         self.root = Path(root).resolve()
-        self.maximum_bytes, self.read_bytes = maximum_bytes, 0
+        self.uses_default_byte_limit = maximum_bytes is None
+        self.maximum_bytes, self.read_bytes = 805306368 if maximum_bytes is None else maximum_bytes, 0
         self.clock, self.deadline = clock, clock() + seconds
         self.files = {}
 
@@ -178,7 +179,7 @@ def _saved_source_phase_binding(proof, storage):
 def verify_new_cohort(root, report, *, reader=None):
     """Return explicit partial evidence instead of turning optional UNKNOWN into a veto."""
     root = Path(root).resolve()
-    default_reader = reader is None
+    default_reader = reader is None or getattr(reader, 'uses_default_byte_limit', False)
     reader = reader or SavedReader(root)
     run_id = report['run_id']
     require(Path(run_id).name == run_id and run_id.startswith(report['date'] + '-'), 'EXACT_SAVED_RUN_ID_REQUIRED')
